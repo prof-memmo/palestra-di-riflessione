@@ -95,7 +95,7 @@ window.hideLegal = function() {
     if (modal) modal.classList.add('hidden');
 };
 
-window.handleGuestLogin = function() {
+window.handleGuestLogin = async function() {
     const checkAge = document.getElementById('check-age');
     const checkPrivacy = document.getElementById('check-privacy');
 
@@ -105,9 +105,9 @@ window.handleGuestLogin = function() {
     }
 
     // Entra e procedi verso l'onboarding per scegliere nome e ruolo
-    Auth.login('Nuovo Atleta', 'assets/avatar.png', 'studente');
+    await Auth.login('Nuovo Atleta', 'assets/avatar.png', 'studente');
     hideLoginOverlay();
-    window.location.hash = 'home';
+    window.location.hash = 'onboarding';
     handleRoute(); 
 };
 
