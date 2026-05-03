@@ -834,6 +834,19 @@ td .completion-input {
     font-family: inherit;
 }
 
+.profile-setup-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+}
+
+@media (max-width: 600px) {
+    .profile-setup-grid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+}
+
 .role-opt.active {
     border-color: var(--primary-color);
     background: #f0f7ff;

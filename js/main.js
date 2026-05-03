@@ -2730,13 +2730,8 @@ window.renderOnboardingPage = function() {
 
                 <div class="onboarding-card" style="background: white; padding: 3rem; border-radius: 40px; box-shadow: 0 30px 60px rgba(0,0,0,0.08);">
                     
-                    <!-- Role Specific Content -->
-                    <div id="setup-role-specific" style="margin-bottom: 3rem;">
-                        <!-- Injected dynamically -->
-                    </div>
-
                     <!-- Common Profile Content -->
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; padding-top: 2rem; border-top: 1px solid #eee;">
+                    <div class="profile-setup-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; margin-bottom: 3rem;">
                         <div>
                             <h4 style="margin-bottom: 1.5rem; font-size: 1.1rem; color: #555;">Il tuo Nome</h4>
                             <input type="text" id="onboarding-name" value="${user.name || ''}" placeholder="Come vuoi essere chiamato?" style="width: 100%; padding: 1.3rem; border-radius: 20px; border: 2px solid #f0f0f0; font-size: 1.1rem; outline: none; transition: border-color 0.3s;">
@@ -2752,6 +2747,11 @@ window.renderOnboardingPage = function() {
                                 <span class="avatar-opt" data-avatar="🦾">🦾</span>
                             </div>
                         </div>
+                    </div>
+
+                    <!-- Role Specific Content -->
+                    <div id="setup-role-specific" style="padding-top: 3rem; border-top: 1px solid #eee;">
+                        <!-- Injected dynamically -->
                     </div>
 
                     <div style="margin-top: 4rem; display: flex; gap: 1rem;">
