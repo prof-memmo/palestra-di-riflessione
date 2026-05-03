@@ -2785,6 +2785,7 @@ window.selectOnboardingRole = function(role) {
 
     step1.classList.add('hidden');
     step2.classList.remove('hidden');
+    window.scrollTo(0, 0);
 
     if (role === 'studente') {
         setupTitle.innerText = "CONFIGURAZIONE STUDENTE";

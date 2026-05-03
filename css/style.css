@@ -1290,8 +1290,15 @@ td .completion-input {
 
 .onboarding-card-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    grid-template-columns: repeat(3, 1fr);
     gap: 2rem;
+}
+
+@media (max-width: 900px) {
+    .onboarding-card-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
 }
 
 .onboarding-card {
@@ -1299,23 +1306,36 @@ td .completion-input {
 }
 
 .role-opt-large {
-    background: #f8faff;
-    border: 3px solid #eee;
-    border-radius: 25px;
-    padding: 2rem;
+    background: #fff;
+    border: 2px solid #f0f0f0;
+    border-radius: 40px;
+    padding: 3rem 2rem;
     text-align: center;
     cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 1rem;
+    gap: 1.2rem;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+}
+
+.role-opt-large h3 {
+    font-weight: 900;
+    letter-spacing: -0.5px;
+    margin: 0;
+}
+
+.role-opt-large p {
+    font-size: 0.95rem;
+    color: #777;
+    line-height: 1.5;
 }
 
 .role-opt-large:hover {
-    transform: translateY(-8px);
-    border-color: var(--secondary-color);
-    box-shadow: 0 15px 35px rgba(93, 95, 239, 0.1);
+    transform: translateY(-12px);
+    border-color: var(--primary-color);
+    box-shadow: 0 25px 50px rgba(255, 127, 127, 0.15);
 }
 
 .role-opt-large.active {
