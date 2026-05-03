@@ -386,18 +386,39 @@ function renderIntroPage() {
                     <div style="background: #e8f5e9; padding: 1.5rem; border-radius: 20px; border-top: 5px solid #2e7d32;">
                         <h4 style="color: #2e7d32; margin-bottom: 0.8rem; font-size: 1.2rem;">🎓 Per gli Studenti</h4>
                         <p style="font-size: 0.95rem; line-height: 1.6;">
-                            • Navigazione libera e intuitiva.<br>
-                            • Creazione del proprio Vocabolario Personale.<br>
-                            • Monitoraggio dei traguardi tramite XP e Avatar.
+                            • <b>Accesso Semplice</b>: Entra con il codice fornito dal tuo docente (es. ALFA24). Nessuna email richiesta.<br>
+                            • <b>Vocabolario Personale</b>: Clicca sulle parole difficili e aggiungile al tuo dizionario.<br>
+                            • <b>Gamification</b>: Scegli il tuo avatar e guarda crescere i tuoi punti XP allenamento dopo allenamento.
                         </p>
                     </div>
                     <div style="background: #e3f2fd; padding: 1.5rem; border-radius: 20px; border-top: 5px solid #1565c0;">
-                        <h4 style="color: #1565c0; margin-bottom: 0.8rem; font-size: 1.2rem;">👩‍🏫 Per i Docenti</h4>
+                        <h4 style="color: #1565c0; margin-bottom: 0.8rem; font-size: 1.2rem;">👨‍🏫 Per i Docenti</h4>
                         <p style="font-size: 0.95rem; line-height: 1.6;">
-                            • Tasto <b>"Condividi con la classe"</b> in ogni esercizio.<br>
-                            • Invio istantaneo via WhatsApp o Email.<br>
-                            • Accesso a materiali didattici esclusivi.
+                            • <b>Classi Digitali</b>: Accedi con Google, crea la tua classe e genera un <b>Codice Univoco</b>.<br>
+                            • <b>Distribuzione Rapida</b>: Condividi il codice con gli studenti per collegarli istantaneamente al tuo profilo.<br>
+                            • <b>Monitoraggio</b>: Visualizza i progressi della classe e scopri quali argomenti richiedono più ripasso.
                         </p>
+                    </div>
+                </div>
+
+                <div style="background: #fff5f5; padding: 2rem; border-radius: 20px; border: 1px solid #ffcdd2; margin-bottom: 2rem;">
+                    <h4 style="color: #c62828; margin-bottom: 1rem; font-size: 1.3rem;">🚀 Guida Rapida al Setup</h4>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; text-align: center;">
+                        <div>
+                            <div style="font-size: 2rem; margin-bottom: 0.5rem;">1️⃣</div>
+                            <h5 style="margin-bottom: 0.5rem;">CONFIGURA</h5>
+                            <p style="font-size: 0.85rem; opacity: 0.8;">Accedi come Docente e crea la tua prima classe.</p>
+                        </div>
+                        <div>
+                            <div style="font-size: 2rem; margin-bottom: 0.5rem;">2️⃣</div>
+                            <h5 style="margin-bottom: 0.5rem;">CONDIVIDI</h5>
+                            <p style="font-size: 0.85rem; opacity: 0.8;">Dai il Codice Classe ai tuoi studenti.</p>
+                        </div>
+                        <div>
+                            <div style="font-size: 2rem; margin-bottom: 0.5rem;">3️⃣</div>
+                            <h5 style="margin-bottom: 0.5rem;">ALLENA</h5>
+                            <p style="font-size: 0.85rem; opacity: 0.8;">Guarda i risultati apparire nella tua dashboard.</p>
+                        </div>
                     </div>
                 </div>
 
