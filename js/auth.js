@@ -32,11 +32,24 @@ const Auth = {
             const doc = await window.fbDb.collection('users').doc(fbUser.uid).get();
             if (doc.exists) {
                 Auth._user = doc.data();
-                localStorage.setItem('palestra_user', JSON.stringify(Auth._user));
-                window.dispatchEvent(new CustomEvent('authChange'));
+            } else {
+                // Se l'utente non esiste nel database (es. primo accesso Google), creiamo un profilo base
+                Auth._user = {
+                    uid: fbUser.uid,
+                    name: fbUser.displayName || 'Atleta Google',
+                    avatar: fbUser.photoURL || 'assets/avatar.png',
+                    role: 'studente',
+                    points: 0,
+                    isGuest: false,
+                    email: fbUser.email
+                };
+                // Salvataggio iniziale nel DB per persistere il profilo
+                await window.fbDb.collection('users').doc(fbUser.uid).set(Auth._user);
             }
+            localStorage.setItem('palestra_user', JSON.stringify(Auth._user));
+            window.dispatchEvent(new CustomEvent('authChange'));
         } catch (e) {
-            console.error("Errore recupero dati cloud:", e);
+            console.error("Errore recupero/creazione dati cloud:", e);
         }
     },
 
