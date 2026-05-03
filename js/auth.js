@@ -63,6 +63,32 @@ const Auth = {
         window.dispatchEvent(new CustomEvent('authChange'));
     },
 
+    loginWithGoogle: async () => {
+        if (!window.fbAuth) return;
+        const provider = new firebase.auth.GoogleAuthProvider();
+        try {
+            const result = await window.fbAuth.signInWithPopup(provider);
+            const user = result.user;
+            
+            Auth._user = {
+                name: user.displayName,
+                email: user.email,
+                avatar: user.photoURL,
+                role: user.email === 'prof.memmo@gmail.com' ? 'admin' : 'studente',
+                isGuest: false,
+                joinedAt: new Date().toISOString()
+            };
+
+            localStorage.setItem('palestra_user', JSON.stringify(Auth._user));
+            await window.fbDb.collection('users').doc(user.uid).set(Auth._user, { merge: true });
+            
+            window.dispatchEvent(new CustomEvent('authChange'));
+            hideLoginOverlay();
+        } catch (e) {
+            console.error("Errore Google Login:", e);
+        }
+    },
+
     continueAsGuest: () => {
         Auth._user = {
             name: 'Atleta Anonimo',

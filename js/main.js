@@ -629,6 +629,72 @@ function renderProfiloPage() {
     if (typeof updateSidebarMenu === 'function') updateSidebarMenu();
 }
 
+async function renderAdminPage() {
+    const appContainer = document.getElementById('app');
+    appContainer.innerHTML = `
+        <div class="exercise-container">
+            <h2 class="exercise-title">🛡️ DASHBOARD AMMINISTRATORE</h2>
+            <div style="background: white; padding: 2rem; border-radius: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.05);">
+                <p style="margin-bottom: 2rem; color: #666;">Benvenuto, <b>prof.memmo</b>. Qui puoi monitorare tutti gli iscritti alla Palestra.</p>
+                
+                <div id="admin-users-list" style="display: flex; flex-direction: column; gap: 1rem;">
+                    <div style="text-align: center; padding: 2rem;">
+                        <div class="spinner"></div>
+                        <p>Caricamento utenti in corso...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+
+    window.currentSection = 'admin';
+
+    // Recupera utenti da Firestore
+    if (window.fbDb) {
+        try {
+            const usersSnapshot = await window.fbDb.collection('users').get();
+            const progressSnapshot = await window.fbDb.collection('progress').get();
+            
+            const progressMap = {};
+            progressSnapshot.forEach(doc => { progressMap[doc.id] = doc.data(); });
+
+            let html = '';
+            if (usersSnapshot.empty) {
+                html = '<p style="text-align: center; color: #999;">Nessun utente registrato ancora.</p>';
+            } else {
+                usersSnapshot.forEach(doc => {
+                    const userData = doc.data();
+                    const userProgress = progressMap[doc.id] || {};
+                    const isImage = userData.avatar && (userData.avatar.includes('/') || userData.avatar.includes('.'));
+                    const avatarHtml = isImage 
+                        ? `<img src="${userData.avatar}" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;">` 
+                        : `<span style="font-size: 1.5rem;">${userData.avatar || '👤'}</span>`;
+
+                    html += `
+                        <div style="display: flex; align-items: center; gap: 1rem; padding: 1.2rem; background: #f8f9fa; border-radius: 20px; border: 1px solid #eee;">
+                            <div style="width: 50px; height: 50px; background: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 2px solid #eee; overflow: hidden;">
+                                ${avatarHtml}
+                            </div>
+                            <div style="flex: 1;">
+                                <h4 style="margin: 0; font-weight: 800;">${userData.name || 'Anonimo'}</h4>
+                                <p style="margin: 0; font-size: 0.8rem; color: #666;">${userData.email || 'No email'} • Iscritto il: ${userData.joinedAt ? new Date(userData.joinedAt).toLocaleDateString() : 'N/D'}</p>
+                            </div>
+                            <div style="text-align: right;">
+                                <div style="font-weight: 800; color: var(--primary-color);">${userProgress.points || 0} XP</div>
+                                <div style="font-size: 0.75rem; color: #999;">${userProgress.vocab ? userProgress.vocab.length : 0} parole</div>
+                            </div>
+                        </div>
+                    `;
+                });
+            }
+            document.getElementById('admin-users-list').innerHTML = html;
+        } catch (e) {
+            console.error("Errore recupero utenti admin:", e);
+            document.getElementById('admin-users-list').innerHTML = `<p style="color: #e74c3c;">Errore nel caricamento dei dati: ${e.message}</p>`;
+        }
+    }
+}
+
 // --- TEACHER FUNCTIONS ---
 window.addTeacherClass = function() {
     const input = document.getElementById('new-class-name');
@@ -1371,6 +1437,16 @@ function navigateTo(section, subType = null, level = null, updateHash = true, ex
             if (typeof updateSidebarMenu === 'function') updateSidebarMenu();
             return;
         }
+        if (section === 'admin') {
+            const user = Auth.getUser();
+            if (user.role === 'admin') {
+                renderAdminPage();
+            } else {
+                window.location.hash = 'home';
+            }
+            if (typeof updateSidebarMenu === 'function') updateSidebarMenu();
+            return;
+        }
         if (section === 'ripassa') {
             renderRipassaPage();
             document.querySelector('.nav-item[data-section="ripassa"]')?.classList.add('active');
@@ -2090,6 +2166,11 @@ function updateSidebarMenu() {
         { id: 'produzione', title: 'Produzione', icon: '✍️' },
         { id: 'contatti', title: 'Contatti', icon: '📧' }
     ];
+
+    const user = Auth.getUser();
+    if (user.role === 'admin') {
+        mainSections.push({ id: 'admin', title: 'Dashboard Admin', icon: '🛡️' });
+    }
 
     let activeMainSection = window.currentSection;
     let activeSubSection = null;
