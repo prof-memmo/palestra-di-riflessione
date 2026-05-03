@@ -527,7 +527,7 @@ async function renderProfiloPage() {
                         <p style="background: var(--primary-color); color: white; padding: 0.3rem 1rem; border-radius: 20px; font-size: 0.9rem; font-weight: 700;">${rank}</p>
                         <p style="background: #f1f2f6; color: #57606f; padding: 0.3rem 1rem; border-radius: 20px; font-size: 0.9rem; font-weight: 700;">${(user.roleLabel || user.role || 'studente').toUpperCase()}</p>
                     </div>
-                    ${user.isGuest ? `<p style="color: #e74c3c; font-size: 0.8rem; margin-top: 0.5rem; font-weight: 700;">⚠ SESSIONE ANONIMA (Dati non sincronizzati)</p>` : ''}
+                    ${user.isGuest ? `<p style="color: #ffa502; font-size: 0.8rem; margin-top: 0.5rem; font-weight: 700;">📍 PROFILO LOCALE (I dati sono salvati solo su questo dispositivo)</p>` : ''}
                 </div>
                 <div style="margin-left: auto; display: flex; flex-direction: column; gap: 0.5rem;">
                     <button class="btn" onclick="showEditProfileModal()" style="background: rgba(52, 152, 219, 0.1); color: #3498db; border: 1px solid #3498db; padding: 0.5rem 1rem; border-radius: 50px; font-weight: 700; cursor: pointer;">✏️ Modifica</button>
