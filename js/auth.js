@@ -30,24 +30,30 @@ const Auth = {
     _handleFirebaseUser: async (fbUser) => {
         try {
             const doc = await window.fbDb.collection('users').doc(fbUser.uid).get();
+            const pendingRole = localStorage.getItem('pending_role');
+
             if (doc.exists) {
                 Auth._user = doc.data();
+                // Se l'utente ha selezionato un ruolo diverso (e non è admin), aggiorniamo il profilo esistente
+                if (pendingRole && Auth._user.role !== pendingRole && Auth._user.role !== 'admin') {
+                    Auth._user.role = pendingRole;
+                    await window.fbDb.collection('users').doc(fbUser.uid).update({ role: pendingRole });
+                }
             } else {
                 // Se l'utente non esiste nel database (es. primo accesso Google), creiamo un profilo base
-                const pendingRole = localStorage.getItem('pending_role') || 'studente';
                 Auth._user = {
                     uid: fbUser.uid,
                     name: fbUser.displayName || 'Atleta Google',
                     avatar: fbUser.photoURL || 'assets/avatar.png',
-                    role: pendingRole,
+                    role: pendingRole || 'studente',
                     points: 0,
                     isGuest: false,
                     email: fbUser.email
                 };
-                localStorage.removeItem('pending_role'); // Pulisci dopo l'uso
                 // Salvataggio iniziale nel DB per persistere il profilo
                 await window.fbDb.collection('users').doc(fbUser.uid).set(Auth._user);
             }
+            localStorage.removeItem('pending_role'); // Pulisci dopo l'uso
             
             // Controllo privilegi Admin per email specifiche
             const ADMIN_EMAILS = ['prof.memmo@gmail.com'];
