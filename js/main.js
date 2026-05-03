@@ -483,7 +483,7 @@ window.handleContactSubmit = function() {
 };
 
 
-function renderProfiloPage() {
+async function renderProfiloPage() {
     const appContainer = document.getElementById('app');
     const user = Auth.getUser();
     const vocabulary = JSON.parse(localStorage.getItem('palestra_vocab') || '[]');
@@ -491,9 +491,6 @@ function renderProfiloPage() {
     const classes = JSON.parse(localStorage.getItem('palestra_classes') || '[]');
     const assignments = JSON.parse(localStorage.getItem('palestra_assignments') || '[]');
     const studentClassCode = localStorage.getItem('palestra_student_class_code') || null;
-
-    // Filter assignments for the student's class code
-    const myAssignments = studentClassCode ? assignments.filter(a => a.classCode === studentClassCode) : [];
 
     // Calculate rank and precision
     let rank = "Cadetto";
@@ -528,7 +525,7 @@ function renderProfiloPage() {
                     <h3 style="font-size: 1.8rem; font-weight: 800;">${user.name}</h3>
                     <div style="display: flex; gap: 0.5rem; margin-top: 0.5rem;">
                         <p style="background: var(--primary-color); color: white; padding: 0.3rem 1rem; border-radius: 20px; font-size: 0.9rem; font-weight: 700;">${rank}</p>
-                        <p style="background: #f1f2f6; color: #57606f; padding: 0.3rem 1rem; border-radius: 20px; font-size: 0.9rem; font-weight: 700;">${(user.role || 'studente').toUpperCase()}</p>
+                        <p style="background: #f1f2f6; color: #57606f; padding: 0.3rem 1rem; border-radius: 20px; font-size: 0.9rem; font-weight: 700;">${(user.roleLabel || user.role || 'studente').toUpperCase()}</p>
                     </div>
                     ${user.isGuest ? `<p style="color: #e74c3c; font-size: 0.8rem; margin-top: 0.5rem; font-weight: 700;">⚠ SESSIONE ANONIMA (Dati non sincronizzati)</p>` : ''}
                 </div>
@@ -537,6 +534,20 @@ function renderProfiloPage() {
                     <button class="btn btn-secondary" onclick="Auth.logout()" style="color: #e74c3c; border-color: #fceaea; padding: 0.5rem 1rem;">Esci</button>
                 </div>
             </div>
+
+            ${user.email === 'prof.memmo@gmail.com' ? `
+                <div style="margin-top: 3rem; margin-bottom: 3rem; padding: 2.5rem; background: #fff5f5; border-radius: 40px; border: 2px solid #feb2b2; box-shadow: 0 10px 30px rgba(231, 76, 60, 0.05);">
+                    <h3 style="color: #c53030; margin-bottom: 2rem; display: flex; align-items: center; gap: 0.8rem; font-weight: 900; font-size: 1.6rem;">🛡️ DASHBOARD AMMINISTRATORE</h3>
+                    <p style="margin-bottom: 2rem; color: #742a2a; font-weight: 500;">Benvenuto, Amministratore. Qui puoi monitorare e gestire tutti gli iscritti alla Palestra.</p>
+                    
+                    <div id="admin-users-list" style="display: flex; flex-direction: column; gap: 1rem;">
+                        <div style="text-align: center; padding: 2rem;">
+                            <div class="spinner"></div>
+                            <p>Caricamento utenti...</p>
+                        </div>
+                    </div>
+                </div>
+            ` : ''}
 
             ${user.role === 'docente' ? `
                 <div class="teacher-area" style="margin-bottom: 3rem; padding: 2rem; background: #f0f7ff; border-radius: 30px; border: 2px dashed #3498db;">
@@ -677,7 +688,80 @@ function renderProfiloPage() {
             ` : ''}
         </div>
     `;
-    currentSection = 'profilo';
+    window.currentSection = 'profilo';
+    if (user.email === 'prof.memmo@gmail.com') {
+        loadAdminUsersInProfile();
+    }
+}
+
+async function loadAdminUsersInProfile() {
+    if (!window.fbDb) return;
+    const container = document.getElementById('admin-users-list');
+    if (!container) return;
+
+    try {
+        const usersSnapshot = await window.fbDb.collection('users').get();
+        const progressSnapshot = await window.fbDb.collection('progress').get();
+        
+        const progressMap = {};
+        progressSnapshot.forEach(doc => { progressMap[doc.id] = doc.data(); });
+
+        let html = '';
+        if (usersSnapshot.empty) {
+            html = '<p style="text-align: center; color: #999;">Nessun utente registrato ancora.</p>';
+        } else {
+            usersSnapshot.forEach(doc => {
+                const userData = doc.data();
+                const userProgress = progressMap[doc.id] || {};
+                const isImage = userData.avatar && (userData.avatar.includes('/') || userData.avatar.includes('.'));
+                const avatarHtml = isImage 
+                    ? `<img src="${userData.avatar}" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;">` 
+                    : `<span style="font-size: 1.5rem;">${userData.avatar || '👤'}</span>`;
+
+                html += `
+                    <div class="admin-user-row" style="display: flex; flex-wrap: wrap; align-items: center; gap: 1rem; padding: 1.2rem; background: white; border-radius: 20px; border: 1px solid #eee; transition: all 0.2s;">
+                        <div style="width: 50px; height: 50px; background: #f8f9fa; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 2px solid #eee; overflow: hidden; flex-shrink: 0;">
+                            ${avatarHtml}
+                        </div>
+                        <div style="flex: 1; min-width: 200px;">
+                            <h4 style="margin: 0; font-weight: 800; font-size: 1.1rem;">${userData.name || 'Anonimo'}</h4>
+                            <p style="margin: 0; font-size: 0.85rem; color: #666;">
+                                ${userData.email || 'No email'} • 
+                                <span style="color: #27ae60; font-weight: 700;">${userData.roleLabel || userData.role || 'Studente'}</span>
+                            </p>
+                            <p style="margin: 0; font-size: 0.75rem; color: #999;">Iscritto il: ${userData.joinedAt ? new Date(userData.joinedAt).toLocaleDateString() : 'N/D'}</p>
+                        </div>
+                        <div style="text-align: right; margin-right: 1rem; flex-shrink: 0;">
+                            <div style="font-weight: 800; color: var(--primary-color); font-size: 1.1rem;">${userProgress.points || 0} XP</div>
+                            <div style="font-size: 0.8rem; color: #999;">${userProgress.vocab ? userProgress.vocab.length : 0} parole</div>
+                        </div>
+                        <button onclick="adminDeleteUserInProfile('${doc.id}', '${(userData.name || 'Anonimo').replace(/'/g, "\\'")}')" style="background: #fff0f0; border: none; padding: 0.8rem; border-radius: 15px; cursor: pointer; color: #e74c3c; font-size: 1.2rem; transition: all 0.2s; margin-left: auto;" title="Elimina Utente">
+                            🗑️
+                        </button>
+                    </div>
+                `;
+            });
+        }
+        container.innerHTML = html;
+    } catch (e) {
+        console.error("Errore recupero utenti admin in profilo:", e);
+        container.innerHTML = `<p style="color: #e74c3c;">Errore nel caricamento dei dati: ${e.message}</p>`;
+    }
+}
+
+window.adminDeleteUserInProfile = async function(uid, name) {
+    if (!confirm(`Sei sicuro di voler eliminare definitivamente l'utente "${name}"? \n\nVerranno cancellati tutti i suoi dati e i suoi progressi dalla Palestra.`)) return;
+    
+    try {
+        await window.fbDb.collection('users').doc(uid).delete();
+        await window.fbDb.collection('progress').doc(uid).delete();
+        alert(`Utente "${name}" eliminato con successo.`);
+        loadAdminUsersInProfile();
+    } catch (e) {
+        console.error("Errore eliminazione utente:", e);
+        alert("Impossibile eliminare l'utente: " + e.message);
+    }
+};
     if (typeof updateSidebarMenu === 'function') updateSidebarMenu();
 }
 
