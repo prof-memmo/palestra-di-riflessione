@@ -48,6 +48,15 @@ const Auth = {
                 // Salvataggio iniziale nel DB per persistere il profilo
                 await window.fbDb.collection('users').doc(fbUser.uid).set(Auth._user);
             }
+            
+            // Controllo privilegi Admin per email specifiche
+            const ADMIN_EMAILS = ['prof.memmo@gmail.com'];
+            if (fbUser.email && ADMIN_EMAILS.includes(fbUser.email)) {
+                Auth._user.role = 'admin';
+                // Aggiorna il ruolo nel DB per persistere il privilegio
+                await window.fbDb.collection('users').doc(fbUser.uid).set({ role: 'admin' }, { merge: true });
+            }
+
             localStorage.setItem('palestra_user', JSON.stringify(Auth._user));
             window.dispatchEvent(new CustomEvent('authChange'));
         } catch (e) {
