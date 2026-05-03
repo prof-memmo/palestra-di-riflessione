@@ -11,22 +11,32 @@ const Auth = {
 
         // Inizializza listener Firebase
         if (window.fbAuth) {
+            // Gestisci il risultato del redirect (per mobile)
+            window.fbAuth.getRedirectResult().then((result) => {
+                if (result && result.user) {
+                    Auth._handleFirebaseUser(result.user);
+                }
+            }).catch(e => console.error("Errore redirect:", e));
+
             window.fbAuth.onAuthStateChanged(async (user) => {
                 if (user) {
                     Auth._fbUser = user;
-                    // Prova a recuperare i dati dal Cloud
-                    try {
-                        const doc = await window.fbDb.collection('users').doc(user.uid).get();
-                        if (doc.exists) {
-                            Auth._user = doc.data();
-                            localStorage.setItem('palestra_user', JSON.stringify(Auth._user));
-                            window.dispatchEvent(new CustomEvent('authChange'));
-                        }
-                    } catch (e) {
-                        console.error("Errore recupero dati cloud:", e);
-                    }
+                    Auth._handleFirebaseUser(user);
                 }
             });
+        }
+    },
+
+    _handleFirebaseUser: async (fbUser) => {
+        try {
+            const doc = await window.fbDb.collection('users').doc(fbUser.uid).get();
+            if (doc.exists) {
+                Auth._user = doc.data();
+                localStorage.setItem('palestra_user', JSON.stringify(Auth._user));
+                window.dispatchEvent(new CustomEvent('authChange'));
+            }
+        } catch (e) {
+            console.error("Errore recupero dati cloud:", e);
         }
     },
 
@@ -47,14 +57,17 @@ const Auth = {
             joinedAt: new Date().toISOString()
         };
 
-        // Salva in locale
         localStorage.setItem('palestra_user', JSON.stringify(Auth._user));
 
-        // Salva nel Cloud se Firebase è attivo
         if (window.fbAuth) {
             try {
-                const cred = await window.fbAuth.signInAnonymously();
-                await window.fbDb.collection('users').doc(cred.user.uid).set(Auth._user);
+                // Se non è già loggato in Firebase, entra come anonimo per salvare i dati
+                if (!window.fbAuth.currentUser) {
+                    const cred = await window.fbAuth.signInAnonymously();
+                    await window.fbDb.collection('users').doc(cred.user.uid).set(Auth._user);
+                } else {
+                    await window.fbDb.collection('users').doc(window.fbAuth.currentUser.uid).set(Auth._user, { merge: true });
+                }
             } catch (e) {
                 console.error("Errore salvataggio cloud login:", e);
             }
@@ -66,26 +79,22 @@ const Auth = {
     loginWithGoogle: async () => {
         if (!window.fbAuth) return;
         const provider = new firebase.auth.GoogleAuthProvider();
+        
+        // Su mobile usiamo il redirect, su desktop il popup
+        const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+        
         try {
-            const result = await window.fbAuth.signInWithPopup(provider);
-            const user = result.user;
-            
-            Auth._user = {
-                name: user.displayName,
-                email: user.email,
-                avatar: user.photoURL,
-                role: user.email === 'prof.memmo@gmail.com' ? 'admin' : 'studente',
-                isGuest: false,
-                joinedAt: new Date().toISOString()
-            };
-
-            localStorage.setItem('palestra_user', JSON.stringify(Auth._user));
-            await window.fbDb.collection('users').doc(user.uid).set(Auth._user, { merge: true });
-            
-            window.dispatchEvent(new CustomEvent('authChange'));
-            hideLoginOverlay();
+            if (isMobile) {
+                await window.fbAuth.signInWithRedirect(provider);
+            } else {
+                const result = await window.fbAuth.signInWithPopup(provider);
+                Auth._handleFirebaseUser(result.user);
+                hideLoginOverlay();
+            }
         } catch (e) {
             console.error("Errore Google Login:", e);
+            // Se il popup fallisce (es. bloccato), prova il redirect
+            try { await window.fbAuth.signInWithRedirect(provider); } catch(e2) {}
         }
     },
 
@@ -98,15 +107,43 @@ const Auth = {
             joinedAt: new Date().toISOString()
         };
         window.dispatchEvent(new CustomEvent('authChange'));
+        hideLoginOverlay(); // Assicura che l'overlay scompaia
     },
 
     logout: async () => {
-        if (window.fbAuth) await window.fbAuth.signOut();
+        try {
+            if (window.fbAuth) await window.fbAuth.signOut();
+        } catch(e) {}
+        
         Auth._user = null;
         localStorage.removeItem('palestra_user');
         window.dispatchEvent(new CustomEvent('authChange'));
+        
+        // Invece di reload() che può causare loop, resettiamo lo stato e mostriamo l'overlay
         window.location.hash = 'home';
-        window.location.reload();
+        window.hasShownInitialLogin = false;
+        setTimeout(() => {
+            window.location.reload();
+        }, 100);
+    },
+
+    updateProfile: async (name, avatar) => {
+        if (!Auth._user) return;
+        
+        Auth._user.name = name;
+        Auth._user.avatar = avatar;
+        
+        localStorage.setItem('palestra_user', JSON.stringify(Auth._user));
+        
+        if (window.fbAuth && window.fbAuth.currentUser) {
+            try {
+                await window.fbDb.collection('users').doc(window.fbAuth.currentUser.uid).set(Auth._user, { merge: true });
+            } catch (e) {
+                console.error("Errore aggiornamento cloud profilo:", e);
+            }
+        }
+        
+        window.dispatchEvent(new CustomEvent('authChange'));
     }
 };
 

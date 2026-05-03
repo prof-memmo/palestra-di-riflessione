@@ -481,8 +481,9 @@ function renderProfiloPage() {
                     </div>
                     ${user.isGuest ? `<p style="color: #e74c3c; font-size: 0.8rem; margin-top: 0.5rem; font-weight: 700;">⚠ SESSIONE ANONIMA (Dati non sincronizzati)</p>` : ''}
                 </div>
-                <div style="margin-left: auto;">
-                    <button class="btn btn-secondary" onclick="Auth.logout()" style="color: #e74c3c; border-color: #fceaea;">Esci</button>
+                <div style="margin-left: auto; display: flex; flex-direction: column; gap: 0.5rem;">
+                    <button class="btn" onclick="showEditProfileModal()" style="background: rgba(52, 152, 219, 0.1); color: #3498db; border: 1px solid #3498db; padding: 0.5rem 1rem; border-radius: 50px; font-weight: 700; cursor: pointer;">✏️ Modifica</button>
+                    <button class="btn btn-secondary" onclick="Auth.logout()" style="color: #e74c3c; border-color: #fceaea; padding: 0.5rem 1rem;">Esci</button>
                 </div>
             </div>
 
@@ -2451,6 +2452,65 @@ window.checkSentenceAnalysis = (id) => {
         </div>`;
     checkAnswer('done', 'done', 'sentence-analysis', id);
 };
+window.showEditProfileModal = () => {
+    const user = Auth.getUser();
+    const modal = document.createElement('div');
+    modal.id = 'edit-profile-modal';
+    modal.className = 'login-overlay';
+    modal.style.opacity = '1';
+    modal.style.visibility = 'visible';
+    modal.style.display = 'flex';
+    modal.style.alignItems = 'center';
+    modal.style.justifyContent = 'center';
+
+    modal.innerHTML = `
+        <div class="login-card" style="transform: translateY(0);">
+            <h2 style="margin-bottom: 1.5rem;">MODIFICA PROFILO</h2>
+            <div class="login-form">
+                <input type="text" id="edit-name-input" value="${user.name}" placeholder="Il tuo nome..." maxlength="20" style="margin-bottom: 1.5rem;">
+                
+                <div class="avatar-selector">
+                    <p>Cambia il tuo avatar:</p>
+                    <div class="avatar-options" id="edit-avatar-options">
+                        <span class="avatar-opt ${user.avatar === 'assets/avatar.png' ? 'active' : ''}" data-avatar="assets/avatar.png">👤</span>
+                        <span class="avatar-opt ${user.avatar === '🚀' ? 'active' : ''}" data-avatar="🚀">🚀</span>
+                        <span class="avatar-opt ${user.avatar === '🦖' ? 'active' : ''}" data-avatar="🦖">🦖</span>
+                        <span class="avatar-opt ${user.avatar === '🦊' ? 'active' : ''}" data-avatar="🦊">🦊</span>
+                        <span class="avatar-opt ${user.avatar === '🧙' ? 'active' : ''}" data-avatar="🧙">🧙</span>
+                        <span class="avatar-opt ${user.avatar === '🦾' ? 'active' : ''}" data-avatar="🦾">🦾</span>
+                    </div>
+                </div>
+
+                <div style="display: flex; gap: 1rem; margin-top: 2rem;">
+                    <button class="btn btn-primary" style="flex: 1;" onclick="saveProfileEdit()">SALVA MODIFICHE</button>
+                    <button class="btn btn-secondary" style="flex: 1;" onclick="document.getElementById('edit-profile-modal').remove()">ANNULLA</button>
+                </div>
+            </div>
+        </div>
+    `;
+    document.body.appendChild(modal);
+
+    // Gestione selezione avatar nel modal
+    modal.querySelectorAll('.avatar-opt').forEach(opt => {
+        opt.addEventListener('click', () => {
+            modal.querySelectorAll('.avatar-opt').forEach(o => o.classList.remove('active'));
+            opt.classList.add('active');
+        });
+    });
+};
+
+window.saveProfileEdit = async () => {
+    const newName = document.getElementById('edit-name-input').value.trim();
+    const activeAvatar = document.querySelector('#edit-avatar-options .avatar-opt.active');
+    const newAvatar = activeAvatar ? activeAvatar.dataset.avatar : 'assets/avatar.png';
+
+    if (newName) {
+        await Auth.updateProfile(newName, newAvatar);
+        document.getElementById('edit-profile-modal').remove();
+        renderProfiloPage();
+    }
+};
+
 document.addEventListener('DOMContentLoaded', () => {
     initNavigation();
     setTimeout(updateSidebarMenu, 500);
