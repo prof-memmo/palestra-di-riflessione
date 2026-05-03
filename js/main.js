@@ -2546,3 +2546,8 @@ document.addEventListener('DOMContentLoaded', () => {
     initNavigation();
     setTimeout(updateSidebarMenu, 500);
 });
+
+window.addEventListener('authChange', () => {
+    if (typeof updateSidebarMenu === 'function') updateSidebarMenu();
+    if (typeof handleRoute === 'function') handleRoute();
+});
