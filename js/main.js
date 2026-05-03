@@ -1069,13 +1069,6 @@ window.MATERIE_HIERARCHY = {
             { id: 'analisiPeriodo', title: 'Analisi del Periodo', icon: '⏳', type: 'submenu' }
         ]
     },
-    'grammatica': {
-        title: 'Grammatica', parent: 'materie', type: 'submenu', items: [
-            { id: 'grammaticale', title: 'Analisi Grammaticale', icon: '📝', type: 'submenu' },
-            { id: 'analisiLogica', title: 'Analisi Logica', icon: '🧩', type: 'submenu' },
-            { id: 'analisiPeriodo', title: 'Analisi del Periodo', icon: '⏳', type: 'submenu' }
-        ]
-    },
     'grammaticale': {
         title: 'Analisi Grammaticale (Unità di Apprendimento)', parent: 'riflessione', type: 'submenu', items: [
             { id: 'uda1', title: "Cos'è la grammatica", icon: '📘', type: 'uda' },
@@ -1318,6 +1311,7 @@ window.MATERIE_HIERARCHY = {
     'tecnica1': { type: 'uda', parent: 'riassunto' },
     'tecnica2': { type: 'uda', parent: 'riassunto' },
     'tecnica3': { type: 'uda', parent: 'riassunto' },
+    'riformulazione': { type: 'exercises', parent: 'produzione' },
     // Leaf mapping per Analisi Logica
 };
 
@@ -2212,7 +2206,6 @@ function updateSidebarMenu() {
     if (path.length > 1) activeSubSection = path[1];
     if (path.length > 2) activeLeafSection = path[2];
 
-    const user = Auth.getUser();
     const isImage = user.avatar.includes('/') || user.avatar.includes('.');
     const avatarHtml = isImage 
         ? `<img src="${user.avatar}" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">` 

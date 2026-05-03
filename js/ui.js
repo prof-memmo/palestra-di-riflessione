@@ -1482,37 +1482,6 @@ window.UI.setAntologicheSort = (sort) => {
 };
 
 // --- VOCABOLARIO PERSONALE ---
-window.UI.wrapWordsForVocabulary = (text) => {
-    if (!text) return '';
-    // Protezione per non processare HTML già esistente (es. strong, span)
-    const tempDiv = document.createElement('div');
-    tempDiv.innerHTML = text;
-    
-    // Processiamo solo i nodi di testo
-    const walk = (node) => {
-        if (node.nodeType === 3) { // Text node
-            const words = node.nodeValue.split(/(\s+)/);
-            const wrapped = words.map(w => {
-                if (w.trim().length === 0) return w;
-                // Pulizia parola da punteggiatura per il salvataggio
-                const clean = w.replace(/[.,/#!$%^&*;:{}=\-_`~()]/g,"").trim();
-                if (!clean) return w;
-                return `<span class="vocabulary-word" onclick="UI.addToVocabulary('${clean.replace(/'/g, "\\'")}')" title="Clicca per aggiungere al vocabolario">${w}</span>`;
-            }).join('');
-            
-            const span = document.createElement('span');
-            span.innerHTML = wrapped;
-            node.parentNode.replaceChild(span, node);
-        } else if (node.nodeType === 1) { // Element node
-            for (let i = node.childNodes.length - 1; i >= 0; i--) {
-                walk(node.childNodes[i]);
-            }
-        }
-    };
-    
-    walk(tempDiv);
-    return tempDiv.innerHTML;
-};
 
 window.UI.addToVocabulary = (word) => {
     let vocab = JSON.parse(localStorage.getItem('palestra_vocab') || '[]');
