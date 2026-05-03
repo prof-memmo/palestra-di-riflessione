@@ -497,7 +497,7 @@ function renderProfiloPage() {
                     <h3 style="font-size: 1.8rem; font-weight: 800;">${user.name}</h3>
                     <div style="display: flex; gap: 0.5rem; margin-top: 0.5rem;">
                         <p style="background: var(--primary-color); color: white; padding: 0.3rem 1rem; border-radius: 20px; font-size: 0.9rem; font-weight: 700;">${rank}</p>
-                        <p style="background: #f1f2f6; color: #57606f; padding: 0.3rem 1rem; border-radius: 20px; font-size: 0.9rem; font-weight: 700;">${user.role.toUpperCase()}</p>
+                        <p style="background: #f1f2f6; color: #57606f; padding: 0.3rem 1rem; border-radius: 20px; font-size: 0.9rem; font-weight: 700;">${(user.role || 'studente').toUpperCase()}</p>
                     </div>
                     ${user.isGuest ? `<p style="color: #e74c3c; font-size: 0.8rem; margin-top: 0.5rem; font-weight: 700;">⚠ SESSIONE ANONIMA (Dati non sincronizzati)</p>` : ''}
                 </div>

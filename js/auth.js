@@ -45,7 +45,7 @@ const Auth = {
     },
 
     getUser: () => {
-        return Auth._user || { name: 'Atleta Anonimo', avatar: '👤', isGuest: true };
+        return Auth._user || { name: 'Atleta Anonimo', avatar: '👤', role: 'studente', isGuest: true };
     },
 
     login: async (name, avatar = 'assets/avatar.png', role = 'studente') => {
