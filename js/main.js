@@ -95,24 +95,70 @@ window.hideLegal = function() {
     if (modal) modal.classList.add('hidden');
 };
 
-window.handleLoginSubmit = function() {
+window.selectLoginPath = function(path) {
+    document.querySelectorAll('.login-path-card').forEach(c => c.classList.remove('active'));
+    document.getElementById('path-' + path).classList.add('active');
+    
+    const inputArea = document.getElementById('login-inputs-area');
+    inputArea.classList.remove('hidden');
+    
+    const codeInput = document.getElementById('class-code-input');
     const nameInput = document.getElementById('user-name-input');
-    const name = nameInput.value.trim();
+    const googleBtn = document.getElementById('google-login-btn');
+    const mainBtn = document.getElementById('main-login-btn');
+
+    if (path === 'student') {
+        codeInput.classList.remove('hidden');
+        nameInput.classList.remove('hidden');
+        googleBtn.classList.add('hidden');
+        mainBtn.classList.remove('hidden');
+    } else if (path === 'teacher') {
+        codeInput.classList.add('hidden');
+        nameInput.classList.add('hidden');
+        googleBtn.classList.remove('hidden');
+        mainBtn.classList.add('hidden');
+    } else {
+        codeInput.classList.add('hidden');
+        nameInput.classList.remove('hidden');
+        googleBtn.classList.add('hidden');
+        mainBtn.classList.remove('hidden');
+    }
+    
+    window.currentLoginPath = path;
+};
+
+window.handleLoginFlow = async function() {
+    const path = window.currentLoginPath;
+    if (!path) {
+        alert("Seleziona prima un tipo di profilo!");
+        return;
+    }
+    
     const checkAge = document.getElementById('check-age');
     const checkPrivacy = document.getElementById('check-privacy');
-
     if (!checkAge.checked || !checkPrivacy.checked) {
-        alert("Per procedere devi accettare i termini, la privacy e confermare l'età.");
+        alert("Per procedere devi accettare i termini e confermare l'età.");
         return;
     }
 
-    // Usiamo valori di default, verranno cambiati in onboarding
-    Auth.login(name || 'Atleta', 'assets/avatar.png', 'studente');
-    hideLoginOverlay();
-    
-    if (typeof updateSidebarMenu === 'function') updateSidebarMenu();
-    window.location.hash = 'home';
-    handleRoute(); 
+    if (path === 'student') {
+        const code = document.getElementById('class-code-input').value.trim();
+        const name = document.getElementById('user-name-input').value.trim();
+        if (!code || !name) {
+            alert("Inserisci sia il codice classe che il tuo nome!");
+            return;
+        }
+        const success = await Auth.loginWithClassCode(code, name);
+        if (success) {
+            hideLoginOverlay();
+            handleRoute();
+        }
+    } else if (path === 'guest') {
+        const name = document.getElementById('user-name-input').value.trim();
+        Auth.login(name || 'Atleta Anonimo', 'assets/avatar.png', 'studente');
+        hideLoginOverlay();
+        handleRoute();
+    }
 };
 
 window.handleGoogleLogin = function() {
@@ -120,7 +166,7 @@ window.handleGoogleLogin = function() {
     const checkPrivacy = document.getElementById('check-privacy');
 
     if (!checkAge.checked || !checkPrivacy.checked) {
-        alert("Per procedere devi accettare i termini, la privacy e confermare l'età.");
+        alert("Per procedere devi accettare i termini e confermare l'età.");
         return;
     }
     
@@ -2564,16 +2610,20 @@ window.renderOnboardingPage = function() {
     const appContainer = document.getElementById('app');
     const user = Auth.getUser();
     
+    // Se il ruolo è già definito (es. tramite codice classe), saltiamo la scelta ruolo
+    const skipRoleStep = !!user.classId;
+
     appContainer.innerHTML = `
         <div class="onboarding-container" style="max-width: 800px; margin: 0 auto; padding: 4rem 2rem;">
             <div class="onboarding-header" style="text-align: center; margin-bottom: 3rem;">
                 <h1 style="font-size: 2.5rem; font-weight: 800; color: var(--primary-color);">BENVENUTO NELLA PALESTRA! 🚀</h1>
                 <p style="font-size: 1.1rem; opacity: 0.7; margin-top: 1rem;">Completiamo la configurazione del tuo profilo per iniziare l'allenamento.</p>
+                ${user.className ? `<p style="color: #27ae60; font-weight: 700; margin-top: 0.5rem;">🏫 Sei entrato nella classe: ${user.className}</p>` : ''}
             </div>
 
             <div class="onboarding-card" style="background: white; padding: 2.5rem; border-radius: 30px; box-shadow: 0 20px 50px rgba(0,0,0,0.05);">
-                <!-- Step 1: Ruolo -->
-                <div class="onboarding-step" id="step-role">
+                <!-- Step 1: Ruolo (Nascosto se già definito) -->
+                <div class="onboarding-step ${skipRoleStep ? 'hidden' : ''}" id="step-role">
                     <h3 style="margin-bottom: 2rem; font-size: 1.5rem; text-align: center;">Scegli il tuo profilo:</h3>
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
                         <div class="role-opt-large ${user.role === 'studente' ? 'active' : ''}" data-role="studente" onclick="selectOnboardingRole(this)">
@@ -2590,8 +2640,8 @@ window.renderOnboardingPage = function() {
                     <button class="btn btn-primary" onclick="nextOnboardingStep(2)" style="width: 100%; margin-top: 2.5rem; padding: 1.2rem; font-size: 1.1rem; font-weight: 800;">AVANTI ➜</button>
                 </div>
 
-                <!-- Step 2: Dettagli -->
-                <div class="onboarding-step hidden" id="step-details">
+                <!-- Step 2: Dettagli (Attivo se skipRoleStep è true) -->
+                <div class="onboarding-step ${skipRoleStep ? '' : 'hidden'}" id="step-details">
                     <h3 style="margin-bottom: 2rem; font-size: 1.5rem; text-align: center;">Personalizza il tuo avatar:</h3>
                     
                     <div style="margin-bottom: 2rem;">
@@ -2613,7 +2663,7 @@ window.renderOnboardingPage = function() {
                     </div>
 
                     <div style="display: flex; gap: 1rem; margin-top: 2rem;">
-                        <button class="btn btn-secondary" onclick="nextOnboardingStep(1)" style="flex: 1; padding: 1.2rem; font-weight: 700;">INDIETRO</button>
+                        ${skipRoleStep ? '' : '<button class="btn btn-secondary" onclick="nextOnboardingStep(1)" style="flex: 1; padding: 1.2rem; font-weight: 700;">INDIETRO</button>'}
                         <button class="btn btn-primary" onclick="saveOnboardingData()" style="flex: 2; padding: 1.2rem; font-size: 1.1rem; font-weight: 800;">COMPLETA CONFIGURAZIONE 🏁</button>
                     </div>
                 </div>

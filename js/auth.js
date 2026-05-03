@@ -108,6 +108,42 @@ const Auth = {
         window.dispatchEvent(new CustomEvent('authChange'));
     },
 
+    loginWithClassCode: async (code, studentName) => {
+        if (!window.fbDb) return false;
+        
+        try {
+            const q = await window.fbDb.collection('classes').where('code', '==', code.toUpperCase()).get();
+            if (q.empty) {
+                alert("Codice classe non valido. Chiedi al tuo docente!");
+                return false;
+            }
+            
+            const classData = q.docs[0].data();
+            const classId = q.docs[0].id;
+
+            Auth._user = {
+                uid: 'std_' + Math.random().toString(36).substr(2, 9),
+                name: studentName || 'Studente',
+                avatar: 'assets/avatar.png',
+                role: 'studente',
+                classId: classId,
+                teacherId: classData.teacherId,
+                className: classData.name,
+                points: 0,
+                isGuest: false,
+                setupComplete: false
+            };
+
+            localStorage.setItem('palestra_user', JSON.stringify(Auth._user));
+            window.dispatchEvent(new CustomEvent('authChange'));
+            return true;
+        } catch (e) {
+            console.error("Errore login con codice:", e);
+            alert("Si è verificato un errore durante l'accesso.");
+            return false;
+        }
+    },
+
     loginWithGoogle: async () => {
         if (!window.fbAuth) return;
         const provider = new firebase.auth.GoogleAuthProvider();

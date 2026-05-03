@@ -27,29 +27,66 @@
                 <p>Accedi per iniziare il tuo allenamento personalizzato.</p>
             </div>
             <div class="login-form">
-                <input type="text" id="user-name-input" placeholder="Il tuo nome (facoltativo con Google)..." maxlength="20">
+                <!-- Selettore Percorsi -->
+                <div id="login-paths-container" style="display: grid; grid-template-columns: 1fr; gap: 1rem; margin-bottom: 1.5rem;">
+                    <div class="login-path-card" onclick="selectLoginPath('student')" id="path-student">
+                        <div style="display: flex; align-items: center; gap: 1rem;">
+                            <span style="font-size: 1.5rem;">🎓</span>
+                            <div style="text-align: left;">
+                                <h4 style="margin: 0; font-size: 0.95rem;">ACCESSO STUDENTI</h4>
+                                <p style="margin: 0; font-size: 0.75rem; opacity: 0.7;">Entra con il codice fornito dal docente</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="login-path-card" onclick="selectLoginPath('teacher')" id="path-teacher">
+                        <div style="display: flex; align-items: center; gap: 1rem;">
+                            <span style="font-size: 1.5rem;">👨‍🏫</span>
+                            <div style="text-align: left;">
+                                <h4 style="margin: 0; font-size: 0.95rem;">DOCENTE / ADMIN</h4>
+                                <p style="margin: 0; font-size: 0.75rem; opacity: 0.7;">Gestisci classi e monitora progressi</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="login-path-card" onclick="selectLoginPath('guest')" id="path-guest">
+                        <div style="display: flex; align-items: center; gap: 1rem;">
+                            <span style="font-size: 1.5rem;">🧭</span>
+                            <div style="text-align: left;">
+                                <h4 style="margin: 0; font-size: 0.95rem;">ACCESSO LIBERO</h4>
+                                <p style="margin: 0; font-size: 0.75rem; opacity: 0.7;">Esplora i contenuti della palestra</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Campi dinamici basati sul percorso -->
+                <div id="login-inputs-area" class="hidden" style="margin-bottom: 1.5rem; animation: fadeIn 0.3s;">
+                    <input type="text" id="class-code-input" placeholder="Inserisci Codice Classe (es. ALFA24)" class="hidden" style="margin-bottom: 0.8rem;">
+                    <input type="text" id="user-name-input" placeholder="Inserisci il tuo nome..." maxlength="20">
+                </div>
 
                 <div class="legal-checks">
                     <label class="check-container">
                         <input type="checkbox" id="check-age">
                         <span class="checkmark"></span>
-                        <span class="check-text">Ho almeno 16 anni o sono sotto la supervisione di un adulto</span>
+                        <span class="check-text">Dichiaro di avere almeno 14 anni o la supervisione di un adulto</span>
                     </label>
                     <label class="check-container">
                         <input type="checkbox" id="check-privacy">
                         <span class="checkmark"></span>
-                        <span class="check-text">Accetto la <a href="javascript:void(0)" onclick="showLegal('privacy')">Privacy Policy</a> e i <a href="javascript:void(0)" onclick="showLegal('terms')">Termini e Condizioni</a></span>
+                        <span class="check-text">Accetto la <a href="javascript:void(0)" onclick="showLegal('privacy')">Privacy Policy</a> e i <a href="javascript:void(0)" onclick="showLegal('terms')">Termini</a></span>
                     </label>
                 </div>
 
-                <button class="btn btn-primary login-submit" onclick="handleLoginSubmit()">ENTRA NELLA PALESTRA ➜</button>
-                <div style="margin: 1rem 0; display: flex; align-items: center; gap: 1rem; color: #999; font-size: 0.85rem;">
-                    <hr style="flex:1; border:0; border-top:1px solid #eee;"> OPPURE <hr style="flex:1; border:0; border-top:1px solid #eee;">
+                <div id="login-actions" style="margin-top: 1.5rem;">
+                    <!-- Il pulsante cambierà funzione dinamicamente -->
+                    <button id="main-login-btn" class="btn btn-primary" onclick="handleLoginFlow()" style="width: 100%; padding: 1rem; font-weight: 800;">PROSEGUI ➜</button>
+                    
+                    <button id="google-login-btn" class="btn hidden" onclick="handleGoogleLogin()" style="width:100%; display:flex; align-items:center; justify-content:center; gap:0.8rem; background:white; border:1px solid #ddd; color:#555; padding:0.8rem; border-radius:50px; font-weight:700; cursor:pointer; margin-top: 1rem;">
+                        <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" width="18"> ACCEDI CON GOOGLE
+                    </button>
                 </div>
-                <button class="btn" onclick="handleGoogleLogin()" style="width:100%; display:flex; align-items:center; justify-content:center; gap:0.8rem; background:white; border:1px solid #ddd; color:#555; padding:0.8rem; border-radius:50px; font-weight:700; cursor:pointer; margin-bottom: 1rem;">
-                    <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" width="18"> ACCEDI CON GOOGLE
-                </button>
-                <button class="btn btn-guest" onclick="handleGuestAccess()">Entra come Atleta Anonimo</button>
             </div>
         </div>
     </div>

@@ -1224,6 +1224,33 @@ td .completion-input {
     display: none !important;
 }
 
+/* --- LOGIN PATH STYLES --- */
+.login-path-card {
+    background: #f8faff;
+    border: 2px solid #eee;
+    border-radius: 20px;
+    padding: 1.2rem;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.login-path-card:hover {
+    transform: translateX(5px);
+    border-color: var(--secondary-color);
+    background: white;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+}
+
+.login-path-card.active {
+    border-color: var(--primary-color);
+    background: white;
+    box-shadow: 0 10px 25px rgba(93, 95, 239, 0.1);
+}
+
+.login-path-card.active h4 {
+    color: var(--primary-color);
+}
+
 /* --- ONBOARDING STYLES --- */
 .onboarding-container {
     animation: fadeIn 0.8s ease-out;
