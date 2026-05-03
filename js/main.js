@@ -2691,165 +2691,220 @@ window.renderOnboardingPage = function() {
     const user = Auth.getUser();
     
     appContainer.innerHTML = `
-        <div class="onboarding-container" style="max-width: 1000px; margin: 0 auto; padding: 4rem 2rem;">
-            <div class="onboarding-header" style="text-align: center; margin-bottom: 4rem;">
-                <h1 style="font-size: 3rem; font-weight: 800; color: var(--primary-color); letter-spacing: -1px; text-transform: uppercase;">Benvenuto nella Palestra! 🚀</h1>
-                <p style="font-size: 1.3rem; opacity: 0.7; margin-top: 1rem;">Scegli il tuo profilo per iniziare un'esperienza personalizzata.</p>
-            </div>
-
-            <div class="onboarding-card-grid" style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 2rem; margin-bottom: 4rem;">
-                <!-- Percorso Studente -->
-                <div class="role-opt-large" id="role-studente" onclick="selectOnboardingRole('studente')">
-                    <div style="font-size: 5rem; margin-bottom: 1.5rem;">🎓</div>
-                    <h3>STUDENTE</h3>
-                    <p>Hai un codice classe? Entra qui per collegarti al tuo docente.</p>
+        <div id="onboarding-root" class="onboarding-container" style="max-width: 1000px; margin: 0 auto; padding: 4rem 2rem;">
+            <!-- STEP 1: ROLE SELECTION -->
+            <div id="onboarding-step-1">
+                <div class="onboarding-header" style="text-align: center; margin-bottom: 4rem;">
+                    <h1 style="font-size: 3rem; font-weight: 800; color: var(--primary-color); letter-spacing: -1px; text-transform: uppercase;">Benvenuto nella Palestra! 🚀</h1>
+                    <p style="font-size: 1.3rem; opacity: 0.7; margin-top: 1rem;">Scegli il tuo profilo per iniziare un'esperienza personalizzata.</p>
                 </div>
 
-                <!-- Percorso Docente -->
-                <div class="role-opt-large" id="role-docente" onclick="selectOnboardingRole('docente')">
-                    <div style="font-size: 5rem; margin-bottom: 1.5rem;">👨‍🏫</div>
-                    <h3>DOCENTE</h3>
-                    <p>Crea classi, gestisci studenti e monitora i loro progressi.</p>
-                </div>
-
-                <!-- Percorso Amico -->
-                <div class="role-opt-large" id="role-amico" onclick="selectOnboardingRole('amico')">
-                    <div style="font-size: 5rem; margin-bottom: 1.5rem;">🤝</div>
-                    <h3>AMICO DELLA PALESTRA</h3>
-                    <p>Esplora liberamente i contenuti senza vincoli di classe.</p>
-                </div>
-            </div>
-
-            <!-- Area Dettagli Dinamica -->
-            <div id="onboarding-details-card" class="hidden onboarding-card" style="background: white; padding: 3.5rem; border-radius: 40px; box-shadow: 0 30px 60px rgba(0,0,0,0.08); animation: fadeIn 0.6s cubic-bezier(0.4, 0, 0.2, 1);">
-                
-                <div id="student-code-section" class="hidden" style="margin-bottom: 3rem; text-align: center; padding: 2rem; background: #f8faff; border-radius: 30px; border: 2px dashed #d1d9e6;">
-                    <h4 style="margin-bottom: 1rem; color: var(--primary-color); font-size: 1.2rem;">Inserisci il Codice Classe</h4>
-                    <p style="font-size: 0.9rem; opacity: 0.6; margin-bottom: 1.5rem;">Chiedi al tuo insegnante il codice di 6 caratteri (es. ALFA24)</p>
-                    <input type="text" id="onboarding-class-code" placeholder="CODICE" style="width: 100%; max-width: 300px; padding: 1.2rem; text-align: center; font-size: 1.8rem; font-weight: 800; border-radius: 20px; border: 3px solid #eee; outline: none; transition: all 0.3s; text-transform: uppercase; color: var(--primary-color);">
-                </div>
-
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 4rem;">
-                    <div>
-                        <h4 style="margin-bottom: 1.5rem; font-size: 1.1rem; color: #555;">Il tuo Nome</h4>
-                        <input type="text" id="onboarding-name" value="${user.name || ''}" placeholder="Come vuoi essere chiamato?" style="width: 100%; padding: 1.3rem; border-radius: 20px; border: 2px solid #f0f0f0; font-size: 1.1rem; outline: none; transition: border-color 0.3s; font-family: inherit;">
+                <div class="onboarding-card-grid" style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 2rem; margin-bottom: 4rem;">
+                    <!-- Percorso Studente -->
+                    <div class="role-opt-large" id="role-studente" onclick="selectOnboardingRole('studente')">
+                        <div style="font-size: 5rem; margin-bottom: 1.5rem;">🎓</div>
+                        <h3>STUDENTE</h3>
+                        <p>Hai un codice classe? Entra qui per collegarti al tuo docente.</p>
                     </div>
-                    <div>
-                        <h4 style="margin-bottom: 1.5rem; font-size: 1.1rem; color: #555;">Scegli il tuo Avatar</h4>
-                        <div class="avatar-options" id="onboarding-avatar-options" style="display: flex; gap: 1rem; flex-wrap: wrap;">
-                            <span class="avatar-opt active" data-avatar="assets/avatar.png">👤</span>
-                            <span class="avatar-opt" data-avatar="🚀">🚀</span>
-                            <span class="avatar-opt" data-avatar="🦖">🦖</span>
-                            <span class="avatar-opt" data-avatar="🦊">🦊</span>
-                            <span class="avatar-opt" data-avatar="🧙">🧙</span>
-                            <span class="avatar-opt" data-avatar="🦾">🦾</span>
+
+                    <!-- Percorso Docente -->
+                    <div class="role-opt-large" id="role-docente" onclick="selectOnboardingRole('docente')">
+                        <div style="font-size: 5rem; margin-bottom: 1.5rem;">👨‍🏫</div>
+                        <h3>DOCENTE</h3>
+                        <p>Crea classi, gestisci studenti e monitora i loro progressi.</p>
+                    </div>
+
+                    <!-- Percorso Amico -->
+                    <div class="role-opt-large" id="role-amico" onclick="selectOnboardingRole('amico')">
+                        <div style="font-size: 5rem; margin-bottom: 1.5rem;">🤝</div>
+                        <h3>AMICO DELLA PALESTRA</h3>
+                        <p>Esplora liberamente i contenuti senza vincoli di classe.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- STEP 2: SETUP (Hidden by default) -->
+            <div id="onboarding-step-2" class="hidden">
+                <div id="onboarding-setup-header" style="text-align: center; margin-bottom: 3rem;">
+                    <h2 id="setup-title" style="font-size: 2.5rem; font-weight: 900; color: var(--primary-color);">CONFIGURAZIONE PROFILO</h2>
+                    <p id="setup-subtitle" style="opacity: 0.6; font-size: 1.1rem;">Ci siamo quasi! Personalizza il tuo ingresso.</p>
+                </div>
+
+                <div class="onboarding-card" style="background: white; padding: 3rem; border-radius: 40px; box-shadow: 0 30px 60px rgba(0,0,0,0.08);">
+                    
+                    <!-- Role Specific Content -->
+                    <div id="setup-role-specific" style="margin-bottom: 3rem;">
+                        <!-- Injected dynamically -->
+                    </div>
+
+                    <!-- Common Profile Content -->
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; padding-top: 2rem; border-top: 1px solid #eee;">
+                        <div>
+                            <h4 style="margin-bottom: 1.5rem; font-size: 1.1rem; color: #555;">Il tuo Nome</h4>
+                            <input type="text" id="onboarding-name" value="${user.name || ''}" placeholder="Come vuoi essere chiamato?" style="width: 100%; padding: 1.3rem; border-radius: 20px; border: 2px solid #f0f0f0; font-size: 1.1rem; outline: none; transition: border-color 0.3s;">
+                        </div>
+                        <div>
+                            <h4 style="margin-bottom: 1.5rem; font-size: 1.1rem; color: #555;">Scegli il tuo Avatar</h4>
+                            <div class="avatar-options" id="onboarding-avatar-options" style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                                <span class="avatar-opt active" data-avatar="assets/avatar.png">👤</span>
+                                <span class="avatar-opt" data-avatar="🚀">🚀</span>
+                                <span class="avatar-opt" data-avatar="🦖">🦖</span>
+                                <span class="avatar-opt" data-avatar="🦊">🦊</span>
+                                <span class="avatar-opt" data-avatar="🧙">🧙</span>
+                                <span class="avatar-opt" data-avatar="🦾">🦾</span>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <div style="margin-top: 4rem; text-align: center;">
-                    <button class="btn btn-primary" onclick="saveOnboardingData()" style="padding: 1.5rem 5rem; font-size: 1.3rem; font-weight: 800; border-radius: 50px; box-shadow: 0 15px 35px rgba(93, 95, 239, 0.3); transition: all 0.3s;">INIZIA L'ALLENAMENTO 🏁</button>
+                    <div style="margin-top: 4rem; display: flex; gap: 1rem;">
+                        <button class="btn btn-secondary" style="flex: 1; border-radius: 50px;" onclick="window.location.reload()">⬅ INDIETRO</button>
+                        <button class="btn btn-primary" id="save-onboarding-btn" style="flex: 2; border-radius: 50px; font-size: 1.2rem; padding: 1.2rem;" onclick="saveOnboardingData()">COMPLETA CONFIGURAZIONE ➜</button>
+                    </div>
                 </div>
             </div>
         </div>
     `;
 
-    // Inizializza eventi avatar
-    document.querySelectorAll('#onboarding-avatar-options .avatar-opt').forEach(opt => {
-        opt.onclick = () => {
-            document.querySelectorAll('#onboarding-avatar-options .avatar-opt').forEach(o => o.classList.remove('active'));
+    // Avatar selection logic
+    appContainer.querySelectorAll('.avatar-opt').forEach(opt => {
+        opt.addEventListener('click', () => {
+            appContainer.querySelectorAll('.avatar-opt').forEach(o => o.classList.remove('active'));
             opt.classList.add('active');
-        };
+        });
     });
-
-    updateSidebarMenu(); 
 };
 
 window.selectOnboardingRole = function(role) {
-    // UI selection
-    document.querySelectorAll('.role-opt-large').forEach(opt => opt.classList.remove('active'));
-    document.getElementById('role-' + role).classList.add('active');
+    window.currentOnboardingRole = role;
+    const step1 = document.getElementById('onboarding-step-1');
+    const step2 = document.getElementById('onboarding-step-2');
+    const roleContent = document.getElementById('setup-role-specific');
+    const setupTitle = document.getElementById('setup-title');
     
-    // Mostra dettagli
-    document.getElementById('onboarding-details-card').classList.remove('hidden');
-    
-    // Mostra/Nascondi sezione codice
-    if (role === 'studente') {
-        document.getElementById('student-code-section').classList.remove('hidden');
-    } else {
-        document.getElementById('student-code-section').classList.add('hidden');
-    }
+    if (!step1 || !step2) return;
 
-    window.selectedOnboardingRole = role;
-    
-    // Scroll fluido verso i dettagli
-    setTimeout(() => {
-        document.getElementById('onboarding-details-card').scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }, 100);
+    step1.classList.add('hidden');
+    step2.classList.remove('hidden');
+
+    if (role === 'studente') {
+        setupTitle.innerText = "CONFIGURAZIONE STUDENTE";
+        roleContent.innerHTML = `
+            <div style="text-align: center; padding: 2rem; background: #f0f7ff; border-radius: 30px; border: 2px solid var(--primary-color);">
+                <h4 style="margin-bottom: 1rem; color: var(--primary-color); font-size: 1.2rem; font-weight: 800;">🔑 INSERISCI IL CODICE CLASSE</h4>
+                <p style="font-size: 0.9rem; opacity: 0.6; margin-bottom: 1.5rem;">Chiedi al tuo insegnante il codice per unirti alla classe.</p>
+                <input type="text" id="onboarding-class-code" placeholder="PG-XXXX" style="width: 100%; max-width: 300px; padding: 1.2rem; text-align: center; font-size: 2rem; font-weight: 900; border-radius: 20px; border: 3px solid #eee; outline: none; transition: all 0.3s; text-transform: uppercase; color: var(--primary-color);">
+            </div>
+        `;
+    } else if (role === 'docente') {
+        setupTitle.innerText = "CONFIGURAZIONE DOCENTE";
+        roleContent.innerHTML = `
+            <div style="text-align: center; padding: 2rem; background: #fff9f0; border-radius: 30px; border: 2px solid #ffa502;">
+                <h4 style="margin-bottom: 1rem; color: #ffa502; font-size: 1.2rem; font-weight: 800;">📂 CREA LA TUA PRIMA CLASSE (OPZIONALE)</h4>
+                <p style="font-size: 0.9rem; opacity: 0.6; margin-bottom: 1.5rem;">Puoi iniziare creando subito una classe per i tuoi studenti.</p>
+                <input type="text" id="onboarding-new-class" placeholder="Es: Classe 1A" style="width: 100%; max-width: 400px; padding: 1.2rem; text-align: center; font-size: 1.3rem; font-weight: 700; border-radius: 20px; border: 3px solid #eee; outline: none; transition: all 0.3s; color: #ffa502;">
+            </div>
+        `;
+    } else {
+        setupTitle.innerText = "CONFIGURAZIONE AMICO";
+        roleContent.innerHTML = `
+            <div style="text-align: center; padding: 2rem; background: #f4f7f6; border-radius: 30px; border: 2px solid #999;">
+                <h4 style="margin-bottom: 0.5rem; color: #555; font-size: 1.2rem; font-weight: 800;">🤝 BENVENUTO AMICO</h4>
+                <p style="font-size: 0.9rem; opacity: 0.6;">Divertiti ad esplorare la Palestra di Grammatica in totale libertà.</p>
+            </div>
+        `;
+    }
 };
 
 window.saveOnboardingData = async function() {
-    const role = window.selectedOnboardingRole;
-    if (!role) {
-        alert("Seleziona prima il tuo profilo!");
-        return;
-    }
-
+    const role = window.currentOnboardingRole;
     const name = document.getElementById('onboarding-name').value.trim();
-    if (!name) {
-        alert("Inserisci un nome per il tuo profilo!");
-        return;
-    }
+    const activeAvatar = document.querySelector('.avatar-opt.active');
+    const avatar = activeAvatar ? activeAvatar.dataset.avatar : 'assets/avatar.png';
+    const btn = document.getElementById('save-onboarding-btn');
 
-    let classData = null;
-    if (role === 'studente') {
-        const code = document.getElementById('onboarding-class-code').value.trim().toUpperCase();
-        if (!code) {
-            alert("Inserisci il codice classe fornito dal tuo docente!");
-            return;
-        }
-        
-        // Verifica codice classe
-        try {
-            const q = await window.fbDb.collection('classes').where('code', '==', code).get();
-            if (q.empty) {
-                alert("Codice classe non valido. Riprova o chiedi al tuo docente.");
+    if (!name) { alert("Per favore, inserisci il tuo nome."); return; }
+
+    btn.disabled = true;
+    btn.innerText = "SALVATAGGIO IN CORSO...";
+
+    let roleLabel = (role === 'amico') ? 'Amico della Palestra' : (role === 'studente' ? 'Studente' : 'Docente');
+    let techRole = (role === 'amico') ? 'studente' : role;
+
+    try {
+        let classId = null;
+        let className = null;
+        let teacherId = null;
+
+        // Logica Studente
+        if (role === 'studente') {
+            const code = document.getElementById('onboarding-class-code').value.trim().toUpperCase();
+            if (!code) {
+                alert("Per favore, inserisci il codice classe.");
+                btn.disabled = false; btn.innerText = "COMPLETA CONFIGURAZIONE ➜";
                 return;
             }
-            classData = { id: q.docs[0].id, ...q.docs[0].data() };
-        } catch (e) {
-            console.error("Errore verifica classe:", e);
-            alert("Errore durante la verifica del codice.");
-            return;
+
+            const q = await window.fbDb.collection('classes').where('code', '==', code).get();
+            if (q.empty) {
+                alert("Codice classe non valido.");
+                btn.disabled = false; btn.innerText = "COMPLETA CONFIGURAZIONE ➜";
+                return;
+            }
+
+            const classDoc = q.docs[0];
+            const classData = classDoc.data();
+            classId = classDoc.id;
+            className = classData.name;
+            teacherId = classData.teacherId;
+            localStorage.setItem('palestra_student_class_code', code);
         }
+
+        // Logica Docente
+        if (role === 'docente') {
+            const newClassName = document.getElementById('onboarding-new-class').value.trim();
+            if (newClassName) {
+                const user = Auth.getUser();
+                const code = "PG-" + Math.random().toString(36).substring(2, 6).toUpperCase();
+                const classData = {
+                    name: newClassName,
+                    code: code,
+                    teacherId: user.uid,
+                    createdAt: new Date().toISOString()
+                };
+                const docRef = await window.fbDb.collection('classes').add(classData);
+                classId = docRef.id;
+                className = newClassName;
+
+                const localClasses = JSON.parse(localStorage.getItem('palestra_classes') || '[]');
+                localClasses.push({ id: docRef.id, ...classData });
+                localStorage.setItem('palestra_classes', JSON.stringify(localClasses));
+            }
+        }
+
+        // Aggiorna profilo locale e remoto
+        const finalUser = Auth.getUser();
+        finalUser.name = name;
+        finalUser.avatar = avatar;
+        finalUser.role = techRole;
+        finalUser.roleLabel = roleLabel;
+        finalUser.setupComplete = true;
+        if (classId) finalUser.classId = classId;
+        if (className) finalUser.className = className;
+        if (teacherId) finalUser.teacherId = teacherId;
+
+        localStorage.setItem('palestra_user', JSON.stringify(finalUser));
+        
+        if (!finalUser.isGuest && window.fbDb) {
+            await window.fbDb.collection('users').doc(finalUser.uid).set(finalUser, { merge: true });
+        }
+
+        window.location.hash = 'home';
+        handleRoute();
+    } catch (e) {
+        console.error("Errore salvataggio onboarding:", e);
+        alert("Errore: " + e.message);
+        btn.disabled = false; btn.innerText = "COMPLETA CONFIGURAZIONE ➜";
     }
-
-    const activeAvatar = document.querySelector('#onboarding-avatar-options .avatar-opt.active');
-    const avatar = activeAvatar ? activeAvatar.dataset.avatar : 'assets/avatar.png';
-
-    const user = Auth.getUser();
-    user.name = name;
-    user.role = (role === 'amico') ? 'studente' : role; // Ruolo tecnico interno
-    user.roleLabel = (role === 'amico') ? 'Amico della Palestra' : (role === 'studente' ? 'Studente' : 'Docente');
-    user.avatar = avatar;
-    user.setupComplete = true;
-
-    if (classData) {
-        user.classId = classData.id;
-        user.className = classData.name;
-        user.teacherId = classData.teacherId;
-    }
-
-    // Persisti
-    localStorage.setItem('palestra_user', JSON.stringify(user));
-    if (window.fbAuth && window.fbAuth.currentUser) {
-        await window.fbDb.collection('users').doc(window.fbAuth.currentUser.uid).set(user, { merge: true });
-    }
-
-    // Fine onboarding
-    window.location.hash = 'home';
-    updateSidebarMenu();
-    handleRoute();
 };
 
 window.addEventListener('authChange', () => {
