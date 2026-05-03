@@ -182,6 +182,13 @@ window.handleGoogleLogin = function() {
         alert("Per procedere devi accettare i termini e confermare l'età.");
         return;
     }
+
+    // Persistiamo l'intenzione del ruolo basata sul percorso scelto
+    if (window.currentLoginPath === 'teacher') {
+        localStorage.setItem('pending_role', 'docente');
+    } else {
+        localStorage.setItem('pending_role', 'studente');
+    }
     
     Auth.loginWithGoogle();
 };
