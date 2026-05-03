@@ -692,6 +692,7 @@ async function renderProfiloPage() {
     if (user.email === 'prof.memmo@gmail.com') {
         loadAdminUsersInProfile();
     }
+    if (typeof updateSidebarMenu === 'function') updateSidebarMenu();
 }
 
 async function loadAdminUsersInProfile() {
@@ -762,8 +763,6 @@ window.adminDeleteUserInProfile = async function(uid, name) {
         alert("Impossibile eliminare l'utente: " + e.message);
     }
 };
-    if (typeof updateSidebarMenu === 'function') updateSidebarMenu();
-}
 
 async function renderAdminPage() {
     const appContainer = document.getElementById('app');
