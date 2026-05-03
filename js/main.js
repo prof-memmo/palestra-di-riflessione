@@ -164,43 +164,63 @@ window.addEventListener('load', () => {
 window.addEventListener('hashchange', handleRoute);
 
 function handleRoute() {
-    if (!window.exercisesData) {
-        console.log("Waiting for exercisesData...");
-        setTimeout(handleRoute, 100);
-        return;
-    }
-    const hash = window.location.hash.substring(1);
-    const parts = hash.split('/').filter(p => p && p !== 'null');
-    const section = parts[0] || 'home';
-    const subType = parts[1] || null;
-    const level = parts[2] || null;
-    const extra = parts[3] || null;
+    const appContainer = document.getElementById('app');
+    if (!appContainer) return;
 
-    // LOGIN LOGIC: 
-    // Show login on initial load if not logged in
-    if (!Auth.isLoggedIn() && !window.hasShownInitialLogin) {
-        window.hasShownInitialLogin = true;
-        showLoginOverlay(hash);
-        return;
-    }
+    try {
+        const hash = window.location.hash.substring(1);
+        const parts = hash.split('/').filter(p => p && p !== 'null');
+        const section = parts[0] || 'home';
+        const subType = parts[1] || null;
+        const level = parts[2] || null;
+        const extra = parts[3] || null;
 
-    // Force login for specific lessons if not logged in
-    if (!Auth.isLoggedIn() && subType && section !== 'intro') {
-        showLoginOverlay(hash);
-        return;
-    }
+        // Render immediato della Home se siamo all'inizio
+        if (section === 'home' || section === '') {
+            renderHomePage();
+        }
 
-    if (!MATERIE_HIERARCHY[section] && !['home', 'contatti', 'profilo', 'ripassa', 'intro'].includes(section)) {
-        mountError('Sezione non trovata: ' + section);
-        return;
-    }
+        // Aspetta i dati se non ci sono ancora
+        if (!window.exercisesData) {
+            console.log("Waiting for exercisesData...");
+            setTimeout(handleRoute, 200);
+            return;
+        }
 
-    if (section === 'intro') {
-        window.currentSection = 'intro';
-        renderIntroPage();
-        if (typeof updateSidebarMenu === 'function') updateSidebarMenu();
-    } else {
-        navigateTo(section, subType, level, false, extra);
+        // LOGIN LOGIC
+        if (!Auth.isLoggedIn() && !window.hasShownInitialLogin) {
+            window.hasShownInitialLogin = true;
+            showLoginOverlay(hash);
+            return;
+        }
+
+        if (!Auth.isLoggedIn() && subType && section !== 'intro') {
+            showLoginOverlay(hash);
+            return;
+        }
+
+        if (!MATERIE_HIERARCHY[section] && !['home', 'contatti', 'profilo', 'ripassa', 'intro', 'admin'].includes(section)) {
+            appContainer.innerHTML = `<div style="padding: 2rem; text-align: center;"><h2>Ops! Pagina non trovata</h2><p>La sezione <b>${section}</b> non esiste.</p><button class="btn" onclick="window.location.hash='home'">Torna alla Home</button></div>`;
+            return;
+        }
+
+        if (section === 'intro') {
+            window.currentSection = 'intro';
+            renderIntroPage();
+            if (typeof updateSidebarMenu === 'function') updateSidebarMenu();
+        } else if (section !== 'home') {
+            navigateTo(section, subType, level, false, extra);
+        } else {
+            // Se siamo in home e loggati, aggiorniamo solo il menu
+            if (typeof updateSidebarMenu === 'function') updateSidebarMenu();
+        }
+    } catch (err) {
+        console.error("Critical Routing Error:", err);
+        appContainer.innerHTML = `<div style="padding: 2rem; color: #e74c3c; background: #fdf2f2; border-radius: 20px; margin: 2rem;">
+            <h3>⚠️ Errore di Caricamento</h3>
+            <p>${err.message}</p>
+            <button class="btn" onclick="window.location.reload()">Ricarica Pagina</button>
+        </div>`;
     }
 }
 
