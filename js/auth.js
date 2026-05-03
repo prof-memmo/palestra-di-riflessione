@@ -96,12 +96,19 @@ const Auth = {
                 // Se non è già loggato in Firebase, entra come anonimo per salvare i dati
                 if (!window.fbAuth.currentUser) {
                     const cred = await window.fbAuth.signInAnonymously();
+                    Auth._user.uid = cred.user.uid;
                     await window.fbDb.collection('users').doc(cred.user.uid).set(Auth._user);
                 } else {
+                    Auth._user.uid = window.fbAuth.currentUser.uid;
                     await window.fbDb.collection('users').doc(window.fbAuth.currentUser.uid).set(Auth._user, { merge: true });
                 }
             } catch (e) {
                 console.error("Errore salvataggio cloud login:", e);
+                // Non blocchiamo l'utente se il salvataggio cloud fallisce per permessi, 
+                // ma lo avvisiamo se siamo in debug
+                if (e.code === 'permission-denied') {
+                    console.warn("Permessi Firestore insufficienti. Controlla le regole sul Firebase Console.");
+                }
             }
         }
 

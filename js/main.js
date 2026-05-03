@@ -2901,7 +2901,11 @@ window.saveOnboardingData = async function() {
         handleRoute();
     } catch (e) {
         console.error("Errore salvataggio onboarding:", e);
-        alert("Errore: " + e.message);
+        let msg = "Errore durante il salvataggio: " + e.message;
+        if (e.code === 'permission-denied') {
+            msg = "Permessi insufficienti sul database (Firestore). \n\nAssicurati che le 'Security Rules' su Firebase permettano la scrittura per gli utenti autenticati.";
+        }
+        alert(msg);
         btn.disabled = false; btn.innerText = "COMPLETA CONFIGURAZIONE ➜";
     }
 };
