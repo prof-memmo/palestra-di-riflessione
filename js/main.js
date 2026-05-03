@@ -127,6 +127,24 @@ window.handleLoginSubmit = function() {
     handleRoute(); 
 };
 
+window.handleGoogleLogin = function() {
+    const checkAge = document.getElementById('check-age');
+    const checkPrivacy = document.getElementById('check-privacy');
+
+    if (!checkAge.checked || !checkPrivacy.checked) {
+        alert("Per procedere devi accettare i termini, la privacy e confermare l'età.");
+        return;
+    }
+
+    const activeRole = document.querySelector('.role-opt.active');
+    const role = activeRole ? activeRole.dataset.role : 'studente';
+    
+    // Salviamo il ruolo per recuperarlo dopo il login Google (specialmente post-redirect)
+    localStorage.setItem('pending_role', role);
+    
+    Auth.loginWithGoogle();
+};
+
 window.handleGuestAccess = function() {
     Auth.continueAsGuest();
     hideLoginOverlay();

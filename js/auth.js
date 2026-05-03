@@ -34,15 +34,17 @@ const Auth = {
                 Auth._user = doc.data();
             } else {
                 // Se l'utente non esiste nel database (es. primo accesso Google), creiamo un profilo base
+                const pendingRole = localStorage.getItem('pending_role') || 'studente';
                 Auth._user = {
                     uid: fbUser.uid,
                     name: fbUser.displayName || 'Atleta Google',
                     avatar: fbUser.photoURL || 'assets/avatar.png',
-                    role: 'studente',
+                    role: pendingRole,
                     points: 0,
                     isGuest: false,
                     email: fbUser.email
                 };
+                localStorage.removeItem('pending_role'); // Pulisci dopo l'uso
                 // Salvataggio iniziale nel DB per persistere il profilo
                 await window.fbDb.collection('users').doc(fbUser.uid).set(Auth._user);
             }
