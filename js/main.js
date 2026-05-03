@@ -96,8 +96,6 @@ window.hideLegal = function() {
 };
 
 window.handleGuestLogin = function() {
-    const nameInput = document.getElementById('user-name-input');
-    const name = nameInput.value.trim();
     const checkAge = document.getElementById('check-age');
     const checkPrivacy = document.getElementById('check-privacy');
 
@@ -106,8 +104,8 @@ window.handleGuestLogin = function() {
         return;
     }
 
-    // Entra come ospite, l'onboarding gestirà il resto
-    Auth.login(name || 'Atleta Anonimo', 'assets/avatar.png', 'studente');
+    // Entra e procedi verso l'onboarding per scegliere nome e ruolo
+    Auth.login('Nuovo Atleta', 'assets/avatar.png', 'studente');
     hideLoginOverlay();
     window.location.hash = 'home';
     handleRoute(); 
