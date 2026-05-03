@@ -96,11 +96,15 @@ window.hideLegal = function() {
 };
 
 window.selectLoginPath = function(path) {
-    document.querySelectorAll('.login-path-card').forEach(c => c.classList.remove('active'));
-    document.getElementById('path-' + path).classList.add('active');
+    // Nascondi la selezione percorsi
+    document.getElementById('login-paths-container').classList.add('hidden');
     
+    // Mostra l'area degli input e il pulsante "Indietro"
     const inputArea = document.getElementById('login-inputs-area');
     inputArea.classList.remove('hidden');
+    
+    const backBtn = document.getElementById('login-back-btn');
+    if (backBtn) backBtn.classList.remove('hidden');
     
     const codeInput = document.getElementById('class-code-input');
     const nameInput = document.getElementById('user-name-input');
@@ -125,6 +129,15 @@ window.selectLoginPath = function(path) {
     }
     
     window.currentLoginPath = path;
+};
+
+window.backToLoginPaths = function() {
+    document.getElementById('login-paths-container').classList.remove('hidden');
+    document.getElementById('login-inputs-area').classList.add('hidden');
+    document.getElementById('login-back-btn').classList.add('hidden');
+    document.getElementById('google-login-btn').classList.add('hidden');
+    document.getElementById('main-login-btn').classList.add('hidden');
+    window.currentLoginPath = null;
 };
 
 window.handleLoginFlow = async function() {
