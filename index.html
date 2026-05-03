@@ -104,8 +104,57 @@
     </nav>
 
     <main id="app">
-        <!-- Contenuto dinamico caricato da main.js -->
+        <div id="home" class="section active">
+            <div class="home-header">
+                <h1 class="main-title">PALESTRA DI <span class="accent">RIFLESSIONE</span> SULLA LINGUA</h1>
+                <p class="home-description">Lo spazio interattivo per allenare l'analisi grammaticale, logica e del periodo con testi lunghi e coinvolgenti.</p>
+                <div style="margin-top: 1rem;">
+                    <button class="btn" onclick="window.location.hash = 'intro'" style="background: rgba(39, 174, 96, 0.1); color: #27ae60; border: 1px solid #27ae60; padding: 0.6rem 1.2rem; font-size: 0.9rem; border-radius: 50px; font-weight: 700; cursor: pointer;">SCOPRI IL PROGETTO 👋</button>
+                </div>
+            </div>
+            <div class="home-main-layout">
+                <div class="home-side left-side">
+                    <div class="materia-card-home" onclick="window.location.hash='riflessione'">
+                        <span class="materia-icon">🧠</span>
+                        <div class="materia-label">Grammatica</div>
+                    </div>
+                    <div class="materia-card-home" onclick="window.location.hash='lettura'">
+                        <span class="materia-icon">📚</span>
+                        <div class="materia-label">Lettura</div>
+                    </div>
+                </div>
+                <div class="home-center">
+                    <img src="assets/hero.png" alt="Hero" class="hero-image-new">
+                </div>
+                <div class="home-side right-side">
+                    <div class="materia-card-home" onclick="window.location.hash='lessico'">
+                        <span class="materia-icon">📖</span>
+                        <div class="materia-label">Lessico</div>
+                    </div>
+                    <div class="materia-card-home" onclick="window.location.hash='produzione'">
+                        <span class="materia-icon">✍️</span>
+                        <div class="materia-label">Produzione</div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </main>
+
+    <script>
+        window.onerror = function(msg, url, line) {
+            const app = document.getElementById('app');
+            if (app) {
+                app.innerHTML = `<div style="padding:2rem; background:#fff5f5; color:#c53030; border:2px solid #feb2b2; border-radius:20px; margin:2rem; font-family:sans-serif;">
+                    <h3>⚠️ Errore di Sistema</h3>
+                    <p>${msg}</p>
+                    <small>${url} - riga ${line}</small>
+                    <br><br>
+                    <button onclick="location.reload()" style="padding:10px 20px; background:#c53030; color:white; border:none; border-radius:10px; cursor:pointer;">RICARICA PAGINA</button>
+                </div>`;
+            }
+            return false;
+        };
+    </script>
 
     <footer class="footer">
         <div class="footer-nav">
