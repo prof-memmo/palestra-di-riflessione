@@ -723,18 +723,25 @@ async function renderAdminPage() {
                         : `<span style="font-size: 1.5rem;">${userData.avatar || '👤'}</span>`;
 
                     html += `
-                        <div style="display: flex; align-items: center; gap: 1rem; padding: 1.2rem; background: #f8f9fa; border-radius: 20px; border: 1px solid #eee;">
+                        <div style="display: flex; align-items: center; gap: 1rem; padding: 1.2rem; background: #f8f9fa; border-radius: 20px; border: 1px solid #eee; transition: all 0.2s;" onmouseover="this.style.borderColor='var(--primary-color)'" onmouseout="this.style.borderColor='#eee'">
                             <div style="width: 50px; height: 50px; background: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 2px solid #eee; overflow: hidden;">
                                 ${avatarHtml}
                             </div>
                             <div style="flex: 1;">
                                 <h4 style="margin: 0; font-weight: 800;">${userData.name || 'Anonimo'}</h4>
-                                <p style="margin: 0; font-size: 0.8rem; color: #666;">${userData.email || 'No email'} • Iscritto il: ${userData.joinedAt ? new Date(userData.joinedAt).toLocaleDateString() : 'N/D'}</p>
+                                <p style="margin: 0; font-size: 0.8rem; color: #666;">
+                                    ${userData.email || 'No email'} • 
+                                    <span style="color: #27ae60; font-weight: 700;">${userData.roleLabel || userData.role || 'Studente'}</span>
+                                </p>
+                                <p style="margin: 0; font-size: 0.75rem; color: #999;">Iscritto il: ${userData.joinedAt ? new Date(userData.joinedAt).toLocaleDateString() : 'N/D'}</p>
                             </div>
-                            <div style="text-align: right;">
+                            <div style="text-align: right; margin-right: 1rem;">
                                 <div style="font-weight: 800; color: var(--primary-color);">${userProgress.points || 0} XP</div>
                                 <div style="font-size: 0.75rem; color: #999;">${userProgress.vocab ? userProgress.vocab.length : 0} parole</div>
                             </div>
+                            <button onclick="adminDeleteUser('${doc.id}', '${(userData.name || 'Anonimo').replace(/'/g, "\\'")}')" style="background: #fff0f0; border: none; padding: 0.8rem; border-radius: 15px; cursor: pointer; color: #e74c3c; font-size: 1.2rem; transition: all 0.2s;" onmouseover="this.style.background='#ffe0e0'" onmouseout="this.style.background='#fff0f0'" title="Elimina Utente">
+                                🗑️
+                            </button>
                         </div>
                     `;
                 });
@@ -746,6 +753,23 @@ async function renderAdminPage() {
         }
     }
 }
+
+window.adminDeleteUser = async function(uid, name) {
+    if (!confirm(`Sei sicuro di voler eliminare definitivamente l'utente "${name}"? \n\nVerranno cancellati tutti i suoi dati e i suoi progressi dalla Palestra.`)) return;
+    
+    try {
+        // Elimina profilo
+        await window.fbDb.collection('users').doc(uid).delete();
+        // Elimina progressi (se esistono)
+        await window.fbDb.collection('progress').doc(uid).delete();
+        
+        alert(`Utente "${name}" eliminato con successo.`);
+        renderAdminPage(); // Ricarica la lista
+    } catch (e) {
+        console.error("Errore eliminazione utente:", e);
+        alert("Impossibile eliminare l'utente: " + e.message);
+    }
+};
 
 // --- TEACHER FUNCTIONS ---
 window.addTeacherClass = function() {
