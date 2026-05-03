@@ -43,12 +43,13 @@ const Auth = {
                 // Se l'utente non esiste nel database (es. primo accesso Google), creiamo un profilo base
                 Auth._user = {
                     uid: fbUser.uid,
-                    name: fbUser.displayName || 'Atleta Google',
+                    name: fbUser.displayName || '',
                     avatar: fbUser.photoURL || 'assets/avatar.png',
                     role: pendingRole || 'studente',
                     points: 0,
                     isGuest: false,
-                    email: fbUser.email
+                    email: fbUser.email,
+                    setupComplete: false // Richiede onboarding
                 };
                 // Salvataggio iniziale nel DB per persistere il profilo
                 await window.fbDb.collection('users').doc(fbUser.uid).set(Auth._user);
@@ -59,8 +60,8 @@ const Auth = {
             const ADMIN_EMAILS = ['prof.memmo@gmail.com'];
             if (fbUser.email && ADMIN_EMAILS.includes(fbUser.email)) {
                 Auth._user.role = 'admin';
-                // Aggiorna il ruolo nel DB per persistere il privilegio
-                await window.fbDb.collection('users').doc(fbUser.uid).set({ role: 'admin' }, { merge: true });
+                Auth._user.setupComplete = true; // Gli admin saltano l'onboarding se necessario o lo fanno una volta
+                await window.fbDb.collection('users').doc(fbUser.uid).set({ role: 'admin', setupComplete: true }, { merge: true });
             }
 
             localStorage.setItem('palestra_user', JSON.stringify(Auth._user));
@@ -84,6 +85,7 @@ const Auth = {
             avatar: avatar,
             role: role,
             isGuest: false,
+            setupComplete: false,
             joinedAt: new Date().toISOString()
         };
 
@@ -134,6 +136,7 @@ const Auth = {
             avatar: '👤',
             role: 'studente',
             isGuest: true,
+            setupComplete: false,
             joinedAt: new Date().toISOString()
         };
         window.dispatchEvent(new CustomEvent('authChange'));

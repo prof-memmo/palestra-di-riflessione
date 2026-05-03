@@ -101,28 +101,16 @@ window.handleLoginSubmit = function() {
     const checkAge = document.getElementById('check-age');
     const checkPrivacy = document.getElementById('check-privacy');
 
-    if (!name) {
-        alert("Inserisci il tuo nome per iniziare!");
-        return;
-    }
-    
     if (!checkAge.checked || !checkPrivacy.checked) {
         alert("Per procedere devi accettare i termini, la privacy e confermare l'età.");
         return;
     }
 
-    const activeRole = document.querySelector('.role-opt.active');
-    const role = activeRole ? activeRole.dataset.role : 'studente';
-    
-    const activeAvatar = document.querySelector('.avatar-opt.active');
-    const avatar = activeAvatar ? activeAvatar.dataset.avatar : 'assets/avatar.png';
-    
-    Auth.login(name, avatar, role);
+    // Usiamo valori di default, verranno cambiati in onboarding
+    Auth.login(name || 'Atleta', 'assets/avatar.png', 'studente');
     hideLoginOverlay();
     
     if (typeof updateSidebarMenu === 'function') updateSidebarMenu();
-
-    // Refresh UI immediately
     window.location.hash = 'home';
     handleRoute(); 
 };
@@ -135,12 +123,6 @@ window.handleGoogleLogin = function() {
         alert("Per procedere devi accettare i termini, la privacy e confermare l'età.");
         return;
     }
-
-    const activeRole = document.querySelector('.role-opt.active');
-    const role = activeRole ? activeRole.dataset.role : 'studente';
-    
-    // Salviamo il ruolo per recuperarlo dopo il login Google (specialmente post-redirect)
-    localStorage.setItem('pending_role', role);
     
     Auth.loginWithGoogle();
 };
@@ -214,6 +196,18 @@ function handleRoute() {
 
         if (!Auth.isLoggedIn() && subType && section !== 'intro') {
             showLoginOverlay(hash);
+            return;
+        }
+
+        const user = Auth.getUser();
+        // Se loggato ma onboarding non completo, forza redirect (tranne che per admin che saltano)
+        if (Auth.isLoggedIn() && user.setupComplete === false && section !== 'onboarding') {
+            window.location.hash = 'onboarding';
+            return;
+        }
+
+        if (section === 'onboarding') {
+            renderOnboardingPage();
             return;
         }
 
@@ -2190,6 +2184,26 @@ function updateSidebarMenu() {
     const navLinks = document.querySelector('.nav-links');
     if (!navLinks) return;
 
+    const user = Auth.getUser();
+    
+    // Forza la chiusura della sidebar in onboarding
+    if (window.location.hash.includes('onboarding')) {
+        const sidebar = document.querySelector('.navbar');
+        if (sidebar) sidebar.classList.add('hidden');
+        const mainContent = document.querySelector('main');
+        if (mainContent) mainContent.style.marginLeft = '0';
+        return;
+    } else {
+        // Ripristina sidebar se non siamo in mobile
+        const isMobile = window.innerWidth <= 1024;
+        if (!isMobile) {
+            const sidebar = document.querySelector('.navbar');
+            if (sidebar) sidebar.classList.remove('hidden');
+            const mainContent = document.querySelector('main');
+            if (mainContent) mainContent.style.marginLeft = 'var(--sidebar-width)';
+        }
+    }
+
     const mainSections = [
         { id: 'home', title: 'Home', icon: '🏠' },
         { id: 'intro', title: 'Scopri il Progetto', icon: '👋' },
@@ -2200,7 +2214,6 @@ function updateSidebarMenu() {
         { id: 'contatti', title: 'Contatti', icon: '📧' }
     ];
 
-    const user = Auth.getUser();
     if (user.role === 'admin') {
         mainSections.push({ id: 'admin', title: 'Dashboard Admin', icon: '🛡️' });
     }
@@ -2546,6 +2559,119 @@ document.addEventListener('DOMContentLoaded', () => {
     initNavigation();
     setTimeout(updateSidebarMenu, 500);
 });
+
+window.renderOnboardingPage = function() {
+    const appContainer = document.getElementById('app');
+    const user = Auth.getUser();
+    
+    appContainer.innerHTML = `
+        <div class="onboarding-container" style="max-width: 800px; margin: 0 auto; padding: 4rem 2rem;">
+            <div class="onboarding-header" style="text-align: center; margin-bottom: 3rem;">
+                <h1 style="font-size: 2.5rem; font-weight: 800; color: var(--primary-color);">BENVENUTO NELLA PALESTRA! 🚀</h1>
+                <p style="font-size: 1.1rem; opacity: 0.7; margin-top: 1rem;">Completiamo la configurazione del tuo profilo per iniziare l'allenamento.</p>
+            </div>
+
+            <div class="onboarding-card" style="background: white; padding: 2.5rem; border-radius: 30px; box-shadow: 0 20px 50px rgba(0,0,0,0.05);">
+                <!-- Step 1: Ruolo -->
+                <div class="onboarding-step" id="step-role">
+                    <h3 style="margin-bottom: 2rem; font-size: 1.5rem; text-align: center;">Scegli il tuo profilo:</h3>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+                        <div class="role-opt-large ${user.role === 'studente' ? 'active' : ''}" data-role="studente" onclick="selectOnboardingRole(this)">
+                            <span style="font-size: 3.5rem;">🎓</span>
+                            <h4>Studente</h4>
+                            <p>Allenati e migliora le tue abilità linguistiche!</p>
+                        </div>
+                        <div class="role-opt-large ${user.role === 'docente' ? 'active' : ''}" data-role="docente" onclick="selectOnboardingRole(this)">
+                            <span style="font-size: 3.5rem;">👨‍🏫</span>
+                            <h4>Docente</h4>
+                            <p>Gestisci le tue classi e monitora i progressi.</p>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary" onclick="nextOnboardingStep(2)" style="width: 100%; margin-top: 2.5rem; padding: 1.2rem; font-size: 1.1rem; font-weight: 800;">AVANTI ➜</button>
+                </div>
+
+                <!-- Step 2: Dettagli -->
+                <div class="onboarding-step hidden" id="step-details">
+                    <h3 style="margin-bottom: 2rem; font-size: 1.5rem; text-align: center;">Personalizza il tuo avatar:</h3>
+                    
+                    <div style="margin-bottom: 2rem;">
+                        <label style="display: block; font-weight: 700; margin-bottom: 0.8rem; color: #555;">Il tuo nome:</label>
+                        <input type="text" id="onboarding-name" value="${user.name || ''}" placeholder="Come ti chiami?" 
+                               style="width: 100%; padding: 1.2rem; border-radius: 18px; border: 2px solid #f0f0f0; font-size: 1.1rem; outline: none; transition: border-color 0.3s; font-family: inherit;">
+                    </div>
+
+                    <div class="avatar-selector">
+                        <p style="font-weight: 700; margin-bottom: 1rem; color: #555;">Scegli un avatar:</p>
+                        <div class="avatar-options" id="onboarding-avatar-options" style="display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; margin-bottom: 2rem;">
+                            <span class="avatar-opt ${user.avatar === 'assets/avatar.png' ? 'active' : ''}" data-avatar="assets/avatar.png">👤</span>
+                            <span class="avatar-opt ${user.avatar === '🚀' ? 'active' : ''}" data-avatar="🚀">🚀</span>
+                            <span class="avatar-opt ${user.avatar === '🦖' ? 'active' : ''}" data-avatar="🦖">🦖</span>
+                            <span class="avatar-opt ${user.avatar === '🦊' ? 'active' : ''}" data-avatar="🦊">🦊</span>
+                            <span class="avatar-opt ${user.avatar === '🧙' ? 'active' : ''}" data-avatar="🧙">🧙</span>
+                            <span class="avatar-opt ${user.avatar === '🦾' ? 'active' : ''}" data-avatar="🦾">🦾</span>
+                        </div>
+                    </div>
+
+                    <div style="display: flex; gap: 1rem; margin-top: 2rem;">
+                        <button class="btn btn-secondary" onclick="nextOnboardingStep(1)" style="flex: 1; padding: 1.2rem; font-weight: 700;">INDIETRO</button>
+                        <button class="btn btn-primary" onclick="saveOnboardingData()" style="flex: 2; padding: 1.2rem; font-size: 1.1rem; font-weight: 800;">COMPLETA CONFIGURAZIONE 🏁</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+
+    // Inizializza eventi avatar per il nuovo DOM
+    document.querySelectorAll('#onboarding-avatar-options .avatar-opt').forEach(opt => {
+        opt.onclick = () => {
+            document.querySelectorAll('#onboarding-avatar-options .avatar-opt').forEach(o => o.classList.remove('active'));
+            opt.classList.add('active');
+        };
+    });
+
+    updateSidebarMenu(); // Nascondi sidebar
+};
+
+window.selectOnboardingRole = function(el) {
+    document.querySelectorAll('.role-opt-large').forEach(opt => opt.classList.remove('active'));
+    el.classList.add('active');
+};
+
+window.nextOnboardingStep = function(step) {
+    document.querySelectorAll('.onboarding-step').forEach(s => s.classList.add('hidden'));
+    if (step === 1) document.getElementById('step-role').classList.remove('hidden');
+    if (step === 2) document.getElementById('step-details').classList.remove('hidden');
+};
+
+window.saveOnboardingData = async function() {
+    const name = document.getElementById('onboarding-name').value.trim();
+    if (!name) {
+        alert("Inserisci un nome per il tuo profilo!");
+        return;
+    }
+
+    const activeRole = document.querySelector('.role-opt-large.active');
+    const role = activeRole ? activeRole.dataset.role : 'studente';
+
+    const activeAvatar = document.querySelector('#onboarding-avatar-options .avatar-opt.active');
+    const avatar = activeAvatar ? activeAvatar.dataset.avatar : 'assets/avatar.png';
+
+    const user = Auth.getUser();
+    user.name = name;
+    user.role = role;
+    user.avatar = avatar;
+    user.setupComplete = true;
+
+    // Persisti
+    localStorage.setItem('palestra_user', JSON.stringify(user));
+    if (window.fbAuth && window.fbAuth.currentUser) {
+        await window.fbDb.collection('users').doc(window.fbAuth.currentUser.uid).set(user, { merge: true });
+    }
+
+    // Refresh UI
+    window.location.hash = 'home';
+    updateSidebarMenu();
+};
 
 window.addEventListener('authChange', () => {
     if (typeof updateSidebarMenu === 'function') updateSidebarMenu();
