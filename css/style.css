@@ -1256,6 +1256,12 @@ td .completion-input {
     animation: fadeIn 0.8s ease-out;
 }
 
+.onboarding-card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+}
+
 .onboarding-card {
     border: 1px solid rgba(0,0,0,0.05);
 }

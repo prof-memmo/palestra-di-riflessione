@@ -95,83 +95,22 @@ window.hideLegal = function() {
     if (modal) modal.classList.add('hidden');
 };
 
-window.selectLoginPath = function(path) {
-    // Nascondi la selezione percorsi
-    document.getElementById('login-paths-container').classList.add('hidden');
-    
-    // Mostra l'area degli input e il pulsante "Indietro"
-    const inputArea = document.getElementById('login-inputs-area');
-    inputArea.classList.remove('hidden');
-    
-    const backBtn = document.getElementById('login-back-btn');
-    if (backBtn) backBtn.classList.remove('hidden');
-    
-    const codeInput = document.getElementById('class-code-input');
+window.handleGuestLogin = function() {
     const nameInput = document.getElementById('user-name-input');
-    const googleBtn = document.getElementById('google-login-btn');
-    const mainBtn = document.getElementById('main-login-btn');
-
-    if (path === 'student') {
-        codeInput.classList.remove('hidden');
-        nameInput.classList.remove('hidden');
-        googleBtn.classList.add('hidden');
-        mainBtn.classList.remove('hidden');
-    } else if (path === 'teacher') {
-        codeInput.classList.add('hidden');
-        nameInput.classList.add('hidden');
-        googleBtn.classList.remove('hidden');
-        mainBtn.classList.add('hidden');
-    } else {
-        codeInput.classList.add('hidden');
-        nameInput.classList.remove('hidden');
-        googleBtn.classList.add('hidden');
-        mainBtn.classList.remove('hidden');
-    }
-    
-    window.currentLoginPath = path;
-};
-
-window.backToLoginPaths = function() {
-    document.getElementById('login-paths-container').classList.remove('hidden');
-    document.getElementById('login-inputs-area').classList.add('hidden');
-    document.getElementById('login-back-btn').classList.add('hidden');
-    document.getElementById('google-login-btn').classList.add('hidden');
-    document.getElementById('main-login-btn').classList.add('hidden');
-    window.currentLoginPath = null;
-};
-
-window.handleLoginFlow = async function() {
-    const path = window.currentLoginPath;
-    if (!path) {
-        alert("Seleziona prima un tipo di profilo!");
-        return;
-    }
-    
+    const name = nameInput.value.trim();
     const checkAge = document.getElementById('check-age');
     const checkPrivacy = document.getElementById('check-privacy');
+
     if (!checkAge.checked || !checkPrivacy.checked) {
         alert("Per procedere devi accettare i termini e confermare l'età.");
         return;
     }
 
-    if (path === 'student') {
-        const code = document.getElementById('class-code-input').value.trim();
-        const name = document.getElementById('user-name-input').value.trim();
-        if (!code || !name) {
-            alert("Inserisci sia il codice classe che il tuo nome!");
-            return;
-        }
-        const success = await Auth.loginWithClassCode(code, name);
-        if (success) {
-            hideLoginOverlay();
-            handleRoute();
-        }
-    } else if (path === 'guest') {
-        const name = document.getElementById('user-name-input').value.trim();
-        Auth.login(name || 'Atleta Anonimo', 'assets/avatar.png', 'studente');
-        hideLoginOverlay();
-        handleRoute();
-    }
+    // Entra come ospite, l'onboarding gestirà il resto
+    Auth.login(name || 'Atleta Anonimo', 'assets/avatar.png', 'studente');
+    hideLoginOverlay();
+    window.location.hash = 'home';
+    handleRoute(); 
 };
 
 window.handleGoogleLogin = function() {
@@ -181,13 +120,6 @@ window.handleGoogleLogin = function() {
     if (!checkAge.checked || !checkPrivacy.checked) {
         alert("Per procedere devi accettare i termini e confermare l'età.");
         return;
-    }
-
-    // Persistiamo l'intenzione del ruolo basata sul percorso scelto
-    if (window.currentLoginPath === 'teacher') {
-        localStorage.setItem('pending_role', 'docente');
-    } else {
-        localStorage.setItem('pending_role', 'studente');
     }
     
     Auth.loginWithGoogle();
@@ -2651,68 +2583,71 @@ window.renderOnboardingPage = function() {
     const appContainer = document.getElementById('app');
     const user = Auth.getUser();
     
-    // Se il ruolo è già definito (es. tramite codice classe), saltiamo la scelta ruolo
-    const skipRoleStep = !!user.classId;
-
     appContainer.innerHTML = `
-        <div class="onboarding-container" style="max-width: 800px; margin: 0 auto; padding: 4rem 2rem;">
-            <div class="onboarding-header" style="text-align: center; margin-bottom: 3rem;">
-                <h1 style="font-size: 2.5rem; font-weight: 800; color: var(--primary-color);">BENVENUTO NELLA PALESTRA! 🚀</h1>
-                <p style="font-size: 1.1rem; opacity: 0.7; margin-top: 1rem;">Completiamo la configurazione del tuo profilo per iniziare l'allenamento.</p>
-                ${user.className ? `<p style="color: #27ae60; font-weight: 700; margin-top: 0.5rem;">🏫 Sei entrato nella classe: ${user.className}</p>` : ''}
+        <div class="onboarding-container" style="max-width: 1000px; margin: 0 auto; padding: 4rem 2rem;">
+            <div class="onboarding-header" style="text-align: center; margin-bottom: 4rem;">
+                <h1 style="font-size: 3rem; font-weight: 800; color: var(--primary-color); letter-spacing: -1px; text-transform: uppercase;">Benvenuto nella Palestra! 🚀</h1>
+                <p style="font-size: 1.3rem; opacity: 0.7; margin-top: 1rem;">Scegli il tuo profilo per iniziare un'esperienza personalizzata.</p>
             </div>
 
-            <div class="onboarding-card" style="background: white; padding: 2.5rem; border-radius: 30px; box-shadow: 0 20px 50px rgba(0,0,0,0.05);">
-                <!-- Step 1: Ruolo (Nascosto se già definito) -->
-                <div class="onboarding-step ${skipRoleStep ? 'hidden' : ''}" id="step-role">
-                    <h3 style="margin-bottom: 2rem; font-size: 1.5rem; text-align: center;">Scegli il tuo profilo:</h3>
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
-                        <div class="role-opt-large ${user.role === 'studente' ? 'active' : ''}" data-role="studente" onclick="selectOnboardingRole(this)">
-                            <span style="font-size: 3.5rem;">🎓</span>
-                            <h4>Studente</h4>
-                            <p>Allenati e migliora le tue abilità linguistiche!</p>
-                        </div>
-                        <div class="role-opt-large ${user.role === 'docente' ? 'active' : ''}" data-role="docente" onclick="selectOnboardingRole(this)">
-                            <span style="font-size: 3.5rem;">👨‍🏫</span>
-                            <h4>Docente</h4>
-                            <p>Gestisci le tue classi e monitora i progressi.</p>
-                        </div>
-                    </div>
-                    <button class="btn btn-primary" onclick="nextOnboardingStep(2)" style="width: 100%; margin-top: 2.5rem; padding: 1.2rem; font-size: 1.1rem; font-weight: 800;">AVANTI ➜</button>
+            <div class="onboarding-card-grid" style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 2rem; margin-bottom: 4rem;">
+                <!-- Percorso Studente -->
+                <div class="role-opt-large" id="role-studente" onclick="selectOnboardingRole('studente')">
+                    <div style="font-size: 5rem; margin-bottom: 1.5rem;">🎓</div>
+                    <h3>STUDENTE</h3>
+                    <p>Hai un codice classe? Entra qui per collegarti al tuo docente.</p>
                 </div>
 
-                <!-- Step 2: Dettagli (Attivo se skipRoleStep è true) -->
-                <div class="onboarding-step ${skipRoleStep ? '' : 'hidden'}" id="step-details">
-                    <h3 style="margin-bottom: 2rem; font-size: 1.5rem; text-align: center;">Personalizza il tuo avatar:</h3>
-                    
-                    <div style="margin-bottom: 2rem;">
-                        <label style="display: block; font-weight: 700; margin-bottom: 0.8rem; color: #555;">Il tuo nome:</label>
-                        <input type="text" id="onboarding-name" value="${user.name || ''}" placeholder="Come ti chiami?" 
-                               style="width: 100%; padding: 1.2rem; border-radius: 18px; border: 2px solid #f0f0f0; font-size: 1.1rem; outline: none; transition: border-color 0.3s; font-family: inherit;">
-                    </div>
+                <!-- Percorso Docente -->
+                <div class="role-opt-large" id="role-docente" onclick="selectOnboardingRole('docente')">
+                    <div style="font-size: 5rem; margin-bottom: 1.5rem;">👨‍🏫</div>
+                    <h3>DOCENTE</h3>
+                    <p>Crea classi, gestisci studenti e monitora i loro progressi.</p>
+                </div>
 
-                    <div class="avatar-selector">
-                        <p style="font-weight: 700; margin-bottom: 1rem; color: #555;">Scegli un avatar:</p>
-                        <div class="avatar-options" id="onboarding-avatar-options" style="display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; margin-bottom: 2rem;">
-                            <span class="avatar-opt ${user.avatar === 'assets/avatar.png' ? 'active' : ''}" data-avatar="assets/avatar.png">👤</span>
-                            <span class="avatar-opt ${user.avatar === '🚀' ? 'active' : ''}" data-avatar="🚀">🚀</span>
-                            <span class="avatar-opt ${user.avatar === '🦖' ? 'active' : ''}" data-avatar="🦖">🦖</span>
-                            <span class="avatar-opt ${user.avatar === '🦊' ? 'active' : ''}" data-avatar="🦊">🦊</span>
-                            <span class="avatar-opt ${user.avatar === '🧙' ? 'active' : ''}" data-avatar="🧙">🧙</span>
-                            <span class="avatar-opt ${user.avatar === '🦾' ? 'active' : ''}" data-avatar="🦾">🦾</span>
+                <!-- Percorso Amico -->
+                <div class="role-opt-large" id="role-amico" onclick="selectOnboardingRole('amico')">
+                    <div style="font-size: 5rem; margin-bottom: 1.5rem;">🤝</div>
+                    <h3>AMICO DELLA PALESTRA</h3>
+                    <p>Esplora liberamente i contenuti senza vincoli di classe.</p>
+                </div>
+            </div>
+
+            <!-- Area Dettagli Dinamica -->
+            <div id="onboarding-details-card" class="hidden onboarding-card" style="background: white; padding: 3.5rem; border-radius: 40px; box-shadow: 0 30px 60px rgba(0,0,0,0.08); animation: fadeIn 0.6s cubic-bezier(0.4, 0, 0.2, 1);">
+                
+                <div id="student-code-section" class="hidden" style="margin-bottom: 3rem; text-align: center; padding: 2rem; background: #f8faff; border-radius: 30px; border: 2px dashed #d1d9e6;">
+                    <h4 style="margin-bottom: 1rem; color: var(--primary-color); font-size: 1.2rem;">Inserisci il Codice Classe</h4>
+                    <p style="font-size: 0.9rem; opacity: 0.6; margin-bottom: 1.5rem;">Chiedi al tuo insegnante il codice di 6 caratteri (es. ALFA24)</p>
+                    <input type="text" id="onboarding-class-code" placeholder="CODICE" style="width: 100%; max-width: 300px; padding: 1.2rem; text-align: center; font-size: 1.8rem; font-weight: 800; border-radius: 20px; border: 3px solid #eee; outline: none; transition: all 0.3s; text-transform: uppercase; color: var(--primary-color);">
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 4rem;">
+                    <div>
+                        <h4 style="margin-bottom: 1.5rem; font-size: 1.1rem; color: #555;">Il tuo Nome</h4>
+                        <input type="text" id="onboarding-name" value="${user.name || ''}" placeholder="Come vuoi essere chiamato?" style="width: 100%; padding: 1.3rem; border-radius: 20px; border: 2px solid #f0f0f0; font-size: 1.1rem; outline: none; transition: border-color 0.3s; font-family: inherit;">
+                    </div>
+                    <div>
+                        <h4 style="margin-bottom: 1.5rem; font-size: 1.1rem; color: #555;">Scegli il tuo Avatar</h4>
+                        <div class="avatar-options" id="onboarding-avatar-options" style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                            <span class="avatar-opt active" data-avatar="assets/avatar.png">👤</span>
+                            <span class="avatar-opt" data-avatar="🚀">🚀</span>
+                            <span class="avatar-opt" data-avatar="🦖">🦖</span>
+                            <span class="avatar-opt" data-avatar="🦊">🦊</span>
+                            <span class="avatar-opt" data-avatar="🧙">🧙</span>
+                            <span class="avatar-opt" data-avatar="🦾">🦾</span>
                         </div>
                     </div>
+                </div>
 
-                    <div style="display: flex; gap: 1rem; margin-top: 2rem;">
-                        ${skipRoleStep ? '' : '<button class="btn btn-secondary" onclick="nextOnboardingStep(1)" style="flex: 1; padding: 1.2rem; font-weight: 700;">INDIETRO</button>'}
-                        <button class="btn btn-primary" onclick="saveOnboardingData()" style="flex: 2; padding: 1.2rem; font-size: 1.1rem; font-weight: 800;">COMPLETA CONFIGURAZIONE 🏁</button>
-                    </div>
+                <div style="margin-top: 4rem; text-align: center;">
+                    <button class="btn btn-primary" onclick="saveOnboardingData()" style="padding: 1.5rem 5rem; font-size: 1.3rem; font-weight: 800; border-radius: 50px; box-shadow: 0 15px 35px rgba(93, 95, 239, 0.3); transition: all 0.3s;">INIZIA L'ALLENAMENTO 🏁</button>
                 </div>
             </div>
         </div>
     `;
 
-    // Inizializza eventi avatar per il nuovo DOM
+    // Inizializza eventi avatar
     document.querySelectorAll('#onboarding-avatar-options .avatar-opt').forEach(opt => {
         opt.onclick = () => {
             document.querySelectorAll('#onboarding-avatar-options .avatar-opt').forEach(o => o.classList.remove('active'));
@@ -2720,38 +2655,83 @@ window.renderOnboardingPage = function() {
         };
     });
 
-    updateSidebarMenu(); // Nascondi sidebar
+    updateSidebarMenu(); 
 };
 
-window.selectOnboardingRole = function(el) {
+window.selectOnboardingRole = function(role) {
+    // UI selection
     document.querySelectorAll('.role-opt-large').forEach(opt => opt.classList.remove('active'));
-    el.classList.add('active');
-};
+    document.getElementById('role-' + role).classList.add('active');
+    
+    // Mostra dettagli
+    document.getElementById('onboarding-details-card').classList.remove('hidden');
+    
+    // Mostra/Nascondi sezione codice
+    if (role === 'studente') {
+        document.getElementById('student-code-section').classList.remove('hidden');
+    } else {
+        document.getElementById('student-code-section').classList.add('hidden');
+    }
 
-window.nextOnboardingStep = function(step) {
-    document.querySelectorAll('.onboarding-step').forEach(s => s.classList.add('hidden'));
-    if (step === 1) document.getElementById('step-role').classList.remove('hidden');
-    if (step === 2) document.getElementById('step-details').classList.remove('hidden');
+    window.selectedOnboardingRole = role;
+    
+    // Scroll fluido verso i dettagli
+    setTimeout(() => {
+        document.getElementById('onboarding-details-card').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }, 100);
 };
 
 window.saveOnboardingData = async function() {
+    const role = window.selectedOnboardingRole;
+    if (!role) {
+        alert("Seleziona prima il tuo profilo!");
+        return;
+    }
+
     const name = document.getElementById('onboarding-name').value.trim();
     if (!name) {
         alert("Inserisci un nome per il tuo profilo!");
         return;
     }
 
-    const activeRole = document.querySelector('.role-opt-large.active');
-    const role = activeRole ? activeRole.dataset.role : 'studente';
+    let classData = null;
+    if (role === 'studente') {
+        const code = document.getElementById('onboarding-class-code').value.trim().toUpperCase();
+        if (!code) {
+            alert("Inserisci il codice classe fornito dal tuo docente!");
+            return;
+        }
+        
+        // Verifica codice classe
+        try {
+            const q = await window.fbDb.collection('classes').where('code', '==', code).get();
+            if (q.empty) {
+                alert("Codice classe non valido. Riprova o chiedi al tuo docente.");
+                return;
+            }
+            classData = { id: q.docs[0].id, ...q.docs[0].data() };
+        } catch (e) {
+            console.error("Errore verifica classe:", e);
+            alert("Errore durante la verifica del codice.");
+            return;
+        }
+    }
 
     const activeAvatar = document.querySelector('#onboarding-avatar-options .avatar-opt.active');
     const avatar = activeAvatar ? activeAvatar.dataset.avatar : 'assets/avatar.png';
 
     const user = Auth.getUser();
     user.name = name;
-    user.role = role;
+    user.role = (role === 'amico') ? 'studente' : role; // Ruolo tecnico interno
+    user.roleLabel = (role === 'amico') ? 'Amico della Palestra' : (role === 'studente' ? 'Studente' : 'Docente');
     user.avatar = avatar;
     user.setupComplete = true;
+
+    if (classData) {
+        user.classId = classData.id;
+        user.className = classData.name;
+        user.teacherId = classData.teacherId;
+    }
 
     // Persisti
     localStorage.setItem('palestra_user', JSON.stringify(user));
@@ -2759,9 +2739,10 @@ window.saveOnboardingData = async function() {
         await window.fbDb.collection('users').doc(window.fbAuth.currentUser.uid).set(user, { merge: true });
     }
 
-    // Refresh UI
+    // Fine onboarding
     window.location.hash = 'home';
     updateSidebarMenu();
+    handleRoute();
 };
 
 window.addEventListener('authChange', () => {
