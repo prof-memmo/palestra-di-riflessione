@@ -33,6 +33,13 @@ h1, h2, h3, h4, h5, h6, p, span, div, button {
     hyphens: auto;
 }
 
+.hidden { display: none !important; }
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
 /* Sidebar as a fixed column that allows page navigation */
 .navbar {
     background: white;
