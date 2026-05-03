@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Palestra di Riflessione | Esercizi Interattivi</title>
+    <meta name="description" content="Allenati con la Palestra di Riflessione: esercizi interattivi di punteggiatura, lettura e analisi grammaticale, logica e del periodo per la scuola secondaria di primo grado.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <button id="sidebar-open-btn" class="floating-toggle">☰</button>
+    <div id="sidebar-backdrop" class="sidebar-backdrop"></div>
+
+    <!-- Login Overlay -->
+    <div id="login-overlay" class="login-overlay hidden">
+        <div class="login-card">
+            <div class="login-header">
+                <img src="assets/avatar.png" alt="Logo" class="login-logo">
+                <h2>BENVENUTO NELLA PALESTRA</h2>
+                <p>Inserisci il tuo nome per iniziare l'allenamento!</p>
+            </div>
+            <div class="login-form">
+                <div class="role-selector">
+                    <p>Cosa sei?</p>
+                    <div class="role-options">
+                        <button class="role-opt active" data-role="studente">🎓 Studente</button>
+                        <button class="role-opt" data-role="docente">👨‍🏫 Docente</button>
+                    </div>
+                </div>
+
+                <input type="text" id="user-name-input" placeholder="Il tuo nome..." maxlength="20">
+                
+                <div class="avatar-selector">
+                    <p>Scegli il tuo avatar:</p>
+                    <div class="avatar-options">
+                        <span class="avatar-opt active" data-avatar="assets/avatar.png">👤</span>
+                        <span class="avatar-opt" data-avatar="🚀">🚀</span>
+                        <span class="avatar-opt" data-avatar="🦖">🦖</span>
+                        <span class="avatar-opt" data-avatar="🦊">🦊</span>
+                        <span class="avatar-opt" data-avatar="🧙">🧙</span>
+                        <span class="avatar-opt" data-avatar="🦾">🦾</span>
+                    </div>
+                </div>
+
+                <div class="legal-checks">
+                    <label class="check-container">
+                        <input type="checkbox" id="check-age">
+                        <span class="checkmark"></span>
+                        <span class="check-text">Ho almeno 16 anni o sono sotto la supervisione di un adulto</span>
+                    </label>
+                    <label class="check-container">
+                        <input type="checkbox" id="check-privacy">
+                        <span class="checkmark"></span>
+                        <span class="check-text">Accetto la <a href="javascript:void(0)" onclick="showLegal('privacy')">Privacy Policy</a> e i <a href="javascript:void(0)" onclick="showLegal('terms')">Termini e Condizioni</a></span>
+                    </label>
+                </div>
+
+                <button class="btn btn-primary login-submit" onclick="handleLoginSubmit()">ENTRA NELLA PALESTRA ➜</button>
+                <button class="btn btn-guest" onclick="handleGuestAccess()">Entra come Atleta Anonimo</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Legal Modals -->
+    <div id="legal-modal" class="legal-modal hidden">
+        <div class="legal-modal-content">
+            <span class="close-legal" onclick="hideLegal()">&times;</span>
+            <div id="legal-text-container"></div>
+        </div>
+    </div>
+    
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo-area">
+                <div class="logo-group">
+                    <h1 class="logo">PALESTRA DI <span class="accent">RIFLESSIONE</span></h1>
+                    <p class="subtitle">Esercizi di grammatica, lettura e produzione</p>
+                </div>
+                <button id="sidebar-close-btn" class="close-sidebar-btn">&times;</button>
+            </div>
+            <ul class="nav-links">
+
+                <li><a href="#home" class="nav-item active" data-section="home"><span class="icon">🏠</span> <span>Home</span></a></li>
+                <li><a href="#riflessione" class="nav-item" data-section="riflessione"><span class="icon">🏋️</span> <span>Grammatica</span></a></li>
+                <li><a href="#lettura" class="nav-item" data-section="lettura"><span class="icon">📚</span> <span>Lettura</span></a></li>
+                <li><a href="#lessico" class="nav-item" data-section="lessico"><span class="icon">📖</span> <span>Lessico</span></a></li>
+                <li><a href="#produzione" class="nav-item" data-section="produzione"><span class="icon">✍️</span> <span>Produzione</span></a></li>
+                <li><a href="#contatti" class="nav-item" data-section="contatti"><span class="icon">📧</span> <span>Contatti</span></a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main id="app">
+        <!-- Contenuto dinamico caricato da main.js -->
+    </main>
+
+    <footer class="footer">
+        <div class="footer-nav">
+            <img src="assets/avatar.png" alt="Logo" class="footer-logo">
+        </div>
+        <p>&copy; 2026 Palestra di Grammatica - Impara giocando!</p>
+    </footer>
+
+    <div id="feedback-modal" class="modal hidden">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <div id="feedback-body">
+                <!-- Feedback dinamico -->
+            </div>
+        </div>
+    </div>
+
+    <script src="js/auth.js?v=2"></script>
+    <script src="js/progress.js?v=2"></script>
+    <script src="js/exercises.js?v=2"></script>
+    <script src="js/ui.js?v=2"></script>
+    <script src="js/main.js?v=2"></script>
+</body>
+</html>

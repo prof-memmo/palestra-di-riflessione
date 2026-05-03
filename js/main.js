@@ -1,0 +1,2359 @@
+window.currentSection = 'home';
+window.currentSubType = null;
+window.currentLevel = null;
+window.currentExerciseIndex = 0;
+window.currentExtra = null;
+window.currentPathKey = null;
+window.pendingRoute = null; // Store route to redirect after login
+
+// --- LOGIN HANDLERS ---
+function showLoginOverlay(redirectRoute = null) {
+    const overlay = document.getElementById('login-overlay');
+    if (overlay) {
+        overlay.classList.remove('hidden');
+        window.pendingRoute = redirectRoute;
+    }
+}
+
+function hideLoginOverlay() {
+    const overlay = document.getElementById('login-overlay');
+    if (overlay) overlay.classList.add('hidden');
+}
+
+// Role selection logic
+document.addEventListener('click', (e) => {
+    if (e.target.classList.contains('role-opt')) {
+        document.querySelectorAll('.role-opt').forEach(opt => opt.classList.remove('active'));
+        e.target.classList.add('active');
+    }
+});
+
+const LEGAL_TEXTS = {
+    privacy: `
+        <h2>🔒 Privacy Policy</h2>
+        <h3>1. Titolare del trattamento</h3>
+        <p>Il titolare del trattamento è Guglielmo Piersanti, contattabile all’indirizzo email: prof.memmo@gmail.com</p>
+        <h3>2. Finalità del sito</h3>
+        <p>“Palestra di Riflessione” è un’applicazione web didattica, utilizzata a scopo educativo e ludico e senza fini di lucro per l'apprendimento della lingua italiana.</p>
+        <h3>3. Dati raccolti</h3>
+        <p>Il sito può raccogliere i seguenti dati: nome utente (scelto dall'utente); informazioni di utilizzo relative agli esercizi (punteggi, attività completate, progressi); messaggi inviati tramite il modulo di contatto (nome, email, messaggio); dati tecnici minimi per il funzionamento (es. tipo di dispositivo tramite browser).</p>
+        <h3>4. Finalità del trattamento</h3>
+        <p>I dati vengono trattati esclusivamente per consentire l’accesso alle funzionalità della Palestra, gestire l’esperienza didattica personalizzata (come il salvataggio dei progressi e del vocabolario), rispondere alle richieste inviate tramite il modulo di contatto e migliorare il servizio didattico. Non vengono utilizzati per scopi commerciali o pubblicitari.</p>
+        <h3>5. Base giuridica</h3>
+        <p>Il trattamento dei dati si basa sul consenso fornito dall’utente al momento del primo accesso e sull'utilizzo delle funzionalità didattiche del sito.</p>
+        <h3>6. Conservazione dei dati</h3>
+        <p>I dati sono salvati localmente sul browser dell'utente (LocalStorage) e, se implementato, su database sicuri. Non vengono venduti né ceduti a terzi. Sono mantenuti solo per il tempo necessario al funzionamento didattico o fino alla richiesta di cancellazione da parte dell'utente.</p>
+        <h3>8. Diritti dell’utente</h3>
+        <p>L'utente può richiedere in qualsiasi momento l'accesso ai propri dati o la loro cancellazione (che può avvenire anche tramite il proprio profilo utente cancellando i dati locali). Per assistenza, è possibile contattare il titolare all’indirizzo email sopra indicato.</p>
+        <h3>9. Cookie</h3>
+        <p>Il sito non utilizza cookie di profilazione a scopo pubblicitario. Utilizza esclusivamente elementi tecnici necessari per il salvataggio dei progressi di studio.</p>
+        <h3>9. Utenti minori</h3>
+        <p>Il sito è destinato a un uso didattico scolastico. Per l'utilizzo da parte di minori, è responsabilità di un genitore o di un docente assicurare la supervisione necessaria. I tutori possono richiedere la cancellazione dei dati in qualsiasi momento.</p>
+        <h3>10. Modifiche alla Policy</h3>
+        <p>Questa informativa può essere aggiornata per riflettere nuove funzionalità didattiche. Le modifiche rilevanti verranno segnalate agli utenti.</p>
+        <h3>11. Riferimenti normativi</h3>
+        <p>Questa informativa è redatta in conformità ai principi del GDPR.</p>
+    `,
+    terms: `
+        <h2>📜 Termini e Condizioni</h2>
+        <p>Ultimo aggiornamento: 02/05/26</p>
+        <h3>1. Titolare del sito</h3>
+        <p>Il presente sito web "Palestra di Riflessione" è gestito da: Guglielmo Piersanti. Email di contatto: prof.memmo@gmail.com</p>
+        <h3>2. Accettazione dei termini</h3>
+        <p>L’accesso alla Palestra implica l’accettazione dei presenti Termini e Condizioni. Se non si accettano tali condizioni, si invita a non utilizzare il sito.</p>
+        <h3>3. Descrizione del servizio</h3>
+        <p>Il sito offre esercizi interattivi di grammatica, lettura, lessico e produzione per la scuola secondaria di primo grado. Gli utenti possono: svolgere esercizi, monitorare i propri progressi e contattare il gestore per supporto o collaborazione.</p>
+        <h3>4. Utilizzo del sito</h3>
+        <p>L’utente si impegna a utilizzare il sito in modo corretto, evitando comportamenti che possano danneggiare la piattaforma o gli altri utenti. È vietato l'invio di messaggi offensivi o spam tramite il modulo di contatto.</p>
+        <h3>5. Modulo di contatto</h3>
+        <p>L’utente è responsabile dei dati inviati tramite il modulo. Il titolare si riserva il diritto di non rispondere a messaggi non pertinenti o inappropriati.</p>
+        <h3>6. Proprietà intellettuale</h3>
+        <p>I testi e i materiali didattici originali contenuti nel sito sono di proprietà del titolare, salvo dove diversamente indicato (es. fonti letterarie citate). È vietata la riproduzione per scopi commerciali senza autorizzazione.</p>
+        <h3>7. Limitazione di responsabilità</h3>
+        <p>Il sito è fornito a scopo didattico gratuito. Il titolare non è responsabile per eventuali problemi tecnici temporanei o per l'uso improprio delle informazioni contenute. L'obiettivo è fornire uno strumento di supporto all'apprendimento il più accurato possibile.</p>
+        <h3>8. Link esterni</h3>
+        <p>Eventuali link a siti esterni sono forniti per approfondimento didattico; il titolare non è responsabile del contenuto di tali siti.</p>
+        <h3>9. Modifiche</h3>
+        <p>Il titolare può modificare i presenti Termini in base all'evoluzione del progetto didattico.</p>
+        <h3>10. Legge applicabile</h3>
+        <p>I presenti Termini sono regolati dalla normativa italiana.</p>
+    `
+};
+
+
+window.showLegal = function(type) {
+    const modal = document.getElementById('legal-modal');
+    const container = document.getElementById('legal-text-container');
+    if (modal && container) {
+        container.innerHTML = LEGAL_TEXTS[type] || 'Contenuto non disponibile.';
+        modal.classList.remove('hidden');
+    }
+};
+
+window.hideLegal = function() {
+    const modal = document.getElementById('legal-modal');
+    if (modal) modal.classList.add('hidden');
+};
+
+window.handleLoginSubmit = function() {
+    const nameInput = document.getElementById('user-name-input');
+    const name = nameInput.value.trim();
+    const checkAge = document.getElementById('check-age');
+    const checkPrivacy = document.getElementById('check-privacy');
+
+    if (!name) {
+        alert("Inserisci il tuo nome per iniziare!");
+        return;
+    }
+    
+    if (!checkAge.checked || !checkPrivacy.checked) {
+        alert("Per procedere devi accettare i termini, la privacy e confermare l'età.");
+        return;
+    }
+
+    const activeRole = document.querySelector('.role-opt.active');
+    const role = activeRole ? activeRole.dataset.role : 'studente';
+    
+    const activeAvatar = document.querySelector('.avatar-opt.active');
+    const avatar = activeAvatar ? activeAvatar.dataset.avatar : 'assets/avatar.png';
+    
+    Auth.login(name, avatar, role);
+    hideLoginOverlay();
+    
+    if (typeof updateSidebarMenu === 'function') updateSidebarMenu();
+
+    // Refresh UI immediately
+    window.location.hash = 'home';
+    handleRoute(); 
+};
+
+window.handleGuestAccess = function() {
+    Auth.continueAsGuest();
+    hideLoginOverlay();
+    if (typeof updateSidebarMenu === 'function') updateSidebarMenu();
+    
+    // Refresh UI immediately
+    window.location.hash = 'home';
+    handleRoute();
+};
+
+// Avatar selection logic
+document.addEventListener('click', (e) => {
+    if (e.target.classList.contains('avatar-opt')) {
+        document.querySelectorAll('.avatar-opt').forEach(opt => opt.classList.remove('active'));
+        e.target.classList.add('active');
+    }
+});
+
+function updateHistory(title, icon, hash) {
+    let history = JSON.parse(localStorage.getItem('palestra_history') || '[]');
+    history = history.filter(h => h.hash !== hash);
+    history.unshift({
+        title: title,
+        icon: icon,
+        hash: hash,
+        date: new Date().toLocaleDateString('it-IT') + ' ' + new Date().toLocaleTimeString('it-IT', {hour: '2-digit', minute:'2-digit'})
+    });
+    localStorage.setItem('palestra_history', JSON.stringify(history.slice(0, 10)));
+}
+
+// Router Initialization
+window.addEventListener('load', () => {
+    setTimeout(handleRoute, 300);
+});
+window.addEventListener('hashchange', handleRoute);
+
+function handleRoute() {
+    if (!window.exercisesData) {
+        console.log("Waiting for exercisesData...");
+        setTimeout(handleRoute, 100);
+        return;
+    }
+    const hash = window.location.hash.substring(1);
+    const parts = hash.split('/').filter(p => p && p !== 'null');
+    const section = parts[0] || 'home';
+    const subType = parts[1] || null;
+    const level = parts[2] || null;
+    const extra = parts[3] || null;
+
+    // LOGIN LOGIC: 
+    // Show login on initial load if not logged in
+    if (!Auth.isLoggedIn() && !window.hasShownInitialLogin) {
+        window.hasShownInitialLogin = true;
+        showLoginOverlay(hash);
+        return;
+    }
+
+    // Force login for specific lessons if not logged in
+    if (!Auth.isLoggedIn() && subType && section !== 'intro') {
+        showLoginOverlay(hash);
+        return;
+    }
+
+    if (!MATERIE_HIERARCHY[section] && !['home', 'contatti', 'profilo', 'ripassa', 'intro'].includes(section)) {
+        mountError('Sezione non trovata: ' + section);
+        return;
+    }
+
+    if (section === 'intro') {
+        window.currentSection = 'intro';
+        renderIntroPage();
+        if (typeof updateSidebarMenu === 'function') updateSidebarMenu();
+    } else {
+        navigateTo(section, subType, level, false, extra);
+    }
+}
+
+function renderHomePage() {
+    const appContainer = document.getElementById('app');
+    appContainer.innerHTML = `
+        <div id="home" class="section active">
+            <div class="home-header">
+                <h1 class="main-title">PALESTRA DI <span class="accent">RIFLESSIONE</span> SULLA LINGUA</h1>
+                <p class="home-description">Lo spazio interattivo per allenare l'analisi grammaticale, logica e del periodo con testi lunghi e coinvolgenti per la scuola secondaria di primo grado.</p>
+                <div style="margin-top: 1rem;">
+                    <button class="btn" onclick="window.location.hash = 'intro'" style="background: rgba(39, 174, 96, 0.1); color: #27ae60; border: 1px solid #27ae60; padding: 0.6rem 1.2rem; font-size: 0.9rem; border-radius: 50px; font-weight: 700; transition: all 0.3s; cursor: pointer;">SCOPRI IL PROGETTO 👋</button>
+                </div>
+            </div>
+            
+            <div class="home-main-layout">
+                <div class="home-side left-side">
+                    <div class="materia-card-home" onclick="navigateTo('riflessione')">
+                        <span class="materia-icon">🧠</span>
+                        <div class="materia-label">Grammatica</div>
+                    </div>
+                    <div class="materia-card-home" onclick="navigateTo('lettura')">
+                        <span class="materia-icon">📚</span>
+                        <div class="materia-label">Lettura</div>
+                    </div>
+                </div>
+                
+                <div class="home-center">
+                    <img src="assets/hero.png" alt="Studente che impara" class="hero-image-new">
+                </div>
+                
+                <div class="home-side right-side">
+                    <div class="materia-card-home" onclick="navigateTo('lessico')">
+                        <span class="materia-icon">📖</span>
+                        <div class="materia-label">Lessico</div>
+                    </div>
+                    <div class="materia-card-home" onclick="navigateTo('produzione')">
+                        <span class="materia-icon">✍️</span>
+                        <div class="materia-label">Produzione</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+    currentSection = 'home';
+}
+
+function renderIntroPage() {
+    const appContainer = document.getElementById('app');
+    appContainer.innerHTML = `
+        <div class="exercise-container">
+            <h2 class="exercise-title">👋 BENVENUTI NELLA PALESTRA</h2>
+            <div style="background: white; padding: 2rem; border-radius: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); line-height: 1.8;">
+                
+                <div style="background: #f8f9fa; padding: 2rem; border-radius: 20px; border-left: 8px solid #27ae60; margin-bottom: 2rem;">
+                    <h4 style="color: #27ae60; margin-bottom: 1rem; font-size: 1.4rem;">💡 Innovazione e Tradizione</h4>
+                    <p>
+                        Questa piattaforma integra l'esperienza didattica con i nuovi strumenti digitali. 
+                        Tutto il materiale è stato elaborato con l'aiuto dell'<b>Intelligenza Artificiale</b>, 
+                        ma è interamente <b>gestito, revisionato e guidato dall'uomo</b>. 
+                        L'IA è uno strumento prezioso, ma la professionalità docente resta il cuore che dà senso e direzione a ogni proposta.
+                    </p>
+                </div>
+
+                <div style="background: #eef7ff; padding: 2rem; border-radius: 20px; border-left: 8px solid #2980b9; margin-bottom: 2rem;">
+                    <h4 style="color: #2980b9; margin-bottom: 1rem; font-size: 1.4rem;">🌱 Autonomia e Competenze Digitali</h4>
+                    <p>
+                        L'obiettivo della Palestra è rendere ogni studente <b>protagonista autonomo</b> del proprio percorso. Attraverso l'uso attivo della piattaforma, raggiungerai traguardi fondamentali:
+                        <br>• <b>Consapevolezza</b>: imparerai a gestire i tuoi tempi di studio e a monitorare i tuoi sforzi.
+                        <br>• <b>Padronanza Digitale</b>: utilizzerai interfacce moderne e l'IA in modo critico.
+                        <br>• <b>Imparare a imparare</b>: svilupperai la capacità di reperire e rielaborare informazioni in autonomia.
+                    </p>
+                </div>
+
+                <div style="background: #fff9db; padding: 2rem; border-radius: 20px; border-left: 8px solid #f1c40f; margin-bottom: 2rem;">
+                    <h4 style="color: #d4ac0d; margin-bottom: 1rem; font-size: 1.4rem;">📚 Il piacere della Lettura</h4>
+                    <p>
+                        Nella sezione <b>Lettura</b> troverai testi originali e coinvolgenti divisi per:
+                        <br>• <b>Generi</b>: dall'Avventura al Giallo, dal Fantasy all'Attualità.
+                        <br>• <b>Livelli (A1-B2)</b>: percorsi calibrati sulle tue reali capacità di comprensione.
+                        <br>Ogni testo è una sfida per migliorare la tua comprensione e scoprire nuovi mondi.
+                    </p>
+                </div>
+
+                <div style="background: #f5eef8; padding: 2rem; border-radius: 20px; border-left: 8px solid #8e44ad; margin-bottom: 2rem;">
+                    <h4 style="color: #8e44ad; margin-bottom: 1rem; font-size: 1.4rem;">🌟 Il Tuo Profilo Digitale</h4>
+                    <p>
+                        Le funzioni avanzate sono ora attive per aumentare la tua autonomia:
+                        <br>• <b>Account Personale</b>: crea il tuo profilo per scegliere il tuo avatar e tenere traccia di ogni esercizio completato.
+                        <br>• <b>Click & Learn</b>: nelle letture puoi <b>cliccare su qualsiasi parola difficile</b> per scoprirne il significato e aggiungerla istantaneamente al tuo <b>Vocabolario Personale</b>.
+                        <br>• <b>Dashboard Avanzata</b>: consulta il tuo dizionario personalizzato nella sezione Profilo e guarda come crescono le tue competenze nel tempo.
+                    </p>
+                </div>
+
+                <div style="background: #fdf2f2; padding: 2rem; border-radius: 20px; border-left: 8px solid #e74c3c; margin-bottom: 2rem;">
+                    <h4 style="color: #e74c3c; margin-bottom: 1rem; font-size: 1.4rem;">🎯 Come funziona la Palestra?</h4>
+                    <p>
+                        La Palestra è divisa in aree tematiche (Grammatica, Lettura, Lessico, Produzione). 
+                        Per ogni argomento troverai le fasi di <b>SCOPRI</b> (teoria) e <b>ALLENATI</b> (pratica).
+                        <br>• <b>Navigazione Flessibile</b>: Se un esercizio è troppo difficile, usa il tasto <b>"RIPROVA PIÙ TARDI"</b> per saltarlo e procedere oltre: potrai affrontarlo di nuovo quando vorrai!
+                    </p>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 2rem;">
+                    <div style="background: #e8f5e9; padding: 1.5rem; border-radius: 20px; border-top: 5px solid #2e7d32;">
+                        <h4 style="color: #2e7d32; margin-bottom: 0.8rem; font-size: 1.2rem;">🎓 Per gli Studenti</h4>
+                        <p style="font-size: 0.95rem; line-height: 1.6;">
+                            • Navigazione libera e intuitiva.<br>
+                            • Creazione del proprio Vocabolario Personale.<br>
+                            • Monitoraggio dei traguardi tramite XP e Avatar.
+                        </p>
+                    </div>
+                    <div style="background: #e3f2fd; padding: 1.5rem; border-radius: 20px; border-top: 5px solid #1565c0;">
+                        <h4 style="color: #1565c0; margin-bottom: 0.8rem; font-size: 1.2rem;">👩‍🏫 Per i Docenti</h4>
+                        <p style="font-size: 0.95rem; line-height: 1.6;">
+                            • Tasto <b>"Condividi con la classe"</b> in ogni esercizio.<br>
+                            • Invio istantaneo via WhatsApp o Email.<br>
+                            • Accesso a materiali didattici esclusivi.
+                        </p>
+                    </div>
+                </div>
+
+                <p style="text-align: center; font-style: italic; color: #777; margin-top: 2rem;">
+                    "La scuola deve restare fedele ai suoi valori, ma aperta al cambiamento. 
+                    Il cuore e la passione educativa sono assolutamente umani!" 😊
+                </p>
+
+                <div style="text-align: center; margin-top: 4rem; padding-top: 2rem; border-top: 1px solid #eee;">
+                    <img src="assets/avatar.png" alt="Logo Progetto" style="width: 120px; opacity: 0.9; background: transparent;">
+                </div>
+            </div>
+        </div>
+    `;
+    window.currentSection = 'intro';
+    if (typeof updateSidebarMenu === 'function') updateSidebarMenu();
+}
+
+function renderContattiPage() {
+    const appContainer = document.getElementById('app');
+    appContainer.innerHTML = `
+        <div class="contact-card-wrapper">
+            <!-- Lato Sinistro: Informazioni -->
+            <div class="contact-info-side">
+                <div>
+                    <h2>Mettiamoci in contatto</h2>
+                    <p>Hai domande, vuoi provare un gioco nella tua classe o proporre una collaborazione? Scrivimi!</p>
+                </div>
+                
+                <div class="contact-method">
+                    <div class="contact-method-icon">✉️</div>
+                    <span>prof.memmo@gmail.com</span>
+                </div>
+
+                <div class="info-card-box">
+                    <div class="info-card-icon">📦</div>
+                    <div class="info-card-text">
+                        <h4>Vuoi un gioco o un materiale?</h4>
+                        <p>Puoi richiedere giochi specifici o materiali didattici direttamente tramite questo modulo. Descrivimi cosa stai cercando e ti risponderò al più presto!</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Lato Destro: Modulo -->
+            <div class="contact-form-side">
+                <div class="form-group-contact">
+                    <label for="contact-name">Nome</label>
+                    <input type="text" id="contact-name" placeholder="Il tuo nome">
+                </div>
+                
+                <div class="form-group-contact">
+                    <label for="contact-email">Email</label>
+                    <input type="email" id="contact-email" placeholder="La tua email">
+                </div>
+
+                <div class="form-group-contact">
+                    <label for="contact-message">Messaggio</label>
+                    <textarea id="contact-message" placeholder="Come posso aiutarti?"></textarea>
+                </div>
+
+                <div class="contact-legal">
+                    <input type="checkbox" id="contact-check">
+                    <label for="contact-check">
+                        Ho almeno 16 anni o sono sotto la supervisione di un adulto. 
+                        Accetto la <a href="javascript:void(0)" onclick="showLegal('privacy')">Privacy Policy</a> e i <a href="javascript:void(0)" onclick="showLegal('terms')">Termini e Condizioni</a>.
+                    </label>
+                </div>
+
+                <button class="btn-contact-submit" onclick="handleContactSubmit()">Invia Messaggio</button>
+            </div>
+        </div>
+    `;
+    currentSection = 'contatti';
+}
+
+window.handleContactSubmit = function() {
+    const name = document.getElementById('contact-name').value.trim();
+    const email = document.getElementById('contact-email').value.trim();
+    const message = document.getElementById('contact-message').value.trim();
+    const check = document.getElementById('contact-check').checked;
+
+    if (!name || !email || !message) {
+        alert("Per favore, compila tutti i campi obbligatori.");
+        return;
+    }
+
+    if (!check) {
+        alert("Devi accettare la Privacy Policy e i Termini per inviare il messaggio.");
+        return;
+    }
+
+    // Simulazione invio
+    const btn = document.querySelector('.btn-contact-submit');
+    const originalText = btn.innerText;
+    btn.innerText = "Invio in corso...";
+    btn.disabled = true;
+
+    setTimeout(() => {
+        UI.showFeedback(true, {
+            map: "Messaggio inviato con successo!",
+            reasoning: "Grazie per avermi contattato. Ti risponderò il prima possibile all'indirizzo email fornito.",
+            example: "Puoi continuare ad allenarti nella Palestra mentre aspetti la mia risposta!"
+        }, () => {
+            navigateTo('home');
+        });
+        
+        btn.innerText = originalText;
+        btn.disabled = false;
+    }, 1500);
+};
+
+
+function renderProfiloPage() {
+    const appContainer = document.getElementById('app');
+    const user = Auth.getUser();
+    const vocabulary = JSON.parse(localStorage.getItem('palestra_vocab') || '[]');
+    const history = JSON.parse(localStorage.getItem('palestra_history') || '[]');
+    const classes = JSON.parse(localStorage.getItem('palestra_classes') || '[]');
+    const assignments = JSON.parse(localStorage.getItem('palestra_assignments') || '[]');
+    const studentClassCode = localStorage.getItem('palestra_student_class_code') || null;
+
+    // Filter assignments for the student's class code
+    const myAssignments = studentClassCode ? assignments.filter(a => a.classCode === studentClassCode) : [];
+
+    // Calculate rank and precision
+    let rank = "Cadetto";
+    let completedCount = window.Progress.getCompletedCount();
+    let points = window.Progress.getPoints();
+    
+    // Calculate precision
+    let precision = 0;
+    let totalEx = parseInt(localStorage.getItem('user_total_exercises_attempted') || '0');
+    let correctEx = parseInt(localStorage.getItem('user_correct_exercises') || '0');
+    if (totalEx > 0) {
+        precision = Math.round((correctEx / totalEx) * 100);
+    }
+    if (points > 1000) rank = "Maestro";
+    else if (points > 500) rank = "Veterano";
+    else if (points > 100) rank = "Esploratore";
+
+    const isImage = user.avatar.includes('/') || user.avatar.includes('.');
+    const avatarHtml = isImage 
+        ? `<img src="${user.avatar}" alt="Avatar" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">` 
+        : `<span>${user.avatar}</span>`;
+
+    appContainer.innerHTML = `
+        <div class="exercise-container">
+            <h2 class="exercise-title">👤 IL TUO PROFILO</h2>
+            
+            <div class="profile-header">
+                <div class="profile-avatar-large">
+                    ${avatarHtml}
+                </div>
+                <div>
+                    <h3 style="font-size: 1.8rem; font-weight: 800;">${user.name}</h3>
+                    <div style="display: flex; gap: 0.5rem; margin-top: 0.5rem;">
+                        <p style="background: var(--primary-color); color: white; padding: 0.3rem 1rem; border-radius: 20px; font-size: 0.9rem; font-weight: 700;">${rank}</p>
+                        <p style="background: #f1f2f6; color: #57606f; padding: 0.3rem 1rem; border-radius: 20px; font-size: 0.9rem; font-weight: 700;">${user.role.toUpperCase()}</p>
+                    </div>
+                    ${user.isGuest ? `<p style="color: #e74c3c; font-size: 0.8rem; margin-top: 0.5rem; font-weight: 700;">⚠ SESSIONE ANONIMA (Dati non sincronizzati)</p>` : ''}
+                </div>
+                <div style="margin-left: auto;">
+                    <button class="btn btn-secondary" onclick="Auth.logout()" style="color: #e74c3c; border-color: #fceaea;">Esci</button>
+                </div>
+            </div>
+
+            ${user.role === 'docente' ? `
+                <div class="teacher-area" style="margin-bottom: 3rem; padding: 2rem; background: #f0f7ff; border-radius: 30px; border: 2px dashed #3498db;">
+                    <h3 style="color: #2980b9; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.8rem;">👨‍🏫 AREA CLASSI</h3>
+                    
+                    <div style="display: grid; grid-template-columns: 1fr; gap: 2rem; max-width: 600px; margin: 0 auto;">
+                        <!-- Gestione Classi -->
+                        <div class="profile-card">
+                            <h4 class="profile-card-title">📁 LE MIE CLASSI</h4>
+                            <div id="classes-list" style="margin-bottom: 1rem;">
+                                ${classes.length > 0 ? classes.map((c, idx) => `
+                                    <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.8rem; background: white; border-radius: 12px; margin-bottom: 0.5rem; border: 1px solid #e0e0e0;">
+                                        <div>
+                                            <span style="font-weight: 800;">Classe ${c.name}</span>
+                                            <div style="font-size: 0.7rem; color: var(--primary-color); font-weight: 800; cursor: pointer; margin-top: 0.2rem;" onclick="navigator.clipboard.writeText('${c.code}'); alert('Codice copiato!')">
+                                                CODICE: ${c.code} 📋 <span style="color: #7f8c8d; font-weight: 400; margin-left: 0.5rem; font-style: italic;">(condividi il codice con la classe)</span>
+                                            </div>
+                                            <div style="margin-top: 0.5rem; display: flex; gap: 0.5rem;">
+                                                <button onclick="window.viewClassStudents('${c.code}', '${c.name}')" style="background: #eef2f7; border: none; color: #57606f; padding: 0.3rem 0.6rem; border-radius: 8px; font-size: 0.7rem; font-weight: 700; cursor: pointer;">👥 STUDENTI</button>
+                                                <button onclick="window.removeTeacherClass(${idx})" style="background: #fceaea; border: none; color: #e74c3c; padding: 0.3rem 0.6rem; border-radius: 8px; font-size: 0.7rem; font-weight: 700; cursor: pointer;">🗑️ ELIMINA</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                `).join('') : '<p style="color: #888; font-size: 0.9rem;">Non hai ancora creato nessuna classe.</p>'}
+                            </div>
+                            <div style="display: flex; gap: 0.5rem;">
+                                <input type="text" id="new-class-name" placeholder="Esempio: 1A" style="flex: 1; padding: 0.8rem; border-radius: 10px; border: 1px solid #ddd;">
+                                <button class="btn btn-primary" onclick="window.addTeacherClass()" style="padding: 0.8rem 1.2rem;">CREA</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card Registro Permanente -->
+                    <div class="profile-card" style="margin-top: 2rem; max-width: 800px; margin-left: auto; margin-right: auto;">
+                        <h4 class="profile-card-title">📊 REGISTRO PROGRESSI</h4>
+                        <div id="class-register-content">
+                            <p style="color: #888; font-size: 0.9rem; text-align: center; padding: 2rem;">
+                                Crea una classe in <b>Area Classi</b> oppure clicca sul tasto <b>👥 STUDENTI</b> di una classe per visualizzare qui il registro dei punteggi e delle attività completate.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            ` : ''}
+
+            ${user.role === 'studente' ? `
+                <div class="student-area" style="margin-bottom: 3rem;">
+                    <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 2rem;">
+                        <div class="profile-card">
+                            <h4 class="profile-card-title">🏫 LA MIA CLASSE</h4>
+                            ${studentClassCode ? `
+                                <div style="text-align: center; padding: 1rem; background: #f0f7ff; border-radius: 15px; border: 2px solid var(--primary-color);">
+                                    <div style="font-size: 0.8rem; color: var(--primary-color); font-weight: 800; margin-bottom: 0.3rem;">CODICE CLASSE ATTIVO</div>
+                                    <div style="font-size: 2rem; font-weight: 900; color: var(--primary-color);">${studentClassCode}</div>
+                                    <button onclick="window.leaveClass()" style="margin-top: 1rem; background: none; border: none; color: #888; text-decoration: underline; cursor: pointer; font-size: 0.8rem;">Esci dalla classe</button>
+                                </div>
+                            ` : `
+                                <p style="font-size: 0.85rem; color: #666; margin-bottom: 1rem;">Inserisci il <b>codice classe</b> per vedere i compiti.</p>
+                                <div style="display: flex; gap: 0.5rem;">
+                                    <input type="text" id="join-class-code" placeholder="Es: PG-XXXX" style="flex: 1; padding: 0.8rem; border-radius: 10px; border: 1px solid #ddd;">
+                                    <button class="btn btn-primary" onclick="window.joinClass()" style="padding: 0.8rem 1.2rem;">ENTRA</button>
+                                </div>
+                            `}
+                        </div>
+
+                        <div class="profile-card">
+                            <h4 class="profile-card-title">📔 LE MIE ATTIVITÀ</h4>
+                            <div id="assignments-list">
+                                ${myAssignments.length > 0 ? myAssignments.map(a => {
+                                    const isCompleted = window.Progress.isExerciseCompleted(a.topic);
+                                    return `
+                                        <div onclick="window.location.hash='${a.topic}'" style="display: flex; justify-content: space-between; align-items: center; padding: 1rem; background: white; border-radius: 15px; margin-bottom: 0.8rem; border: 1px solid #eee; cursor: pointer; transition: all 0.2s;">
+                                            <div>
+                                                <div style="font-weight: 800; color: #2c3e50;">${a.topic.split('/').map(p => p.replace('_', ' ').toUpperCase()).join(' > ')}</div>
+                                                <div style="font-size: 0.75rem; color: #888;">Assegnato il ${new Date(a.date).toLocaleDateString()}</div>
+                                            </div>
+                                            <div style="padding: 0.4rem 0.8rem; border-radius: 20px; font-size: 0.75rem; font-weight: 800; ${isCompleted ? 'background: #e8f5e9; color: #2e7d32;' : 'background: #fff3e0; color: #ef6c00;'}">
+                                                ${isCompleted ? '✅ COMPLETATO' : '⏳ DA FARE'}
+                                            </div>
+                                        </div>
+                                    `;
+                                }).join('') : '<p style="color: #888; font-size: 0.9rem; text-align: center; padding: 2rem;">Nessuna attività assegnata per ora. Buon riposo!</p>'}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">⭐</div>
+                        <div class="stat-content">
+                            <div class="stat-label">PUNTI XP</div>
+                            <div class="stat-value">${points}</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">✅</div>
+                        <div class="stat-content">
+                            <div class="stat-label">COMPLETATI</div>
+                            <div class="stat-value">${completedCount}</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">🎯</div>
+                        <div class="stat-content">
+                            <div class="stat-label">PRECISIONE</div>
+                            <div class="stat-value">${precision}%</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="profile-sections">
+                    <div class="profile-card">
+                        <h4 class="profile-card-title">📖 IL MIO VOCABOLARIO</h4>
+                        ${vocabulary.length > 0 ? `
+                            <p style="color: #666; margin-bottom: 1.5rem;">Hai salvato <b>${vocabulary.length}</b> parole durante le tue letture.</p>
+                            <button class="btn btn-primary" onclick="renderVocabularyPage()" style="width: 100%; background: #ff7f7f; border-color: #ff7f7f;">APRI DIZIONARIO COMPLETO</button>
+                        ` : `
+                            <p style="color: #888; font-style: italic; text-align: center; padding: 2rem;">Nessuna parola salvata ancora.</p>
+                            <button class="btn btn-primary" onclick="renderVocabularyPage()" style="width: 100%; background: #ff7f7f; border-color: #ff7f7f;">APRI DIZIONARIO COMPLETO</button>
+                        `}
+                    </div>
+
+                    <div class="profile-card">
+                        <h4 class="profile-card-title">🕒 ATTIVITÀ RECENTE</h4>
+                        <div class="history-list">
+                            ${history.length > 0 ? history.map(item => `
+                                <div class="history-item" onclick="window.location.hash='${item.hash.substring(1)}'">
+                                    <div class="history-icon">${item.icon}</div>
+                                    <div class="history-details">
+                                        <div class="history-name">${item.title}</div>
+                                        <div class="history-date">${item.date}</div>
+                                    </div>
+                                </div>
+                            `).join('') : '<p style="color: #888; font-style: italic; text-align: center; padding: 2rem;">Inizia un esercizio per vederlo qui!</p>'}
+                        </div>
+                    </div>
+                </div>
+            ` : ''}
+        </div>
+    `;
+    currentSection = 'profilo';
+    if (typeof updateSidebarMenu === 'function') updateSidebarMenu();
+}
+
+// --- TEACHER FUNCTIONS ---
+window.addTeacherClass = function() {
+    const input = document.getElementById('new-class-name');
+    const name = input.value.trim().toUpperCase();
+    if (!name) return;
+    
+    let classes = JSON.parse(localStorage.getItem('palestra_classes') || '[]');
+    if (!classes.some(c => c.name === name)) {
+        classes.push({ name: name, students: 0 });
+        localStorage.setItem('palestra_classes', JSON.stringify(classes));
+        renderProfiloPage();
+    }
+};
+
+window.removeTeacherClass = function(index) {
+    let classes = JSON.parse(localStorage.getItem('palestra_classes') || '[]');
+    const classCode = classes[index].code;
+    
+    if (confirm(`Sei sicuro di voler eliminare la classe ${classes[index].name}? Verranno rimossi anche tutti i compiti assegnati.`)) {
+        // Rimuovi classe
+        classes.splice(index, 1);
+        localStorage.setItem('palestra_classes', JSON.stringify(classes));
+        
+        // Rimuovi compiti associati
+        let assignments = JSON.parse(localStorage.getItem('palestra_assignments') || '[]');
+        assignments = assignments.filter(a => a.classCode !== classCode);
+        localStorage.setItem('palestra_assignments', JSON.stringify(assignments));
+        
+        renderProfiloPage();
+    }
+};
+
+window.viewClassStudents = function(code, name) {
+    const content = document.getElementById('class-register-content');
+    if (!content) return;
+
+    // Simulazione del registro voti per la classe
+    const mockStudents = [
+        { name: "Mario Rossi", exercise: "Analisi Logica", score: 85, date: "02/05/2026" },
+        { name: "Sofia Bianchi", exercise: "Analisi Grammaticale", score: 92, date: "02/05/2026" },
+        { name: "Luca Verdi", exercise: "Comprensione del Testo", score: 70, date: "01/05/2026" }
+    ];
+
+    let tableHtml = `
+        <div style="font-family: inherit; animation: fadeIn 0.5s ease-out;">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem; background: #f0f7ff; padding: 1rem; border-radius: 15px;">
+                <h3 style="color: var(--primary-color); margin: 0; font-size: 1.1rem;">Registro Progressi: Classe ${name}</h3>
+                <span style="color: #3498db; font-size: 0.8rem; font-weight: 800;">CODICE: ${code}</span>
+            </div>
+            <div style="overflow-x: auto;">
+                <table style="width: 100%; border-collapse: collapse; font-size: 0.85rem;">
+                    <thead>
+                        <tr style="text-align: left; color: #95a5a6; border-bottom: 2px solid #eee;">
+                            <th style="padding: 12px;">STUDENTE</th>
+                            <th style="padding: 12px;">ESERCIZIO</th>
+                            <th style="padding: 12px;">PUNTEGGIO</th>
+                            <th style="padding: 12px;">DATA</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${mockStudents.map(s => `
+                            <tr>
+                                <td style="padding: 12px; border-bottom: 1px solid #f9f9f9; font-weight: 700; color: #2c3e50;">${s.name}</td>
+                                <td style="padding: 12px; border-bottom: 1px solid #f9f9f9; color: #7f8c8d;">${s.exercise}</td>
+                                <td style="padding: 12px; border-bottom: 1px solid #f9f9f9;">
+                                    <span style="padding: 0.3rem 0.6rem; border-radius: 8px; font-weight: 800; ${s.score >= 80 ? 'background: #e8f5e9; color: #2e7d32;' : 'background: #fff3e0; color: #ef6c00;'}">
+                                        ${s.score}%
+                                    </span>
+                                </td>
+                                <td style="padding: 12px; border-bottom: 1px solid #f9f9f9; color: #bdc3c7;">${s.date}</td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+            </div>
+            <div style="margin-top: 1.5rem; text-align: center;">
+                <button class="btn btn-secondary" onclick="renderProfiloPage()" style="font-size: 0.7rem; padding: 0.5rem 1rem;">RESETTA VISTA</button>
+            </div>
+        </div>
+    `;
+
+    content.innerHTML = tableHtml;
+    content.scrollIntoView({ behavior: 'smooth', block: 'center' });
+};
+
+window.updateShareSubtypes = function() {
+    const materia = document.getElementById('share-materia').value;
+    const subSelector = document.getElementById('share-subtype');
+    subSelector.innerHTML = '<option value="">Scegli argomento...</option>';
+    
+    if (materia && MATERIE_HIERARCHY[materia]) {
+        const items = MATERIE_HIERARCHY[materia].items || [];
+        items.forEach(item => {
+            subSelector.innerHTML += `<option value="${item.id}">${item.title}</option>`;
+        });
+    }
+};
+
+window.generateShareLink = function() {
+    const materia = document.getElementById('share-materia').value;
+    const subtype = document.getElementById('share-subtype').value;
+    const resultDiv = document.getElementById('share-link-result');
+    
+    if (!materia || !subtype) {
+        alert("Seleziona sia la materia che l'argomento.");
+        return;
+    }
+    
+    const baseUrl = window.location.href.split('#')[0];
+    const fullLink = `${baseUrl}#${materia}/${subtype}`;
+    
+    navigator.clipboard.writeText(fullLink).then(() => {
+        resultDiv.innerText = "✅ Link copiato negli appunti!";
+        setTimeout(() => { resultDiv.innerText = ""; }, 3000);
+    }).catch(err => {
+        resultDiv.innerText = "Errore copia: " + fullLink;
+    });
+};
+
+window.copyCurrentLink = function() {
+    const fullLink = window.location.href;
+    navigator.clipboard.writeText(fullLink).then(() => {
+        alert("✅ Link dell'esercizio copiato! Ora puoi incollarlo su Classroom o inviarlo agli studenti.");
+    });
+};
+
+window.toggleShareMenu = function() {
+    const dropdown = document.getElementById('share-dropdown');
+    if (dropdown) dropdown.classList.toggle('hidden');
+};
+
+window.assignToInternalClass = function(classCode) {
+    const fullLink = window.location.href;
+    const assignments = JSON.parse(localStorage.getItem('palestra_assignments') || '[]');
+    assignments.push({
+        classCode: classCode,
+        link: fullLink,
+        date: new Date().toISOString(),
+        topic: window.location.hash.substring(1)
+    });
+    localStorage.setItem('palestra_assignments', JSON.stringify(assignments));
+    alert(`✅ Esercizio assegnato alla classe con codice ${classCode}!`);
+    window.toggleShareMenu();
+};
+
+window.addTeacherClass = function() {
+    const input = document.getElementById('new-class-name');
+    const name = input.value.trim().toUpperCase();
+    if (!name) return;
+    
+    const code = 'PG-' + Math.random().toString(36).substring(2, 6).toUpperCase();
+    
+    let classes = JSON.parse(localStorage.getItem('palestra_classes') || '[]');
+    classes.push({ name: name, code: code, students: 0 });
+    localStorage.setItem('palestra_classes', JSON.stringify(classes));
+    renderProfiloPage();
+};
+
+window.joinClass = function() {
+    const input = document.getElementById('join-class-code');
+    const code = input.value.trim().toUpperCase();
+    if (!code) return;
+    localStorage.setItem('palestra_student_class_code', code);
+    renderProfiloPage();
+};
+
+window.leaveClass = function() {
+    localStorage.removeItem('palestra_student_class_code');
+    renderProfiloPage();
+};
+
+
+window.shareToClassroom = function() {
+    const fullLink = window.location.href;
+    const classroomUrl = `https://classroom.google.com/share?url=${encodeURIComponent(fullLink)}`;
+    window.open(classroomUrl, '_blank');
+    window.toggleShareMenu();
+};
+
+function getTeacherShareButton() {
+    const user = Auth.getUser();
+    if (user.role !== 'docente') return '';
+    
+    const classes = JSON.parse(localStorage.getItem('palestra_classes') || '[]');
+    
+    return `
+        <div class="teacher-share-container" style="margin-bottom: 1.5rem; display: flex; justify-content: flex-end;">
+            <button class="btn btn-secondary" onclick="window.toggleShareMenu()" style="font-size: 0.8rem; border-radius: 50px; background: #f0f7ff; border: 1px solid #3498db; color: #2980b9; font-weight: 700; padding: 0.6rem 1.2rem; display: flex; align-items: center; gap: 0.5rem; box-shadow: 0 4px 10px rgba(52, 152, 219, 0.1);">
+                📤 CONDIVIDI
+            </button>
+            
+            <div id="share-dropdown" class="share-dropdown hidden">
+                <div class="share-section-title">Assegna alle tue classi</div>
+                <div class="share-btn-list">
+                    ${classes.length > 0 ? classes.map(c => `
+                        <button class="share-action-btn" onclick="window.assignToInternalClass('${c.code}')">
+                            📁 Classe ${c.name} (${c.code})
+                        </button>
+                    `).join('') : '<p style="font-size: 0.7rem; color: #888;">Nessuna classe creata.</p>'}
+                </div>
+                
+                <div class="share-section-title">Condivisione esterna</div>
+                <div class="share-btn-list">
+                    <button class="share-action-btn" onclick="window.copyCurrentLink()">
+                        🔗 Copia Link
+                    </button>
+                    <button class="share-action-btn classroom" onclick="window.shareToClassroom()">
+                        🏫 Google Classroom
+                    </button>
+                </div>
+            </div>
+        </div>
+    `;
+}
+
+function renderVocabularyPage(sortType = 'az') {
+    const appContainer = document.getElementById('app');
+    let vocabulary = JSON.parse(localStorage.getItem('palestra_vocab') || '[]');
+
+    if (sortType === 'az') vocabulary.sort((a, b) => a.word.localeCompare(b.word));
+    else if (sortType === 'za') vocabulary.sort((a, b) => b.word.localeCompare(a.word));
+
+    appContainer.innerHTML = `
+        <div class="exercise-container">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                <h2 class="exercise-title" style="margin: 0;">📖 IL MIO VOCABOLARIO</h2>
+                <button class="btn btn-secondary" onclick="renderProfiloPage()" style="padding: 0.8rem 1.5rem; font-size: 0.9rem; border-radius: 50px;">TORNA AL PROFILO</button>
+            </div>
+
+            <div class="profile-card">
+                <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #f0f0f0; padding-bottom: 1rem; margin-bottom: 1.5rem;">
+                    <p style="color: #666; font-weight: 600;">Gestisci le parole che hai scoperto durante le letture.</p>
+                    <div style="display: flex; gap: 0.5rem;">
+                        <button class="filter-btn ${sortType === 'az' ? 'active' : ''}" onclick="renderVocabularyPage('az')">A-Z</button>
+                        <button class="filter-btn ${sortType === 'za' ? 'active' : ''}" onclick="renderVocabularyPage('za')">Z-A</button>
+                    </div>
+                </div>
+
+                ${vocabulary.length === 0 ? `
+                    <div style="text-align: center; padding: 4rem 2rem; color: #888;">
+                        <span style="font-size: 4rem; display: block; margin-bottom: 1.5rem;">🔍</span>
+                        <p>Il tuo vocabolario è ancora vuoto.<br>Esplora le letture e clicca sulle parole che non conosci!</p>
+                    </div>
+                ` : `
+                    <div class="vocab-list" style="display: flex; flex-direction: column; gap: 1rem;">
+                        ${vocabulary.map((v, idx) => `
+                            <div style="background: #f8f9fa; border-radius: 15px; overflow: hidden; border: 1px solid #eee;">
+                                <div style="padding: 1.2rem; display: flex; justify-content: space-between; align-items: center;">
+                                    <div onclick="UI.toggleWordDefinition('${v.word.replace(/'/g, "\\'")}', 'def-page-${idx}')" style="cursor: pointer; display: flex; align-items: center; gap: 1rem; flex: 1;">
+                                        <span style="font-size: 1.3rem; font-weight: 800; color: var(--primary-color);">${v.word}</span>
+                                        <span style="font-size: 0.8rem; background: #fff; padding: 2px 8px; border-radius: 10px; color: #888;">Clicca per il significato</span>
+                                    </div>
+                                    <button onclick="UI.removeFromVocabulary('${v.word.replace(/'/g, "\\'")}', true)" style="background: none; border: none; color: #ff7f7f; font-size: 1.5rem; cursor: pointer; padding: 0.5rem;">&times;</button>
+                                </div>
+                                <div id="def-page-${idx}" class="hidden" style="border-top: 1px solid #eee; background: white;"></div>
+                            </div>
+                        `).join('')}
+                    </div>
+                `}
+            </div>
+        </div>
+    `;
+}
+
+function renderSessionsPage(type = 'open') {
+    const appContainer = document.getElementById('app');
+    const title = type === 'open' ? '🚀 SESSIONI APERTE' : '🏁 SESSIONI CONCLUSE';
+    const color = type === 'open' ? '#e67e22' : '#27ae60';
+
+    let sessionsHtml = '';
+    for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        if (key && key.startsWith('progress_')) {
+            const val = localStorage.getItem(key);
+            const parts = key.split('_');
+            if (parts.length < 5) continue;
+
+            const pathKey = key.replace('progress_', '');
+            const isConcluded = localStorage.getItem('concluded_' + pathKey) === 'true';
+
+            if ((type === 'open' && isConcluded) || (type === 'concluded' && !isConcluded)) continue;
+
+            const section = parts[1];
+            const subType = parts[2];
+            const level = parts[3];
+            const extra = parts[4];
+
+            let label = `${section.toUpperCase()} - ${subType.toUpperCase()}`;
+            if (level && level !== 'undefined' && level !== 'null' && level !== '') label += ` (${level})`;
+            if (extra && extra !== 'undefined' && extra !== 'null' && extra !== '') label += ` [${extra}]`;
+
+            const hash = `${section}/${subType}/${level && level !== 'undefined' ? level : ''}/${extra && extra !== 'undefined' ? extra : ''}`;
+
+            sessionsHtml += `
+                <div style="background: white; padding: 1.5rem; border-radius: 20px; margin-bottom: 1rem; display: flex; justify-content: space-between; align-items: center; border: 1px solid #eee; box-shadow: 0 4px 10px rgba(0,0,0,0.02);">
+                    <div>
+                        <strong style="color: ${color}; font-size: 1.1rem;">${label}</strong>
+                        <div style="font-size: 0.9rem; color: #666; margin-top: 0.3rem;">
+                            ${isConcluded ? '✅ Percorso completato con successo' : `Progresso attuale: Esercizio ${parseInt(val)} completato`}
+                        </div>
+                    </div>
+                    <button class="btn btn-primary" onclick="window.location.hash = '${hash}'" style="padding: 0.8rem 1.5rem; font-size: 0.9rem; border-radius: 50px; background: ${color};">
+                        ${isConcluded ? 'RIVEDI' : 'RIPRENDI'} ➜
+                    </button>
+                </div>
+            `;
+        }
+    }
+
+    appContainer.innerHTML = `
+        <div class="exercise-container">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                <h2 class="exercise-title" style="margin: 0; color: ${color};">${title}</h2>
+                <button class="btn btn-secondary" onclick="renderProfiloPage()" style="padding: 0.8rem 1.5rem; font-size: 0.9rem; border-radius: 50px;">TORNA AL PROFILO</button>
+            </div>
+
+            <div style="margin-top: 2rem;">
+                ${sessionsHtml || `<div style="text-align: center; padding: 4rem; color: #888; background: #f8f9fa; border-radius: 30px;">Nessuna sessione trovata in questa categoria.</div>`}
+            </div>
+        </div>
+    `;
+}
+
+function renderRipassaPage() {
+    const appContainer = document.getElementById('app');
+    appContainer.innerHTML = `
+        <div class="exercise-container">
+            <h2 class="exercise-title">🔁 RIPASSA ERRORI</h2>
+            <div style="background: #f8f9fa; padding: 3rem; border-radius: 30px; margin-bottom: 2rem;">
+                <p style="font-size: 1.2rem;">Qui troverai gli argomenti che hai sbagliato più spesso durante le Unità di Apprendimento, pronti per essere ripassati con la ripetizione spaziata.</p>
+                <button class="btn btn-primary" style="margin-top: 1.5rem;">INIZIA RIPASSO ➜</button>
+            </div>
+        </div>
+    `;
+    currentSection = 'ripassa';
+}
+
+window.MATERIE_HIERARCHY = {
+    'materie': {
+        title: 'Scegli il tuo percorso', parent: null, type: 'submenu', items: [
+            { id: 'riflessione', title: 'Grammatica', icon: '🧠', type: 'submenu' },
+            { id: 'lettura', title: 'Lettura e Comprensione', icon: '📚', type: 'submenu' },
+            { id: 'lessico', title: 'Lessico', icon: '📖', type: 'submenu' },
+            { id: 'produzione', title: 'Produzione Scritta', icon: '✍️', type: 'submenu' }
+        ]
+    },
+    'riflessione': {
+        title: 'Grammatica', parent: 'materie', type: 'submenu', items: [
+            { id: 'grammaticale', title: 'Analisi Grammaticale', icon: '📝', type: 'submenu' },
+            { id: 'analisiLogica', title: 'Analisi Logica', icon: '🧩', type: 'submenu' },
+            { id: 'analisiPeriodo', title: 'Analisi del Periodo', icon: '⏳', type: 'submenu' }
+        ]
+    },
+    'grammatica': {
+        title: 'Grammatica', parent: 'materie', type: 'submenu', items: [
+            { id: 'grammaticale', title: 'Analisi Grammaticale', icon: '📝', type: 'submenu' },
+            { id: 'analisiLogica', title: 'Analisi Logica', icon: '🧩', type: 'submenu' },
+            { id: 'analisiPeriodo', title: 'Analisi del Periodo', icon: '⏳', type: 'submenu' }
+        ]
+    },
+    'grammaticale': {
+        title: 'Analisi Grammaticale (Unità di Apprendimento)', parent: 'riflessione', type: 'submenu', items: [
+            { id: 'uda1', title: "Cos'è la grammatica", icon: '📘', type: 'uda' },
+            { id: 'uda2', title: 'La fonologia', icon: '🔤', type: 'uda' },
+            { id: 'uda3', title: "L'ortografia", icon: '✍️', type: 'uda' },
+            { id: 'uda4', title: "L'articolo", icon: '📌', type: 'uda' },
+            { id: 'uda5', title: 'Il nome', icon: '🏷️', type: 'uda' },
+            { id: 'uda_gram_guidata1', title: 'Allenamento Combinato 1', icon: '🏋️', type: 'uda', color: 'verde' },
+            { id: 'uda6', title: "L'aggettivo", icon: '🎨', type: 'uda' },
+            { id: 'uda8', title: 'Il pronome', icon: '🔁', type: 'uda' },
+            { id: 'uda9', title: 'Introduzione al verbo', icon: '⚙️', type: 'uda' },
+            { id: 'uda10', title: 'I modi finiti e indefiniti del verbo', icon: '🎭', type: 'uda' },
+            { id: 'uda_gram_guidata2', title: 'Allenamento Combinato 2', icon: '🏋️', type: 'uda', color: 'verde' },
+            { id: 'uda_copulativi', title: 'La forma del verbo', icon: '🔗', type: 'uda' },
+            { id: 'uda12', title: "L'avverbio", icon: '🚀', type: 'uda' },
+            { id: 'uda13', title: 'La preposizione', icon: '🔗', type: 'uda' },
+            { id: 'uda14', title: 'La congiunzione', icon: '🤝', type: 'uda' },
+            { id: 'uda15', title: "L'interiezione", icon: '🗣️', type: 'uda' },
+            { id: 'uda16', title: 'Allenamento Finale', icon: '🏆', type: 'uda', color: 'verde' }
+        ]
+    },
+
+
+    'analisiLogica': {
+        title: 'Analisi Logica', parent: 'riflessione', type: 'submenu', items: [
+            { id: 'udaLogica1', title: 'La frase minima', icon: '🧩', type: 'uda' },
+            { id: 'udaLogica2', title: 'Il soggetto', icon: '👤', type: 'uda' },
+            { id: 'udaLogica3', title: "L'attributo e l'apposizione", icon: '🏷️', type: 'uda' },
+            { id: 'udaLogica4', title: 'Il predicato', icon: '⚙️', type: 'uda' },
+            { id: 'udaLogica_approfondimento', title: 'Ripasso: la forma del verbo', icon: '🔗', type: 'uda' },
+            { id: 'udaLogica5', title: 'Il complemento oggetto', icon: '🎯', type: 'uda' },
+            { id: 'uda_log_guidata1', title: 'Allenamento Combinato 1', icon: '🏋️', type: 'uda', color: 'verde' },
+            { id: 'udaLogica6', title: 'Il complemento di luogo', icon: '📍', type: 'uda' },
+            { id: 'udaLogica7', title: 'Il complemento di tempo', icon: '🕒', type: 'uda' },
+            { id: 'udaLogica8', title: 'Il complemento di specificazione', icon: '🔍', type: 'uda' },
+            { id: 'udaLogica9', title: 'Il complemento di termine', icon: '📩', type: 'uda' },
+            { id: 'udaLogica10', title: "Il complemento d'agente e di causa efficiente", icon: '💨', type: 'uda' },
+            { id: 'uda_log_guidata2', title: 'Allenamento Combinato 2', icon: '🏋️', type: 'uda', color: 'verde' },
+            { id: 'udaLogica11', title: 'Il complemento di modo', icon: '🛠️', type: 'uda' },
+            { id: 'udaLogica14', title: 'Il complemento di mezzo', icon: '🛠️', type: 'uda' },
+            { id: 'udaLogica12', title: 'Il complemento di causa', icon: '🎯', type: 'uda' },
+            { id: 'udaLogica15', title: 'Il complemento di fine', icon: '🎯', type: 'uda' },
+            { id: 'udaLogica13', title: 'Il complemento di unione o di compagnia', icon: '👥', type: 'uda' },
+            { id: 'uda_log_guidata3', title: 'Allenamento Combinato 3', icon: '🏋️', type: 'uda', color: 'verde' },
+            { id: 'udaLogica17', title: 'Il complemento di argomento', icon: '🗣️', type: 'uda' },
+            { id: 'udaLogica18', title: 'Il complemento di materia', icon: '🧱', type: 'uda' },
+            { id: 'udaLogica19', title: 'Il complemento di qualità', icon: '💎', type: 'uda' },
+            { id: 'udaLogica20', title: 'Il complemento di peso e di estensione', icon: '⚖️', type: 'uda' },
+            { id: 'udaLogica21', title: 'Il complemento di prezzo', icon: '💰', type: 'uda' },
+            { id: 'udaLogica16', title: 'Allenamento Finale', icon: '🏆', type: 'uda', color: 'verde' }
+        ]
+    },
+    'analisiPeriodo': {
+        title: 'Analisi del Periodo', parent: 'riflessione', type: 'submenu', items: [
+            { id: 'udaPeriodo1', title: 'Il periodo', icon: '⏳', type: 'uda' },
+            { id: 'udaPeriodo2', title: 'La proposizione principale', icon: '🏠', type: 'uda' },
+            { id: 'udaPeriodo3', title: 'La proposizione interrogativa', icon: '❓', type: 'uda' },
+            { id: 'udaPeriodo4', title: 'La proposizione incidentale', icon: '💬', type: 'uda' },
+            { id: 'udaPeriodo5', title: 'I rapporti di coordinazione e subordinazione', icon: '🤝', type: 'uda' },
+            { id: 'udaPeriodoGuidata1', title: 'Allenamento Combinato 1', icon: '🏋️', type: 'uda', color: 'verde' },
+            { id: 'udaPeriodo6', title: 'La proposizione coordinata', icon: '🔗', type: 'uda' },
+            { id: 'udaPeriodo7', title: 'La proposizione subordinata', icon: '🪜', type: 'uda' },
+            { id: 'udaPeriodo8', title: 'La proposizione soggettiva', icon: '👤', type: 'uda' },
+            { id: 'udaPeriodo9', title: 'La proposizione oggettiva', icon: '🎯', type: 'uda' },
+            { id: 'udaPeriodo10', title: 'La proposizione dichiarativa', icon: '📣', type: 'uda' },
+            { id: 'udaPeriodoGuidata2', title: 'Allenamento Combinato 2', icon: '🏋️', type: 'uda', color: 'verde' },
+            { id: 'udaPeriodo11', title: 'La proposizione relativa', icon: '📎', type: 'uda' },
+            { id: 'udaPeriodo12', title: 'La proposizione causale', icon: '💡', type: 'uda' },
+            { id: 'udaPeriodo13', title: 'La proposizione finale', icon: '🏁', type: 'uda' },
+            { id: 'udaPeriodo14', title: 'La proposizione temporale', icon: '🕒', type: 'uda' },
+            { id: 'udaPeriodoGuidataFinale', title: 'Allenamento Finale', icon: '🏆', type: 'uda', color: 'verde' }
+        ]
+    },
+    'lettura': {
+        title: 'Lettura e Comprensione', parent: 'materie', type: 'submenu', items: [
+            { id: 'antologiche', title: 'Letture antologiche', icon: '📖', type: 'exercises' },
+            { id: 'generi', title: 'Letture per generi letterari', icon: '🎭', type: 'submenu' }
+        ]
+    },
+    'generi': {
+        title: 'Letture per generi letterari', parent: 'lettura', type: 'submenu', items: [
+            { id: 'favola', title: 'Favola', icon: '🦊', type: 'exercises' },
+            { id: 'fiaba', title: 'Fiaba', icon: '🏰', type: 'exercises' },
+            { id: 'fantasy', title: 'Fantasy', icon: '🧙‍♂️', type: 'exercises' },
+            { id: 'avventura', title: 'Avventura', icon: '🗺️', type: 'exercises' },
+            { id: 'regolativo', title: 'Testo regolativo', icon: '📋', type: 'exercises' },
+            { id: 'espositivo', title: 'Testo espositivo', icon: '📊', type: 'exercises' },
+            { id: 'descrizione_gen', title: 'Descrizione', icon: '🖼️', type: 'exercises' },
+            { id: 'poesia', title: 'Poesia', icon: '🖋️', type: 'exercises' },
+            { id: 'mistero', title: 'Racconti del mistero e dei fantasmi', icon: '👻', type: 'exercises' },
+            { id: 'horror', title: 'Racconto horror', icon: '🧟', type: 'exercises' },
+            { id: 'giallo', title: 'Racconto giallo', icon: '🔍', type: 'exercises' },
+            { id: 'comico', title: 'Racconto comico-umoristico', icon: '😂', type: 'exercises' },
+            { id: 'diario', title: 'Diario', icon: '📔', type: 'exercises' },
+            { id: 'lettera', title: 'Lettera', icon: '✉️', type: 'exercises' },
+            { id: 'argomentativo', title: 'Testo argomentativo', icon: '🧠', type: 'exercises' },
+            { id: 'formazione', title: 'Romanzo di formazione', icon: '🌱', type: 'exercises' },
+            { id: 'psicologico', title: 'Romanzo psicologico', icon: '🧠', type: 'exercises' },
+            { id: 'sociale', title: 'Romanzo sociale', icon: '👥', type: 'exercises' },
+            { id: 'storico', title: 'Romanzo storico', icon: '🏛️', type: 'exercises' },
+            { id: 'fantascienza', title: 'Romanzo di fantascienza', icon: '🚀', type: 'exercises' },
+            { id: 'surreale', title: 'Romanzo fantastico e surreale', icon: '🦄', type: 'exercises' },
+            { id: 'autobiografia', title: 'Autobiografia', icon: '👤', type: 'exercises' },
+            { id: 'biografia', title: 'Biografia', icon: '📚', type: 'exercises' },
+            { id: 'cronaca', title: 'Cronaca', icon: '📰', type: 'exercises' }
+        ]
+    },
+    'produzione': {
+        title: 'Produzione Scritta', parent: 'materie', type: 'submenu', items: [
+            { id: 'descrizione', title: 'Descrizione', icon: '🖼️', type: 'submenu' },
+            { id: 'riassunto', title: 'Il Riassunto', icon: '📝', type: 'submenu' },
+            { id: 'riformulazione', title: 'Riformulazione', icon: '🔄', type: 'exercises' }
+        ]
+    },
+    'riassunto': {
+        title: 'Il Riassunto', parent: 'produzione', type: 'submenu', items: [
+            { id: 'tecnica0', title: 'COS\'È IL RIASSUNTO?', icon: '🤔', type: 'uda' },
+            { id: 'tecnica1', title: 'LE 5 W', icon: '🖐️', type: 'uda' },
+            { id: 'tecnica2', title: 'IL RIASSUNTO IN 4 PARTI', icon: '🔗', type: 'uda' },
+            { id: 'tecnica3', title: 'LE SEQUENZE', icon: '🎞️', type: 'uda' }
+        ]
+    },
+    'descrizione': {
+        title: 'Descrizione', parent: 'produzione', type: 'submenu', items: [
+            { id: 'persona', title: 'Persona', icon: '👤', type: 'exercises' },
+            { id: 'animali', title: 'Animali', icon: '🐾', type: 'exercises' }
+        ]
+    },
+    'lessico': {
+        title: 'Lessico e Parole', parent: 'materie', type: 'submenu', items: [
+            { id: 'campi_semantici', title: 'Campi Semantici', icon: '🌐', type: 'exercises' },
+            { id: 'significati', title: 'Significati e Sfumature', icon: '🧠', type: 'exercises' },
+            { id: 'relazioni', title: 'Relazioni tra Parole', icon: '🔗', type: 'exercises' }
+        ]
+    },
+
+    // Leaf mapping per Unità di Apprendimento
+    'uda1': { type: 'uda', parent: 'grammaticale' },
+    'uda2': { type: 'uda', parent: 'grammaticale' },
+    'uda3': { type: 'uda', parent: 'grammaticale' },
+    'uda3_1': { type: 'uda', parent: 'grammaticale' },
+    'uda3_2': { type: 'uda', parent: 'grammaticale' },
+    'uda3_3': { type: 'uda', parent: 'grammaticale' },
+    'uda3_4': { type: 'uda', parent: 'grammaticale' },
+    'uda3_5': { type: 'uda', parent: 'grammaticale' },
+    'uda3_6': { type: 'uda', parent: 'grammaticale' },
+    'uda3_7': { type: 'uda', parent: 'grammaticale' },
+    'uda_h': { type: 'uda', parent: 'grammaticale' },
+    'uda_punteggiatura': { type: 'uda', parent: 'grammaticale' },
+    'uda4': { type: 'uda', parent: 'grammaticale' },
+    'uda5': { type: 'uda', parent: 'grammaticale' },
+    'uda_gram_guidata1': { type: 'uda', parent: 'grammaticale' },
+    'uda6': { type: 'uda', parent: 'grammaticale' },
+    'uda7': { type: 'uda', parent: 'grammaticale' },
+    'uda8': { type: 'uda', parent: 'grammaticale' },
+    'uda9': { type: 'uda', parent: 'grammaticale' },
+    'uda10': { type: 'uda', parent: 'grammaticale' },
+    'uda_gram_guidata2': { type: 'uda', parent: 'grammaticale' },
+    'uda_copulativi': { type: 'uda', parent: 'grammaticale' },
+    'uda12': { type: 'uda', parent: 'grammaticale' },
+    'uda13': { type: 'uda', parent: 'grammaticale' },
+    'uda14': { type: 'uda', parent: 'grammaticale' },
+    'uda15': { type: 'uda', parent: 'grammaticale' },
+    'uda16': { type: 'uda', parent: 'grammaticale' },
+    'udaLogica1': { type: 'uda', parent: 'analisiLogica' },
+    'udaLogica2': { type: 'uda', parent: 'analisiLogica' },
+    'udaLogica3': { type: 'uda', parent: 'analisiLogica' },
+    'udaLogica4': { type: 'uda', parent: 'analisiLogica' },
+    'udaLogica_approfondimento': { type: 'uda', parent: 'analisiLogica' },
+    'udaLogica5': { type: 'uda', parent: 'analisiLogica' },
+    'uda_log_guidata1': { type: 'uda', parent: 'analisiLogica' },
+    'udaLogica6': { type: 'uda', parent: 'analisiLogica' },
+    'udaLogica7': { type: 'uda', parent: 'analisiLogica' },
+    'udaLogica8': { type: 'uda', parent: 'analisiLogica' },
+    'udaLogica9': { type: 'uda', parent: 'analisiLogica' },
+    'udaLogica10': { type: 'uda', parent: 'analisiLogica' },
+    'uda_log_guidata2': { type: 'uda', parent: 'analisiLogica' },
+    'udaLogica11': { type: 'uda', parent: 'analisiLogica' },
+    'udaLogica12': { type: 'uda', parent: 'analisiLogica' },
+    'udaLogica13': { type: 'uda', parent: 'analisiLogica' },
+    'udaLogica14': { type: 'uda', parent: 'analisiLogica' },
+    'udaLogica15': { type: 'uda', parent: 'analisiLogica' },
+    'udaLogica16': { type: 'uda', parent: 'analisiLogica' },
+    'uda_log_guidata3': { type: 'uda', parent: 'analisiLogica' },
+    'udaLogica17': { type: 'uda', parent: 'analisiLogica' },
+    'udaLogica18': { type: 'uda', parent: 'analisiLogica' },
+    'udaLogica19': { type: 'uda', parent: 'analisiLogica' },
+    'udaLogica20': { type: 'uda', parent: 'analisiLogica' },
+    'udaLogica21': { type: 'uda', parent: 'analisiLogica' },
+    'udaPeriodo1': { type: 'uda', parent: 'analisiPeriodo' },
+    'udaPeriodo2': { type: 'uda', parent: 'analisiPeriodo' },
+    'udaPeriodo3': { type: 'uda', parent: 'analisiPeriodo' },
+    'udaPeriodo4': { type: 'uda', parent: 'analisiPeriodo' },
+    'udaPeriodo5': { type: 'uda', parent: 'analisiPeriodo' },
+    'udaPeriodo6': { type: 'uda', parent: 'analisiPeriodo' },
+    'udaPeriodo7': { type: 'uda', parent: 'analisiPeriodo' },
+    'udaPeriodo8': { type: 'uda', parent: 'analisiPeriodo' },
+    'udaPeriodo9': { type: 'uda', parent: 'analisiPeriodo' },
+    'udaPeriodo10': { type: 'uda', parent: 'analisiPeriodo' },
+    'udaPeriodo11': { type: 'uda', parent: 'analisiPeriodo' },
+    'udaPeriodo12': { type: 'uda', parent: 'analisiPeriodo' },
+    'udaPeriodo13': { type: 'uda', parent: 'analisiPeriodo' },
+    'udaPeriodo14': { type: 'uda', parent: 'analisiPeriodo' },
+    'udaPeriodoGuidata1': { type: 'uda', parent: 'analisiPeriodo' },
+    'udaPeriodoGuidata2': { type: 'uda', parent: 'analisiPeriodo' },
+    'udaPeriodoGuidataFinale': { type: 'uda', parent: 'analisiPeriodo' },
+
+    'antologiche': { type: 'exercises', parent: 'lettura' },
+    'favola': { type: 'exercises', parent: 'generi' },
+    'fiaba': { type: 'exercises', parent: 'generi' },
+    'fantasy': { type: 'exercises', parent: 'generi' },
+    'avventura': { type: 'exercises', parent: 'generi' },
+    'regolativo': { type: 'exercises', parent: 'generi' },
+    'espositivo': { type: 'exercises', parent: 'generi' },
+    'descrizione_gen': { type: 'exercises', parent: 'generi' },
+    'poesia': { type: 'exercises', parent: 'generi' },
+    'mistero': { type: 'exercises', parent: 'generi' },
+    'horror': { type: 'exercises', parent: 'generi' },
+    'giallo': { type: 'exercises', parent: 'generi' },
+    'comico': { type: 'exercises', parent: 'generi' },
+    'diario': { type: 'exercises', parent: 'generi' },
+    'lettera': { type: 'exercises', parent: 'generi' },
+    'argomentativo': { type: 'exercises', parent: 'generi' },
+    'formazione': { type: 'exercises', parent: 'generi' },
+    'psicologico': { type: 'exercises', parent: 'generi' },
+    'sociale': { type: 'exercises', parent: 'generi' },
+    'storico': { type: 'exercises', parent: 'generi' },
+    'fantascienza': { type: 'exercises', parent: 'generi' },
+    'surreale': { type: 'exercises', parent: 'generi' },
+    'autobiografia': { type: 'exercises', parent: 'generi' },
+    'biografia': { type: 'exercises', parent: 'generi' },
+    'cronaca': { type: 'exercises', parent: 'generi' },
+    'persona': { type: 'exercises', parent: 'descrizione' },
+    'animali': { type: 'exercises', parent: 'descrizione' },
+    'campi_semantici': { type: 'exercises', parent: 'lessico' },
+    'significati': { type: 'exercises', parent: 'lessico' },
+    'relazioni': { type: 'exercises', parent: 'lessico' },
+
+    'tecnica0': { type: 'uda', parent: 'riassunto' },
+    'tecnica1': { type: 'uda', parent: 'riassunto' },
+    'tecnica2': { type: 'uda', parent: 'riassunto' },
+    'tecnica3': { type: 'uda', parent: 'riassunto' },
+    // Leaf mapping per Analisi Logica
+};
+
+function initNavigation() {
+    const openBtn = document.getElementById('sidebar-open-btn');
+    const closeBtn = document.getElementById('sidebar-close-btn');
+    const sidebar = document.querySelector('.navbar');
+
+    function toggleSidebar(show) {
+        if (show) {
+            sidebar.classList.remove('hidden');
+            if (openBtn) {
+                openBtn.classList.add('hidden');
+                openBtn.classList.remove('visible');
+            }
+            document.querySelector('main').classList.remove('full-width');
+            document.querySelector('.footer').classList.remove('full-width');
+        } else {
+            sidebar.classList.add('hidden');
+            if (openBtn) {
+                openBtn.classList.remove('hidden');
+                openBtn.classList.add('visible');
+            }
+            document.querySelector('main').classList.add('full-width');
+            document.querySelector('.footer').classList.add('full-width');
+        }
+    }
+
+    openBtn?.addEventListener('click', () => toggleSidebar(true));
+    closeBtn?.addEventListener('click', () => toggleSidebar(false));
+
+    // Use event delegation for all navigation items (even dynamic ones)
+    document.addEventListener('click', (e) => {
+        const navItem = e.target.closest('.nav-item');
+        if (navItem) {
+            e.preventDefault();
+            const section = navItem.getAttribute('data-section');
+            if (section) navigateTo(section);
+            return;
+        }
+
+        if (window.innerWidth <= 1024) {
+            const isClickInsideSidebar = sidebar.contains(e.target);
+            const isClickOnOpenBtn = openBtn?.contains(e.target);
+            if (!isClickInsideSidebar && !isClickOnOpenBtn && !sidebar.classList.contains('hidden')) {
+                toggleSidebar(false);
+            }
+        }
+    });
+
+    if (window.innerWidth > 1024) toggleSidebar(true);
+}
+
+function navigateTo(section, subType = null, level = null, updateHash = true, extra = null) {
+    if (!window.collapsedSections) window.collapsedSections = [];
+
+    if (updateHash) {
+        if (section !== window.currentSection) {
+            window.collapsedSections = [];
+        }
+        const targetId = subType || section;
+
+        let cursor = window.currentSection;
+        if (window.currentExtra && window.MATERIE_HIERARCHY && window.MATERIE_HIERARCHY[window.currentExtra]) cursor = window.currentExtra;
+        else if (window.currentLevel && window.MATERIE_HIERARCHY && window.MATERIE_HIERARCHY[window.currentLevel]) cursor = window.currentLevel;
+        else if (window.currentSubType && window.MATERIE_HIERARCHY && window.MATERIE_HIERARCHY[window.currentSubType]) cursor = window.currentSubType;
+
+        const currentPath = [];
+        while (cursor && cursor !== 'materie') {
+            currentPath.unshift(cursor);
+            let parent = null;
+            if (window.MATERIE_HIERARCHY && window.MATERIE_HIERARCHY[cursor]) {
+                parent = window.MATERIE_HIERARCHY[cursor].parent;
+            } else if (window.MATERIE_HIERARCHY) {
+                for (const k in window.MATERIE_HIERARCHY) {
+                    if (window.MATERIE_HIERARCHY[k].items && window.MATERIE_HIERARCHY[k].items.some(item => item.id === cursor)) {
+                        parent = k;
+                        break;
+                    }
+                }
+            }
+            cursor = parent;
+        }
+
+        let hash = `#${section}`;
+        if (subType) hash += `/${subType}`;
+        if (level) hash += `/${level}`;
+        if (extra) hash += `/${extra}`;
+
+        if (currentPath.includes(targetId)) {
+            const isDifferentView = (section !== window.currentSection) ||
+                (subType !== window.currentSubType) ||
+                (level !== window.currentLevel) ||
+                (extra !== window.currentExtra);
+
+            if (!isDifferentView) {
+                const idx = window.collapsedSections.indexOf(targetId);
+                if (idx > -1) window.collapsedSections.splice(idx, 1);
+                else window.collapsedSections.push(targetId);
+                if (typeof updateSidebarMenu === 'function') updateSidebarMenu();
+                return;
+            }
+        } else {
+            const idx = window.collapsedSections.indexOf(targetId);
+            if (idx > -1) window.collapsedSections.splice(idx, 1);
+        }
+
+        window.location.hash = hash;
+        return;
+    }
+
+    const appContainer = document.getElementById('app');
+    try {
+        document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+
+        if (section === 'home' || section === '') {
+            window.currentSection = 'home';
+            window.currentSubType = null;
+            window.currentLevel = null;
+            window.currentExtra = null;
+            window.collapsedSections = [];
+            renderHomePage();
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            document.querySelector('.nav-item[data-section="home"]')?.classList.add('active');
+            if (typeof updateSidebarMenu === 'function') updateSidebarMenu();
+            return;
+        }
+
+        if (section === 'contatti') {
+            renderContattiPage();
+            document.querySelector('.nav-item[data-section="contatti"]')?.classList.add('active');
+            if (typeof updateSidebarMenu === 'function') updateSidebarMenu();
+            return;
+        }
+        if (section === 'profilo') {
+            renderProfiloPage();
+            document.querySelector('.nav-item[data-section="profilo"]')?.classList.add('active');
+            if (typeof updateSidebarMenu === 'function') updateSidebarMenu();
+            return;
+        }
+        if (section === 'ripassa') {
+            renderRipassaPage();
+            document.querySelector('.nav-item[data-section="ripassa"]')?.classList.add('active');
+            if (typeof updateSidebarMenu === 'function') updateSidebarMenu();
+            return;
+        }
+
+        document.querySelector(`.nav-item[data-section="${section}"]`)?.classList.add('active');
+        appContainer.innerHTML = '<div id="exercise-mount"></div>';
+
+        currentSection = section; currentSubType = subType; currentLevel = level; currentExtra = extra;
+        window.currentSubQuestionIndex = 0;
+
+        const pathKey = `progress_${section}_${subType}_${level}_${extra}`;
+        if (window.currentPathKey !== pathKey) {
+            window.currentExerciseIndex = (extra === 'scopri' || level === 'scopri' || subType === 'scopri') ? 0 : parseInt(localStorage.getItem(pathKey) || '0');
+            window.currentPathKey = pathKey;
+        }
+
+        const isActualLevel = ['facile', 'intermedio', 'avanzato', 'sfida', 'difficile', 'a1', 'a2', 'b1', 'b2'].includes(extra || level || subType);
+        const isUdaPhase = ['scopri', 'allenati', 'verifica', 'recupera'].includes(extra) ||
+            ['scopri', 'allenati', 'verifica', 'recupera'].includes(level) ||
+            ['scopri', 'allenati', 'verifica', 'recupera'].includes(subType);
+
+        const currentId = extra || level || subType || section;
+
+        // Reconstruct the full hierarchical path for robust data resolution
+        const resolvedPath = [];
+        let resolveCursor = currentId;
+        const phases = ['scopri', 'allenati', 'verifica', 'recupera'];
+        const levels = ['facile', 'intermedio', 'avanzato', 'sfida', 'difficile', 'a1', 'a2', 'b1', 'b2'];
+
+        if (phases.includes(resolveCursor) || levels.includes(resolveCursor)) {
+            resolvedPath.unshift(resolveCursor);
+            resolveCursor = (currentId === extra) ? (level || subType || section) : (currentId === level ? (subType || section) : section);
+        }
+
+        while (resolveCursor && resolveCursor !== 'materie') {
+            resolvedPath.unshift(resolveCursor);
+            let parent = null;
+            if (MATERIE_HIERARCHY[resolveCursor]) {
+                parent = MATERIE_HIERARCHY[resolveCursor].parent;
+            } else {
+                for (const k in MATERIE_HIERARCHY) {
+                    if (MATERIE_HIERARCHY[k].items && MATERIE_HIERARCHY[k].items.some(i => i.id === resolveCursor)) {
+                        parent = k;
+                        break;
+                    }
+                }
+            }
+            resolveCursor = parent;
+        }
+        const fullPath = resolvedPath;
+
+        if (isActualLevel) {
+            const actualLevel = extra || level || subType;
+            loadExercise(fullPath);
+        } else if (isUdaPhase) {
+            loadUdaPhase(fullPath);
+        } else {
+            let target = MATERIE_HIERARCHY[currentId];
+            if (!target) {
+                for (const k in MATERIE_HIERARCHY) {
+                    if (MATERIE_HIERARCHY[k].items) {
+                        const item = MATERIE_HIERARCHY[k].items.find(i => i.id === currentId);
+                        if (item) { target = item; break; }
+                    }
+                }
+            }
+            if (target?.type === 'submenu') renderSubMateriePage(currentId);
+            else if (target?.type === 'exercises') renderLevelSelector(currentId, fullPath);
+            else if (target?.type === 'uda') {
+                if (['tecnica0', 'tecnica1', 'tecnica2', 'tecnica3'].includes(currentId)) {
+                    navigateTo(currentId, 'scopri');
+                } else {
+                    renderUdaMenu(currentId, fullPath);
+                }
+            }
+            else mountError("Tipo di contenuto non riconosciuto: " + (target?.type || 'sconosciuto') + " per " + currentId);
+        }
+        if (typeof updateSidebarMenu === 'function') updateSidebarMenu();
+    } catch (err) {
+        console.error("Routing error:", err);
+        appContainer.innerHTML = `
+            <div class="exercise-container" style="text-align: center; padding: 3rem;">
+                <h2>⚠️ Errore di Caricamento</h2>
+                <p style="margin-top: 1rem; color: #666;">Si è verificato un errore durante la navigazione.</p>
+                <p style="font-family: monospace; background: #fff0f0; color: #d32f2f; padding: 1rem; border-radius: 10px; margin: 1.5rem 0; font-size: 0.9rem;">${err.message}</p>
+                <button class="btn btn-primary" onclick="navigateTo('home')">TORNA ALLA HOME</button>
+            </div>
+        `;
+    }
+}
+
+function getExerciseData(path) {
+    if (!window.exercisesData) {
+        console.error("getExerciseData: window.exercisesData is undefined");
+        return { error: "Dati non caricati. Riprova tra un istante." };
+    }
+
+    console.log("Resolving path:", path.join(" > "));
+
+    let d = window.exercisesData;
+    for (let i = 0; i < path.length; i++) {
+        let k = path[i];
+        if (!k || k === 'null' || k === '') continue;
+
+        if (!d[k]) {
+            console.error(`Key mismatch: '${k}' not found in`, d);
+            const availableKeys = Object.keys(d).join(", ");
+            return {
+                error: `Percorso non trovato: <b>${path.join("/")}</b>.<br>Chiave mancante: '<b>${k}</b>' (livello ${i}).<br>Chiavi disponibili qui: ${availableKeys}`
+            };
+        }
+        d = d[k];
+    }
+    return d;
+}
+
+function mountError(message) {
+    document.getElementById('exercise-mount').innerHTML = `
+        <div class="exercise-container">
+            <h2>OPS! QUALCOSA È ANDATO STORTO</h2>
+            <div class="error-card">
+                <p>${message || 'Non siamo riusciti a caricare questo contenuto.'}</p>
+                <button class="btn btn-primary" onclick="window.location.hash = 'home'">TORNA ALLA HOME</button>
+            </div>
+        </div>
+    `;
+    console.error("Mount error:", message);
+}
+
+
+function loadExercise(path) {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    
+    // Update history
+    const sectionTitle = (typeof MATERIE_HIERARCHY !== 'undefined' && MATERIE_HIERARCHY[path[0]]) ? MATERIE_HIERARCHY[path[0]].title : path[0];
+    const subTitle = (typeof MATERIE_HIERARCHY !== 'undefined' && MATERIE_HIERARCHY[path[1]]) ? MATERIE_HIERARCHY[path[1]].title : (path[1] || '');
+    if (typeof updateHistory === 'function') updateHistory(`${sectionTitle}${subTitle ? ' > ' + subTitle : ''}`, (typeof MATERIE_HIERARCHY !== 'undefined' && MATERIE_HIERARCHY[path[0]]?.icon) || '🏋️', window.location.hash);
+
+    const mount = document.getElementById('exercise-mount');
+    const data = getExerciseData(path);
+    if (!data || data.error) {
+        mountError(data?.error || 'Dati non trovati per: ' + path.join('/'));
+        return;
+    }
+
+    const exercises = typeof groupExercises === 'function' ? groupExercises(Array.isArray(data) ? data : (data.facile || [])) : (Array.isArray(data) ? data : (data.facile || []));
+    
+    mount.innerHTML = getTeacherShareButton();
+
+    if (window.currentExerciseIndex === 0 && window.Progress && window.Progress.startLesson) {
+        window.Progress.startLesson(exercises.length);
+    }
+
+    const exercise = exercises[window.currentExerciseIndex];
+    if (!exercise) {
+        let statsHtml = '';
+        if (window.Progress && window.Progress.currentLessonCorrectCount !== undefined) {
+            statsHtml = `
+                <div style="display: flex; justify-content: center; gap: 2rem; margin-top: 1.5rem; margin-bottom: 2rem; background: #fff; padding: 1.5rem; border-radius: 20px; border: 1px solid #eee;">
+                    <div>
+                        <div style="font-size: 2rem; font-weight: 800; color: #27ae60;">${window.Progress.currentLessonCorrectCount}</div>
+                        <div style="font-size: 0.85rem; color: #666; font-weight: 700;">🎯 TRAGUARDI RAGGIUNTI</div>
+                    </div>
+                    <div style="border-left: 2px solid #eee;"></div>
+                    <div>
+                        <div style="font-size: 2rem; font-weight: 800; color: #e74c3c;">${window.Progress.currentLessonMistakeCount || 0}</div>
+                        <div style="font-size: 0.85rem; color: #666; font-weight: 700;">💡 RIPRISTINI NECESSARI</div>
+                    </div>
+                </div>
+            `;
+        }
+        mount.innerHTML = `
+            <div class="exercise-container" style="text-align: center;">
+                <h2 style="font-size: 2.5rem; color: var(--primary-color);">COMPLIMENTI!</h2>
+                <div style="font-size: 4rem; margin: 1rem 0;">🏆</div>
+                <p style="font-size: 1.2rem; margin-bottom: 2rem;">Hai terminato tutti gli esercizi per questo livello. Sei pronto per una nuova sfida?</p>
+                ${statsHtml}
+                <button class="btn btn-primary" onclick="window.history.back()" style="margin-top: 2rem; width: 100%; max-width: 300px;">VAI INDIETRO</button>
+            </div>
+        `;
+        return;
+    }
+
+    if (exercise.type && exercise.type !== 'multiple-choice') mount.innerHTML = window.UI.renderInteractive(exercise, false, path, exercises.length);
+    else if (exercise.target) mount.innerHTML = path.includes('analisiLogica') ? window.UI.renderLogica(exercise, false, path, exercises.length) : window.UI.renderPeriodo(exercise, false, path, exercises.length);
+    else if (path.includes('punteggiatura')) mount.innerHTML = window.UI.renderPunteggiatura(exercise, false, path, exercises.length);
+    else if (path.includes('lettura')) mount.innerHTML = window.UI.renderLettura(exercise, false, path, exercises.length);
+    else if (path.includes('lessico')) mount.innerHTML = window.UI.renderLessico(exercise, false, path, exercises.length);
+    else mount.innerHTML = window.UI.renderGrammatica(exercise, false, path, exercises.length);
+
+    // Prepend teacher share button if role is docente
+    const user = Auth.getUser();
+    if (user.role === 'docente') {
+        const shareDiv = document.createElement('div');
+        shareDiv.innerHTML = getTeacherShareButton();
+        mount.prepend(shareDiv);
+    }
+}
+
+function loadUdaPhase(path) {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    // Update history
+    const sectionTitle = (typeof MATERIE_HIERARCHY !== 'undefined' && MATERIE_HIERARCHY[path[0]]) ? MATERIE_HIERARCHY[path[0]].title : path[0];
+    const subTitle = (typeof MATERIE_HIERARCHY !== 'undefined' && MATERIE_HIERARCHY[path[1]]) ? MATERIE_HIERARCHY[path[1]].title : (path[1] || '');
+    if (typeof updateHistory === 'function') updateHistory(`${sectionTitle}${subTitle ? ' > ' + subTitle : ''}`, (typeof MATERIE_HIERARCHY !== 'undefined' && MATERIE_HIERARCHY[path[0]]?.icon) || '🏋️', window.location.hash);
+
+    const mount = document.getElementById('exercise-mount');
+    const data = getExerciseData(path);
+    if (!data || data.error) {
+        mountError(data?.error || 'Nessun dato trovato per il percorso: ' + path.join('/'));
+        return;
+    }
+
+    const phase = path[path.length - 1]; // scopri, allenati, verifica, recupera
+    const exercises = typeof groupExercises === 'function' ? groupExercises(Array.isArray(data) ? data : []) : (Array.isArray(data) ? data : []);
+
+    if (window.currentExerciseIndex === 0 && window.Progress && window.Progress.startLesson) {
+        window.Progress.startLesson(exercises.length);
+    }
+
+    const exercise = exercises[window.currentExerciseIndex];
+
+    if (!exercise && phase !== 'recupera') {
+        // Se la fase è 'verifica', calcoliamo il punteggio
+        if (phase === 'verifica') {
+            const score = window.Progress.getUdaScore();
+            if (score < 70) {
+                mount.innerHTML = window.UI.renderUdaPhaseEnd(phase, score, true, path);
+            } else {
+                mount.innerHTML = window.UI.renderUdaPhaseEnd(phase, score, false, path);
+            }
+        } else {
+            mount.innerHTML = window.UI.renderUdaPhaseEnd(phase, 100, false, path);
+        }
+        return;
+    }
+
+    if (phase === 'scopri') {
+        mount.innerHTML = window.UI.renderScopri(exercise, path, exercises.length);
+    } else if (phase === 'recupera') {
+        mount.innerHTML = window.UI.renderRecupera(data, path);
+    } else {
+        // Se l'esercizio ha un tipo interattivo specifico (es. completion, highlight, drag-drop, classification-grid)
+        if (exercise.type && exercise.type !== 'multiple-choice') {
+            mount.innerHTML = window.UI.renderInteractive(exercise, true, path, exercises.length);
+        } else if (path.includes('analisiLogica')) {
+            mount.innerHTML = window.UI.renderLogica(exercise, true, path, exercises.length);
+        } else if (path.includes('analisiPeriodo')) {
+            mount.innerHTML = window.UI.renderPeriodo(exercise, true, path, exercises.length);
+        } else {
+            if (phase === 'allenati') {
+                mount.innerHTML = window.UI.renderAllenati(exercise, path, exercises.length);
+            } else if (phase === 'verifica') {
+                mount.innerHTML = window.UI.renderVerifica(exercise, path, exercises.length);
+            }
+        }
+    }
+
+    // Prepend teacher share button if role is docente
+    const user = Auth.getUser();
+    if (user.role === 'docente') {
+        const shareDiv = document.createElement('div');
+        shareDiv.innerHTML = getTeacherShareButton();
+        mount.prepend(shareDiv);
+    }
+}
+
+function checkSubAnswer(selected, correct, id) {
+    const hash = window.location.hash.substring(1);
+    const parts = hash.split('/').filter(p => p && p !== 'null');
+    const section = parts[0];
+    const subType = parts[1];
+    const level = parts[2];
+    const extra = parts[3];
+
+    const path = [];
+    let cursor = section;
+    while (cursor && cursor !== 'materie') {
+        path.unshift(cursor);
+        cursor = MATERIE_HIERARCHY[cursor] ? MATERIE_HIERARCHY[cursor].parent : null;
+    }
+    if (subType) path.push(subType);
+    if (level) path.push(level);
+    if (extra) path.push(extra);
+
+    const data = getExerciseData(path);
+    const phase = path[path.length - 1];
+    const exercises = Array.isArray(data) ? data : (data?.facile || []);
+    const exercise = exercises.find(ex => ex.id === id);
+
+    if (selected === correct) {
+        window.Progress.addPoints(10);
+        if (window.Progress.currentLessonCorrectCount !== undefined) window.Progress.currentLessonCorrectCount++;
+
+        window.UI.showFeedback(true, {
+            map: "Corretto! Ottimo lavoro.",
+            reasoning: "Hai dimostrato di padroneggiare questo concetto.",
+            example: "Continua così!"
+        }, () => {
+            window.currentSubQuestionIndex++;
+            if (window.currentSubQuestionIndex >= exercise.questions.length) {
+                window.currentSubQuestionIndex = 0;
+                window.currentExerciseIndex++;
+                const pathKey = `progress_${currentSection}_${currentSubType}_${currentLevel}_${currentExtra}`;
+                localStorage.setItem(pathKey, window.currentExerciseIndex.toString());
+
+                if (window.currentExerciseIndex >= exercises.length) {
+                    let statsHtml = '';
+                    if (window.Progress && window.Progress.currentLessonCorrectCount !== undefined) {
+                        statsHtml = `
+                            <div style="display: flex; justify-content: center; gap: 2rem; margin-top: 1.5rem; margin-bottom: 2rem; background: #fff; padding: 1.5rem; border-radius: 20px; border: 1px solid #eee;">
+                                <div>
+                                    <div style="font-size: 2rem; font-weight: 800; color: #27ae60;">${window.Progress.currentLessonCorrectCount}</div>
+                                    <div style="font-size: 0.85rem; color: #666; font-weight: 700;">🎯 TRAGUARDI RAGGIUNTI</div>
+                                </div>
+                                <div style="border-left: 2px solid #eee;"></div>
+                                <div>
+                                    <div style="font-size: 2rem; font-weight: 800; color: #e74c3c;">${window.Progress.currentLessonMistakeCount || 0}</div>
+                                    <div style="font-size: 0.85rem; color: #666; font-weight: 700;">💡 RIPRISTINI NECESSARI</div>
+                                </div>
+                            </div>
+                        `;
+                    }
+                    localStorage.setItem('concluded_' + pathKey, 'true');
+                    const score = window.Progress.getUdaScore();
+                    document.getElementById('exercise-mount').innerHTML = window.UI.renderUdaPhaseEnd(phase, score, score < 70, path);
+                } else {
+                    if (['scopri', 'allenati', 'verifica', 'recupera'].includes(phase)) loadUdaPhase(path);
+                    else loadExercise(path);
+                }
+            } else {
+                if (['scopri', 'allenati', 'verifica', 'recupera'].includes(phase)) loadUdaPhase(path);
+                else loadExercise(path);
+            }
+        }, path);
+    } else {
+        if (window.Progress.currentLessonMistakeCount !== undefined) window.Progress.currentLessonMistakeCount++;
+        window.UI.showFeedback(false, {
+            map: "Riprova!",
+            reasoning: "Rileggi il testo con attenzione.",
+            example: "Fai un altro tentativo."
+        }, null, path);
+    }
+}
+
+function checkAnswer(selected, correct, type, id) {
+    const hash = window.location.hash.substring(1);
+    const parts = hash.split('/').filter(p => p && p !== 'null');
+    const section = parts[0];
+    const subType = parts[1];
+
+    const path = [];
+    let cursor = section;
+    while (cursor && cursor !== 'materie') {
+        path.unshift(cursor);
+        cursor = MATERIE_HIERARCHY[cursor] ? MATERIE_HIERARCHY[cursor].parent : null;
+    }
+    if (subType) path.push(subType);
+
+    const data = getExerciseData(path);
+    const phase = path[path.length - 1];
+    const exercises = Array.isArray(data) ? data : (data?.facile || []);
+    const exercise = exercises.find(ex => ex.id === id);
+    const feedback = exercise?.feedback || { map: "Riprova!", reasoning: "Pensa con calma.", success: "Ottimo lavoro!", example: "Hai applicato correttamente la regola." };
+
+    if (selected === correct) {
+        window.Progress.addPoints(10);
+        window.Progress.completeExercise(id);
+        if (window.Progress.currentLessonCorrectCount !== undefined) window.Progress.currentLessonCorrectCount++;
+
+        const successFeedback = {
+            map: feedback.success || "Corretto! Ottimo lavoro.",
+            reasoning: feedback.reasoning || "Hai dimostrato di padroneggiare questo concetto.",
+            example: feedback.example || "Continua così per completare la sfida!"
+        };
+
+        const onConfirm = () => {
+            window.currentExerciseIndex++;
+            const pathKey = `progress_${currentSection}_${currentSubType}_${currentLevel}_${currentExtra}`;
+            localStorage.setItem(pathKey, window.currentExerciseIndex.toString());
+
+            if (window.currentExerciseIndex >= exercises.length) {
+                // Fine della fase
+                localStorage.setItem('concluded_' + pathKey, 'true');
+                const score = window.Progress.getUdaScore();
+                document.getElementById('exercise-mount').innerHTML = window.UI.renderUdaPhaseEnd(phase, score, score < 70, path);
+            } else {
+                if (['scopri', 'allenati', 'verifica', 'recupera'].includes(phase)) loadUdaPhase(path);
+                else loadExercise(path);
+            }
+        };
+
+        if (phase === 'scopri') {
+            onConfirm();
+        } else {
+            window.UI.showFeedback(true, successFeedback, onConfirm, path);
+        }
+    } else {
+        if (window.Progress.addMistake) window.Progress.addMistake(id);
+
+        let errorsHtml = '';
+        if (selected.includes('|') || correct.includes('|')) {
+            const selParts = selected.split('|');
+            const corrParts = correct.split('|');
+            errorsHtml = '<ul style="font-size: 1.15rem; line-height: 1.8; padding-left: 1.5rem; margin: 0; color: #742a2a;">';
+            for (let i = 0; i < corrParts.length; i++) {
+                const isItemCorrect = (selParts[i] || '').toLowerCase() === corrParts[i].toLowerCase();
+                const statusIcon = isItemCorrect ? '<span style="color: #27ae60;">✅</span>' : '<span style="color: #e74c3c;">❌</span>';
+                const correction = isItemCorrect ? '' : ` <span style="color: #27ae60; font-weight: bold;">(Corretto: ${corrParts[i]})</span>`;
+                
+                errorsHtml += `<li style="margin-bottom: 0.5rem; list-style: none;">${statusIcon} Voce ${i + 1}: "<strong>${selParts[i] || 'nulla'}</strong>"${correction}</li>`;
+            }
+            errorsHtml += '</ul>';
+        }
+
+        const advancedFeedback = {
+            map: feedback.map || feedback.error || `La risposta non è corretta. <br><span style="color: #27ae60; font-weight: bold;">La risposta corretta era: ${correct}</span>`,
+            errorsHtml: errorsHtml
+        };
+
+        window.UI.showFeedback(false, advancedFeedback, null, path);
+    }
+}
+
+// --- LOGICA INTERATTIVA ---
+
+window.checkCompletionAnswer = (id, correct) => {
+    const inputs = document.querySelectorAll('.completion-input');
+    const selected = Array.from(inputs).map(i => i.value.trim().toLowerCase()).join('|');
+    checkAnswer(selected, correct.toLowerCase(), 'completion', id);
+};
+
+window.checkHighlightAnswer = (id, correct) => {
+    const selected = Array.from(document.querySelectorAll('.word-tag.selected')).map(s => s.innerText).join(' ');
+    checkAnswer(selected, correct, 'highlight', id);
+};
+
+window.checkHighlightDoubleAnswer = (id, correctDittongo, correctTrittongo) => {
+    const selDittongo = Array.from(document.querySelectorAll('.word-tag.selected-dittongo'))
+        .map(s => s.innerText.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, "").trim())
+        .join(' ');
+    const selTrittongo = Array.from(document.querySelectorAll('.word-tag.selected-trittongo'))
+        .map(s => s.innerText.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, "").trim())
+        .join(' ');
+
+    const dOk = selDittongo === correctDittongo;
+    const tOk = selTrittongo === correctTrittongo;
+
+    if (dOk && tOk) {
+        checkAnswer("ok", "ok", 'highlight-double', id);
+    } else {
+        checkAnswer("error", "ok", 'highlight-double', id);
+    }
+};
+
+window.dragDropState = {};
+window.onDropItem = (e, targetIdx) => {
+    e.preventDefault();
+    const data = e.dataTransfer.getData('text');
+    e.target.innerText = data;
+    e.target.style.background = "#e0f7fa";
+    e.target.style.borderColor = "var(--primary-color)";
+    window.dragDropState[targetIdx] = data;
+};
+
+window.checkDragDropAnswer = (id, correct) => {
+    // Trasforma l'oggetto state in stringa ordinata: "Valore1|Valore2|..."
+    const selected = Object.keys(window.dragDropState)
+        .sort((a, b) => a - b)
+        .map(k => window.dragDropState[k])
+        .join('|');
+
+    checkAnswer(selected, correct, 'drag-drop', id);
+    window.dragDropState = {}; // Reset per il prossimo
+};
+
+function navigateExercise(direction, pathStr, skipVerify = false) {
+    // Se stiamo andando avanti, controlliamo se c'è un pulsante di verifica attivo
+    if (direction === 1 && !skipVerify) {
+        const verifyBtn = document.querySelector('.btn-verify');
+        if (verifyBtn) {
+            verifyBtn.click();
+            return;
+        }
+    }
+
+    const path = pathStr.split(',');
+    window.currentExerciseIndex += direction;
+    if (window.currentExerciseIndex < 0) {
+        window.currentExerciseIndex = 0;
+        window.history.back();
+        return;
+    }
+
+    // Save progress
+    const pathKey = `progress_${path[0] || ''}_${path[1] || ''}_${path[2] || ''}_${path[3] || ''}`;
+    localStorage.setItem(pathKey, window.currentExerciseIndex.toString());
+
+    const mount = document.getElementById('exercise-mount');
+    const phase = path[path.length - 1];
+    if (['scopri', 'allenati', 'verifica'].includes(phase)) loadUdaPhase(path);
+    else loadExercise(path);
+}
+
+window.checkMultiGridAnswer = (id, correctAnswers) => {
+    const selected = [];
+    for (let i = 0; i < correctAnswers.length; i++) {
+        const sel = document.querySelector(`input[name="classif-${id}-${i}"]:checked`)?.value;
+        selected.push(sel || "");
+    }
+
+    // Lo trasformiamo in stringa separata da | per compatibilità con checkAnswer
+    const selectedStr = selected.join('|');
+    const correctStr = correctAnswers.join('|');
+
+    checkAnswer(selectedStr, correctStr, 'classification-grid', id);
+};
+
+// --- GESTIONE NAVIGAZIONE ---
+// --- GESTIONE PROGRESSI ---
+window.Progress = {
+    currentUdaCorrect: 0,
+    currentUdaTotal: 0,
+    currentLessonCorrectCount: 0,
+    currentLessonMistakeCount: 0,
+
+    addPoints: (p) => {
+        let pts = parseInt(localStorage.getItem('user_points') || '0');
+        pts += p;
+        localStorage.setItem('user_points', pts.toString());
+    },
+    getPoints: () => parseInt(localStorage.getItem('user_points') || '0'),
+
+    startLesson: (total) => {
+        window.Progress.currentLessonCorrectCount = 0;
+        window.Progress.currentLessonMistakeCount = 0;
+        window.Progress.currentUdaTotal = total;
+    },
+    addUdaScore: (points) => {
+        window.Progress.currentUdaCorrect += points;
+    },
+    getUdaScore: () => {
+        if (window.Progress.currentUdaTotal === 0) return 0;
+        return Math.round((window.Progress.currentUdaCorrect / window.Progress.currentUdaTotal) * 100);
+    },
+    addMistake: (id) => {
+        window.Progress.currentLessonMistakeCount++;
+        let mistakes = JSON.parse(localStorage.getItem('user_mistakes') || '[]');
+        if (!mistakes.includes(id)) {
+            mistakes.push(id);
+            localStorage.setItem('user_mistakes', JSON.stringify(mistakes));
+        }
+    },
+    completeExercise: (id) => {
+        let completed = JSON.parse(localStorage.getItem('user_completed_exercises') || '[]');
+        if (!completed.includes(id)) {
+            completed.push(id);
+            localStorage.setItem('user_completed_exercises', JSON.stringify(completed));
+        }
+    },
+    getCompletedCount: () => {
+        let completed = JSON.parse(localStorage.getItem('user_completed_exercises') || '[]');
+        return completed.length;
+    },
+    isExerciseCompleted: (path) => {
+        let completed = JSON.parse(localStorage.getItem('user_completed_exercises') || '[]');
+        // Check if the path or any sub-path is in the completed list
+        return completed.some(id => id.includes(path) || path.includes(id));
+    }
+};
+
+function renderSubMateriePage(id) { document.getElementById('exercise-mount').innerHTML = window.UI.renderSubMenu(id, MATERIE_HIERARCHY); }
+function renderLevelSelector(id, dataPath) {
+    const data = getExerciseData(dataPath);
+    if (Array.isArray(data)) {
+        loadExercise(dataPath);
+    } else {
+        document.getElementById('exercise-mount').innerHTML = window.UI.renderSectionMenu(id, MATERIE_HIERARCHY, data);
+    }
+}
+function renderUdaMenu(id, fullPath) {
+    const mount = document.getElementById('exercise-mount');
+    mount.innerHTML = window.UI.renderUdaMenu(id, fullPath);
+    
+    // Prepend teacher share button if role is docente
+    const user = Auth.getUser();
+    if (user.role === 'docente') {
+        const shareDiv = document.createElement('div');
+        shareDiv.innerHTML = getTeacherShareButton();
+        mount.prepend(shareDiv);
+    }
+}
+
+function groupExercises(rawExercises) {
+    if (!Array.isArray(rawExercises) || rawExercises.length === 0) return rawExercises;
+
+    const phase = window.location.hash.split('/').pop();
+    if (phase === 'scopri' || phase === 'recupera') return rawExercises;
+
+    const hasStructured = rawExercises.some(ex => ex.text && (ex.text.includes('<ol>') || ex.text.includes('<li>')));
+    if (hasStructured) return rawExercises;
+
+    const grouped = [];
+    let currentGroup = null;
+
+    for (const ex of rawExercises) {
+        // Can group completion OR multiple-choice OR basic grammar exercises
+        const canGroup = ex.type === 'completion' || ex.type === 'multiple-choice' || !ex.type;
+
+        if (!canGroup) {
+            if (currentGroup) {
+                grouped.push(finalizeGroup(currentGroup));
+                currentGroup = null;
+            }
+            grouped.push(ex);
+            continue;
+        }
+
+        // Check if instructions are the same to keep grouping logical
+        const sameInstruction = !currentGroup || currentGroup.instruction === (ex.instruction || "Esercizio di consolidamento");
+
+        if (currentGroup && sameInstruction) {
+            currentGroup.items.push(ex);
+        } else {
+            if (currentGroup) grouped.push(finalizeGroup(currentGroup));
+            currentGroup = {
+                id: ex.id,
+                type: ex.type || 'grammaticale',
+                title: ex.title || "Esercizio di consolidamento",
+                instruction: ex.instruction || "Scegli la risposta corretta.",
+                items: [ex]
+            };
+        }
+    }
+
+    if (currentGroup) {
+        grouped.push(finalizeGroup(currentGroup));
+    }
+
+    return grouped;
+}
+
+function finalizeGroup(group) {
+    if (group.items.length === 1) {
+        return group.items[0];
+    }
+
+    // If it's completion, we use the list-based approach
+    if (group.type === 'completion') {
+        let textHtml = `<div style='text-align: left; padding-left: 2rem;'><ol>`;
+        const answers = [];
+
+        for (const item of group.items) {
+            let itemText = item.text || "";
+            textHtml += `<li>${itemText}</li>`;
+            answers.push(item.answer);
+        }
+        textHtml += `</ol></div>`;
+
+        return {
+            id: group.id,
+            type: group.type,
+            title: group.title,
+            instruction: group.instruction,
+            text: textHtml,
+            answer: answers.join('|')
+        };
+    } else {
+        // For other types, we create a questions array
+        const questions = group.items.map(item => ({
+            question: item.question || item.text || item.word,
+            options: item.options,
+            answer: item.answer
+        }));
+
+        return {
+            id: group.id,
+            type: group.type,
+            title: group.title,
+            instruction: group.instruction,
+            questions: questions
+        };
+    }
+}
+
+function updateSidebarMenu() {
+    const navLinks = document.querySelector('.nav-links');
+    if (!navLinks) return;
+
+    const mainSections = [
+        { id: 'home', title: 'Home', icon: '🏠' },
+        { id: 'intro', title: 'Scopri il Progetto', icon: '👋' },
+        { id: 'riflessione', title: 'Grammatica', icon: '🧠' },
+        { id: 'lettura', title: 'Lettura', icon: '📚' },
+        { id: 'lessico', title: 'Lessico', icon: '📖' },
+        { id: 'produzione', title: 'Produzione', icon: '✍️' },
+        { id: 'contatti', title: 'Contatti', icon: '📧' }
+    ];
+
+    let activeMainSection = window.currentSection;
+    let activeSubSection = null;
+    let activeLeafSection = null;
+
+    let cursor = window.currentSection;
+    if (window.currentExtra && window.MATERIE_HIERARCHY && window.MATERIE_HIERARCHY[window.currentExtra]) cursor = window.currentExtra;
+    else if (window.currentLevel && window.MATERIE_HIERARCHY && window.MATERIE_HIERARCHY[window.currentLevel]) cursor = window.currentLevel;
+    else if (window.currentSubType && window.MATERIE_HIERARCHY && window.MATERIE_HIERARCHY[window.currentSubType]) cursor = window.currentSubType;
+
+    const path = [];
+    while (cursor && cursor !== 'materie') {
+        path.unshift(cursor);
+        cursor = window.MATERIE_HIERARCHY && window.MATERIE_HIERARCHY[cursor] ? window.MATERIE_HIERARCHY[cursor].parent : null;
+    }
+
+    if (path.length > 0) activeMainSection = path[0];
+    if (path.length > 1) activeSubSection = path[1];
+    if (path.length > 2) activeLeafSection = path[2];
+
+    const user = Auth.getUser();
+    const isImage = user.avatar.includes('/') || user.avatar.includes('.');
+    const avatarHtml = isImage 
+        ? `<img src="${user.avatar}" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">` 
+        : `<span>${user.avatar}</span>`;
+
+    let html = `
+        <style>
+            .sidebar-user-block:hover {
+                background: #eef2f7 !important;
+                transform: scale(1.02);
+            }
+        </style>
+        <div class="sidebar-user-block" onclick="navigateTo('profilo')" style="padding: 1.5rem; margin-bottom: 1rem; background: #f8f9fa; border-radius: 20px; display: flex; align-items: center; gap: 1rem; cursor: pointer; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); border: 1px solid transparent;">
+            <div style="width: 45px; height: 45px; background: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; border: 2px solid var(--primary-color); overflow: hidden;">
+                ${avatarHtml}
+            </div>
+            <div style="overflow: hidden;">
+                <p style="font-weight: 800; font-size: 0.95rem; margin: 0; white-space: nowrap; text-overflow: ellipsis;">${user.name}</p>
+                <p style="font-size: 0.75rem; color: var(--primary-color); font-weight: 700; margin: 0;">${window.Progress.getPoints()} XP</p>
+            </div>
+        </div>
+    `;
+
+    for (const sec of mainSections) {
+        const isActive = activeMainSection === sec.id;
+        const activeClass = isActive ? 'active' : '';
+
+        html += `<li><a href="#${sec.id}" class="nav-item ${activeClass}" data-section="${sec.id}"><span class="icon">${sec.icon}</span> <span>${sec.title}</span></a>`;
+
+        if (isActive && sec.id === 'lettura' && (!window.collapsedSections || !window.collapsedSections.includes(sec.id))) {
+            html += `<ul class="sub-nav-links" style="padding-left: 1.5rem; margin-top: 0.5rem; margin-bottom: 0.5rem; font-size: 0.95rem; list-style: none;">`;
+
+            const subItems = window.MATERIE_HIERARCHY[sec.id].items || [];
+            for (const sub of subItems) {
+                const isSubActive = activeSubSection === sub.id;
+                const subStyle = isSubActive ? 'font-weight: 800; color: var(--primary-color);' : 'opacity: 0.8;';
+
+                html += `<li style="margin-bottom: 0.5rem;"><a href="#${sec.id}/${sub.id}" style="text-decoration: none; display: flex; align-items: center; gap: 0.5rem; ${subStyle}" onclick="navigateTo('${sec.id}', '${sub.id}')"><span>${sub.icon}</span> <span>${sub.title}</span></a>`;
+
+                if (isSubActive) {
+                    html += `<ul class="uda-nav-links" style="padding-left: 1rem; margin-top: 0.3rem; font-size: 0.85rem; list-style: none;">`;
+
+                    if (sub.id === 'generi') {
+                        const filter = window.currentLetturaFilter || 'tutti-i-generi';
+                        if (filter === 'tutti-i-generi') {
+                            const udas = window.MATERIE_HIERARCHY[sub.id].items || [];
+                            for (const uda of udas) {
+                                const isUdaActive = window.currentSection === uda.id || window.currentSubType === uda.id;
+                                const udaStyle = isUdaActive ? 'font-weight: 800; color: var(--accent-color);' : 'opacity: 0.7;';
+                                html += `<li style="margin-bottom: 0.3rem;"><a href="#${sec.id}/${sub.id}/${uda.id}" style="text-decoration: none; display: flex; align-items: center; gap: 0.3rem; ${udaStyle}" onclick="navigateTo('${sec.id}', '${sub.id}', '${uda.id}')"><span>${uda.icon}</span> <span>${uda.title}</span></a></li>`;
+                            }
+                        } else if (filter === 'tutti-i-livelli') {
+                            const levels = ['a1', 'a2', 'b1', 'b2'];
+                            const levelNames = { a1: 'A1', a2: 'A2', b1: 'B1', b2: 'B2' };
+                            const levelIcons = { a1: '🟢', a2: '🟡', b1: '🔵', b2: '🟣' };
+                            for (const lvl of levels) {
+                                html += `<li style="margin-bottom: 0.3rem;"><a href="javascript:void(0)" style="text-decoration: none; display: flex; align-items: center; gap: 0.3rem; opacity: 0.7;" onclick="UI.setLetturaFilter('${lvl}')"><span>${levelIcons[lvl]}</span> <span>${levelNames[lvl]}</span></a></li>`;
+                            }
+                        } else {
+                            const levels = ['a1', 'a2', 'b1', 'b2'];
+                            const levelNames = { a1: 'A1', a2: 'A2', b1: 'B1', b2: 'B2' };
+                            const levelIcons = { a1: '🟢', a2: '🟡', b1: '🔵', b2: '🟣' };
+
+                            for (const lvl of levels) {
+                                const isLvlActive = filter === lvl;
+                                const lvlStyle = isLvlActive ? 'font-weight: 800; color: var(--accent-color);' : 'opacity: 0.7;';
+                                html += `<li style="margin-bottom: 0.3rem;">
+                                    <a href="javascript:void(0)" style="text-decoration: none; display: flex; align-items: center; gap: 0.3rem; ${lvlStyle}" onclick="UI.setLetturaFilter('${lvl}')"><span>${levelIcons[lvl]}</span> <span>${levelNames[lvl]}</span></a>`;
+
+                                if (isLvlActive) {
+                                    html += `<ul style="padding-left: 1rem; margin-top: 0.2rem; list-style: none; font-size: 0.8rem;">`;
+                                    const gData = window.exercisesData.lettura.generi;
+                                    let texts = [];
+                                    const genreItems = window.MATERIE_HIERARCHY['generi']?.items || [];
+                                    for (const item of genreItems) {
+                                        const gKey = item.id;
+                                        if (gData[gKey] && gData[gKey][lvl]) {
+                                            gData[gKey][lvl].forEach((ex, index) => {
+                                                texts.push({
+                                                    genreId: gKey,
+                                                    title: ex.title,
+                                                    index: index
+                                                });
+                                            });
+                                        }
+                                    }
+                                    if (window.currentLetturaSort === 'a-z') {
+                                        texts.sort((a, b) => a.title.localeCompare(b.title));
+                                    } else if (window.currentLetturaSort === 'z-a') {
+                                        texts.sort((a, b) => b.title.localeCompare(a.title));
+                                    } // default and per-livello keep original genre order
+
+                                    for (const txt of texts) {
+                                        html += `<li style="margin-bottom: 0.2rem;"><a href="javascript:void(0)" style="text-decoration: none; color: #666;" onclick="localStorage.setItem('progress_${txt.genreId}_${lvl}_null_null', '${txt.index}'); navigateTo('${txt.genreId}', '${lvl}')">📄 ${txt.title}</a></li>`;
+                                    }
+                                    html += `</ul>`;
+                                }
+
+                                html += `</li>`;
+                            }
+                        }
+                    } else if (sub.id === 'antologiche') {
+                        const filter = window.currentAntologicheFilter || 'all';
+                        const levels = ['a1', 'a2', 'b1', 'b2'];
+                        const levelNames = { a1: 'A1', a2: 'A2', b1: 'B1', b2: 'B2' };
+                        const levelIcons = { a1: '🟢', a2: '🟡', b1: '🔵', b2: '🟣' };
+
+                        if (filter === 'all') {
+                            for (const lvl of levels) {
+                                html += `<li style="margin-bottom: 0.3rem;"><a href="javascript:void(0)" style="text-decoration: none; display: flex; align-items: center; gap: 0.3rem; opacity: 0.7;" onclick="UI.setAntologicheFilter('${lvl}')"><span>${levelIcons[lvl]}</span> <span>${levelNames[lvl]}</span></a></li>`;
+                            }
+                        } else {
+                            for (const lvl of levels) {
+                                const isLvlActive = filter === lvl;
+                                const lvlStyle = isLvlActive ? 'font-weight: 800; color: var(--accent-color);' : 'opacity: 0.7;';
+                                html += `<li style="margin-bottom: 0.3rem;">
+                                    <a href="javascript:void(0)" style="text-decoration: none; display: flex; align-items: center; gap: 0.3rem; ${lvlStyle}" onclick="UI.setAntologicheFilter('${lvl}')"><span>${levelIcons[lvl]}</span> <span>${levelNames[lvl]}</span></a>`;
+
+                                if (isLvlActive) {
+                                    html += `<ul style="padding-left: 1rem; margin-top: 0.2rem; list-style: none; font-size: 0.8rem;">`;
+                                    const antData = window.exercisesData.lettura.antologiche[lvl] || [];
+                                    let sortedAnt = [...antData];
+                                    if (window.currentAntologicheSort === 'a-z') {
+                                        sortedAnt.sort((a, b) => a.title.localeCompare(b.title));
+                                    } else {
+                                        sortedAnt.sort((a, b) => b.title.localeCompare(a.title));
+                                    }
+
+                                    sortedAnt.forEach((ex, index) => {
+                                        html += `<li style="margin-bottom: 0.2rem;"><a href="javascript:void(0)" style="text-decoration: none; color: #666;" onclick="localStorage.setItem('progress_antologiche_${lvl}_null_null', '${index}'); navigateTo('antologiche', '${lvl}')">📄 ${ex.title}</a></li>`;
+                                    });
+                                    html += `</ul>`;
+                                }
+
+                                html += `</li>`;
+                            }
+                        }
+                    }
+
+                    html += `</ul>`;
+                }
+
+                html += `</li>`;
+            }
+
+            html += `</ul>`;
+        } else if (isActive && window.MATERIE_HIERARCHY && window.MATERIE_HIERARCHY[sec.id] && (!window.collapsedSections || !window.collapsedSections.includes(sec.id))) {
+            html += `<ul class="sub-nav-links" style="padding-left: 1.5rem; margin-top: 0.5rem; margin-bottom: 0.5rem; font-size: 0.95rem; list-style: none;">`;
+
+            const subItems = window.MATERIE_HIERARCHY[sec.id].items || [];
+            for (const sub of subItems) {
+                const isSubActive = activeSubSection === sub.id;
+                const subStyle = isSubActive ? 'font-weight: 800; color: var(--primary-color);' : 'opacity: 0.8;';
+
+                html += `<li style="margin-bottom: 0.5rem;"><a href="#${sec.id}/${sub.id}" style="text-decoration: none; display: flex; align-items: center; gap: 0.5rem; ${subStyle}" onclick="navigateTo('${sec.id}', '${sub.id}')"><span>${sub.icon}</span> <span>${sub.title}</span></a>`;
+
+                if (isSubActive && window.MATERIE_HIERARCHY[sub.id] && (!window.collapsedSections || !window.collapsedSections.includes(sub.id))) {
+                    html += `<ul class="uda-nav-links" style="padding-left: 1rem; margin-top: 0.3rem; font-size: 0.85rem; list-style: none;">`;
+                    const udas = window.MATERIE_HIERARCHY[sub.id].items || [];
+                    for (const uda of udas) {
+                        const isUdaActive = activeLeafSection === uda.id || window.currentSection === uda.id;
+                        const udaPathKey = `${uda.id}/allenati//`; // Percorso base per check
+                        const isUdaDone = localStorage.getItem('concluded_' + udaPathKey) === 'true';
+
+                        const udaStyle = isUdaActive ? 'font-weight: 800; color: var(--accent-color);' : 'opacity: 0.7;';
+                        html += `<li style="margin-bottom: 0.3rem;"><a href="#${uda.id}" style="text-decoration: none; display: flex; align-items: center; gap: 0.3rem; ${udaStyle}" onclick="navigateTo('${uda.id}')"><span>${uda.icon}</span> <span>${uda.title} ${isUdaDone ? '<span style="color:#27ae60; margin-left:5px;">✔️</span>' : ''}</span></a></li>`;
+                    }
+                    html += `</ul>`;
+                }
+
+                html += `</li>`;
+            }
+
+            html += `</ul>`;
+        }
+
+        html += `</li>`;
+    }
+
+    navLinks.innerHTML = html;
+}
+
+window.navigateTo = navigateTo;
+window.checkAnswer = checkAnswer;
+window.navigateExercise = navigateExercise;
+window.checkCompletionAnswer = checkCompletionAnswer;
+window.checkHighlightAnswer = checkHighlightAnswer;
+window.checkDragDropAnswer = checkDragDropAnswer;
+window.onDropItem = onDropItem;
+
+// ─── sentence-analysis helpers ────────────────────────────────────
+window.toggleSaGap = (el) => {
+    el.classList.toggle('active');
+    window.buildSaLabels();
+};
+
+window.buildSaLabels = () => {
+    const container = document.getElementById('sa-sentence');
+    if (!container) return;
+    const words = [...container.querySelectorAll('.sa-word')].map(s => s.textContent);
+    const gaps = [...container.querySelectorAll('.sa-gap')];
+    // Build segments by splitting at active gaps
+    let segments = [];
+    let current = [words[0]];
+    gaps.forEach((g, i) => {
+        if (g.classList.contains('active')) {
+            segments.push(current.join(' '));
+            current = [words[i + 1]];
+        } else {
+            current.push(words[i + 1]);
+        }
+    });
+    segments.push(current.join(' '));
+
+    const labelsDiv = document.getElementById('sa-labels');
+    if (!labelsDiv) return;
+    // Preserve existing input values
+    const existing = {};
+    labelsDiv.querySelectorAll('.sa-label-input').forEach(inp => {
+        existing[inp.dataset.seg] = inp.value;
+    });
+    labelsDiv.innerHTML = segments.map((seg, i) => `
+        <div class="sa-label-row">
+            <span class="sa-label-num">${i + 1}.</span>
+            <span class="sa-label-segment">${seg}</span>
+            <input class="sa-label-input" data-seg="${seg}" placeholder="Funzione / parte del discorso..." value="${existing[seg] || ''}">
+        </div>
+    `).join('');
+};
+
+window.checkSentenceAnalysis = (id) => {
+    const container = document.getElementById('sa-sentence');
+    if (!container) return;
+    const gaps = [...container.querySelectorAll('.sa-gap')];
+    const words = [...container.querySelectorAll('.sa-word')].map(s => s.textContent);
+    let current = [words[0]];
+    let userSegments = [];
+    gaps.forEach((g, i) => {
+        if (g.classList.contains('active')) { userSegments.push(current.join(' ')); current = [words[i + 1]]; }
+        else { current.push(words[i + 1]); }
+    });
+    userSegments.push(current.join(' '));
+    const userLabels = [...document.querySelectorAll('.sa-label-input')].map(i => i.value.trim());
+
+    // Show result as feedback (non-blocking)
+    const feedbackDiv = document.getElementById('sa-feedback') || (() => {
+        const d = document.createElement('div');
+        d.id = 'sa-feedback';
+        d.style = 'margin-top:1.2rem;padding:1rem;border-radius:12px;font-weight:700;font-size:1rem;';
+        document.querySelector('.sa-labels').after(d);
+        return d;
+    })();
+    feedbackDiv.innerHTML = `
+        <div style="background:#e8f5e9;border:2px solid #27ae60;border-radius:12px;padding:1rem;margin-top:1rem;">
+            <b style="color:#27ae60;">✅ La tua analisi:</b><br>
+            ${userSegments.map((s, i) => `<span style="display:block;margin-top:4px;"><b>${s}</b> → ${userLabels[i] || '<em>non etichettato</em>'}</span>`).join('')}
+        </div>`;
+    checkAnswer('done', 'done', 'sentence-analysis', id);
+};
+document.addEventListener('DOMContentLoaded', () => {
+    initNavigation();
+    setTimeout(updateSidebarMenu, 500);
+});
