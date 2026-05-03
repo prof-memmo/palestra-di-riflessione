@@ -1519,6 +1519,7 @@ window.UI.addToVocabulary = (word) => {
     if (!vocab.includes(word)) {
         vocab.push(word);
         localStorage.setItem('palestra_vocab', JSON.stringify(vocab));
+        if (window.Progress && window.Progress.sync) window.Progress.sync();
         
         const toast = document.createElement('div');
         toast.style.cssText = 'position:fixed; bottom:20px; right:20px; background:#27ae60; color:white; padding:1rem 2rem; border-radius:50px; z-index:3000; box-shadow:0 10px 20px rgba(0,0,0,0.1); font-weight:800; animation: slideUp 0.3s forwards;';
@@ -1535,6 +1536,7 @@ window.UI.removeFromVocabulary = (word, isFromPage = false) => {
     let vocab = JSON.parse(localStorage.getItem('palestra_vocab') || '[]');
     vocab = vocab.filter(w => w !== word);
     localStorage.setItem('palestra_vocab', JSON.stringify(vocab));
+    if (window.Progress && window.Progress.sync) window.Progress.sync();
     if (isFromPage) {
         renderVocabularyPage();
     } else if (window.currentSection === 'profilo') {

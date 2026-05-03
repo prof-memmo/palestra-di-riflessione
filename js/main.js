@@ -1901,10 +1901,26 @@ window.Progress = {
     currentLessonCorrectCount: 0,
     currentLessonMistakeCount: 0,
 
+    sync: async () => {
+        if (!window.fbAuth || !window.fbAuth.currentUser || Auth.getUser().isGuest) return;
+        const uid = window.fbAuth.currentUser.uid;
+        const data = {
+            points: parseInt(localStorage.getItem('user_points') || '0'),
+            completed: JSON.parse(localStorage.getItem('user_completed_exercises') || '[]'),
+            mistakes: JSON.parse(localStorage.getItem('user_mistakes') || '[]'),
+            vocab: JSON.parse(localStorage.getItem('palestra_vocab') || '[]'),
+            lastUpdated: new Date().toISOString()
+        };
+        try {
+            await window.fbDb.collection('progress').doc(uid).set(data, { merge: true });
+        } catch (e) { console.error("Sync error:", e); }
+    },
+
     addPoints: (p) => {
         let pts = parseInt(localStorage.getItem('user_points') || '0');
         pts += p;
         localStorage.setItem('user_points', pts.toString());
+        window.Progress.sync();
     },
     getPoints: () => parseInt(localStorage.getItem('user_points') || '0'),
 
@@ -1926,6 +1942,7 @@ window.Progress = {
         if (!mistakes.includes(id)) {
             mistakes.push(id);
             localStorage.setItem('user_mistakes', JSON.stringify(mistakes));
+            window.Progress.sync();
         }
     },
     completeExercise: (id) => {
@@ -1933,6 +1950,7 @@ window.Progress = {
         if (!completed.includes(id)) {
             completed.push(id);
             localStorage.setItem('user_completed_exercises', JSON.stringify(completed));
+            window.Progress.sync();
         }
     },
     getCompletedCount: () => {
@@ -1941,7 +1959,6 @@ window.Progress = {
     },
     isExerciseCompleted: (path) => {
         let completed = JSON.parse(localStorage.getItem('user_completed_exercises') || '[]');
-        // Check if the path or any sub-path is in the completed list
         return completed.some(id => id.includes(path) || path.includes(id));
     }
 };

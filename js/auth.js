@@ -1,10 +1,32 @@
 const Auth = {
     _user: null,
+    _fbUser: null,
 
     init: () => {
+        // Fallback locale per utenti già esistenti
         const savedUser = localStorage.getItem('palestra_user');
         if (savedUser) {
             Auth._user = JSON.parse(savedUser);
+        }
+
+        // Inizializza listener Firebase
+        if (window.fbAuth) {
+            window.fbAuth.onAuthStateChanged(async (user) => {
+                if (user) {
+                    Auth._fbUser = user;
+                    // Prova a recuperare i dati dal Cloud
+                    try {
+                        const doc = await window.fbDb.collection('users').doc(user.uid).get();
+                        if (doc.exists) {
+                            Auth._user = doc.data();
+                            localStorage.setItem('palestra_user', JSON.stringify(Auth._user));
+                            window.dispatchEvent(new CustomEvent('authChange'));
+                        }
+                    } catch (e) {
+                        console.error("Errore recupero dati cloud:", e);
+                    }
+                }
+            });
         }
     },
 
@@ -16,7 +38,7 @@ const Auth = {
         return Auth._user || { name: 'Atleta Anonimo', avatar: '👤', isGuest: true };
     },
 
-    login: (name, avatar = 'assets/avatar.png', role = 'studente') => {
+    login: async (name, avatar = 'assets/avatar.png', role = 'studente') => {
         Auth._user = {
             name: name,
             avatar: avatar,
@@ -24,8 +46,20 @@ const Auth = {
             isGuest: false,
             joinedAt: new Date().toISOString()
         };
+
+        // Salva in locale
         localStorage.setItem('palestra_user', JSON.stringify(Auth._user));
-        // Dispara un evento per notificare il cambiamento
+
+        // Salva nel Cloud se Firebase è attivo
+        if (window.fbAuth) {
+            try {
+                const cred = await window.fbAuth.signInAnonymously();
+                await window.fbDb.collection('users').doc(cred.user.uid).set(Auth._user);
+            } catch (e) {
+                console.error("Errore salvataggio cloud login:", e);
+            }
+        }
+
         window.dispatchEvent(new CustomEvent('authChange'));
     },
 
@@ -37,11 +71,11 @@ const Auth = {
             isGuest: true,
             joinedAt: new Date().toISOString()
         };
-        // Non lo salviamo necessariamente per permettere di loggarsi dopo
         window.dispatchEvent(new CustomEvent('authChange'));
     },
 
-    logout: () => {
+    logout: async () => {
+        if (window.fbAuth) await window.fbAuth.signOut();
         Auth._user = null;
         localStorage.removeItem('palestra_user');
         window.dispatchEvent(new CustomEvent('authChange'));
