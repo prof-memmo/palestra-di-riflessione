@@ -1860,7 +1860,7 @@ window.exercisesData = {
                         "type": "completion",
                         "title": "Esercizio 1: Caccia agli errori (cu / qu)",
                         "instruction": "Nelle seguenti frasi individua e correggi gli errori nell'uso di cu / qu. Attenzione: non tutte le frasi ne contengono.",
-                        "text": "<div style='text-align: left; padding-left: 2rem;'><ol><li>Ho affrontato un ___ (incubo) molto realistico.</li><li>Abbiamo acquistato quel ___ (taccuino) in edicola.</li><li>Bisogna compilare il ___ (questionario) entro lunedì.</li><li>Quell'orologio ha un ___ (quadrante) luminoso.</li><li>Per guarire servono le giuste ___ (cure).</li><li>Il nonno legge il ___ (quotidiano) ogni mattina.</li><li>La nostra ___ (squadra) ha vinto il torneo.</li><li>___ (Quando) prenoti la visita medica?</li></ol></div>",
+                        "text": "<div style='text-align: left; padding-left: 2rem;'><ol><li>Ho affrontato un ___ (incubo / inqubo) molto realistico.</li><li>Abbiamo acquistato quel ___ (taccuino / tacuino) in edicola.</li><li>Bisogna compilare il ___ (questionario / cuestionario) entro lunedì.</li><li>Quell'orologio ha un ___ (quadrante / cuadrante) luminoso.</li><li>Per guarire servono le giuste ___ (cure / qure).</li><li>Il nonno legge il ___ (quotidiano / cuotidiano) ogni mattina.</li><li>La nostra ___ (squadra / scuadra) ha vinto il torneo.</li><li>___ (Quando / Cuando) prenoti la visita medica?</li></ol></div>",
                         "answer": "incubo|taccuino|questionario|quadrante|cure|quotidiano|squadra|Quando"
                     },
                     {

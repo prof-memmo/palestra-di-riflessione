@@ -273,22 +273,20 @@ main.full-width { margin-left: 0; padding-left: 6rem; }
     border: none;
     border-bottom: 2px dashed var(--primary-color);
     background: #f0f7ff;
-    padding: 12px;
-    font-size: 1.1rem;
+    padding: 2px 8px;
+    font-size: 1.15rem;
     font-weight: 700;
     color: var(--primary-color);
-    min-width: 100px;
-    width: 100%;
+    min-width: 120px;
+    width: auto;
     max-width: 100%;
-    border-radius: 8px;
+    border-radius: 4px;
     outline: none;
     transition: 0.3s;
     font-family: inherit;
-    resize: none;
-    overflow: hidden;
-    display: block;
-    margin: 5px 0;
-    line-height: 1.4;
+    display: inline-block;
+    margin: 0 5px;
+    vertical-align: middle;
 }
 td .completion-input {
     margin: 0;
