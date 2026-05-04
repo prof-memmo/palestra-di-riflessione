@@ -173,8 +173,8 @@ main.full-width { margin-left: 0; padding-left: 6rem; }
 
 /* Exercise Elements */
 .btn {
-    padding: 1.2rem 2.5rem; border: none; border-radius: 15px; font-weight: 800;
-    cursor: pointer; transition: all 0.3s; font-size: 1.1rem; display: inline-block;
+    padding: 0.8rem 1.8rem; border: none; border-radius: 12px; font-weight: 800;
+    cursor: pointer; transition: all 0.3s; font-size: 0.95rem; display: inline-block;
     text-decoration: none; text-transform: uppercase; letter-spacing: 1px;
     text-align: center;
 }
@@ -209,15 +209,16 @@ main.full-width { margin-left: 0; padding-left: 6rem; }
 
 .nav-btns { display: flex; gap: 1rem; margin-top: 3rem; border-top: 1px solid #eee; padding-top: 2rem; }
 .nav-btn {
-    padding: 1rem 2rem; border-radius: 30px; font-weight: 800; cursor: pointer;
+    padding: 0.6rem 1.4rem; border-radius: 30px; font-weight: 800; cursor: pointer;
     border: none; background: #eee; transition: 0.3s; cursor: pointer;
+    font-size: 0.9rem;
 }
 .nav-btn.primary { background: var(--primary-color); color: white; }
-.nav-btn:hover { opacity: 0.9; transform: scale(1.05); cursor: pointer; }
+.nav-btn:hover { opacity: 0.9; transform: scale(1.02); cursor: pointer; }
 
 /* Level Selection */
 .filter-bar { display: flex; gap: 0.5rem; margin-bottom: 2rem; overflow-x: auto; padding-bottom: 0.5rem; }
-.filter-btn { padding: 0.8rem 1.5rem; border-radius: 30px; border: none; font-weight: 800; cursor: pointer; background: #eee; }
+.filter-btn { padding: 0.5rem 1.2rem; border-radius: 30px; border: none; font-weight: 800; cursor: pointer; background: #eee; font-size: 0.85rem; }
 .filter-btn.active { background: var(--primary-color); color: white; }
 
 .level-row {
@@ -262,7 +263,7 @@ main.full-width { margin-left: 0; padding-left: 6rem; }
 /* Footer */
 .footer { padding: 4rem; text-align: center; background: white; border-top: 1px solid #eee; margin-top: 4rem; margin-left: var(--sidebar-width); transition: margin-left var(--transition-speed) cubic-bezier(0.4, 0, 0.2, 1); }
 .footer.full-width { margin-left: 0; }
-.footer-btn { background: #f8f9fa; border: none; padding: 0.8rem 1.5rem; border-radius: 30px; font-weight: 700; cursor: pointer; margin: 0 0.5rem; transition: 0.3s; }
+.footer-btn { background: #f8f9fa; border: none; padding: 0.5rem 1.2rem; border-radius: 30px; font-weight: 700; cursor: pointer; margin: 0 0.5rem; transition: 0.3s; font-size: 0.85rem; }
 .footer-btn:hover { background: var(--primary-color); color: white; }
 
 .sidebar-backdrop { display: none; } /* Disabled as per user request */

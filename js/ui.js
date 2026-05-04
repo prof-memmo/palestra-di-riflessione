@@ -81,13 +81,8 @@ const UI = {
         
         const pathStr = path.join(',');
         const buttonsHtml = isCorrect 
-            ? `<button class="btn btn-primary" style="padding: 1.2rem 3rem; font-size: 1.2rem; border-radius: 50px; box-shadow: 0 10px 20px rgba(255,107,107,0.3);" onclick="UI.closeModal()">VAI AVANTI ➜</button>`
-            : `
-                <div style="display: flex; flex-direction: column; gap: 1rem; align-items: center;">
-                    <button class="btn btn-primary" style="padding: 1.2rem 3rem; font-size: 1.2rem; border-radius: 50px; width: 100%; max-width: 350px; box-shadow: 0 10px 20px rgba(255,107,107,0.3); background: #34495e;" onclick="UI.closeModal()">HO CAPITO, VAI AVANTI ➜</button>
-                    <button class="btn" style="background: none; color: #888; border: 1px solid #ddd; padding: 0.8rem 2rem; font-size: 0.95rem; border-radius: 50px; width: 100%; max-width: 300px; transition: all 0.3s;" onmouseover="this.style.background='#f5f5f5'" onmouseout="this.style.background='none'" onclick="window.UI.skipAndNavigate('${pathStr}')">RIPROVA PIÙ TARDI ➜</button>
-                </div>
-            `;
+            ? `<button class="btn btn-primary" style="padding: 0.8rem 2rem; font-size: 1rem; border-radius: 50px; box-shadow: 0 10px 20px rgba(255,107,107,0.3);" onclick="UI.closeModal()">VAI AVANTI ➜</button>`
+            : `<button class="btn btn-primary" style="padding: 0.8rem 2rem; font-size: 1rem; border-radius: 50px; width: 100%; max-width: 350px; box-shadow: 0 10px 20px rgba(255,107,107,0.3); background: #34495e;" onclick="UI.closeModal()">HO CAPITO, VAI AVANTI ➜</button>`;
 
         body.innerHTML = `
             <div class="feedback-header" style="text-align: center; margin-bottom: 2rem;">
