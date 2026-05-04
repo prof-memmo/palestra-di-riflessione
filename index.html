@@ -37,12 +37,12 @@
                         <hr style="flex:1; border:0; border-top:1px solid #eee;"> OPPURE <hr style="flex:1; border:0; border-top:1px solid #eee;">
                     </div>
 
-                    <div style="background: #fff; padding: 2rem; border-radius: 30px; border: 2px solid #f0f0f0; box-shadow: 0 10px 20px rgba(0,0,0,0.02); text-align: center;">
-                        <h4 style="font-size: 1rem; margin-bottom: 0.5rem; color: var(--primary-color); font-weight: 800;">NUOVO NELLA PALESTRA?</h4>
-                        <p style="font-size: 0.85rem; color: #777; margin-bottom: 1.5rem;">Crea il tuo profilo personalizzato e inizia subito l'allenamento.</p>
-                        
-                        <div id="registration-input-area">
-                            <button class="btn btn-primary" onclick="handleGuestLogin()" style="width: 100%; padding: 1.2rem; font-weight: 800; border-radius: 50px; font-size: 1.1rem; box-shadow: 0 10px 20px rgba(255, 127, 127, 0.2);">REGISTRATI E INIZIA ➜</button>
+                    <div style="background: #fff; padding: 1.5rem; border-radius: 30px; border: 2px solid #f0f0f0; box-shadow: 0 10px 20px rgba(0,0,0,0.02);">
+                        <div id="registration-input-area" style="display:flex; flex-direction:column; gap:0.8rem;">
+                            <input type="text" id="login-name" placeholder="Il tuo nome" style="padding:0.9rem 1.2rem; border:1px solid #ddd; border-radius:50px; font-size:1rem; outline:none;">
+                            <input type="email" id="login-email" placeholder="Email" style="padding:0.9rem 1.2rem; border:1px solid #ddd; border-radius:50px; font-size:1rem; outline:none;">
+                            <input type="password" id="login-password" placeholder="Password" style="padding:0.9rem 1.2rem; border:1px solid #ddd; border-radius:50px; font-size:1rem; outline:none;">
+                            <button class="btn btn-primary" onclick="handleEmailLogin()" style="width: 100%; padding: 1rem; font-weight: 800; border-radius: 50px; font-size: 1rem;">ACCEDI / REGISTRATI ➜</button>
                         </div>
                     </div>
                 </div>

@@ -80,39 +80,50 @@ const Auth = {
     },
 
     login: async (name, avatar = 'assets/avatar.png', role = 'studente') => {
-        Auth._user = {
-            name: name,
-            avatar: avatar,
-            role: role,
-            isGuest: false,
-            setupComplete: false,
-            joinedAt: new Date().toISOString()
-        };
+        // Questo metodo ora richiede l'autenticazione email/Google
+        // Non creiamo più profili anonimi
+        console.warn("Metodo login() deprecato. Usa loginWithEmail() o loginWithGoogle().");
+    },
 
-        localStorage.setItem('palestra_user', JSON.stringify(Auth._user));
-
-        if (window.fbAuth) {
-            try {
-                // Se non è già loggato in Firebase, entra come anonimo per salvare i dati
-                if (!window.fbAuth.currentUser) {
-                    const cred = await window.fbAuth.signInAnonymously();
-                    Auth._user.uid = cred.user.uid;
-                    await window.fbDb.collection('users').doc(cred.user.uid).set(Auth._user);
-                } else {
-                    Auth._user.uid = window.fbAuth.currentUser.uid;
-                    await window.fbDb.collection('users').doc(window.fbAuth.currentUser.uid).set(Auth._user, { merge: true });
-                }
-            } catch (e) {
-                console.error("Errore salvataggio cloud login:", e);
-                // Non blocchiamo l'utente se il salvataggio cloud fallisce per permessi, 
-                // ma lo avvisiamo se siamo in debug
-                if (e.code === 'permission-denied') {
-                    console.warn("Permessi Firestore insufficienti. Controlla le regole sul Firebase Console.");
-                }
-            }
+    loginWithEmail: async (name, email, password) => {
+        if (!window.fbAuth) return;
+        if (!email || !password) {
+            alert("Inserisci email e password per continuare.");
+            return;
+        }
+        if (!name) {
+            alert("Inserisci il tuo nome.");
+            return;
         }
 
-        window.dispatchEvent(new CustomEvent('authChange'));
+        try {
+            let fbUser;
+            try {
+                // Prova prima ad accedere (utente esistente)
+                const result = await window.fbAuth.signInWithEmailAndPassword(email, password);
+                fbUser = result.user;
+            } catch (signInError) {
+                if (signInError.code === 'auth/user-not-found' || signInError.code === 'auth/invalid-credential') {
+                    // Utente non trovato: registrazione
+                    const result = await window.fbAuth.createUserWithEmailAndPassword(email, password);
+                    fbUser = result.user;
+                    await fbUser.updateProfile({ displayName: name });
+                } else {
+                    throw signInError;
+                }
+            }
+
+            // Salva il nome scelto come pending per _handleFirebaseUser
+            localStorage.setItem('pending_display_name', name);
+            Auth._handleFirebaseUser(fbUser);
+            hideLoginOverlay();
+        } catch (e) {
+            console.error("Errore Email Login:", e);
+            if (e.code === 'auth/wrong-password') alert("Password errata. Riprova.");
+            else if (e.code === 'auth/invalid-email') alert("Email non valida.");
+            else if (e.code === 'auth/weak-password') alert("Password troppo corta (minimo 6 caratteri).");
+            else alert("Errore di accesso: " + e.message);
+        }
     },
 
     loginWithClassCode: async (code, studentName) => {
