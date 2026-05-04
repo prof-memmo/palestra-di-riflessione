@@ -699,18 +699,7 @@ async function renderProfiloPage() {
                             `).join('') : '<p style="color: #888; font-style: italic; text-align: center; padding: 2rem;">Inizia un esercizio per vederlo qui!</p>'}
                         </div>
                     </div>
-                </div>
-            ` : ''}
-        </div>
-    `;
-    window.currentSection = 'profilo';
-    if (user.email === 'prof.memmo@gmail.com') {
-        loadAdminUsersInProfile();
-    }
-    if (typeof updateSidebarMenu === 'function') updateSidebarMenu();
-}
-
-async function loadAdminUsersInProfile() {
+          async function loadAdminUsersInProfile() {
     if (!window.fbDb) return;
     const container = document.getElementById('admin-users-list');
     if (!container) return;
@@ -722,48 +711,104 @@ async function loadAdminUsersInProfile() {
         const progressMap = {};
         progressSnapshot.forEach(doc => { progressMap[doc.id] = doc.data(); });
 
-        let html = '';
-        if (usersSnapshot.empty) {
-            html = '<p style="text-align: center; color: #999;">Nessun utente registrato ancora.</p>';
-        } else {
-            usersSnapshot.forEach(doc => {
-                const userData = doc.data();
-                const userProgress = progressMap[doc.id] || {};
-                const isImage = userData.avatar && (userData.avatar.includes('/') || userData.avatar.includes('.'));
-                const avatarHtml = isImage 
-                    ? `<img src="${userData.avatar}" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;">` 
-                    : `<span style="font-size: 1.5rem;">${userData.avatar || '👤'}</span>`;
+        // Raccoglie tutti gli utenti
+        const allUsers = [];
+        usersSnapshot.forEach(doc => {
+            allUsers.push({ id: doc.id, ...doc.data(), _progress: progressMap[doc.id] || {} });
+        });
 
-                html += `
-                    <div class="admin-user-row" style="display: flex; flex-wrap: wrap; align-items: center; gap: 1rem; padding: 1.2rem; background: white; border-radius: 20px; border: 1px solid #eee; transition: all 0.2s;">
-                        <div style="width: 50px; height: 50px; background: #f8f9fa; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 2px solid #eee; overflow: hidden; flex-shrink: 0;">
-                            ${avatarHtml}
-                        </div>
-                        <div style="flex: 1; min-width: 200px;">
-                            <h4 style="margin: 0; font-weight: 800; font-size: 1.1rem;">${userData.name || 'Anonimo'}</h4>
-                            <p style="margin: 0; font-size: 0.85rem; color: #666;">
-                                ${userData.email || 'No email'} • 
-                                <span style="color: #27ae60; font-weight: 700;">${userData.roleLabel || userData.role || 'Studente'}</span>
-                            </p>
-                            <p style="margin: 0; font-size: 0.75rem; color: #999;">Iscritto il: ${userData.joinedAt ? new Date(userData.joinedAt).toLocaleDateString() : 'N/D'}</p>
-                        </div>
-                        <div style="text-align: right; margin-right: 1rem; flex-shrink: 0;">
-                            <div style="font-weight: 800; color: var(--primary-color); font-size: 1.1rem;">${userProgress.points || 0} XP</div>
-                            <div style="font-size: 0.8rem; color: #999;">${userProgress.vocab ? userProgress.vocab.length : 0} parole</div>
-                        </div>
-                        <button onclick="adminDeleteUserInProfile('${doc.id}', '${(userData.name || 'Anonimo').replace(/'/g, "\\'")}')" style="background: #fff0f0; border: none; padding: 0.8rem; border-radius: 15px; cursor: pointer; color: #e74c3c; font-size: 1.2rem; transition: all 0.2s; margin-left: auto;" title="Elimina Utente">
-                            🗑️
-                        </button>
-                    </div>
-                `;
-            });
+        if (allUsers.length === 0) {
+            container.innerHTML = '<p style="text-align: center; color: #999;">Nessun utente registrato ancora.</p>';
+            return;
         }
-        container.innerHTML = html;
+
+        // Conta per ruolo
+        const counts = { tutti: allUsers.length, docente: 0, studente: 0, amico: 0 };
+        allUsers.forEach(u => {
+            const r = (u.role || '').toLowerCase();
+            if (r === 'docente') counts.docente++;
+            else if (r === 'amico' || r === 'guest') counts.amico++;
+            else counts.studente++;
+        });
+
+        // Render utente
+        function renderUserRow(userData, docId) {
+            const userProgress = userData._progress;
+            const isImage = userData.avatar && (userData.avatar.includes('/') || userData.avatar.includes('.'));
+            const avatarHtml = isImage 
+                ? `<img src="${userData.avatar}" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;">` 
+                : `<span style="font-size: 1.5rem;">${userData.avatar || '👤'}</span>`;
+            const role = (userData.role || 'studente').toLowerCase();
+            const roleColors = { docente: '#2980b9', amico: '#8e44ad', guest: '#8e44ad', studente: '#27ae60', admin: '#e74c3c' };
+            const roleColor = roleColors[role] || '#27ae60';
+
+            return `<div class="admin-user-row" data-role="${role}" style="display: flex; flex-wrap: wrap; align-items: center; gap: 1rem; padding: 1.2rem; background: white; border-radius: 20px; border: 1px solid #eee; transition: all 0.2s;">
+                <div style="width: 50px; height: 50px; background: #f8f9fa; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 2px solid #eee; overflow: hidden; flex-shrink: 0;">
+                    ${avatarHtml}
+                </div>
+                <div style="flex: 1; min-width: 200px;">
+                    <h4 style="margin: 0; font-weight: 800; font-size: 1.1rem;">${userData.name || 'Anonimo'}</h4>
+                    <p style="margin: 0; font-size: 0.85rem; color: #666;">
+                        ${userData.email || 'No email'} • 
+                        <span style="color: ${roleColor}; font-weight: 700;">${userData.roleLabel || userData.role || 'Studente'}</span>
+                    </p>
+                    <p style="margin: 0; font-size: 0.75rem; color: #999;">Iscritto il: ${userData.joinedAt ? new Date(userData.joinedAt).toLocaleDateString() : 'N/D'}</p>
+                </div>
+                <div style="text-align: right; margin-right: 1rem; flex-shrink: 0;">
+                    <div style="font-weight: 800; color: var(--primary-color); font-size: 1.1rem;">${userProgress.points || 0} XP</div>
+                    <div style="font-size: 0.8rem; color: #999;">${userProgress.vocab ? userProgress.vocab.length : 0} parole</div>
+                </div>
+                <button onclick="adminDeleteUserInProfile('${docId}', '${(userData.name || 'Anonimo').replace(/'/g, "\\'")}'')" style="background: #fff0f0; border: none; padding: 0.8rem; border-radius: 15px; cursor: pointer; color: #e74c3c; font-size: 1.2rem; transition: all 0.2s; margin-left: auto;" title="Elimina Utente">
+                    🗑️
+                </button>
+            </div>`;
+        }
+
+        const usersHtml = allUsers.map(u => renderUserRow(u, u.id)).join('');
+
+        container.innerHTML = `
+            <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1.5rem;" id="admin-filter-btns">
+                <button onclick="filterAdminUsers('tutti')" class="admin-filter-btn active" data-filter="tutti" style="padding: 0.5rem 1.2rem; border-radius: 50px; border: none; background: var(--primary-color); color: white; font-weight: 800; cursor: pointer;">
+                    Tutti <span style="background: rgba(255,255,255,0.3); border-radius: 50px; padding: 0.1rem 0.5rem; font-size: 0.8rem;">${counts.tutti}</span>
+                </button>
+                <button onclick="filterAdminUsers('docente')" class="admin-filter-btn" data-filter="docente" style="padding: 0.5rem 1.2rem; border-radius: 50px; border: 2px solid #2980b9; background: white; color: #2980b9; font-weight: 800; cursor: pointer;">
+                    👨‍🏫 Docenti <span style="background: #eef2f7; border-radius: 50px; padding: 0.1rem 0.5rem; font-size: 0.8rem;">${counts.docente}</span>
+                </button>
+                <button onclick="filterAdminUsers('studente')" class="admin-filter-btn" data-filter="studente" style="padding: 0.5rem 1.2rem; border-radius: 50px; border: 2px solid #27ae60; background: white; color: #27ae60; font-weight: 800; cursor: pointer;">
+                    🎓 Studenti <span style="background: #eefaf3; border-radius: 50px; padding: 0.1rem 0.5rem; font-size: 0.8rem;">${counts.studente}</span>
+                </button>
+                <button onclick="filterAdminUsers('amico')" class="admin-filter-btn" data-filter="amico" style="padding: 0.5rem 1.2rem; border-radius: 50px; border: 2px solid #8e44ad; background: white; color: #8e44ad; font-weight: 800; cursor: pointer;">
+                    👥 Amici <span style="background: #f5eef8; border-radius: 50px; padding: 0.1rem 0.5rem; font-size: 0.8rem;">${counts.amico}</span>
+                </button>
+            </div>
+            <div id="admin-users-rows" style="display: flex; flex-direction: column; gap: 1rem;">
+                ${usersHtml}
+            </div>`;
     } catch (e) {
         console.error("Errore recupero utenti admin in profilo:", e);
         container.innerHTML = `<p style="color: #e74c3c;">Errore nel caricamento dei dati: ${e.message}</p>`;
     }
 }
+
+window.filterAdminUsers = function(filterRole) {
+    // Aggiorna pulsanti
+    document.querySelectorAll('.admin-filter-btn').forEach(btn => {
+        const isActive = btn.dataset.filter === filterRole;
+        btn.style.background = isActive ? 'var(--primary-color)' : 'white';
+        btn.style.color = isActive ? 'white' : btn.style.borderColor || '#666';
+        if (isActive) btn.classList.add('active'); else btn.classList.remove('active');
+    });
+
+    // Filtra righe
+    document.querySelectorAll('#admin-users-rows .admin-user-row').forEach(row => {
+        const role = row.dataset.role || 'studente';
+        let show = filterRole === 'tutti';
+        if (filterRole === 'docente' && role === 'docente') show = true;
+        if (filterRole === 'studente' && role !== 'docente' && role !== 'amico' && role !== 'guest' && role !== 'admin') show = true;
+        if (filterRole === 'amico' && (role === 'amico' || role === 'guest')) show = true;
+        row.style.display = show ? 'flex' : 'none';
+    });
+};
 
 window.adminDeleteUserInProfile = async function(uid, name) {
     if (!confirm(`Sei sicuro di voler eliminare definitivamente l'utente "${name}"? \n\nVerranno cancellati tutti i suoi dati e i suoi progressi dalla Palestra.`)) return;
