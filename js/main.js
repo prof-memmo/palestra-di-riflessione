@@ -2089,7 +2089,7 @@ function checkAnswer(selected, correct, type, id) {
             errorsHtml: errorsHtml
         };
 
-        window.UI.showFeedback(false, advancedFeedback, null, path);
+        window.UI.showFeedback(false, advancedFeedback, onConfirm, path);
     }
 }
 

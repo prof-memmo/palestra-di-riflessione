@@ -81,10 +81,10 @@ const UI = {
         
         const pathStr = path.join(',');
         const buttonsHtml = isCorrect 
-            ? `<button class="btn btn-primary" style="padding: 1.2rem 3rem; font-size: 1.2rem; border-radius: 50px; box-shadow: 0 10px 20px rgba(255,107,107,0.3);" onclick="UI.closeModal()">${isCorrect ? 'VAI AVANTI ➜' : 'PROVA ANCORA ➜'}</button>`
+            ? `<button class="btn btn-primary" style="padding: 1.2rem 3rem; font-size: 1.2rem; border-radius: 50px; box-shadow: 0 10px 20px rgba(255,107,107,0.3);" onclick="UI.closeModal()">VAI AVANTI ➜</button>`
             : `
                 <div style="display: flex; flex-direction: column; gap: 1rem; align-items: center;">
-                    <button class="btn btn-primary" style="padding: 1.2rem 3rem; font-size: 1.2rem; border-radius: 50px; width: 100%; max-width: 350px; box-shadow: 0 10px 20px rgba(255,107,107,0.3);" onclick="UI.closeModal()">PROVA ANCORA ➜</button>
+                    <button class="btn btn-primary" style="padding: 1.2rem 3rem; font-size: 1.2rem; border-radius: 50px; width: 100%; max-width: 350px; box-shadow: 0 10px 20px rgba(255,107,107,0.3); background: #34495e;" onclick="UI.closeModal()">HO CAPITO, VAI AVANTI ➜</button>
                     <button class="btn" style="background: none; color: #888; border: 1px solid #ddd; padding: 0.8rem 2rem; font-size: 0.95rem; border-radius: 50px; width: 100%; max-width: 300px; transition: all 0.3s;" onmouseover="this.style.background='#f5f5f5'" onmouseout="this.style.background='none'" onclick="window.UI.skipAndNavigate('${pathStr}')">RIPROVA PIÙ TARDI ➜</button>
                 </div>
             `;
@@ -1006,9 +1006,7 @@ const UI = {
         const data = getExerciseData(fullPath);
         const phases = [
             { id: 'scopri', title: 'SCOPRI', icon: '🧭', color: '#e0f7fa', desc: 'Teoria guidata e schede interattive' },
-            { id: 'allenati', title: 'ALLENATI', icon: '🏋️', color: '#fff3e0', desc: 'Esercizi e sfide di consolidamento' },
-            { id: 'verifica', title: 'VERIFICA', icon: '🧪', color: '#e8eaf6', desc: 'Mettiti alla prova con il test finale' },
-            { id: 'recupera', title: 'RECUPERA', icon: '🩹', color: '#fce4ec', desc: 'Ripasso e rinforzo dei concetti' }
+            { id: 'allenati', title: 'ALLENATI', icon: '🏋️', color: '#fff3e0', desc: 'Esercizi e sfide di consolidamento' }
         ];
 
         const availablePhases = phases.filter(p => {
@@ -1229,7 +1227,7 @@ const UI = {
         
         if (path && path.length >= 2) {
             const currentUdaId = path[path.length - 2];
-            const phases = ['scopri', 'allenati', 'verifica'];
+            const phases = ['scopri', 'allenati'];
             const nextPhaseIndex = phases.indexOf(phase) + 1;
             let foundNextPhase = false;
 
@@ -1240,7 +1238,14 @@ const UI = {
                     const candidatePath = [...path.slice(0, -1), candidatePhase];
                     const data = typeof getExerciseData === 'function' ? getExerciseData(candidatePath) : null;
                     
-                    if (data && (data.exercises || data.questions || (Array.isArray(data) && data.length > 0) || (typeof data === 'object' && Object.keys(data).length > 0))) {
+                    const hasContent = data && !data.error && (
+                        (Array.isArray(data) && data.length > 0) || 
+                        (data.exercises && data.exercises.length > 0) ||
+                        (data.questions && data.questions.length > 0) ||
+                        (typeof data === 'object' && !Array.isArray(data) && Object.keys(data).length > 0)
+                    );
+
+                    if (hasContent) {
                         nextPhaseBtn = `
                             <button class="btn" style="background: #27ae60; color: white; width: 100%; padding: 1.2rem; border-radius: 20px; font-weight: 800; margin-top: 1rem; border: none; cursor: pointer;" 
                                     onclick="window.currentExerciseIndex = 0; loadUdaPhase(['${candidatePath.join("','")}'])">
@@ -1440,7 +1445,7 @@ window.UI.verifyMultiLetturaAnswers = (exerciseId) => {
             map: "Alcune risposte sono errate!",
             reasoning: `Hai fatto ${mistakes} errori.`,
             example: "Rileggi con calma il testo e correggi i punti evidenziati in rosso."
-        });
+        }, null, path);
     }
 };
 
