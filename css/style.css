@@ -89,6 +89,8 @@ h1, h2, h3, h4, h5, h6, p, span, div, button {
     text-align: left;
 }
 .nav-item.active, .nav-item:hover { background: var(--primary-color); color: white; transform: scale(1.02); }
+.nav-item.logout { color: #e74c3c; }
+.nav-item.logout:hover { background: #fff0f0; color: #e74c3c; }
 .nav-item .icon { margin-right: 1.2rem; font-size: 1.4rem; }
 
 /* Floating Toggle - Persistent */

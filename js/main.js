@@ -2607,6 +2607,9 @@ function updateSidebarMenu() {
         html += `</li>`;
     }
 
+    html += `<li class="nav-logout-separator" style="margin-top: 1rem; border-top: 1px solid #f0f0f0; padding-top: 1rem;"></li>`;
+    html += `<li><a href="javascript:void(0)" class="nav-item logout" onclick="Auth.logout()"><span class="icon">🚪</span> <span>Esci</span></a></li>`;
+
     navLinks.innerHTML = html;
 }
 
