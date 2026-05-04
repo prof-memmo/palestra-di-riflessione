@@ -2101,6 +2101,57 @@ window.checkCompletionAnswer = (id, correct) => {
     checkAnswer(selected, correct.toLowerCase(), 'completion', id);
 };
 
+window.cycleWordState = (el, idx) => {
+    if (el.classList.contains('dittongo')) {
+        el.classList.remove('dittongo');
+        el.classList.add('trittongo');
+    } else if (el.classList.contains('trittongo')) {
+        el.classList.remove('trittongo');
+    } else {
+        el.classList.add('dittongo');
+    }
+};
+
+window.checkHighlightResults = (id, correctDittonghiStr, correctTrittonghiStr) => {
+    const tags = document.querySelectorAll('.word-tag');
+    const correctDittonghi = (correctDittonghiStr || "").toLowerCase().split(' ');
+    const correctTrittonghi = (correctTrittonghiStr || "").toLowerCase().split(' ');
+    
+    let errors = 0;
+    let foundD = 0;
+    let foundT = 0;
+    
+    tags.forEach(tag => {
+        const word = tag.innerText.replace(/[.,\/#!$%\^&\*;:{}=\-_~()]/g,"").trim().toLowerCase();
+        const isD = tag.classList.contains('dittongo');
+        const isT = tag.classList.contains('trittongo');
+        
+        const shouldBeD = correctDittonghi.includes(word);
+        const shouldBeT = correctTrittonghi.includes(word);
+        
+        if (isD && !shouldBeD) errors++;
+        if (isT && !shouldBeT) errors++;
+        if (!isD && shouldBeD) errors++;
+        if (!isT && shouldBeT) errors++;
+        
+        if (isD && shouldBeD) foundD++;
+        if (isT && shouldBeT) foundT++;
+    });
+    
+    if (errors === 0) {
+        checkAnswer('ok', 'ok', 'highlight', id);
+    } else {
+        // Mock feedback call to trigger the 'HO CAPITO, VAI AVANTI' modal via checkAnswer
+        // or call showFeedback with the specialized info but passing onConfirm equivalent
+        checkAnswer('error', 'ok', 'highlight', id, {
+            map: "Ci sono ancora degli errori o delle parole mancanti.",
+            reasoning: "Hai trovato " + foundD + " dittonghi e " + foundT + " trittonghi su quelli totali.",
+            example: "Ricorda: il dittongo è l'unione di due vocali, il trittongo di tre. Rileggi bene le parole che non hai segnato!"
+        });
+    }
+};
+
+
 window.checkHighlightAnswer = (id, correct) => {
     const selected = Array.from(document.querySelectorAll('.word-tag.selected')).map(s => s.innerText).join(' ');
     checkAnswer(selected, correct, 'highlight', id);

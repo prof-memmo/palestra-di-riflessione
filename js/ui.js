@@ -364,57 +364,7 @@ const UI = {
                     ${words.map((w, i) => `<span class="word-tag" onclick="window.cycleWordState(this, ${i})">${w}</span>`).join(' ')}
                 </div>
                 
-                <button class="btn btn-primary btn-verify" style="width: 100%; padding: 1.2rem; font-size: 1.2rem;" onclick="window.checkHighlightResults(${exercise.id})">VERIFICA SELEZIONE ➜</button>
-
-                <script>
-                    window.cycleWordState = function(el, idx) {
-                        if (el.classList.contains('dittongo')) {
-                            el.classList.remove('dittongo');
-                            el.classList.add('trittongo');
-                        } else if (el.classList.contains('trittongo')) {
-                            el.classList.remove('trittongo');
-                        } else {
-                            el.classList.add('dittongo');
-                        }
-                    };
-                    
-                    window.checkHighlightResults = function(exId) {
-                        const tags = document.querySelectorAll('.word-tag');
-                        const correctDittonghi = "${exercise.answer_dittongo}".toLowerCase().split(' ');
-                        const correctTrittonghi = "${exercise.answer_trittongo || ''}".toLowerCase().split(' ');
-                        
-                        let errors = 0;
-                        let foundD = 0;
-                        let foundT = 0;
-                        
-                        tags.forEach(tag => {
-                            const word = tag.innerText.replace(/[.,\/#!$%\^&\*;:{}=\-_~()]/g,"").trim().toLowerCase();
-                            const isD = tag.classList.contains('dittongo');
-                            const isT = tag.classList.contains('trittongo');
-                            
-                            const shouldBeD = correctDittonghi.includes(word);
-                            const shouldBeT = correctTrittonghi.includes(word);
-                            
-                            if (isD && !shouldBeD) errors++;
-                            if (isT && !shouldBeT) errors++;
-                            if (!isD && shouldBeD) errors++;
-                            if (!isT && shouldBeT) errors++;
-                            
-                            if (isD && shouldBeD) foundD++;
-                            if (isT && shouldBeT) foundT++;
-                        });
-                        
-                        if (errors === 0) {
-                            checkAnswer('ok', 'ok', 'highlight', exId);
-                        } else {
-                            UI.showFeedback(false, {
-                                map: "Ci sono ancora degli errori o delle parole mancanti.",
-                                reasoning: "Hai trovato " + foundD + " dittonghi e " + foundT + " trittonghi su quelli totali.",
-                                example: "Ricorda: il dittongo è l'unione di due vocali, il trittongo di tre. Rileggi bene le parole che non hai segnato!"
-                            });
-                        }
-                    };
-                </script>
+                <button class="btn btn-primary btn-verify" style="width: 100%; padding: 1.2rem; font-size: 1.2rem;" onclick="window.checkHighlightResults(${exercise.id}, '${exercise.answer_dittongo.replace(/'/g, "\\'")}', '${(exercise.answer_trittongo || '').replace(/'/g, "\\'")}')">VERIFICA SELEZIONE ➜</button>
             `;
         } else if (type === 'drag-drop') {
             interactionHtml = `
