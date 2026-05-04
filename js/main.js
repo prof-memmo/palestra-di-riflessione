@@ -2197,15 +2197,6 @@ window.checkDragDropAnswer = (id, correct) => {
 };
 
 function navigateExercise(direction, pathStr, skipVerify = false) {
-    // Se stiamo andando avanti, controlliamo se c'è un pulsante di verifica attivo
-    if (direction === 1 && !skipVerify) {
-        const verifyBtn = document.querySelector('.btn-verify');
-        if (verifyBtn) {
-            verifyBtn.click();
-            return;
-        }
-    }
-
     const path = pathStr.split(',');
     window.currentExerciseIndex += direction;
     if (window.currentExerciseIndex < 0) {
