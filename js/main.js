@@ -2034,6 +2034,22 @@ function checkAnswer(selected, correct, type, id) {
     const exercise = exercises.find(ex => ex.id === id);
     const feedback = exercise?.feedback || { map: "Riprova!", reasoning: "Pensa con calma.", success: "Ottimo lavoro!", example: "Hai applicato correttamente la regola." };
 
+    const onConfirm = () => {
+        window.currentExerciseIndex++;
+        const pathKey = `progress_${currentSection}_${currentSubType}_${currentLevel}_${currentExtra}`;
+        localStorage.setItem(pathKey, window.currentExerciseIndex.toString());
+
+        if (window.currentExerciseIndex >= exercises.length) {
+            // Fine della fase
+            localStorage.setItem('concluded_' + pathKey, 'true');
+            const score = window.Progress.getUdaScore();
+            document.getElementById('exercise-mount').innerHTML = window.UI.renderUdaPhaseEnd(phase, score, score < 70, path);
+        } else {
+            if (['scopri', 'allenati', 'verifica', 'recupera'].includes(phase)) loadUdaPhase(path);
+            else loadExercise(path);
+        }
+    };
+
     if (selected === correct) {
         window.Progress.addPoints(10);
         window.Progress.completeExercise(id);
@@ -2043,22 +2059,6 @@ function checkAnswer(selected, correct, type, id) {
             map: feedback.success || "Corretto! Ottimo lavoro.",
             reasoning: feedback.reasoning || "Hai dimostrato di padroneggiare questo concetto.",
             example: feedback.example || "Continua così per completare la sfida!"
-        };
-
-        const onConfirm = () => {
-            window.currentExerciseIndex++;
-            const pathKey = `progress_${currentSection}_${currentSubType}_${currentLevel}_${currentExtra}`;
-            localStorage.setItem(pathKey, window.currentExerciseIndex.toString());
-
-            if (window.currentExerciseIndex >= exercises.length) {
-                // Fine della fase
-                localStorage.setItem('concluded_' + pathKey, 'true');
-                const score = window.Progress.getUdaScore();
-                document.getElementById('exercise-mount').innerHTML = window.UI.renderUdaPhaseEnd(phase, score, score < 70, path);
-            } else {
-                if (['scopri', 'allenati', 'verifica', 'recupera'].includes(phase)) loadUdaPhase(path);
-                else loadExercise(path);
-            }
         };
 
         if (phase === 'scopri') {
