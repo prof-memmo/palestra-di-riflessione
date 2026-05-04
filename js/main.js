@@ -2114,8 +2114,8 @@ window.cycleWordState = (el, idx) => {
 
 window.checkHighlightResults = (id, correctDittonghiStr, correctTrittonghiStr) => {
     const tags = document.querySelectorAll('.word-tag');
-    const correctDittonghi = (correctDittonghiStr || "").toLowerCase().split(' ');
-    const correctTrittonghi = (correctTrittonghiStr || "").toLowerCase().split(' ');
+    const correctDittonghi = (correctDittonghiStr || "").toLowerCase().split(/\s+/).filter(Boolean);
+    const correctTrittonghi = (correctTrittonghiStr || "").toLowerCase().split(/\s+/).filter(Boolean);
     
     let errors = 0;
     let foundD = 0;

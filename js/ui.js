@@ -345,9 +345,6 @@ const UI = {
                         color: #a04000;
                     }
                 </style>
-                <div class="alert alert-info" style="margin-bottom: 2rem; border-left: 5px solid var(--primary-color);">
-                    <strong>💡 ISTRUZIONI:</strong> Clicca una volta per <span style="color:#27ae60">DITTONGO</span>, due volte per <span style="color:#d35400">TRITTONGO</span>, tre per deselezionare.
-                </div>
                 <div style="font-size: 1.5rem; line-height: 2.8; text-align: justify; background: white; padding: 2.5rem; border-radius: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); border: 1px solid #f0f0f0; margin-bottom: 2rem;" id="highlight-container">
                     ${words.map((w, i) => `<span class="word-tag" onclick="window.cycleWordState(this, ${i})">${w}</span>`).join(' ')}
                 </div>
