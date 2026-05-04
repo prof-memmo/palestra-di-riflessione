@@ -524,9 +524,7 @@ async function renderProfiloPage() {
     else if (points > 100) rank = "Esploratore";
 
     const isImage = user.avatar.includes('/') || user.avatar.includes('.');
-    const avatarHtml = isImage 
-        ? `<img src="${user.avatar}" alt="Avatar" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">` 
-        : `<span>${user.avatar}</span>`;
+    const avatarHtml = isImage ? `<img src="${user.avatar}" alt="Avatar" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">` : `<span>${user.avatar}</span>`;
 
     appContainer.innerHTML = `
         <div class="exercise-container">
@@ -699,7 +697,18 @@ async function renderProfiloPage() {
                             `).join('') : '<p style="color: #888; font-style: italic; text-align: center; padding: 2rem;">Inizia un esercizio per vederlo qui!</p>'}
                         </div>
                     </div>
-          async function loadAdminUsersInProfile() {
+                </div>
+            ` : ''}
+        </div>
+    `;
+    window.currentSection = 'profilo';
+    if (user.email === 'prof.memmo@gmail.com') {
+        loadAdminUsersInProfile();
+    }
+    if (typeof updateSidebarMenu === 'function') updateSidebarMenu();
+}
+
+async function loadAdminUsersInProfile() {
     if (!window.fbDb) return;
     const container = document.getElementById('admin-users-list');
     if (!container) return;
@@ -735,9 +744,7 @@ async function renderProfiloPage() {
         function renderUserRow(userData, docId) {
             const userProgress = userData._progress;
             const isImage = userData.avatar && (userData.avatar.includes('/') || userData.avatar.includes('.'));
-            const avatarHtml = isImage 
-                ? `<img src="${userData.avatar}" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;">` 
-                : `<span style="font-size: 1.5rem;">${userData.avatar || '👤'}</span>`;
+            const avatarHtml = isImage ? `<img src="${userData.avatar}" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;">` : `<span style="font-size: 1.5rem;">${userData.avatar || '👤'}</span>`;
             const role = (userData.role || 'studente').toLowerCase();
             const roleColors = { docente: '#2980b9', amico: '#8e44ad', guest: '#8e44ad', studente: '#27ae60', admin: '#e74c3c' };
             const roleColor = roleColors[role] || '#27ae60';
@@ -758,7 +765,7 @@ async function renderProfiloPage() {
                     <div style="font-weight: 800; color: var(--primary-color); font-size: 1.1rem;">${userProgress.points || 0} XP</div>
                     <div style="font-size: 0.8rem; color: #999;">${userProgress.vocab ? userProgress.vocab.length : 0} parole</div>
                 </div>
-                <button onclick="adminDeleteUserInProfile('${docId}', '${(userData.name || 'Anonimo').replace(/'/g, "\\'")}'')" style="background: #fff0f0; border: none; padding: 0.8rem; border-radius: 15px; cursor: pointer; color: #e74c3c; font-size: 1.2rem; transition: all 0.2s; margin-left: auto;" title="Elimina Utente">
+                <button onclick="adminDeleteUserInProfile('${docId}', '${(userData.name || 'Anonimo').replace(/'/g, "\\'")}')" style="background: #fff0f0; border: none; padding: 0.8rem; border-radius: 15px; cursor: pointer; color: #e74c3c; font-size: 1.2rem; transition: all 0.2s; margin-left: auto;" title="Elimina Utente">
                     🗑️
                 </button>
             </div>`;
@@ -861,9 +868,7 @@ async function renderAdminPage() {
                     const userData = doc.data();
                     const userProgress = progressMap[doc.id] || {};
                     const isImage = userData.avatar && (userData.avatar.includes('/') || userData.avatar.includes('.'));
-                    const avatarHtml = isImage 
-                        ? `<img src="${userData.avatar}" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;">` 
-                        : `<span style="font-size: 1.5rem;">${userData.avatar || '👤'}</span>`;
+                    const avatarHtml = isImage ? `<img src="${userData.avatar}" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;">` : `<span style="font-size: 1.5rem;">${userData.avatar || '👤'}</span>`;
 
                     html += `
                         <div class="admin-user-row" style="display: flex; flex-wrap: wrap; align-items: center; gap: 1rem; padding: 1.2rem; background: #f8f9fa; border-radius: 20px; border: 1px solid #eee; transition: all 0.2s;">
