@@ -303,7 +303,7 @@ const UI = {
         if (type === 'completion') {
             const parts = exercise.text.split('___');
             interactionHtml = `
-                <div style="font-size: 1.3rem; line-height: 1.8; text-align: left; background: white; padding: 2rem; border-radius: 20px; border: 1px solid #eee;">
+                <div style="font-size: 1.3rem; line-height: 2.2; text-align: justify; background: white; padding: 2.5rem; border-radius: 30px; border: 1px solid #eee; box-shadow: 0 10px 30px rgba(0,0,0,0.02);">
                     ${parts.map((p, i) => {
                         if (i < parts.length - 1) {
                             return `${p} <textarea class="completion-input" id="input-${i}" placeholder="..." oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px'"></textarea>`;
