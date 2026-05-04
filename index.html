@@ -39,7 +39,6 @@
 
                     <div style="background: #fff; padding: 1.5rem; border-radius: 30px; border: 2px solid #f0f0f0; box-shadow: 0 10px 20px rgba(0,0,0,0.02);">
                         <div id="registration-input-area" style="display:flex; flex-direction:column; gap:0.8rem;">
-                            <input type="text" id="login-name" placeholder="Il tuo nome" style="padding:0.9rem 1.2rem; border:1px solid #ddd; border-radius:50px; font-size:1rem; outline:none;">
                             <input type="email" id="login-email" placeholder="Email" style="padding:0.9rem 1.2rem; border:1px solid #ddd; border-radius:50px; font-size:1rem; outline:none;">
                             <input type="password" id="login-password" placeholder="Password" style="padding:0.9rem 1.2rem; border:1px solid #ddd; border-radius:50px; font-size:1rem; outline:none;">
                             <button class="btn btn-primary" onclick="handleEmailLogin()" style="width: 100%; padding: 1rem; font-weight: 800; border-radius: 50px; font-size: 1rem;">ACCEDI / REGISTRATI ➜</button>
@@ -68,6 +67,9 @@
         <div class="legal-modal-content">
             <span class="close-legal" onclick="hideLegal()">&times;</span>
             <div id="legal-text-container"></div>
+            <div style="text-align:center; padding: 1.5rem 0 0;">
+                <button onclick="confirmLegal()" style="padding: 0.8rem 2.5rem; border-radius: 50px; background: var(--primary-color); color: white; border: none; font-weight: 800; font-size: 1rem; cursor: pointer;">✅ Ho capito</button>
+            </div>
         </div>
     </div>
     

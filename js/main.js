@@ -81,10 +81,15 @@ const LEGAL_TEXTS = {
 };
 
 
+let _currentLegalType = null;
+let _hasConfirmedPrivacy = false;
+let _hasConfirmedTerms = false;
+
 window.showLegal = function(type) {
     const modal = document.getElementById('legal-modal');
     const container = document.getElementById('legal-text-container');
     if (modal && container) {
+        _currentLegalType = type;
         container.innerHTML = LEGAL_TEXTS[type] || 'Contenuto non disponibile.';
         modal.classList.remove('hidden');
     }
@@ -93,6 +98,19 @@ window.showLegal = function(type) {
 window.hideLegal = function() {
     const modal = document.getElementById('legal-modal');
     if (modal) modal.classList.add('hidden');
+};
+
+window.confirmLegal = function() {
+    if (_currentLegalType === 'privacy') _hasConfirmedPrivacy = true;
+    if (_currentLegalType === 'terms') _hasConfirmedTerms = true;
+
+    // Se entrambi confermati, spunta automaticamente la checkbox privacy
+    if (_hasConfirmedPrivacy && _hasConfirmedTerms) {
+        const checkPrivacy = document.getElementById('check-privacy');
+        if (checkPrivacy) checkPrivacy.checked = true;
+    }
+
+    hideLegal();
 };
 
 window.handleEmailLogin = async function() {
@@ -104,11 +122,10 @@ window.handleEmailLogin = async function() {
         return;
     }
 
-    const name = (document.getElementById('login-name')?.value || '').trim();
     const email = (document.getElementById('login-email')?.value || '').trim();
     const password = (document.getElementById('login-password')?.value || '').trim();
 
-    await Auth.loginWithEmail(name, email, password);
+    await Auth.loginWithEmail('', email, password);
 };
 
 window.handleGoogleLogin = function() {
