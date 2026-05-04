@@ -44,24 +44,12 @@ const UI = {
         let color = isCorrect ? 'var(--primary-color)' : '#e74c3c';
         let feedbackHtml = '';
         if (isCorrect) {
-            feedbackHtml = `
+            const hasMap = feedbackData.map && feedbackData.map !== "Ottimo lavoro!" && feedbackData.map !== "Corretto! Ottimo lavoro.";
+            feedbackHtml = hasMap ? `
                 <div class="map-container" style="background: #f0f4ff; border-radius: 20px; padding: 1.5rem; border-left: 6px solid var(--primary-color); text-align: left; margin-bottom: 1.5rem;">
-                    <h4 style="color: var(--primary-color); margin-bottom: 0.5rem; font-weight: 800; display: flex; align-items: center; gap: 0.5rem;">
-                        <span>🧠</span> LA MAPPA DEL SAPERE
-                    </h4>
-                    <p style="font-size: 1.1rem; line-height: 1.6; margin: 0;">${feedbackData.map || "Continua a studiare!"}</p>
+                    <p style="font-size: 1.1rem; line-height: 1.6; margin: 0; color: #2c3e50;">${feedbackData.map}</p>
                 </div>
-                <div class="reasoning-container" style="background: #fff9f0; border-radius: 20px; padding: 1.5rem; border-left: 6px solid #ffa502; text-align: left; margin-bottom: 1.5rem;">
-                    <h4 style="color: #ffa502; margin-bottom: 0.5rem; font-weight: 800; display: flex; align-items: center; gap: 0.5rem;">
-                        <span>💡</span> COME RAGIONARE
-                    </h4>
-                    <p style="font-size: 1.1rem; line-height: 1.6; margin: 0;">${feedbackData.reasoning || "Rifletti sulla regola."}</p>
-                </div>
-                <div class="example-box" style="background: #fdfdfd; border: 1px dashed #ddd; border-radius: 15px; padding: 1rem; text-align: left;">
-                    <strong style="color: #555;">✨ ESEMPIO PRATICO:</strong>
-                    <p style="font-size: 1.1rem; margin-top: 0.5rem; font-style: italic;">${feedbackData.example || "-"}</p>
-                </div>
-            `;
+            ` : '';
         } else {
             feedbackHtml = `
                 <div class="error-container" style="background: #fff5f5; border-radius: 20px; padding: 2rem; border: 2px solid #feb2b2; text-align: left; margin-bottom: 1.5rem;">
