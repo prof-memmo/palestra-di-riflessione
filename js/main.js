@@ -1799,6 +1799,7 @@ function mountError(message) {
 
 
 function loadExercise(path) {
+    window.currentPath = path;
     window.scrollTo({ top: 0, behavior: 'smooth' });
     
     // Update history
@@ -1868,6 +1869,7 @@ function loadExercise(path) {
 }
 
 function loadUdaPhase(path) {
+    window.currentPath = path;
     window.scrollTo({ top: 0, behavior: 'smooth' });
 
     // Update history
@@ -2014,25 +2016,28 @@ function checkSubAnswer(selected, correct, id) {
     }
 }
 
-function checkAnswer(selected, correct, type, id) {
-    const hash = window.location.hash.substring(1);
-    const parts = hash.split('/').filter(p => p && p !== 'null');
-    const section = parts[0];
-    const subType = parts[1];
-
-    const path = [];
-    let cursor = section;
-    while (cursor && cursor !== 'materie') {
-        path.unshift(cursor);
-        cursor = MATERIE_HIERARCHY[cursor] ? MATERIE_HIERARCHY[cursor].parent : null;
+function checkAnswer(selected, correct, type, id, feedbackOverride = null) {
+    const path = window.currentPath || [];
+    
+    // Fallback path reconstruction if global is missing
+    if (path.length === 0) {
+        const hash = window.location.hash.substring(1);
+        const parts = hash.split('/').filter(p => p && p !== 'null');
+        const section = parts[0];
+        const subType = parts[1];
+        let cursor = section;
+        while (cursor && cursor !== 'materie') {
+            path.unshift(cursor);
+            cursor = (typeof MATERIE_HIERARCHY !== 'undefined' && MATERIE_HIERARCHY[cursor]) ? MATERIE_HIERARCHY[cursor].parent : null;
+        }
+        if (subType) path.push(subType);
     }
-    if (subType) path.push(subType);
 
     const data = getExerciseData(path);
     const phase = path[path.length - 1];
     const exercises = Array.isArray(data) ? data : (data?.facile || []);
     const exercise = exercises.find(ex => ex.id === id);
-    const feedback = exercise?.feedback || { map: "Riprova!", reasoning: "Pensa con calma.", success: "Ottimo lavoro!", example: "Hai applicato correttamente la regola." };
+    const feedback = feedbackOverride || exercise?.feedback || { map: "Riprova!", reasoning: "Pensa con calma.", success: "Ottimo lavoro!", example: "Hai applicato correttamente la regola." };
 
     const onConfirm = () => {
         window.currentExerciseIndex++;
