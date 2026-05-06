@@ -303,7 +303,7 @@ const UI = {
         if (type === 'completion') {
             const parts = exercise.text.split('___');
             interactionHtml = `
-                <div style="font-size: 1.3rem; line-height: 2.2; text-align: justify; background: white; padding: 2.5rem; border-radius: 30px; border: 1px solid #eee; box-shadow: 0 10px 30px rgba(0,0,0,0.02);">
+                <div style="font-size: 1.3rem; line-height: 2.2; text-align: left; background: white; padding: 2.5rem; border-radius: 30px; border: 1px solid #eee; box-shadow: 0 10px 30px rgba(0,0,0,0.02);">
                     ${parts.map((p, i) => {
                         if (i < parts.length - 1) {
                             const answers = exercise.answer.split('|');
@@ -347,7 +347,7 @@ const UI = {
                         color: #a04000;
                     }
                 </style>
-                <div style="font-size: 1.5rem; line-height: 2.8; text-align: justify; background: white; padding: 2.5rem; border-radius: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); border: 1px solid #f0f0f0; margin-bottom: 2rem;" id="highlight-container">
+                <div style="font-size: 1.5rem; line-height: 2.8; text-align: left; background: white; padding: 2.5rem; border-radius: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); border: 1px solid #f0f0f0; margin-bottom: 2rem;" id="highlight-container">
                     ${words.map((w, i) => `<span class="word-tag" onclick="window.cycleWordState(this, ${i})">${w}</span>`).join(' ')}
                 </div>
                 
@@ -466,7 +466,7 @@ const UI = {
                     <span>${exercise.title || 'ESERCIZIO'}</span>
                     <span style="font-size: 1.3rem; font-weight: 700; color: #888; background: #eee; padding: 0.2rem 0.6rem; border-radius: 12px;">${window.currentExerciseIndex + 1}/${total}</span>
                 </h2>
-                ${exercise.text && !['highlight', 'completion', 'classification-grid', 'word-selector'].includes(type) ? `<p style="font-size: 1.4rem; font-weight: 700; margin-bottom: 1.5rem; text-align: justify; color: var(--primary-color);">${exercise.text}</p>` : ''}
+                ${exercise.text && !['highlight', 'completion', 'classification-grid', 'word-selector', 'sentence-analysis'].includes(type) ? `<p style="font-size: 1.4rem; font-weight: 700; margin-bottom: 1.5rem; text-align: left; color: var(--primary-color);">${exercise.text}</p>` : ''}
                 ${exercise.instruction ? `<p style="font-weight: 700; margin-bottom: 2rem; color: #555; background: #f0f7ff; padding: 1rem; border-radius: 10px; border-left: 4px solid var(--primary-color); text-align: justify;">${exercise.instruction}</p>` : ''}
                 ${interactionHtml}
                 ${path ? window.UI.renderNav(path, total) : ''}
