@@ -2201,6 +2201,32 @@ window.checkDragDropAnswer = (id, correct) => {
     window.dragDropState = {}; // Reset per il prossimo
 };
 
+window.toggleWordSelection = (el) => {
+    el.classList.toggle('selected');
+};
+
+window.checkWordSelectorAnswer = (id, correct) => {
+    const selected = Array.from(document.querySelectorAll('.word-selector-span.selected'))
+        .map(s => s.innerText.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, "").trim().toLowerCase());
+    
+    const correctParts = correct.toLowerCase().split('|').map(p => p.trim());
+    
+    // Controlliamo se tutte le parole corrette sono state selezionate e nient'altro
+    const isCorrect = selected.length === correctParts.length && 
+                      correctParts.every(cp => selected.includes(cp));
+                      
+    if (isCorrect) {
+        checkAnswer('ok', 'ok', 'word-selector', id);
+    } else {
+        checkAnswer('error', 'ok', 'word-selector', id, {
+            map: "La selezione non è corretta.",
+            reasoning: `Hai selezionato ${selected.length} elementi, ma la risposta corretta ne prevede ${correctParts.length}.`,
+            success: "Ottimo lavoro!",
+            example: "Rileggi con attenzione la frase e clicca solo sugli elementi richiesti."
+        });
+    }
+};
+
 function navigateExercise(direction, pathStr, skipVerify = false) {
     const path = pathStr.split(',');
     window.currentExerciseIndex += direction;
@@ -2836,6 +2862,14 @@ window.renderOnboardingPage = function() {
                         <p>Esplora liberamente i contenuti senza vincoli di classe.</p>
                     </div>
                 </div>
+
+                <!-- Back to Login / Change Email -->
+                <div style="text-align: center; margin-top: 2rem; border-top: 1px solid #f0f0f0; padding-top: 3rem;">
+                    <p style="font-size: 0.9rem; opacity: 0.6; margin-bottom: 1rem;">Hai sbagliato account o vuoi cambiare email?</p>
+                    <button class="btn btn-secondary" onclick="Auth.logout()" style="padding: 1rem 2.5rem; border-radius: 50px; font-weight: 800; font-size: 0.85rem; letter-spacing: 0.5px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); background: white; color: #555; border: 2px solid #eee;">
+                        ⬅️ TORNA AL LOGIN / CAMBIA EMAIL
+                    </button>
+                </div>
             </div>
 
             <!-- STEP 2: SETUP (Hidden by default) -->
@@ -2871,9 +2905,14 @@ window.renderOnboardingPage = function() {
                         <!-- Injected dynamically -->
                     </div>
 
-                    <div style="margin-top: 4rem; display: flex; gap: 1rem;">
-                        <button class="btn btn-secondary" style="flex: 1; border-radius: 50px;" onclick="window.location.reload()">⬅ INDIETRO</button>
-                        <button class="btn btn-primary" id="save-onboarding-btn" style="flex: 2; border-radius: 50px; font-size: 1.2rem; padding: 1.2rem;" onclick="saveOnboardingData()">COMPLETA CONFIGURAZIONE ➜</button>
+                    <div style="margin-top: 4rem; display: flex; flex-direction: column; gap: 1.5rem;">
+                        <div style="display: flex; gap: 1rem;">
+                            <button class="btn btn-secondary" style="flex: 1; border-radius: 50px;" onclick="goBackToStep1()">⬅ INDIETRO</button>
+                            <button class="btn btn-primary" id="save-onboarding-btn" style="flex: 2; border-radius: 50px; font-size: 1.2rem; padding: 1.2rem;" onclick="saveOnboardingData()">COMPLETA CONFIGURAZIONE ➜</button>
+                        </div>
+                        <div style="text-align: center;">
+                            <a href="javascript:void(0)" onclick="Auth.logout()" style="font-size: 0.85rem; color: #888; text-decoration: none; font-weight: 600;">Hai sbagliato email? Clicca qui per cambiare account</a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -2887,6 +2926,18 @@ window.renderOnboardingPage = function() {
             opt.classList.add('active');
         });
     });
+};
+
+window.goBackToStep1 = function() {
+    const step1 = document.getElementById('onboarding-step-1');
+    const step2 = document.getElementById('onboarding-step-2');
+    if (step1 && step2) {
+        step2.classList.add('hidden');
+        step1.classList.remove('hidden');
+        window.scrollTo(0, 0);
+    } else {
+        window.location.reload();
+    }
 };
 
 window.selectOnboardingRole = function(role) {

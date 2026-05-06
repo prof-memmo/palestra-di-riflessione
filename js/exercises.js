@@ -470,7 +470,7 @@ window.exercisesData = {
                         "type": "completion",
                         "title": "Inserisci le Maiuscole",
                         "instruction": "Completa con la lettera corretta (maiuscola o minuscola).",
-                        "text": "ieri ho visto ___ario. (M/m) ___i siamo divertiti molto. (C/c) ___oma è stupenda. (R/r)",
+                        "text": "<div style='text-align: left; padding-left: 2rem;'><ol><li>ieri ho visto ___ario. (M/m)</li><li>___i siamo divertiti molto. (C/c)</li><li>___oma è stupenda. (R/r)</li></ol></div>",
                         "answer": "M|C|R"
                     },
                     {
@@ -1339,7 +1339,7 @@ window.exercisesData = {
                         "type": "completion",
                         "title": "Uso della H",
                         "instruction": "Inserisci la parola corretta negli spazi (es. ho, o, hanno, anno).",
-                        "text": "Io ___ fame. Vieni ___ rimani qui? Loro ___ giocato bene. L'___ scorso siamo andati al mare.",
+                        "text": "<div style='text-align: left; padding-left: 2rem;'><ol><li>Io ___ fame.</li><li>Vieni ___ rimani qui?</li><li>Loro ___ giocato bene.</li><li>L'___ scorso siamo andati al mare.</li></ol></div>",
                         "answer": "ho|o|hanno|anno"
                     },
                     {
@@ -1799,7 +1799,7 @@ window.exercisesData = {
                         "type": "completion",
                         "title": "Uso della H",
                         "instruction": "Inserisci la parola corretta negli spazi (es. ho, o, hanno, anno).",
-                        "text": "Io ___ fame. Vieni ___ rimani qui? Loro ___ giocato bene. L'___ scorso siamo andati al mare.",
+                        "text": "<div style='text-align: left; padding-left: 2rem;'><ol><li>Io ___ fame.</li><li>Vieni ___ rimani qui?</li><li>Loro ___ giocato bene.</li><li>L'___ scorso siamo andati al mare.</li></ol></div>",
                         "answer": "ho|o|hanno|anno"
                     },
                     {
@@ -1852,7 +1852,7 @@ window.exercisesData = {
                         "type": "completion",
                         "title": "Inserisci le Maiuscole",
                         "instruction": "Completa con la lettera corretta (maiuscola o minuscola).",
-                        "text": "ieri ho visto ___ario. (M/m) ___i siamo divertiti molto. (C/c) ___oma è stupenda. (R/r)",
+                        "text": "<div style='text-align: left; padding-left: 2rem;'><ol><li>ieri ho visto ___ario. (M/m)</li><li>___i siamo divertiti molto. (C/c)</li><li>___oma è stupenda. (R/r)</li></ol></div>",
                         "answer": "M|C|R"
                     },
                     {
@@ -7627,8 +7627,9 @@ window.exercisesData = {
                 "allenati": [
                     {
                         "id": 3111,
-                        "type": "completion",
-                        "text": "Nei seguenti periodi, scrivi nel riquadro la PRIMA PAROLA della proposizione principale di ogni frase (scrivi in minuscolo):<br><br>1. Andate dritti al parco, e poi sedetevi sulla panchina. ___<br>2. Anche se c'era molto traffico, Anna è arrivata puntuale. ___<br>3. Siccome sono molto stanco, stasera vado a letto presto. ___<br>4. Il nonno sta leggendo il giornale che ha comprato in edicola. ___",
+                        "type": "word-selector",
+                        "instruction": "Nei seguenti periodi, CLICCA sulla PRIMA PAROLA della proposizione principale di ogni frase.",
+                        "text": "1. Andate dritti al parco, e poi sedetevi sulla panchina.<br>2. Anche se c'era molto traffico, Anna è arrivata puntuale.<br>3. Siccome sono molto stanco, stasera vado a letto presto.<br>4. Il nonno sta leggendo il giornale che ha comprato in edicola.",
                         "answer": "andate|anna|stasera|il"
                     },
                     {
@@ -7763,8 +7764,9 @@ window.exercisesData = {
                 "allenati": [
                     {
                         "id": 3411,
-                        "type": "completion",
-                        "text": "Nei seguenti periodi individua la proposizione incidentale e scrivi nel riquadro ESATTAMENTE la PRIMA PAROLA dell'incidentale (in minuscolo):<br><br>1. La nuova automobile, mi hanno detto, è molto silenziosa e veloce. ___<br>2. Luca non è arrivato in tempo per la riunione – si era addormentato – quindi il capo si è arrabbiato. ___<br>3. Domani, se non piove, faremo una bella scampagnata in montagna. ___<br>4. Questo ristorante (sebbene sia costoso) offre piatti di altissima qualità. ___",
+                        "type": "word-selector",
+                        "instruction": "Nei seguenti periodi individua la proposizione incidentale e CLICCA sulla sua PRIMA PAROLA.",
+                        "text": "1. La nuova automobile, mi hanno detto, è molto silenziosa e veloce.<br>2. Luca non è arrivato in tempo per la riunione – si era addormentato – quindi il capo si è arrabbiato.<br>3. Domani, se non piove, faremo una bella scampagnata in montagna.<br>4. Questo ristorante (sebbene sia costoso) offre piatti di altissima qualità.",
                         "answer": "mi|si|se|sebbene"
                     }
                 ],
@@ -8161,8 +8163,9 @@ window.exercisesData = {
                 "allenati": [
                     {
                         "id": 1111,
-                        "type": "completion",
-                        "text": "Nei seguenti periodi, individua la proposizione relativa e trascrivi nel riquadro la sua PRIMA PAROLA (in minuscolo):<br><br>1. La torta che ha preparato la nonna è davvero squisita. ___<br>2. I ragazzi ai quali ho prestato il libro non me lo hanno ancora restituito. ___<br>3. Il paese dove sono nato si trova in collina. ___<br>4. Non c'è nessuno a cui io voglia più bene di te. ___",
+                        "type": "word-selector",
+                        "instruction": "Nei seguenti periodi, individua la proposizione relativa e CLICCA sulla sua PRIMA PAROLA.",
+                        "text": "1. La torta che ha preparato la nonna è davvero squisita.<br>2. I ragazzi ai quali ho prestato il libro non me lo hanno ancora restituito.<br>3. Il paese dove sono nato si trova in collina.<br>4. Non c'è nessuno a cui io voglia più bene di te.",
                         "answer": "che|ai|dove|a"
                     },
                     {
@@ -8223,8 +8226,9 @@ window.exercisesData = {
                 "allenati": [
                     {
                         "id": 1211,
-                        "type": "completion",
-                        "text": "Nei seguenti periodi, individua la proposizione causale e trascrivi nel riquadro la sua PRIMA PAROLA (in minuscolo):<br><br>1. Non sono uscito in giardino siccome pioveva a dirotto. ___<br>2. Dal momento che sei stanco, faresti meglio a riposarti. ___<br>3. Ho mangiato troppo, perciò ora ho mal di pancia. ___<br>4. Poiché il treno era in ritardo, abbiamo perso la coincidenza. ___",
+                        "type": "word-selector",
+                        "instruction": "Nei seguenti periodi, individua la proposizione causale e CLICCA sulla sua PRIMA PAROLA.",
+                        "text": "1. Non sono uscito in giardino siccome pioveva a dirotto.<br>2. Dal momento che sei stanco, faresti meglio a riposarti.<br>3. Ho mangiato troppo, perciò ora ho mal di pancia.<br>4. Poiché il treno era in ritardo, abbiamo perso la coincidenza.",
                         "answer": "siccome|dal|perciò|poiché"
                     },
                     {

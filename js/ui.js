@@ -306,7 +306,9 @@ const UI = {
                 <div style="font-size: 1.3rem; line-height: 2.2; text-align: justify; background: white; padding: 2.5rem; border-radius: 30px; border: 1px solid #eee; box-shadow: 0 10px 30px rgba(0,0,0,0.02);">
                     ${parts.map((p, i) => {
                         if (i < parts.length - 1) {
-                            return `${p} <textarea class="completion-input" id="input-${i}" placeholder="..." oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px'"></textarea>`;
+                            const answers = exercise.answer.split('|');
+                            const answerLen = answers[i] ? answers[i].length : 3;
+                            return `${p} <input type="text" class="completion-input" id="input-${i}" placeholder="..." size="${Math.max(2, answerLen)}">`;
                         }
                         return p;
                     }).join('')}
@@ -353,7 +355,7 @@ const UI = {
             `;
         } else if (type === 'drag-drop') {
             interactionHtml = `
-                <div class="drag-container" style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; align-items: start;">
+                <div class="drag-container" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; align-items: start;">
                     <div style="display: flex; flex-direction: column; gap: 1rem;">
                         <p style="font-weight: 800; color: var(--primary-color); font-size: 0.9rem;">ELEMENTI</p>
                         ${exercise.draggables.map(d => `<div class="draggable-item" draggable="true" ondragstart="event.dataTransfer.setData('text', '${d.replace(/'/g, "\\'")}')" style="cursor: grab; background: #fff; border: 2px solid var(--primary-color); padding: 1rem; border-radius: 12px; font-weight: 700;">${d}</div>`).join('')}
@@ -375,27 +377,29 @@ const UI = {
             const answers = exercise.answers || [exercise.answer];
             
             interactionHtml = `
-                <div style="background: white; padding: 2.5rem; border-radius: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.05);">
-                    <table style="width: 100%; border-collapse: collapse;">
-                        <thead>
-                            <tr>
-                                <th style="text-align: left; padding: 1rem; color: #888; font-size: 0.8rem; letter-spacing: 1px;">PAROLA / FRASE</th>
-                                ${exercise.categories.map(c => `<th style="padding: 1rem; color: #888; font-size: 0.8rem; letter-spacing: 1px;">${c.toUpperCase()}</th>`).join('')}
-                            </tr>
-                        </thead>
-                        <tbody>
-                            ${stems.map((w, idx) => `
-                                <tr style="border-bottom: 1px solid #eee;">
-                                    <td style="padding: 1.5rem 1rem; font-weight: 700; color: var(--primary-color);">${w}</td>
-                                    ${exercise.categories.map(c => `
-                                        <td style="text-align: center; padding: 1rem;">
-                                            <input type="radio" name="classif-${exercise.id}-${idx}" value="${c.replace(/'/g, "\\'")}" style="transform: scale(1.5);">
-                                        </td>
-                                    `).join('')}
+                <div style="background: white; padding: 1.5rem; border-radius: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); overflow: hidden;">
+                    <div style="overflow-x: auto; -webkit-overflow-scrolling: touch; margin-bottom: 1rem;">
+                        <table style="width: 100%; border-collapse: collapse; min-width: 600px;">
+                            <thead>
+                                <tr>
+                                    <th style="text-align: left; padding: 1rem; color: #888; font-size: 0.8rem; letter-spacing: 1px; background: #fafafa; border-radius: 10px 0 0 10px;">PAROLA / FRASE</th>
+                                    ${exercise.categories.map((c, i) => `<th style="padding: 1rem; color: #888; font-size: 0.8rem; letter-spacing: 1px; background: #fafafa; ${i === exercise.categories.length - 1 ? 'border-radius: 0 10px 10px 0;' : ''}">${c.toUpperCase()}</th>`).join('')}
                                 </tr>
-                            `).join('')}
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                ${stems.map((w, idx) => `
+                                    <tr style="border-bottom: 1px solid #eee;">
+                                        <td style="padding: 1.5rem 1rem; font-weight: 700; color: var(--primary-color); white-space: normal; min-width: 150px;">${w}</td>
+                                        ${exercise.categories.map(c => `
+                                            <td style="text-align: center; padding: 1rem;">
+                                                <input type="radio" name="classif-${exercise.id}-${idx}" value="${c.replace(/'/g, "\\'")}" style="transform: scale(1.5); cursor: pointer;">
+                                            </td>
+                                        `).join('')}
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
                 <button class="btn btn-primary btn-verify" style="margin-top: 2rem; width: 100%;" onclick="checkMultiGridAnswer(${exercise.id}, ${JSON.stringify(answers).replace(/"/g, '&quot;')})">CONFERMA E VERIFICA ➜</button>
             `;
@@ -416,7 +420,7 @@ const UI = {
                     .sa-gap.active{background:#e74c3c;width:22px;}
                     .sa-gap.active::after{content:'/';color:white;font-weight:900;font-size:1.2rem;position:absolute;left:50%;top:50%;transform:translate(-50%,-52%);}
                     .sa-labels{display:flex;flex-direction:column;gap:0.7rem;margin-top:1rem;}
-                    .sa-label-row{display:flex;align-items:center;gap:0.8rem;background:#fff;border:1px solid #ddd;border-radius:10px;padding:0.7rem 1rem;}
+                    .sa-label-row{display:flex;align-items:center;gap:0.8rem;background:#fff;border:1px solid #ddd;border-radius:10px;padding:0.7rem 1rem;flex-wrap:wrap;}
                     .sa-label-num{font-weight:800;color:#e74c3c;min-width:24px;}
                     .sa-label-segment{font-weight:700;color:#2c3e50;min-width:160px;font-size:0.95rem;}
                     .sa-label-input{flex:1;border:1.5px solid #ccc;border-radius:8px;padding:0.4rem 0.8rem;font-size:0.95rem;font-family:inherit;}
@@ -428,6 +432,21 @@ const UI = {
                     <button class="btn btn-secondary" style="flex:1;" onclick="window.buildSaLabels()">✏️ ETICHETTA LE PARTI</button>
                     <button class="btn btn-primary btn-verify" style="flex:1;" onclick="window.checkSentenceAnalysis(${exercise.id})">✅ VERIFICA</button>
                 </div>
+            `;
+        } else if (type === 'word-selector') {
+            const textToSplit = exercise.sentence || exercise.text || "";
+            const words = textToSplit.split(/(\s+)/);
+            
+            interactionHtml = `
+                <div style="font-size: 1.4rem; line-height: 2.2; text-align: justify; background: white; padding: 2.5rem; border-radius: 30px; border: 1px solid #eee; box-shadow: 0 10px 30px rgba(0,0,0,0.02);" id="word-selector-container">
+                    ${words.map((w, i) => {
+                        if (w.trim() === "") return w;
+                        if (/^[.,\/#!$%\^&\*;:{}=\-_`~()]+$/.test(w)) return w;
+                        
+                        return `<span class="word-selector-span" onclick="window.toggleWordSelection(this)">${w}</span>`;
+                    }).join('')}
+                </div>
+                <button class="btn btn-primary btn-verify" style="margin-top: 2rem; width: 100%;" onclick="window.checkWordSelectorAnswer(${exercise.id}, '${exercise.answer.replace(/'/g, "\\'")}')">VERIFICA SELEZIONE</button>
             `;
         } else {
             // Default: Multiple Choice
