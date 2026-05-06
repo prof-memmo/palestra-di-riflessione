@@ -124,7 +124,7 @@ main {
     z-index: 1;
 }
 
-main.full-width { margin-left: 0; padding-left: 6rem; }
+main.full-width { margin-left: 0; padding: 4rem; }
 
 @media (max-width: 1024px) {
     main { margin-left: 0; padding: 6rem 1.5rem 3rem 1.5rem; }
@@ -191,6 +191,11 @@ main.full-width { margin-left: 0; padding-left: 6rem; }
 .exercise-container {
     background: white; padding: 4rem; border-radius: 40px;
     box-shadow: 0 10px 30px rgba(0,0,0,0.02); max-width: 1000px; margin: 0 auto;
+    transition: max-width 0.5s ease, padding 0.5s ease;
+}
+
+.full-width .exercise-container {
+    max-width: 95%;
 }
 .exercise-title { font-size: 2.5rem; font-weight: 800; margin-bottom: 2.5rem; color: var(--primary-color); }
 
