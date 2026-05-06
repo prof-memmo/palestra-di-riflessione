@@ -438,7 +438,7 @@ const UI = {
             const words = textToSplit.split(/(\s+)/);
             
             interactionHtml = `
-                <div style="font-size: 1.4rem; line-height: 2.2; text-align: justify; background: white; padding: 2.5rem; border-radius: 30px; border: 1px solid #eee; box-shadow: 0 10px 30px rgba(0,0,0,0.02);" id="word-selector-container">
+                <div style="font-size: 1.4rem; line-height: 2.2; text-align: left; background: white; padding: 2.5rem; border-radius: 30px; border: 1px solid #eee; box-shadow: 0 10px 30px rgba(0,0,0,0.02);" id="word-selector-container">
                     ${words.map((w, i) => {
                         if (w.trim() === "") return w;
                         if (/^[.,\/#!$%\^&\*;:{}=\-_`~()]+$/.test(w)) return w;
@@ -466,7 +466,7 @@ const UI = {
                     <span>${exercise.title || 'ESERCIZIO'}</span>
                     <span style="font-size: 1.3rem; font-weight: 700; color: #888; background: #eee; padding: 0.2rem 0.6rem; border-radius: 12px;">${window.currentExerciseIndex + 1}/${total}</span>
                 </h2>
-                ${exercise.text && !['highlight', 'completion', 'classification-grid'].includes(type) ? `<p style="font-size: 1.4rem; font-weight: 700; margin-bottom: 1.5rem; text-align: justify; color: var(--primary-color);">${exercise.text}</p>` : ''}
+                ${exercise.text && !['highlight', 'completion', 'classification-grid', 'word-selector'].includes(type) ? `<p style="font-size: 1.4rem; font-weight: 700; margin-bottom: 1.5rem; text-align: justify; color: var(--primary-color);">${exercise.text}</p>` : ''}
                 ${exercise.instruction ? `<p style="font-weight: 700; margin-bottom: 2rem; color: #555; background: #f0f7ff; padding: 1rem; border-radius: 10px; border-left: 4px solid var(--primary-color); text-align: justify;">${exercise.instruction}</p>` : ''}
                 ${interactionHtml}
                 ${path ? window.UI.renderNav(path, total) : ''}
