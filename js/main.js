@@ -2229,6 +2229,39 @@ window.checkWordSelectorAnswer = (id, correct) => {
 
 function navigateExercise(direction, pathStr, skipVerify = false) {
     const path = pathStr.split(',');
+    
+    // Se andiamo avanti e non abbiamo skippato la verifica, controlliamo se l'esercizio è completato
+    if (direction === 1 && !skipVerify) {
+        const verifyBtn = document.querySelector('.btn-verify');
+        if (verifyBtn) {
+            let isCompleted = false;
+            
+            // Logica per determinare se è completato in base al tipo
+            const inputs = document.querySelectorAll('.exercise-container input[type="text"]');
+            if (inputs.length > 0) {
+                isCompleted = Array.from(inputs).every(i => i.value.trim() !== '');
+            }
+            
+            const selectedWords = document.querySelectorAll('.word-selector-span.selected');
+            if (selectedWords.length > 0) isCompleted = true;
+            
+            const radioGroups = new Set(Array.from(document.querySelectorAll('input[type="radio"]')).map(r => r.name));
+            if (radioGroups.size > 0) {
+                isCompleted = Array.from(radioGroups).every(name => document.querySelector(`input[name="${name}"]:checked`));
+            }
+            
+            const dragZones = document.querySelectorAll('.drop-zone');
+            if (dragZones.length > 0) {
+                isCompleted = Array.from(dragZones).every(z => z.children.length > 0);
+            }
+
+            if (isCompleted) {
+                verifyBtn.click();
+                return; // Fermiamo la navigazione, il feedback gestirà il "prosegui"
+            }
+        }
+    }
+
     window.currentExerciseIndex += direction;
     if (window.currentExerciseIndex < 0) {
         window.currentExerciseIndex = 0;
