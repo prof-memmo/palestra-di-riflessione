@@ -7570,282 +7570,44 @@ window.exercisesData = {
                 ],
                 "allenati": [
                     {
-                        "id": 50001,
+                        "id": 3105,
                         "type": "classification-grid",
-                        "title": "Quante proposizioni?",
-                        "instruction": "Per ogni periodo, indica il numero di proposizioni (verbi) presenti.",
+                        "title": "Laboratorio: Frase Semplice o Complessa?",
+                        "instruction": "Leggi le seguenti frasi e trascinale nella colonna corretta, indicando se si tratta di una FRASE SEMPLICE (un solo verbo) o di un PERIODO / FRASE COMPLESSA (due o più verbi).",
                         "words": [
-                            "1. Quando arrivi, chiamami.",
-                            "2. Studio e ascolto musica.",
-                            "3. Se piove restiamo a casa.",
-                            "4. Mangio e bevo e rido.",
-                            "5. Penso che sia giusto."
+                            "Ieri pomeriggio sono andato al cinema con i miei amici.",
+                            "Quando tornerai a casa, troverai una bella sorpresa.",
+                            "Il gatto dorme profondamente sul divano del salotto.",
+                            "Non sapevo che Marco fosse partito per le vacanze.",
+                            "Mentre studiavo la lezione di storia, il telefono ha squillato all'improvviso.",
+                            "La torta al cioccolato della nonna è sempre buonissima."
                         ],
-                        "categories": ["1", "2", "3"],
+                        "categories": [
+                            "Frase Semplice",
+                            "Periodo (Complessa)"
+                        ],
                         "answers": {
-                            "1. Quando arrivi, chiamami.": "2",
-                            "2. Studio e ascolto musica.": "2",
-                            "3. Se piove restiamo a casa.": "2",
-                            "4. Mangio e bevo e rido.": "3",
-                            "5. Penso che sia giusto.": "2"
+                            "Ieri pomeriggio sono andato al cinema con i miei amici.": "Frase Semplice",
+                            "Quando tornerai a casa, troverai una bella sorpresa.": "Periodo (Complessa)",
+                            "Il gatto dorme profondamente sul divano del salotto.": "Frase Semplice",
+                            "Non sapevo che Marco fosse partito per le vacanze.": "Periodo (Complessa)",
+                            "Mentre studiavo la lezione di storia, il telefono ha squillato all'improvviso.": "Periodo (Complessa)",
+                            "La torta al cioccolato della nonna è sempre buonissima.": "Frase Semplice"
                         }
-                    },
-                    {
-                        "id": 50002,
-                        "type": "multiple-choice",
-                        "title": "È un periodo?",
-                        "text": "Quale delle due opzioni è un PERIODO (frase complessa)?",
-                        "options": ["Luca corre", "Luca corre mentre io cammino"],
-                        "answer": "Luca corre mentre io cammino"
-                    },
-                    {
-                        "id": 50003,
-                        "type": "multiple-choice",
-                        "title": "È un periodo?",
-                        "text": "Quale delle due opzioni è un PERIODO?",
-                        "options": ["Studio", "Studio perché voglio migliorare"],
-                        "answer": "Studio perché voglio migliorare"
-                    },
-                    {
-                        "id": 50004,
-                        "type": "multiple-choice",
-                        "title": "È un periodo?",
-                        "text": "Quale delle due opzioni è un PERIODO?",
-                        "options": ["Piove", "Piove ma esco"],
-                        "answer": "Piove ma esco"
-                    },
-                    {
-                        "id": 50005,
-                        "type": "multiple-choice",
-                        "title": "È un periodo?",
-                        "text": "Quale delle due opzioni è un PERIODO?",
-                        "options": ["Mangio", "Mangio e bevo"],
-                        "answer": "Mangio e bevo"
-                    },
-                    {
-                        "id": 50006,
-                        "type": "multiple-choice",
-                        "title": "È un periodo?",
-                        "text": "Quale delle due opzioni è un PERIODO?",
-                        "options": ["Dormo", "Dormo quando sono stanco"],
-                        "answer": "Dormo quando sono stanco"
                     }
                 ],
                 "verifica": [],
                 "recupera": []
             },
             "udaPeriodo2": {
-                "scopri": [
-                    {
-                        "id": 3102,
-                        "title": "La Proposizione Principale",
-                        "theory": "In ogni periodo esiste sempre una <span style='color: #e74c3c; font-weight: bold;'>PROPOSIZIONE PRINCIPALE</span>, che è la frase più importante.<br><br>La proposizione principale è <span style='color: #27ae60; font-weight: bold;'>SINTATTICAMENTE INDIPENDENTE</span>: ha un senso compiuto e può stare da sola anche senza il resto del periodo.<br><br><em>Esempio</em>: Poiché faceva freddo, <span style='color: #2980b9; font-weight: bold;'>GIULIO HA ACCESO IL CAMINO</span> per riscaldarsi.<br>In rosso troviamo la frase principale, perché ha senso anche da sola!",
-                        "text": "La proposizione principale può stare da sola?",
-                        "options": [
-                            "Sì, ha senso compiuto",
-                            "No, ha bisogno di altre frasi"
-                        ],
-                        "answer": "Sì, ha senso compiuto"
-                    },
-                    {
-                        "id": 3104,
-                        "title": "Tipi di Proposizione Principale",
-                        "theory": "La proposizione principale può assumere diverse sfumature di significato:<br><br>• <span style='color: #2980b9; font-weight: bold;'>INFORMATIVA</span>: dà un'informazione (Es. Il treno parte alle nove).<br>• <span style='color: #e74c3c; font-weight: bold;'>INTERROGATIVA</span>: esprime una domanda diretta (Es. Che ore sono?).<br>• <span style='color: #27ae60; font-weight: bold;'>ESCLAMATIVA</span>: esprime stupore, rabbia o gioia (Es. Che bella sorpresa!).<br>• <span style='color: #d35400; font-weight: bold;'>VOLITIVA</span>: esprime un ordine, un divieto o un invito (Es. Studia di più! / Non toccare!).<br>• <span style='color: #8e44ad; font-weight: bold;'>DESIDERATIVA</span>: esprime un augurio o un desiderio (Es. Magari nevicasse!).",
-                        "text": "Che tipo di principale è: 'Apri subito quella porta!'?",
-                        "options": [
-                            "Informativa",
-                            "Volitiva"
-                        ],
-                        "answer": "Volitiva"
-                    }
-                ],
-                "allenati": [
-                    {
-                        "id": 50007,
-                        "type": "classification-grid",
-                        "title": "Riconosci la principale",
-                        "instruction": "Individua quale parte del periodo è la proposizione principale.",
-                        "words": [
-                            "Quando arrivi, chiamami.",
-                            "Se studi, passi.",
-                            "Anche se piove, esco.",
-                            "Quando torno, ti vedo.",
-                            "Se vieni, partiamo."
-                        ],
-                        "categories": ["Principale", "Secondaria"],
-                        "answers": {
-                            "Quando arrivi, chiamami.": "Principale",
-                            "Se studi, passi.": "Principale",
-                            "Anche se piove, esco.": "Principale",
-                            "Quando torno, ti vedo.": "Principale",
-                            "Se vieni, partiamo.": "Principale"
-                        },
-                        "custom_answers": {
-                            "Quando arrivi, chiamami.": "chiamami",
-                            "Se studi, passi.": "passi",
-                            "Anche se piove, esco.": "esco",
-                            "Quando torno, ti vedo.": "ti vedo",
-                            "Se vieni, partiamo.": "partiamo"
-                        }
-                    },
-                    {
-                        "id": 50008,
-                        "type": "multiple-choice",
-                        "title": "Completa il periodo",
-                        "text": "Quando arrivo...",
-                        "options": ["piove", "ti chiamo"],
-                        "answer": "ti chiamo"
-                    },
-                    {
-                        "id": 50009,
-                        "type": "multiple-choice",
-                        "title": "Completa il periodo",
-                        "text": "Se studi...",
-                        "options": ["passi l’esame", "perché sei bravo"],
-                        "answer": "passi l’esame"
-                    },
-                    {
-                        "id": 50010,
-                        "type": "multiple-choice",
-                        "title": "Completa il periodo",
-                        "text": "Anche se piove...",
-                        "options": ["esco", "perché esco"],
-                        "answer": "esco"
-                    },
-                    {
-                        "id": 50011,
-                        "type": "multiple-choice",
-                        "title": "Completa il periodo",
-                        "text": "Quando torni...",
-                        "options": ["ti vedo", "vedo"],
-                        "answer": "ti vedo"
-                    },
-                    {
-                        "id": 50012,
-                        "type": "multiple-choice",
-                        "title": "Completa il periodo",
-                        "text": "Se vieni...",
-                        "options": ["partiamo", "partiamo perché"],
-                        "answer": "partiamo"
-                    },
-                    {
-                        "id": 3111,
-                        "type": "word-selector",
-                        "instruction": "Nei seguenti periodi, CLICCA sulla PRIMA PAROLA della proposizione principale di ogni frase.",
-                        "text": "1. Andate dritti al parco, e poi sedetevi sulla panchina.<br>2. Anche se c'era molto traffico, Anna è arrivata puntuale.<br>3. Siccome sono molto stanco, stasera vado a letto presto.<br>4. Il nonno sta leggendo il giornale che ha comprato in edicola.",
-                        "answer": "andate|anna|stasera|il"
-                    },
-                    {
-                        "id": 3113,
-                        "type": "classification-grid",
-                        "title": "Tipi di Proposizione Principale",
-                        "instruction": "Classifica ogni proposizione principale in base alla sua funzione comunicativa.",
-                        "words": [
-                            "Che fortuna che hai avuto!",
-                            "Non correre così veloce nel corridoio!",
-                            "Quanti anni compie tuo cugino?",
-                            "Domani andremo a visitare il museo di storia naturale.",
-                            "Oh, se potessi vincere alla lotteria!"
-                        ],
-                        "categories": [
-                            "Informativa",
-                            "Interrogativa",
-                            "Esclamativa",
-                            "Volitiva",
-                            "Desiderativa"
-                        ],
-                        "answers": {
-                            "Che fortuna che hai avuto!": "Esclamativa",
-                            "Non correre così veloce nel corridoio!": "Volitiva",
-                            "Quanti anni compie tuo cugino?": "Interrogativa",
-                            "Domani andremo a visitare il museo di storia naturale.": "Informativa",
-                            "Oh, se potessi vincere alla lotteria!": "Desiderativa"
-                        }
-                    }
-                ],
+                "scopri": [],
+                "allenati": [],
                 "verifica": [],
                 "recupera": []
             },
             "udaPeriodo5": {
-                "scopri": [
-                    {
-                        "id": 3103,
-                        "title": "Coordinazione e Subordinazione",
-                        "theory": "Le altre proposizioni di un periodo si collegano alla principale in due modi:<br><br>• Per <span style='color: #e67e22; font-weight: bold;'>COORDINAZIONE</span>: si legano alla principale tramite congiunzioni coordinanti (e, ma, o, perciò) o segni di punteggiatura debole (virgola). Sono frasi indipendenti.<br><em>Esempio</em>: Il cane abbaia (principale) <span style='color: #e67e22; font-weight: bold;'>E scodinzola</span> (coordinata).<br><br>• Per <span style='color: #8e44ad; font-weight: bold;'>SUBORDINAZIONE</span>: si legano alla principale tramite congiunzioni subordinanti (perché, quando, sebbene). Sono frasi <span style='color: #c0392b; font-weight: bold;'>DIPENDENTI</span> e non autonome.<br><em>Esempio</em>: Il cane abbaia (principale) <span style='color: #8e44ad; font-weight: bold;'>QUANDO vede un gatto</span> (subordinata).",
-                        "text": "Le proposizioni subordinate sono autonome?",
-                        "options": [
-                            "Sì, sono autonome",
-                            "No, dipendono da un'altra frase"
-                        ],
-                        "answer": "No, dipendono da un'altra frase"
-                    }
-                ],
-                "allenati": [
-                    {
-                        "id": 50021,
-                        "type": "classification-grid",
-                        "title": "Coordinazione o Subordinazione?",
-                        "instruction": "Indica il tipo di legame tra le proposizioni.",
-                        "words": [
-                            "Studio e ascolto musica.",
-                            "Studio perché voglio migliorare.",
-                            "Esco ma piove.",
-                            "Resto perché sono stanco.",
-                            "Corro e salto."
-                        ],
-                        "categories": ["Coordinazione", "Subordinazione"],
-                        "answers": {
-                            "Studio e ascolto musica.": "Coordinazione",
-                            "Studio perché voglio migliorare.": "Subordinazione",
-                            "Esco ma piove.": "Coordinazione",
-                            "Resto perché sono stanco.": "Subordinazione",
-                            "Corro e salto.": "Coordinazione"
-                        }
-                    },
-                    {
-                        "id": 50022,
-                        "type": "classification-grid",
-                        "title": "Riconosci il legame",
-                        "instruction": "A quale categoria appartiene la congiunzione?",
-                        "words": [
-                            "e",
-                            "perché",
-                            "ma",
-                            "quando",
-                            "o"
-                        ],
-                        "categories": ["Coordinazione", "Subordinazione"],
-                        "answers": {
-                            "e": "Coordinazione",
-                            "perché": "Subordinazione",
-                            "ma": "Coordinazione",
-                            "quando": "Subordinazione",
-                            "o": "Coordinazione"
-                        }
-                    },
-                    {
-                        "id": 3112,
-                        "type": "classification-grid",
-                        "title": "Coordinazione o Subordinazione?",
-                        "instruction": "Per ogni periodo, indica se la proposizione evidenziata è coordinata o subordinata.",
-                        "words": [
-                            "Mio fratello suona la chitarra PERCHÉ AMA LA MUSICA.",
-                            "Abbiamo studiato molto, PERCIÒ ADESSO CI RIPOSIAMO.",
-                            "Vorrei uscire MA FUORI STA PIOVENDO FORTE.",
-                            "MENTRE GUARDAVA LA TELEVISIONE, il gatto si è addormentato sul divano."
-                        ],
-                        "categories": [
-                            "Coordinata",
-                            "Subordinata"
-                        ],
-                        "answers": {
-                            "Mio fratello suona la chitarra PERCHÉ AMA LA MUSICA.": "Subordinata",
-                            "Abbiamo studiato molto, PERCIÒ ADESSO CI RIPOSIAMO.": "Coordinata",
-                            "Vorrei uscire MA FUORI STA PIOVENDO FORTE.": "Coordinata",
-                            "MENTRE GUARDAVA LA TELEVISIONE, il gatto si è addormentato sul divano.": "Subordinata"
-                        }
-                    }
-                ],
+                "scopri": [],
+                "allenati": [],
                 "verifica": [],
                 "recupera": []
             },
@@ -7864,67 +7626,6 @@ window.exercisesData = {
                     }
                 ],
                 "allenati": [
-                    {
-                        "id": 50013,
-                        "type": "classification-grid",
-                        "title": "Diretta o Indiretta?",
-                        "instruction": "Indica se l'interrogativa è DIRETTA (punto di domanda) o INDIRETTA (senza punto di domanda).",
-                        "words": [
-                            "Dove vai?",
-                            "Mi chiedo dove vai.",
-                            "Non so perché ridi.",
-                            "Quando arrivi?",
-                            "Dimmi cosa fai."
-                        ],
-                        "categories": ["Diretta", "Indiretta"],
-                        "answers": {
-                            "Dove vai?": "Diretta",
-                            "Mi chiedo dove vai.": "Indiretta",
-                            "Non so perché ridi.": "Indiretta",
-                            "Quando arrivi?": "Diretta",
-                            "Dimmi cosa fai.": "Indiretta"
-                        }
-                    },
-                    {
-                        "id": 50014,
-                        "type": "multiple-choice",
-                        "title": "Trasforma l'interrogativa",
-                        "text": "Trasforma in indiretta: 'Dove vai?'",
-                        "options": ["Dimmi dove vai", "So dove vai"],
-                        "answer": "Dimmi dove vai"
-                    },
-                    {
-                        "id": 50015,
-                        "type": "multiple-choice",
-                        "title": "Trasforma l'interrogativa",
-                        "text": "Trasforma in indiretta: 'Quando arrivi?'",
-                        "options": ["Chiedo quando arrivi", "Dimmi quando arrivi"],
-                        "answer": "Dimmi quando arrivi"
-                    },
-                    {
-                        "id": 50016,
-                        "type": "multiple-choice",
-                        "title": "Trasforma l'interrogativa",
-                        "text": "Trasforma in indiretta: 'Perché ridi?'",
-                        "options": ["Dimmi perché ridi", "Perché ridi"],
-                        "answer": "Dimmi perché ridi"
-                    },
-                    {
-                        "id": 50017,
-                        "type": "multiple-choice",
-                        "title": "Trasforma l'interrogativa",
-                        "text": "Trasforma in indiretta: 'Chi viene?'",
-                        "options": ["Dimmi chi viene", "Chi viene"],
-                        "answer": "Dimmi chi viene"
-                    },
-                    {
-                        "id": 50018,
-                        "type": "multiple-choice",
-                        "title": "Trasforma l'interrogativa",
-                        "text": "Trasforma in indiretta: 'Che fai?'",
-                        "options": ["Dimmi che fai", "Che fai"],
-                        "answer": "Dimmi che fai"
-                    },
                     {
                         "id": 3311,
                         "type": "classification-grid",
@@ -7969,66 +7670,9 @@ window.exercisesData = {
                 ],
                 "allenati": [
                     {
-                        "id": 50019,
-                        "type": "classification-grid",
-                        "title": "Individua l'incidentale",
-                        "instruction": "Quale parte della frase è la proposizione incidentale?",
-                        "words": [
-                            "Marco, che è gentile, mi aiuta.",
-                            "Il film, devo dirlo, è bello.",
-                            "Luca, come sai, studia.",
-                            "Il libro, secondo me, è interessante.",
-                            "Gianni, credo, arriverà."
-                        ],
-                        "categories": ["Principale", "Incidentale"],
-                        "answers": {
-                            "Marco, che è gentile, mi aiuta.": "Incidentale",
-                            "Il film, devo dirlo, è bello.": "Incidentale",
-                            "Luca, come sai, studia.": "Incidentale",
-                            "Il libro, secondo me, è interessante.": "Incidentale",
-                            "Gianni, credo, arriverà.": "Incidentale"
-                        },
-                        "custom_answers": {
-                            "Marco, che è gentile, mi aiuta.": "che è gentile",
-                            "Il film, devo dirlo, è bello.": "devo dirlo",
-                            "Luca, come sai, studia.": "come sai",
-                            "Il libro, secondo me, è interessante.": "secondo me",
-                            "Gianni, credo, arriverà.": "credo"
-                        }
-                    },
-                    {
-                        "id": 50020,
-                        "type": "classification-grid",
-                        "title": "Funzione dell'incidentale",
-                        "instruction": "Rispondi alle domande sulla proposizione incidentale.",
-                        "words": [
-                            "A cosa serve?",
-                            "È una parte...",
-                            "Si può togliere senza cambiare il senso?",
-                            "Da cosa è separata?",
-                            "Cosa introduce?"
-                        ],
-                        "categories": ["Opzione A", "Opzione B"],
-                        "answers": {
-                            "A cosa serve?": "Opzione A",
-                            "È una parte...": "Opzione B",
-                            "Si può togliere senza cambiare il senso?": "Opzione A",
-                            "Da cosa è separata?": "Opzione A",
-                            "Cosa introduce?": "Opzione A"
-                        },
-                        "labels": {
-                            "A cosa serve?": ["aggiungere informazione", "indicare tempo"],
-                            "È una parte...": ["essenziale", "accessoria"],
-                            "Si può togliere senza cambiare il senso?": ["sì", "no"],
-                            "Da cosa è separata?": ["virgole", "punti"],
-                            "Cosa introduce?": ["informazione secondaria", "azione principale"]
-                        }
-                    },
-                    {
                         "id": 3411,
-                        "type": "word-selector",
-                        "instruction": "Nei seguenti periodi individua la proposizione incidentale e CLICCA sulla sua PRIMA PAROLA.",
-                        "text": "1. La nuova automobile, mi hanno detto, è molto silenziosa e veloce.<br>2. Luca non è arrivato in tempo per la riunione – si era addormentato – quindi il capo si è arrabbiato.<br>3. Domani, se non piove, faremo una bella scampagnata in montagna.<br>4. Questo ristorante (sebbene sia costoso) offre piatti di altissima qualità.",
+                        "type": "completion",
+                        "text": "Nei seguenti periodi individua la proposizione incidentale e scrivi nel riquadro ESATTAMENTE la PRIMA PAROLA dell'incidentale (in minuscolo):<br><br>1. La nuova automobile, mi hanno detto, è molto silenziosa e veloce. ___<br>2. Luca non è arrivato in tempo per la riunione – si era addormentato – quindi il capo si è arrabbiato. ___<br>3. Domani, se non piove, faremo una bella scampagnata in montagna. ___<br>4. Questo ristorante (sebbene sia costoso) offre piatti di altissima qualità. ___",
                         "answer": "mi|si|se|sebbene"
                     }
                 ],
@@ -8061,67 +7705,6 @@ window.exercisesData = {
                     }
                 ],
                 "allenati": [
-                    {
-                        "id": 50023,
-                        "type": "classification-grid",
-                        "title": "Tipo di coordinata",
-                        "instruction": "Indica il tipo di coordinata presente nel periodo.",
-                        "words": [
-                            "Studio e ascolto musica.",
-                            "Esco ma piove.",
-                            "Mangi o bevi?",
-                            "Ha piovuto, perciò resto a casa.",
-                            "Infatti ho ragione."
-                        ],
-                        "categories": ["Copulativa", "Avversativa", "Disgiuntiva", "Conclusiva", "Esplicativa"],
-                        "answers": {
-                            "Studio e ascolto musica.": "Copulativa",
-                            "Esco ma piove.": "Avversativa",
-                            "Mangi o bevi?": "Disgiuntiva",
-                            "Ha piovuto, perciò resto a casa.": "Conclusiva",
-                            "Infatti ho ragione.": "Esplicativa"
-                        }
-                    },
-                    {
-                        "id": 50024,
-                        "type": "multiple-choice",
-                        "title": "Completa con la coordinata",
-                        "text": "Studio...",
-                        "options": ["e imparo", "perché imparo"],
-                        "answer": "e imparo"
-                    },
-                    {
-                        "id": 50025,
-                        "type": "multiple-choice",
-                        "title": "Completa con la coordinata",
-                        "text": "Piove...",
-                        "options": ["ma esco", "se esco"],
-                        "answer": "ma esco"
-                    },
-                    {
-                        "id": 50026,
-                        "type": "multiple-choice",
-                        "title": "Completa con la coordinata",
-                        "text": "Vieni...",
-                        "options": ["o resti?", "perché resti?"],
-                        "answer": "o resti?"
-                    },
-                    {
-                        "id": 50027,
-                        "type": "multiple-choice",
-                        "title": "Completa con la coordinata",
-                        "text": "Sono stanco...",
-                        "options": ["perciò dormo", "quando dormo"],
-                        "answer": "perciò dormo"
-                    },
-                    {
-                        "id": 50028,
-                        "type": "multiple-choice",
-                        "title": "Completa con la coordinata",
-                        "text": "Ho fame...",
-                        "options": ["infatti mangio", "mentre mangio"],
-                        "answer": "infatti mangio"
-                    },
                     {
                         "id": 3611,
                         "type": "classification-grid",
@@ -8215,74 +7798,6 @@ window.exercisesData = {
                     }
                 ],
                 "allenati": [
-                    {
-                        "id": 50029,
-                        "type": "multiple-choice",
-                        "title": "Individua la subordinata",
-                        "text": "Studio perché voglio imparare.",
-                        "options": ["Studio", "perché voglio imparare"],
-                        "answer": "perché voglio imparare"
-                    },
-                    {
-                        "id": 50030,
-                        "type": "multiple-choice",
-                        "title": "Individua la subordinata",
-                        "text": "Se piove, resto a casa.",
-                        "options": ["Se piove", "resto a casa"],
-                        "answer": "Se piove"
-                    },
-                    {
-                        "id": 50031,
-                        "type": "multiple-choice",
-                        "title": "Individua la subordinata",
-                        "text": "Vengo anche se sono stanco.",
-                        "options": ["Vengo", "anche se sono stanco"],
-                        "answer": "anche se sono stanco"
-                    },
-                    {
-                        "id": 50032,
-                        "type": "multiple-choice",
-                        "title": "Individua la subordinata",
-                        "text": "Quando arrivi, chiamami.",
-                        "options": ["Quando arrivi", "chiamami"],
-                        "answer": "Quando arrivi"
-                    },
-                    {
-                        "id": 50033,
-                        "type": "multiple-choice",
-                        "title": "Individua la subordinata",
-                        "text": "Esco per comprare il pane.",
-                        "options": ["Esco", "per comprare il pane"],
-                        "answer": "per comprare il pane"
-                    },
-                    {
-                        "id": 50034,
-                        "type": "classification-grid",
-                        "title": "Caratteristiche della subordinata",
-                        "instruction": "Rispondi alle domande sulla proposizione subordinata.",
-                        "words": [
-                            "È autonoma?",
-                            "Cosa indica?",
-                            "Come si lega?",
-                            "Di che grado può essere?",
-                            "Può essere implicita?"
-                        ],
-                        "categories": ["Opzione A", "Opzione B"],
-                        "answers": {
-                            "È autonoma?": "Opzione B",
-                            "Cosa indica?": "Opzione A",
-                            "Come si lega?": "Opzione A",
-                            "Di che grado può essere?": "Opzione A",
-                            "Può essere implicita?": "Opzione A"
-                        },
-                        "labels": {
-                            "È autonoma?": ["sì", "no"],
-                            "Cosa indica?": ["una circostanza", "un'azione principale"],
-                            "Come si lega?": ["con congiunzioni", "con punti"],
-                            "Di che grado può essere?": ["1°, 2°, ecc.", "solo 1°"],
-                            "Può essere implicita?": ["sì, con l’infinito", "no, mai"]
-                        }
-                    },
                     {
                         "id": 4511,
                         "type": "classification-grid",
@@ -8384,50 +7899,6 @@ window.exercisesData = {
                 ],
                 "allenati": [
                     {
-                        "id": 50035,
-                        "type": "classification-grid",
-                        "title": "Individua la soggettiva",
-                        "instruction": "Quale parte della frase è la proposizione soggettiva?",
-                        "words": [
-                            "Si dice che pioverà.",
-                            "Pare che tu abbia ragione.",
-                            "È bene studiare.",
-                            "Bisogna andare.",
-                            "Sembra che tutto vada bene."
-                        ],
-                        "categories": ["Principale", "Soggettiva"],
-                        "answers": {
-                            "Si dice che pioverà.": "Soggettiva",
-                            "Pare che tu abbia ragione.": "Soggettiva",
-                            "È bene studiare.": "Soggettiva",
-                            "Bisogna andare.": "Soggettiva",
-                            "Sembra che tutto vada bene.": "Soggettiva"
-                        },
-                        "custom_answers": {
-                            "Si dice che pioverà.": "che pioverà",
-                            "Pare che tu abbia ragione.": "che tu abbia ragione",
-                            "È bene studiare.": "studiare",
-                            "Bisogna andare.": "andare",
-                            "Sembra che tutto vada bene.": "che tutto vada bene"
-                        }
-                    },
-                    {
-                        "id": 50036,
-                        "type": "multiple-choice",
-                        "title": "Riconosci la soggettiva",
-                        "text": "Quale di queste è una soggettiva?",
-                        "options": ["Si spera di vincere", "Io spero di vincere"],
-                        "answer": "Si spera di vincere"
-                    },
-                    {
-                        "id": 50037,
-                        "type": "multiple-choice",
-                        "title": "Riconosci la soggettiva",
-                        "text": "Quale di queste è una soggettiva?",
-                        "options": ["È chiaro che hai capito", "Ho capito che è chiaro"],
-                        "answer": "È chiaro che hai capito"
-                    },
-                    {
                         "id": 811,
                         "type": "multiple-choice",
                         "text": "Laboratorio di ripasso: Cosa sono le proposizioni?",
@@ -8482,50 +7953,6 @@ window.exercisesData = {
                     }
                 ],
                 "allenati": [
-                    {
-                        "id": 50038,
-                        "type": "classification-grid",
-                        "title": "Individua l'oggettiva",
-                        "instruction": "Quale parte della frase è la proposizione oggettiva?",
-                        "words": [
-                            "Dico che hai ragione.",
-                            "Credo di aver capito.",
-                            "Spero che tu venga.",
-                            "Voglio mangiare.",
-                            "Penso che sia tardi."
-                        ],
-                        "categories": ["Principale", "Oggettiva"],
-                        "answers": {
-                            "Dico che hai ragione.": "Oggettiva",
-                            "Credo di aver capito.": "Oggettiva",
-                            "Spero che tu venga.": "Oggettiva",
-                            "Voglio mangiare.": "Oggettiva",
-                            "Penso che sia tardi.": "Oggettiva"
-                        },
-                        "custom_answers": {
-                            "Dico che hai ragione.": "che hai ragione",
-                            "Credo di aver capito.": "di aver capito",
-                            "Spero che tu venga.": "che tu venga",
-                            "Voglio mangiare.": "mangiare",
-                            "Penso che sia tardi.": "che sia tardi"
-                        }
-                    },
-                    {
-                        "id": 50039,
-                        "type": "multiple-choice",
-                        "title": "Riconosci l'oggettiva",
-                        "text": "Quale di queste è una oggettiva?",
-                        "options": ["Io credo che tu sia bravo", "Si crede che tu sia bravo"],
-                        "answer": "Io credo che tu sia bravo"
-                    },
-                    {
-                        "id": 50040,
-                        "type": "multiple-choice",
-                        "title": "Riconosci l'oggettiva",
-                        "text": "Quale di queste è una oggettiva?",
-                        "options": ["Luca dice di no", "Si dice di no"],
-                        "answer": "Luca dice di no"
-                    },
                     {
                         "id": 911,
                         "type": "classification-grid",
@@ -8590,50 +8017,6 @@ window.exercisesData = {
                 ],
                 "allenati": [
                     {
-                        "id": 50041,
-                        "type": "classification-grid",
-                        "title": "Individua la dichiarativa",
-                        "instruction": "Quale parte della frase è la proposizione dichiarativa?",
-                        "words": [
-                            "Ho questo pensiero: che pioverà.",
-                            "Ti dico questo: che hai ragione.",
-                            "Mi spaventa l'idea di cadere.",
-                            "Ho la speranza di farcela.",
-                            "Ti chiedo una cosa: che tu sia sincero."
-                        ],
-                        "categories": ["Principale", "Dichiarativa"],
-                        "answers": {
-                            "Ho questo pensiero: che pioverà.": "Dichiarativa",
-                            "Ti dico questo: che hai ragione.": "Dichiarativa",
-                            "Mi spaventa l'idea di cadere.": "Dichiarativa",
-                            "Ho la speranza di farcela.": "Dichiarativa",
-                            "Ti chiedo una cosa: che tu sia sincero.": "Dichiarativa"
-                        },
-                        "custom_answers": {
-                            "Ho questo pensiero: che pioverà.": "che pioverà",
-                            "Ti dico questo: che hai ragione.": "che hai ragione",
-                            "Mi spaventa l'idea di cadere.": "di cadere",
-                            "Ho la speranza di farcela.": "di farcela",
-                            "Ti chiedo una cosa: che tu sia sincero.": "che tu sia sincero"
-                        }
-                    },
-                    {
-                        "id": 50042,
-                        "type": "multiple-choice",
-                        "title": "Riconosci la dichiarativa",
-                        "text": "Quale di queste è una dichiarativa?",
-                        "options": ["Ho il dubbio che tu menta", "Dubito che tu menta"],
-                        "answer": "Ho il dubbio che tu menta"
-                    },
-                    {
-                        "id": 50043,
-                        "type": "multiple-choice",
-                        "title": "Riconosci la dichiarativa",
-                        "text": "Quale di queste è una dichiarativa?",
-                        "options": ["Ti prometto questo: che verrò", "Ti prometto che verrò"],
-                        "answer": "Ti prometto questo: che verrò"
-                    },
-                    {
                         "id": 1011,
                         "type": "classification-grid",
                         "title": "Soggettiva, Oggettiva, Dichiarativa o Interrogativa Indiretta?",
@@ -8685,46 +8068,9 @@ window.exercisesData = {
                 ],
                 "allenati": [
                     {
-                        "id": 50044,
-                        "type": "classification-grid",
-                        "title": "Individua la relativa",
-                        "instruction": "Quale parte della frase è la proposizione relativa?",
-                        "words": [
-                            "L'uomo che corre è mio padre.",
-                            "Il libro che leggi è bello.",
-                            "La casa dove abito è vecchia.",
-                            "L'amico di cui ti parlo è qui.",
-                            "Il cane che abbaia non morde."
-                        ],
-                        "categories": ["Principale", "Relativa"],
-                        "answers": {
-                            "L'uomo che corre è mio padre.": "Relativa",
-                            "Il libro che leggi è bello.": "Relativa",
-                            "La casa dove abito è vecchia.": "Relativa",
-                            "L'amico di cui ti parlo è qui.": "Relativa",
-                            "Il cane che abbaia non morde.": "Relativa"
-                        },
-                        "custom_answers": {
-                            "L'uomo che corre è mio padre.": "che corre",
-                            "Il libro che leggi è bello.": "che leggi",
-                            "La casa dove abito è vecchia.": "dove abito",
-                            "L'amico di cui ti parlo è qui.": "di cui ti parlo",
-                            "Il cane che abbaia non morde.": "che abbaia"
-                        }
-                    },
-                    {
-                        "id": 50045,
-                        "type": "multiple-choice",
-                        "title": "Riconosci la relativa",
-                        "text": "Quale di queste è una relativa?",
-                        "options": ["Ho comprato un libro che mi piace", "Ho comprato un libro perché mi piace"],
-                        "answer": "Ho comprato un libro che mi piace"
-                    },
-                    {
                         "id": 1111,
-                        "type": "word-selector",
-                        "instruction": "Nei seguenti periodi, individua la proposizione relativa e CLICCA sulla sua PRIMA PAROLA.",
-                        "text": "1. La torta che ha preparato la nonna è davvero squisita.<br>2. I ragazzi ai quali ho prestato il libro non me lo hanno ancora restituito.<br>3. Il paese dove sono nato si trova in collina.<br>4. Non c'è nessuno a cui io voglia più bene di te.",
+                        "type": "completion",
+                        "text": "Nei seguenti periodi, individua la proposizione relativa e trascrivi nel riquadro la sua PRIMA PAROLA (in minuscolo):<br><br>1. La torta che ha preparato la nonna è davvero squisita. ___<br>2. I ragazzi ai quali ho prestato il libro non me lo hanno ancora restituito. ___<br>3. Il paese dove sono nato si trova in collina. ___<br>4. Non c'è nessuno a cui io voglia più bene di te. ___",
                         "answer": "che|ai|dove|a"
                     },
                     {
@@ -8784,26 +8130,9 @@ window.exercisesData = {
                 ],
                 "allenati": [
                     {
-                        "id": 50046,
-                        "type": "multiple-choice",
-                        "title": "Individua la causale",
-                        "text": "Non esco perché piove.",
-                        "options": ["Non esco", "perché piove"],
-                        "answer": "perché piove"
-                    },
-                    {
-                        "id": 50047,
-                        "type": "multiple-choice",
-                        "title": "Individua la causale",
-                        "text": "Siccome sono stanco, dormo.",
-                        "options": ["Siccome sono stanco", "dormo"],
-                        "answer": "Siccome sono stanco"
-                    },
-                    {
                         "id": 1211,
-                        "type": "word-selector",
-                        "instruction": "Nei seguenti periodi, individua la proposizione causale e CLICCA sulla sua PRIMA PAROLA.",
-                        "text": "1. Non sono uscito in giardino siccome pioveva a dirotto.<br>2. Dal momento che sei stanco, faresti meglio a riposarti.<br>3. Ho mangiato troppo, perciò ora ho mal di pancia.<br>4. Poiché il treno era in ritardo, abbiamo perso la coincidenza.",
+                        "type": "completion",
+                        "text": "Nei seguenti periodi, individua la proposizione causale e trascrivi nel riquadro la sua PRIMA PAROLA (in minuscolo):<br><br>1. Non sono uscito in giardino siccome pioveva a dirotto. ___<br>2. Dal momento che sei stanco, faresti meglio a riposarti. ___<br>3. Ho mangiato troppo, perciò ora ho mal di pancia. ___<br>4. Poiché il treno era in ritardo, abbiamo perso la coincidenza. ___",
                         "answer": "siccome|dal|perciò|poiché"
                     },
                     {
@@ -8845,22 +8174,6 @@ window.exercisesData = {
                     }
                 ],
                 "allenati": [
-                    {
-                        "id": 50048,
-                        "type": "multiple-choice",
-                        "title": "Individua la finale",
-                        "text": "Studio per imparare.",
-                        "options": ["Studio", "per imparare"],
-                        "answer": "per imparare"
-                    },
-                    {
-                        "id": 50049,
-                        "type": "multiple-choice",
-                        "title": "Individua la finale",
-                        "text": "Ti chiamo affinché tu venga.",
-                        "options": ["Ti chiamo", "affinché tu venga"],
-                        "answer": "affinché tu venga"
-                    },
                     {
                         "id": 1311,
                         "type": "completion",
@@ -8907,6 +8220,69 @@ window.exercisesData = {
                 "verifica": [],
                 "recupera": []
             },
+            "udaPeriodoGuidata1": {
+                "scopri": [],
+                "allenati": [
+                    {
+                        "id": 1501,
+                        "type": "sentence-analysis",
+                        "title": "Analisi del Periodo Guidata 1",
+                        "instruction": "Clicca tra le parole per inserire una barretta (/), poi clicca ETICHETTA per indicare il nome della proposizione.",
+                        "sentence": "Tutti sanno che Alessandro è un vero asso nel nuoto."
+                    },
+                    {
+                        "id": 1502,
+                        "type": "sentence-analysis",
+                        "title": "Analisi del Periodo Guidata 1",
+                        "instruction": "Clicca tra le parole per inserire una barretta (/), poi clicca ETICHETTA per indicare il nome della proposizione.",
+                        "sentence": "Si spera che finiscano presto i lavori stradali."
+                    }
+                ],
+                "verifica": [],
+                "recupera": []
+            },
+            "udaPeriodoGuidata2": {
+                "scopri": [],
+                "allenati": [
+                    {
+                        "id": 1601,
+                        "type": "sentence-analysis",
+                        "title": "Analisi del Periodo Guidata 2",
+                        "instruction": "Clicca tra le parole per inserire una barretta (/), poi clicca ETICHETTA per indicare il nome della proposizione.",
+                        "sentence": "Dopo tanto tempo ci guardavamo in silenzio senza trovare parole, ma ogni tanto sorridevamo l'uno all'altro."
+                    },
+                    {
+                        "id": 1602,
+                        "type": "sentence-analysis",
+                        "title": "Analisi del Periodo Guidata 2",
+                        "instruction": "Clicca tra le parole per inserire una barretta (/), poi clicca ETICHETTA per indicare il nome della proposizione.",
+                        "sentence": "Occorre proprio che porti il cane dal veterinario per fargli fare un controllo generale."
+                    }
+                ],
+                "verifica": [],
+                "recupera": []
+            },
+            "udaPeriodoGuidataFinale": {
+                "scopri": [],
+                "allenati": [
+                    {
+                        "id": 1701,
+                        "type": "sentence-analysis",
+                        "title": "Analisi del Periodo Finale",
+                        "instruction": "Esercizio di riepilogo: clicca tra le parole per separare le proposizioni, poi assegna ad ognuna la sua etichetta corretta.",
+                        "sentence": "La professoressa ci ha spiegato che, se studiamo con attenzione, supereremo l'esame senza alcuna difficoltà."
+                    },
+                    {
+                        "id": 1702,
+                        "type": "sentence-analysis",
+                        "title": "Analisi del Periodo Finale",
+                        "instruction": "Esercizio di riepilogo: clicca tra le parole per separare le proposizioni, poi assegna ad ognuna la sua etichetta corretta.",
+                        "sentence": "Mentre tornavo a casa, ho incontrato Marco che mi ha detto di avere trovato un nuovo lavoro in centro."
+                    }
+                ],
+                "verifica": [],
+                "recupera": []
+            },
             "udaPeriodo14": {
                 "scopri": [
                     {
@@ -8922,22 +8298,6 @@ window.exercisesData = {
                     }
                 ],
                 "allenati": [
-                    {
-                        "id": 50050,
-                        "type": "multiple-choice",
-                        "title": "Individua la temporale",
-                        "text": "Quando piove, non esco.",
-                        "options": ["Quando piove", "non esco"],
-                        "answer": "Quando piove"
-                    },
-                    {
-                        "id": 50051,
-                        "type": "multiple-choice",
-                        "title": "Individua la temporale",
-                        "text": "Mentre mangio, leggo.",
-                        "options": ["Mentre mangio", "leggo"],
-                        "answer": "Mentre mangio"
-                    },
                     {
                         "id": 1411,
                         "type": "multiple-choice",
@@ -8964,138 +8324,6 @@ window.exercisesData = {
                         "type": "completion",
                         "text": "Fai l'analisi del periodo: dividi le seguenti frasi in proposizioni inserendo una barretta verticale `|` in ogni spazio vuoto.<br><br>1. Ieri pomeriggio sono andato al parco con gli amici ___ e abbiamo giocato a pallone ___ finché non è calato il sole.<br><br>2. Mentre passeggiavo nel bosco ___ ho trovato un cucciolo ___ che si era perso.",
                         "answer": "|||||"
-                    }
-                ],
-                "verifica": [],
-                "recupera": []
-            },
-            "udaPeriodoGuidata1": {
-                "scopri": [
-                    {
-                        "id": 15001,
-                        "title": "I 4 passi dell'Analisi del Periodo",
-                        "theory": "Fare l'<span style='color:#2980b9;font-weight:bold'>ANALISI DEL PERIODO</span> significa individuare le funzioni delle varie proposizioni che lo compongono ed esaminare le loro reciproche relazioni. Ecco le quattro operazioni da seguire:<br><br>1️⃣ <span style='color:#e74c3c;font-weight:bold'>SCOMPONI IL PERIODO IN PROPOSIZIONI</span><br>Individua tutti i <span style='color:#27ae60;font-weight:bold'>predicati</span> (verbi) e dividi il periodo inserendo delle barrette. Ricorda: a ogni verbo corrisponde una proposizione!<br><br>2️⃣ <span style='color:#e74c3c;font-weight:bold'>INDIVIDUA LA PRINCIPALE E LE SUE COORDINATE</span><br>Cerca la <span style='color:#8e44ad;font-weight:bold'>proposizione portante</span>, quella che ha senso da sola, non dipende da altre e ha un verbo di modo finito.<br><br>3️⃣ <span style='color:#e74c3c;font-weight:bold'>RICONOSCI LE SUBORDINATE E LE LORO COORDINATE</span><br>Individua le frasi dipendenti dalla principale (di 1° grado), o da altre subordinate (di 2°, 3° grado...).<br><br>4️⃣ <span style='color:#e74c3c;font-weight:bold'>INDIVIDUA LA FORMA E LA FUNZIONE SPECIFICA</span><br>Per ogni subordinata precisa la <span style='color:#8e44ad;font-weight:bold'>FORMA</span> (esplicita o implicita) e la <span style='color:#e67e22;font-weight:bold'>FUNZIONE</span> (soggettiva, oggettiva, causale, finale, ecc.).",
-                        "text": "Cosa bisogna cercare per prima cosa per scomporre il periodo in proposizioni?",
-                        "options": [
-                            "I predicati (verbi)",
-                            "Le congiunzioni"
-                        ],
-                        "answer": "I predicati (verbi)"
-                    },
-                    {
-                        "id": 15002,
-                        "title": "La sintassi e lo schema grafico",
-                        "theory": "L'analisi logica del periodo può essere raffigurata visivamente tramite uno <span style='color:#2980b9;font-weight:bold'>SCHEMA GRAFICO</span> ad albero, che rende subito evidenti i rapporti di dipendenza e la struttura della frase complessa.<br><br>🔹 <span style='color:#e74c3c;font-weight:bold'>Al vertice</span> si posiziona sempre la <b>Proposizione Principale</b>.<br>🔹 <span style='color:#27ae60;font-weight:bold'>Sullo stesso livello</span> si affiancano le eventuali <b>Coordinate</b>.<br>🔹 <span style='color:#8e44ad;font-weight:bold'>Sui livelli inferiori</span> si collegano le <b>Subordinate</b> di 1°, 2°, 3° grado ecc., tracciando delle linee che le uniscono alla proposizione da cui dipendono.<br><br>Questo schema ti aiuterà a non perdere mai il filo durante le tue analisi!",
-                        "text": "Dove si posiziona la proposizione principale in uno schema grafico ad albero?",
-                        "options": [
-                            "Al vertice (in cima)",
-                            "Sui livelli inferiori"
-                        ],
-                        "answer": "Al vertice (in cima)"
-                    }
-                ],
-                "allenati": [
-                    {
-                        "id": 1501,
-                        "type": "sentence-analysis",
-                        "title": "Allenamento Combinato 1",
-                        "instruction": "Clicca tra le parole per inserire una barretta (/), poi clicca ETICHETTA per indicare il nome della proposizione.",
-                        "sentence": "Tutti sanno che Alessandro è un vero asso nel nuoto."
-                    },
-                    {
-                        "id": 1502,
-                        "type": "sentence-analysis",
-                        "title": "Allenamento Combinato 1",
-                        "instruction": "Clicca tra le parole per inserire una barretta (/), poi clicca ETICHETTA per indicare il nome della proposizione.",
-                        "sentence": "Si spera che finiscano presto i lavori stradali."
-                    }
-                ],
-                "verifica": [],
-                "recupera": []
-            },
-            "udaPeriodoGuidata2": {
-                "scopri": [
-                    {
-                        "id": 15006,
-                        "title": "I 4 passi dell'Analisi del Periodo",
-                        "theory": "Fare l'<span style='color:#2980b9;font-weight:bold'>ANALISI DEL PERIODO</span> significa individuare le funzioni delle varie proposizioni che lo compongono ed esaminare le loro reciproche relazioni. Ecco le quattro operazioni da seguire:<br><br>1️⃣ <span style='color:#e74c3c;font-weight:bold'>SCOMPONI IL PERIODO IN PROPOSIZIONI</span><br>Individua tutti i <span style='color:#27ae60;font-weight:bold'>predicati</span> (verbi) e dividi il periodo inserendo delle barrette. Ricorda: a ogni verbo corrisponde una proposizione!<br><br>2️⃣ <span style='color:#e74c3c;font-weight:bold'>INDIVIDUA LA PRINCIPALE E LE SUE COORDINATE</span><br>Cerca la <span style='color:#8e44ad;font-weight:bold'>proposizione portante</span>, quella che ha senso da sola, non dipende da altre e ha un verbo di modo finito.<br><br>3️⃣ <span style='color:#e74c3c;font-weight:bold'>RICONOSCI LE SUBORDINATE E LE LORO COORDINATE</span><br>Individua le frasi dipendenti dalla principale (di 1° grado), o da altre subordinate (di 2°, 3° grado...).<br><br>4️⃣ <span style='color:#e74c3c;font-weight:bold'>INDIVIDUA LA FORMA E LA FUNZIONE SPECIFICA</span><br>Per ogni subordinata precisa la <span style='color:#8e44ad;font-weight:bold'>FORMA</span> (esplicita o implicita) e la <span style='color:#e67e22;font-weight:bold'>FUNZIONE</span> (soggettiva, oggettiva, causale, finale, ecc.).",
-                        "text": "Cosa bisogna cercare per prima cosa per scomporre il periodo in proposizioni?",
-                        "options": [
-                            "I predicati (verbi)",
-                            "Le congiunzioni"
-                        ],
-                        "answer": "I predicati (verbi)"
-                    },
-                    {
-                        "id": 15007,
-                        "title": "La sintassi e lo schema grafico",
-                        "theory": "L'analisi logica del periodo può essere raffigurata visivamente tramite uno <span style='color:#2980b9;font-weight:bold'>SCHEMA GRAFICO</span> ad albero, che rende subito evidenti i rapporti di dipendenza e la struttura della frase complessa.<br><br>🔹 <span style='color:#e74c3c;font-weight:bold'>Al vertice</span> si posiziona sempre la <b>Proposizione Principale</b>.<br>🔹 <span style='color:#27ae60;font-weight:bold'>Sullo stesso livello</span> si affiancano le eventuali <b>Coordinate</b>.<br>🔹 <span style='color:#8e44ad;font-weight:bold'>Sui livelli inferiori</span> si collegano le <b>Subordinate</b> di 1°, 2°, 3° grado ecc., tracciando delle linee che le uniscono alla proposizione da cui dipendono.<br><br>Questo schema ti aiuterà a non perdere mai il filo durante le tue analisi!",
-                        "text": "Dove si posiziona la proposizione principale in uno schema grafico ad albero?",
-                        "options": [
-                            "Al vertice (in cima)",
-                            "Sui livelli inferiori"
-                        ],
-                        "answer": "Al vertice (in cima)"
-                    }
-                ],
-                "allenati": [
-                    {
-                        "id": 1601,
-                        "type": "sentence-analysis",
-                        "title": "Allenamento Combinato 2",
-                        "instruction": "Clicca tra le parole per inserire una barretta (/), poi clicca ETICHETTA per indicare il nome della proposizione.",
-                        "sentence": "Dopo tanto tempo ci guardavamo in silenzio senza trovare parole, ma ogni tanto sorridevamo l'uno all'altro."
-                    },
-                    {
-                        "id": 1602,
-                        "type": "sentence-analysis",
-                        "title": "Allenamento Combinato 2",
-                        "instruction": "Clicca tra le parole per inserire una barretta (/), poi clicca ETICHETTA per indicare il nome della proposizione.",
-                        "sentence": "Occorre proprio che porti il cane dal veterinario per fargli fare un controllo generale."
-                    }
-                ],
-                "verifica": [],
-                "recupera": []
-            },
-            "udaPeriodoGuidataFinale": {
-                "scopri": [
-                    {
-                        "id": 15011,
-                        "title": "I 4 passi dell'Analisi del Periodo",
-                        "theory": "Fare l'<span style='color:#2980b9;font-weight:bold'>ANALISI DEL PERIODO</span> significa individuare le funzioni delle varie proposizioni che lo compongono ed esaminare le loro reciproche relazioni. Ecco le quattro operazioni da seguire:<br><br>1️⃣ <span style='color:#e74c3c;font-weight:bold'>SCOMPONI IL PERIODO IN PROPOSIZIONI</span><br>Individua tutti i <span style='color:#27ae60;font-weight:bold'>predicati</span> (verbi) e dividi il periodo inserendo delle barrette. Ricorda: a ogni verbo corrisponde una proposizione!<br><br>2️⃣ <span style='color:#e74c3c;font-weight:bold'>INDIVIDUA LA PRINCIPALE E LE SUE COORDINATE</span><br>Cerca la <span style='color:#8e44ad;font-weight:bold'>proposizione portante</span>, quella che ha senso da sola, non dipende da altre e ha un verbo di modo finito.<br><br>3️⃣ <span style='color:#e74c3c;font-weight:bold'>RICONOSCI LE SUBORDINATE E LE LORO COORDINATE</span><br>Individua le frasi dipendenti dalla principale (di 1° grado), o da altre subordinate (di 2°, 3° grado...).<br><br>4️⃣ <span style='color:#e74c3c;font-weight:bold'>INDIVIDUA LA FORMA E LA FUNZIONE SPECIFICA</span><br>Per ogni subordinata precisa la <span style='color:#8e44ad;font-weight:bold'>FORMA</span> (esplicita o implicita) e la <span style='color:#e67e22;font-weight:bold'>FUNZIONE</span> (soggettiva, oggettiva, causale, finale, ecc.).",
-                        "text": "Cosa bisogna cercare per prima cosa per scomporre il periodo in proposizioni?",
-                        "options": [
-                            "I predicati (verbi)",
-                            "Le congiunzioni"
-                        ],
-                        "answer": "I predicati (verbi)"
-                    },
-                    {
-                        "id": 15012,
-                        "title": "La sintassi e lo schema grafico",
-                        "theory": "L'analisi logica del periodo può essere raffigurata visivamente tramite uno <span style='color:#2980b9;font-weight:bold'>SCHEMA GRAFICO</span> ad albero, che rende subito evidenti i rapporti di dipendenza e la struttura della frase complessa.<br><br>🔹 <span style='color:#e74c3c;font-weight:bold'>Al vertice</span> si posiziona sempre la <b>Proposizione Principale</b>.<br>🔹 <span style='color:#27ae60;font-weight:bold'>Sullo stesso livello</span> si affiancano le eventuali <b>Coordinate</b>.<br>🔹 <span style='color:#8e44ad;font-weight:bold'>Sui livelli inferiori</span> si collegano le <b>Subordinate</b> di 1°, 2°, 3° grado ecc., tracciando delle linee che le uniscono alla proposizione da cui dipendono.<br><br>Questo schema ti aiuterà a non perdere mai il filo durante le tue analisi!",
-                        "text": "Dove si posiziona la proposizione principale in uno schema grafico ad albero?",
-                        "options": [
-                            "Al vertice (in cima)",
-                            "Sui livelli inferiori"
-                        ],
-                        "answer": "Al vertice (in cima)"
-                    }
-                ],
-                "allenati": [
-                    {
-                        "id": 1701,
-                        "type": "sentence-analysis",
-                        "title": "Allenamento Finale",
-                        "instruction": "Esercizio di riepilogo: clicca tra le parole per separare le proposizioni, poi assegna ad ognuna la sua etichetta corretta.",
-                        "sentence": "La professoressa ci ha spiegato che, se studiamo con attenzione, supereremo l'esame senza alcuna difficoltà."
-                    },
-                    {
-                        "id": 1702,
-                        "type": "sentence-analysis",
-                        "title": "Allenamento Finale",
-                        "instruction": "Esercizio di riepilogo: clicca tra le parole per separare le proposizioni, poi assegna ad ognuna la sua etichetta corretta.",
-                        "sentence": "Mentre tornavo a casa, ho incontrato Marco che mi ha detto di avere trovato un nuovo lavoro in centro."
                     }
                 ],
                 "verifica": [],
@@ -9321,6 +8549,60 @@ window.exercisesData = {
                             }
                         ]
                     }
+                ],
+                "difficile": [
+                    {
+                        "id": 9001,
+                        "title": "L'Alleanza della Valle Verde",
+                        "text": "In un'antica foresta rigogliosa, dove la luce del sole filtrava a fatica tra le chiome degli alberi secolari, sorgeva la radura conosciuta come il <span style='color: #27ae60; font-weight: bold;'>Consiglio degli Animali</span> 🌳. Qui, da generazioni, le creature del bosco si riunivano per discutere dei problemi comuni e prendere decisioni importanti per la sopravvivenza di tutti. Tuttavia, negli ultimi tempi, un'ombra di preoccupazione si era allungata sulla valle: una terribile <span style='color: #e74c3c; font-weight: bold;'>siccità</span> aveva prosciugato gran parte del torrente principale, mettendo a rischio la vita di piante e animali ☀️.\n\nUn giorno, il saggio gufo <span style='color: #8e44ad; font-weight: bold;'>Archimede</span> 🦉 convocò un'assemblea straordinaria. Archimede era rispettato da tutti per la sua infinita saggezza e per la sua capacità di mantenere la calma anche nelle situazioni più disperate. Appollaiato sul ramo più alto di una vecchia quercia, osservò la folla radunata sotto di lui. C'erano cervi, cinghiali, lepri, volpi e persino piccoli insetti, tutti con lo sguardo rivolto verso l'alto, in cerca di una soluzione.\n\n\"Amici miei,\" esordì Archimede con la sua voce profonda e pacata, \"la situazione è grave. Se non troviamo un modo per portare l'acqua nella nostra valle, molti di noi non sopravvivranno all'estate. Dobbiamo unire le nostre forze e trovare una soluzione comune.\"\n\nLa volpe <span style='color: #d35400; font-weight: bold;'>Ruggine</span> 🦊, nota per la sua astuzia ma anche per il suo egoismo, prese subito la parola. \"Io propongo di organizzare una spedizione verso le fattorie degli umani,\" disse con un sorriso furbo. \"Lì ci sono pozzi e cisterne piene d'acqua. Potremmo prenderla di notte, quando tutti dormono.\"\n\nUn mormorio di disapprovazione si levò dalla folla. Gli umani erano pericolosi, e rubare la loro acqua avrebbe sicuramente scatenato ritorsioni.\n\n\"È un'idea folle!\" ruggì l'orso <span style='color: #2c3e50; font-weight: bold;'>Bernardo</span> 🐻, facendosi avanti con passo pesante. \"Io sono il più forte qui. Scaverò una buca così profonda al centro della radura che troverò una falda acquifera sotterranea. L'acqua sgorgherà come una fontana, e tutti mi ringrazierete.\"\n\nBernardo, senza aspettare il parere degli altri, iniziò a scavare furiosamente con le sue possenti zampe. Terra e sassi volavano in ogni direzione. Scavò per ore, fino a scomparire quasi del tutto nella buca, ma dell'acqua non c'era traccia. Alla fine, esausto e coperto di polvere, fu costretto ad arrendersi.\n\nFu allora che si fece avanti un piccolo scoiattolo di nome <span style='color: #f39c12; font-weight: bold;'>Nocciola</span> 🐿️. Nocciola non era né forte come Bernardo né astuto come Ruggine, ma era un grande osservatore.\n\n\"Scusate se intervengo,\" disse Nocciola con voce tremante ma decisa, \"ma scavare non servirà a nulla, e rubare agli umani è troppo pericoloso. Tuttavia, ho notato che sulle montagne, molto al di sopra della nostra valle, c'è un antico lago glaciale che non si è mai prosciugato 🏔️. L'acqua è bloccata da una diga naturale di rocce.\"\n\n\"E come pensi di far arrivare quell'acqua fin qui, piccolo scoiattolo?\" domandò Ruggine con tono di scherno.\n\n\"Con il lavoro di squadra!\" rispose Nocciola con entusiasmo. \"Se i castori costruiranno una rete di canali in legno, se i tassi e le marmotte scaveranno dei piccoli tunnel per far passare l'acqua, e se gli uccelli ci guideranno dall'alto, potremo creare un <span style='color: #2980b9; font-weight: bold;'>sistema di irrigazione</span> che porterà l'acqua direttamente nella nostra valle!\"\n\nL'idea lasciò tutti a bocca aperta. Archimede annuì solennemente. \"È un piano ambizioso, ma è l'unico che può funzionare. La forza di Bernardo non è bastata, e l'astuzia egoista di Ruggine ci avrebbe messo in pericolo. Solo collaborando potremo salvarci.\"\n\nCosì, sotto la guida attenta di Nocciola e Archimede, gli animali iniziarono a lavorare insieme 🤝. I castori, instancabili, costruirono solide condutture in legno 🪵. I tassi scavarono percorsi sotterranei per aggirare gli ostacoli rocciosi, mentre gli uccelli, volando ad alta quota, indicavano la via più breve e sicura per far defluire l'acqua. Persino Bernardo mise la sua forza a disposizione per spostare i massi più pesanti, e Ruggine usò la sua intelligenza per risolvere i problemi ingegneristici più complessi.\n\nDopo giorni di duro e incessante lavoro, un grido di gioia si levò dalla folla. L'acqua, fresca e cristallina, iniziò a scorrere attraverso i canali artificiali, riempiendo nuovamente il letto del torrente e ridando vita alla foresta 💧. Le piante si raddrizzarono, i fiori sbocciarono di nuovo e gli animali poterono finalmente dissetarsi.\n\nLa <span style='color: #e74c3c; font-weight: bold;'>morale</span> di questa storia è che non importa quanto si sia grandi o forti: le sfide più ardue possono essere superate solo attraverso l'unità, la collaborazione e il rispetto delle capacità di ognuno. Il piccolo Nocciola aveva dimostrato che l'intelligenza condivisa è l'arma più potente di tutte.",
+                        "questions": [
+                            {
+                                "question": "Quale grave problema affligge il Consiglio degli Animali?",
+                                "options": [
+                                    "Una malattia contagiosa",
+                                    "Una terribile siccità",
+                                    "L'attacco dei cacciatori"
+                                ],
+                                "answer": "Una terribile siccità"
+                            },
+                            {
+                                "question": "Quale soluzione propone inizialmente l'orso Bernardo?",
+                                "options": [
+                                    "Scavare una buca profonda per trovare una falda acquifera",
+                                    "Andare a rubare l'acqua agli umani",
+                                    "Costruire un canale dalle montagne"
+                                ],
+                                "answer": "Scavare una buca profonda per trovare una falda acquifera"
+                            },
+                            {
+                                "question": "Chi ha l'idea di sfruttare il lago glaciale sulle montagne?",
+                                "options": [
+                                    "Il gufo Archimede",
+                                    "La volpe Ruggine",
+                                    "Lo scoiattolo Nocciola"
+                                ],
+                                "answer": "Lo scoiattolo Nocciola"
+                            },
+                            {
+                                "question": "Quale compito specifico svolgono i castori nel piano finale?",
+                                "options": [
+                                    "Spostano i massi più pesanti",
+                                    "Costruiscono solide condutture in legno",
+                                    "Volano ad alta quota per indicare la via"
+                                ],
+                                "answer": "Costruiscono solide condutture in legno"
+                            },
+                            {
+                                "question": "Qual è l'insegnamento principale di questa favola?",
+                                "options": [
+                                    "L'intelligenza del singolo è più utile della forza",
+                                    "Le sfide si superano solo con la collaborazione e l'unità",
+                                    "Non bisogna mai fidarsi degli umani"
+                                ],
+                                "answer": "Le sfide si superano solo con la collaborazione e l'unità"
+                            }
+                        ]
+                    }
                 ]
             },
             "fiaba": {
@@ -9536,6 +8818,60 @@ window.exercisesData = {
                                     "Non bisogna mai fidarsi degli artigiani stranieri"
                                 ],
                                 "answer": "Il tempo è prezioso proprio perché passa, e va vissuto con amore ed equità"
+                            }
+                        ]
+                    }
+                ],
+                "difficile": [
+                    {
+                        "id": 9002,
+                        "title": "Il Regno di Cristallo e l'Ombra Fredda",
+                        "text": "C'era una volta, in un'epoca in cui la magia era ancora presente nel mondo, il magnifico <span style='color: #2980b9; font-weight: bold;'>Regno di Cristallo</span> 🏰. Questo luogo era famoso in tutte le terre conosciute per i suoi palazzi scintillanti, costruiti con un ghiaccio magico che non si scioglieva mai, e per la serenità dei suoi abitanti. Tuttavia, la pace del regno fu improvvisamente spezzata dall'arrivo dell'<span style='color: #34495e; font-weight: bold;'>Ombra Fredda</span>, una maledizione scagliata da un malvagio stregone esiliato molti secoli prima ❄️.\n\nL'Ombra Fredda non era una semplice tempesta: era una nebbia oscura che avanzava inesorabile, congelando non solo l'acqua e la terra, ma persino i cuori delle persone. Chiunque venisse avvolto da questa nebbia cadeva in un sonno profondo e senza sogni, da cui sembrava impossibile svegliarsi. In pochi giorni, gran parte del regno fu avvolta dal gelo eterno, e anche il Re e la Regina caddero vittime del crudele incantesimo 👑.\n\nL'unica speranza risiedeva nel giovane principe <span style='color: #f1c40f; font-weight: bold;'>Aurelio</span> 🤴. Egli sapeva, leggendo antichi tomi nella biblioteca reale, che l'unico modo per sconfiggere l'Ombra Fredda era recuperare il leggendario <span style='color: #e74c3c; font-weight: bold;'>Tizzone della Vita</span> 🔥, una gemma fiammeggiante custodita nel cratere del Vulcano del Sole, una montagna impervia situata oltre il Deserto delle Illusioni.\n\nAurelio non partì da solo. Al suo fianco c'era <span style='color: #27ae60; font-weight: bold;'>Elara</span> 👧, una giovane intagliatrice di cristalli. Elara era di umili origini, ma possedeva un dono raro: riusciva a percepire le vibrazioni magiche all'interno delle pietre. La sua sensibilità sarebbe stata fondamentale per superare le insidie del viaggio.\n\nIl viaggio fu irto di pericoli fin dall'inizio. Per raggiungere il deserto, dovettero attraversare la Foresta dei Sussurri, un bosco stregato dove gli alberi imitavano le voci dei loro cari per farli perdere 🌲. Aurelio, sentendo la voce della madre, fece per deviare dal sentiero, ma Elara gli strinse la mano. \"Non ascoltarli, mio principe. Sono solo illusioni create per confonderci,\" disse con voce ferma. Grazie alla sua bussola di cristallo, riuscirono a ritrovare la strada.\n\nGiunti al <span style='color: #e67e22; font-weight: bold;'>Deserto delle Illusioni</span> 🐪, affrontarono la seconda prova. Il caldo era soffocante e il paesaggio mutava continuamente, creando miraggi di oasi fresche e sorgenti d'acqua. Aurelio era stremato dalla sete, ma Elara utilizzò le sue conoscenze per trovare le radici di una pianta del deserto in grado di dissetarli.\n\nFinalmente, giunsero alle pendici del Vulcano del Sole 🌋. L'aria era rovente e il terreno tremava sotto i loro piedi. La scalata fu faticosa e pericolosa: dovevano evitare geyser di lava bollente e rocce taglienti come rasoi. Giunti sull'orlo del cratere, si trovarono di fronte a una gigantesca porta di pietra sorvegliata da un possente golem di ossidiana 🗿.\n\n\"Nessuno può prendere il Tizzone della Vita se non possiede un cuore puro,\" rimbombò la voce del golem. \"Dovete sacrificare ciò che vi è di più caro.\"\n\nAurelio esitò, pensando alla sua corona e al suo regno. Ma Elara, senza pensarci due volte, prese la sua collana di cristallo, l'unico ricordo di sua madre, e la pose ai piedi del guardiano. Il golem, sorpreso da tale gesto di disinteresse, si fece da parte, permettendo loro di prendere il <span style='color: #e74c3c; font-weight: bold;'>Tizzone della Vita</span>.\n\nCon la gemma fiammeggiante tra le mani, i due eroi fecero ritorno al Regno di Cristallo. Non appena il Tizzone fu sollevato al cielo, emanò un calore così intenso e puro che l'Ombra Fredda si dissolse istantaneamente ✨. I cuori delle persone tornarono a battere, i fiori sbocciarono di nuovo sotto il ghiaccio e il Re e la Regina si risvegliarono dal loro sonno.\n\nAurelio capì che il coraggio e la nobiltà d'animo non appartengono solo ai reali, ma a chiunque sia disposto a sacrificarsi per il bene degli altri. Chiese a Elara di diventare la sua consigliera reale, e insieme governarono il regno con saggezza e compassione, assicurandosi che l'oscurità non facesse mai più ritorno.",
+                        "questions": [
+                            {
+                                "question": "Cosa provoca l'Ombra Fredda a chi ne viene avvolto?",
+                                "options": [
+                                    "Trasforma le persone in statue di ghiaccio",
+                                    "Fa cadere in un sonno profondo e senza sogni",
+                                    "Ruba i ricordi delle persone"
+                                ],
+                                "answer": "Fa cadere in un sonno profondo e senza sogni"
+                            },
+                            {
+                                "question": "Qual è il dono speciale che possiede la giovane Elara?",
+                                "options": [
+                                    "Saper percepire le vibrazioni magiche nelle pietre",
+                                    "Conoscere tutti i sentieri del bosco a memoria",
+                                    "Saper parlare il linguaggio degli animali"
+                                ],
+                                "answer": "Saper percepire le vibrazioni magiche nelle pietre"
+                            },
+                            {
+                                "question": "Quale pericolo affrontano i protagonisti nella Foresta dei Sussurri?",
+                                "options": [
+                                    "Creature mostruose che attaccano nell'ombra",
+                                    "Alberi che imitano le voci dei cari per farli perdere",
+                                    "Nebbie tossiche che tolgono il respiro"
+                                ],
+                                "answer": "Alberi che imitano le voci dei cari per farli perdere"
+                            },
+                            {
+                                "question": "Cosa sacrifica Elara per superare il guardiano di ossidiana?",
+                                "options": [
+                                    "La sua bussola magica",
+                                    "La sua collana di cristallo, ricordo della madre",
+                                    "La sua stessa vista"
+                                ],
+                                "answer": "La sua collana di cristallo, ricordo della madre"
+                            },
+                            {
+                                "question": "Cosa impara il principe Aurelio alla fine dell'avventura?",
+                                "options": [
+                                    "Che la magia oscura è sempre più forte di quella benefica",
+                                    "Che il coraggio e la nobiltà d'animo non appartengono solo ai reali",
+                                    "Che bisogna sempre viaggiare da soli"
+                                ],
+                                "answer": "Che il coraggio e la nobiltà d'animo non appartengono solo ai reali"
                             }
                         ]
                     }
@@ -9757,6 +9093,60 @@ window.exercisesData = {
                             }
                         ]
                     }
+                ],
+                "difficile": [
+                    {
+                        "id": 9003,
+                        "title": "Il Risveglio del Drago d'Argento",
+                        "text": "Nelle profondità inesplorate del continente di <span style='color: #8e44ad; font-weight: bold;'>Aethelgard</span>, dove le montagne sfioravano le stelle e i fiumi cantavano antiche melodie, sorgeva la Torre d'Avorio 🏰. Qui, i membri dell'Ordine dei Custodi dedicavano le loro vite allo studio della magia elementale. Tra i novizi c'era un giovane di nome <span style='color: #2980b9; font-weight: bold;'>Kaelen</span> 🧙‍♂️, un ragazzo dall'animo inquieto che passava più tempo a esplorare i sotterranei della torre che a studiare i noiosi tomi accademici.\n\nUn giorno, mentre si addentrava in un'ala abbandonata e polverosa della biblioteca, Kaelen scoprì una porta nascosta dietro un arazzo logoro. Il passaggio conduceva a una cripta segreta illuminata da funghi bioluminescenti. Al centro della stanza, su un altare di pietra nera, riposava un oggetto straordinario: un <span style='color: #f1c40f; font-weight: bold;'>Uovo di Drago d'Argento</span> 🐉. L'uovo, grande quanto un macigno, emanava un calore rassicurante e pulsava di una luce interna, come se un cuore antico battesse ancora al suo interno.\n\nKaelen sapeva che i draghi d'argento erano considerati estinti da millenni, annientati durante la Guerra delle Ombre. Ma quell'uovo era vivo. Prima che potesse informare i suoi maestri, la torre fu attaccata. La <span style='color: #e74c3c; font-weight: bold;'>Confraternita del Caos</span> 👿, un gruppo di stregoni oscuri guidati dal perfido Malakar, aveva fatto irruzione, distruggendo le difese magiche della torre. Cercavano l'uovo, per sfruttarne l'immenso potere e soggiogare Aethelgard.\n\nAgendo d'istinto, Kaelen utilizzò un incantesimo di occultamento per nascondere l'uovo in uno zaino incantato, in grado di alterare lo spazio interno. Con il cuore in gola, fuggì attraverso un passaggio segreto che conduceva alla Valle delle Nebbie 🌫️, giurando a se stesso di proteggere l'uovo a costo della vita.\n\nIl suo viaggio lo portò ad attraversare lande desolate e foreste incantate. Lungo il cammino, si unirono a lui due improbabili alleati: <span style='color: #27ae60; font-weight: bold;'>Lyra</span> 🧝‍♀️, una guerriera elfa abilissima con l'arco e conoscitrice dei segreti della natura, e <span style='color: #d35400; font-weight: bold;'>Gromm</span> 🪓, un nano burbero ma leale, armato di un'ascia forgiata nelle profondità della terra.\n\nInsieme, dovettero affrontare innumerevoli sfide. Sfuggirono alle imboscate dei predoni oscuri di Malakar, decifrarono enigmi millenari scolpiti su monoliti di pietra per trovare la strada, e sconfissero una chimera che bloccava il Passo dei Sospiri. Lyra insegnò a Kaelen a sintonizzarsi con l'energia della natura per potenziare i suoi incantesimi, mentre Gromm gli spiegò l'importanza della disciplina e del coraggio in battaglia.\n\nFinalmente, giunsero al <span style='color: #c0392b; font-weight: bold;'>Picco dell'Aurora</span> ⛰️, il luogo leggendario dove i draghi d'argento nascevano sotto la luce del sole nascente. Ma Malakar li aveva preceduti. Lo stregone oscuro li attendeva sulla cima, circondato dai suoi seguaci.\n\n\"Consegnami l'uovo, ragazzino, e vi lascerò vivere,\" intimò Malakar, evocando sfere di fuoco oscuro dalle mani.\n\n\"Non permetterò che tu corrompa questa creatura!\" rispose Kaelen, sfoderando il suo bastone magico.\n\nLa battaglia fu epica. Kaelen, Lyra e Gromm combatterono con tutte le loro forze, combinando magia, agilità e forza bruta. Quando la situazione sembrava volgere al peggio, con Malakar pronto a scagliare il colpo letale, l'uovo nello zaino di Kaelen si schiuse con un boato assordante ✨.\n\nUn maestoso <span style='color: #bdc3c7; font-weight: bold;'>Drago d'Argento</span> spiegò le sue ali scintillanti. Non era un cucciolo indifeso, ma una creatura ricolma di un'energia primordiale. Il drago emise un soffio di luce purificatrice che spazzò via la magia oscura di Malakar e mise in fuga i suoi seguaci. Il perfido stregone, sconfitto e privato dei suoi poteri, scomparve in una nuvola di fumo nero.\n\nIl drago, riconoscendo in Kaelen il suo protettore, chinò la testa in segno di rispetto. Aethelgard era salva, e una nuova era di alleanza tra umani, elfi, nani e draghi era appena cominciata. Kaelen, un tempo novizio inquieto, era diventato una leggenda, il primo Cavaliere dei Draghi dopo millenni.",
+                        "questions": [
+                            {
+                                "question": "Cosa scopre Kaelen nei sotterranei della Torre d'Avorio?",
+                                "options": [
+                                    "Un libro magico proibito",
+                                    "Un Uovo di Drago d'Argento",
+                                    "Un portale verso un altro mondo"
+                                ],
+                                "answer": "Un Uovo di Drago d'Argento"
+                            },
+                            {
+                                "question": "Perché Kaelen deve fuggire dalla torre?",
+                                "options": [
+                                    "Perché ha rubato un artefatto ai suoi maestri",
+                                    "Perché la torre viene attaccata dalla Confraternita del Caos",
+                                    "Perché un drago adulto lo sta inseguendo"
+                                ],
+                                "answer": "Perché la torre viene attaccata dalla Confraternita del Caos"
+                            },
+                            {
+                                "question": "Chi sono gli alleati che si uniscono a Kaelen nel suo viaggio?",
+                                "options": [
+                                    "Un cavaliere oscuro e una strega",
+                                    "Un re e un principe",
+                                    "Un'elfa guerriera (Lyra) e un nano (Gromm)"
+                                ],
+                                "answer": "Un'elfa guerriera (Lyra) e un nano (Gromm)"
+                            },
+                            {
+                                "question": "Cosa accade quando Malakar sta per sconfiggere i protagonisti?",
+                                "options": [
+                                    "Arrivano i maestri della torre in loro soccorso",
+                                    "L'uovo si schiude e il drago sprigiona una luce purificatrice",
+                                    "Lyra lancia un incantesimo di teletrasporto per fuggire"
+                                ],
+                                "answer": "L'uovo si schiude e il drago sprigiona una luce purificatrice"
+                            },
+                            {
+                                "question": "Qual è il nuovo titolo o ruolo che assume Kaelen alla fine della storia?",
+                                "options": [
+                                    "Primo Cavaliere dei Draghi",
+                                    "Gran Maestro della Confraternita",
+                                    "Re di Aethelgard"
+                                ],
+                                "answer": "Primo Cavaliere dei Draghi"
+                            }
+                        ]
+                    }
                 ]
             },
             "avventura": {
@@ -9972,6 +9362,60 @@ window.exercisesData = {
                                     "L'avventura è un'attività troppo pericolosa per gli esseri umani"
                                 ],
                                 "answer": "I tesori immateriali come la conoscenza e il rispetto per la natura valgono più delle ricchezze materiali"
+                            }
+                        ]
+                    }
+                ],
+                "difficile": [
+                    {
+                        "id": 9004,
+                        "title": "Spedizione nel Cuore dell'Amazzonia",
+                        "text": "L'aria nella <span style='color: #27ae60; font-weight: bold;'>Foresta Amazzonica</span> era densa, umida e carica di suoni primordiali 🌴. Il professor <span style='color: #2980b9; font-weight: bold;'>Julian Vance</span> 🧭, archeologo di fama internazionale, si asciugò il sudore dalla fronte mentre si faceva strada tra liane intricate e radici sporgenti. Era alla guida di una spedizione audace, finanziata per ritrovare la leggendaria \"Città d'Oro di Paititi\", un insediamento Inca perduto da secoli. Con lui c'erano <span style='color: #e67e22; font-weight: bold;'>Elena</span> 🗺️, un'esperta cartografa, e <span style='color: #c0392b; font-weight: bold;'>Miguel</span> 🪓, una guida locale la cui conoscenza della giungla era fondamentale per la sopravvivenza del gruppo.\n\nErano in marcia da tre settimane. Le zanzare non davano tregua e le piogge improvvise trasformavano i sentieri in torrenti di fango scivoloso. Tuttavia, Julian sentiva di essere vicino: la mappa incisa su una tavoletta di pietra recuperata in Perù mesi prima indicava che la città si trovava alla confluenza di due fiumi sotterranei.\n\nUna mattina, mentre il gruppo attraversava una zona particolarmente fitta di vegetazione, Miguel alzò bruscamente una mano, segnalando di fermarsi. Il silenzio calò improvvisamente sulla foresta. Dagli alberi non proveniva alcun canto di uccelli, nessun fruscio di scimmie. \"Siamo seguiti,\" sussurrò Miguel, stringendo forte il suo machete.\n\nTra le ombre della boscaglia, due occhi gialli e penetranti li fissavano. Era un <span style='color: #f39c12; font-weight: bold;'>giaguaro</span> 🐆, il predatore più letale dell'Amazzonia, enorme e muscoloso. Julian trattenne il respiro. Sapeva che un movimento improvviso avrebbe potuto scatenare l'attacco. Lentamente, Elena estrasse un razzo di segnalazione dallo zaino. Con un gesto rapido, lo accese e lo lanciò in aria. Il sibilo acuto e la luce rossa brillante sorpresero l'animale, che con un ringhio infastidito si ritirò nell'oscurità della giungla.\n\nScampato il pericolo, la spedizione riprese il cammino con maggiore cautela. Nel tardo pomeriggio, udirono un rombo sordo e continuo. Pochi chilometri dopo, si trovarono di fronte a una <span style='color: #3498db; font-weight: bold;'>cascata colossale</span> 🌊, le cui acque precipitavano in un canyon profondo e nebbioso. Dietro il velo d'acqua, Julian scorse qualcosa di innaturale: un'apertura geometrica scolpita nella roccia.\n\n\"È lì!\" gridò Julian, coprendo il rumore della cascata. \"L'ingresso di Paititi!\"\n\nPer raggiungere la grotta, dovettero attraversare un vecchio ponte di corda traballante sospeso sul baratro. Il ponte scricchiolava paurosamente sotto i loro passi. Proprio mentre Elena era a metà strada, una delle corde principali si spezzò con uno schiocco secco. La ragazza scivolò, rimanendo appesa nel vuoto, sostenuta solo dalle forti braccia di Miguel che si era lanciato in avanti per afferrarla. Con uno sforzo sovrumano, Julian e Miguel riuscirono a tirarla su, raggiungendo sani e salvi l'ingresso della caverna.\n\nAll'interno, l'ambiente era asciutto e fresco. Utilizzando le loro torce potenti, esplorarono i tunnel tortuosi fino a giungere a una camera immensa. Davanti ai loro occhi si ergeva un tempio maestoso, non fatto d'oro massiccio come narravano le leggende, ma ricoperto di <span style='color: #f1c40f; font-weight: bold;'>lastre di un minerale luminescente</span> ✨ che brillava di luce propria.\n\nAl centro del tempio, su un altare di pietra, riposava un <span style='color: #8e44ad; font-weight: bold;'>codice antico</span> inciso su lamine d'oro: non un tesoro di ricchezze materiali, ma un inestimabile patrimonio di conoscenze sull'astronomia, la medicina e la storia del popolo Inca. Julian sfiorò le lamine con riverenza. \"Questo è il vero tesoro di Paititi,\" mormorò emozionato. \"La conoscenza sopravvissuta al tempo.\"\n\nLa spedizione era stata estenuante e pericolosa, ma aveva portato alla luce una scoperta che avrebbe riscritto i libri di storia. Con grande attenzione, documentarono ogni dettaglio, scattarono fotografie e fecero calchi delle iscrizioni, pronti a fare ritorno nel mondo civile per condividere la loro straordinaria scoperta con l'intera umanità.",
+                        "questions": [
+                            {
+                                "question": "Qual è l'obiettivo della spedizione guidata dal professor Julian Vance?",
+                                "options": [
+                                    "Trovare un minerale sconosciuto",
+                                    "Ritrovare la Città d'Oro di Paititi",
+                                    "Catturare un raro giaguaro dell'Amazzonia"
+                                ],
+                                "answer": "Ritrovare la Città d'Oro di Paititi"
+                            },
+                            {
+                                "question": "Come riescono i protagonisti ad allontanare il giaguaro?",
+                                "options": [
+                                    "Sparando in aria con un fucile",
+                                    "Accendendo un razzo di segnalazione",
+                                    "Offrendogli del cibo"
+                                ],
+                                "answer": "Accendendo un razzo di segnalazione"
+                            },
+                            {
+                                "question": "Cosa trovano dietro la cascata colossale?",
+                                "options": [
+                                    "Un ingresso scolpito nella roccia",
+                                    "Un fiume sotterraneo invalicabile",
+                                    "Una grotta piena di pipistrelli"
+                                ],
+                                "answer": "Un ingresso scolpito nella roccia"
+                            },
+                            {
+                                "question": "Quale grave pericolo affronta Elena durante il percorso?",
+                                "options": [
+                                    "Viene morsa da un serpente",
+                                    "Rischia di cadere perché il ponte di corda si spezza",
+                                    "Rimane bloccata in una trappola antica"
+                                ],
+                                "answer": "Rischia di cadere perché il ponte di corda si spezza"
+                            },
+                            {
+                                "question": "Qual è il vero 'tesoro' che trovano all'interno del tempio?",
+                                "options": [
+                                    "Montagne di monete d'oro e gioielli",
+                                    "Un codice antico contenente importanti conoscenze",
+                                    "Armi magiche appartenute ai guerrieri Inca"
+                                ],
+                                "answer": "Un codice antico contenente importanti conoscenze"
                             }
                         ]
                     }
@@ -10193,6 +9637,60 @@ window.exercisesData = {
                             }
                         ]
                     }
+                ],
+                "difficile": [
+                    {
+                        "id": 9005,
+                        "title": "Manuale di Sopravvivenza in Alta Montagna",
+                        "text": "<span style='color: #2c3e50; font-weight: bold;'>Manuale di Sopravvivenza e Orientamento in Alta Montagna</span> 🏔️\n\nLe escursioni in alta montagna offrono paesaggi mozzafiato e un profondo contatto con la natura, ma nascondono anche insidie imprevedibili. Le condizioni meteorologiche possono cambiare drasticamente in pochi minuti e l'orientamento può diventare difficoltoso. Questo manuale fornisce direttive dettagliate e rigorose per affrontare in sicurezza le esplorazioni oltre i 2000 metri di altitudine.\n\n<span style='color: #2980b9; font-weight: bold;'>1. Preparazione dello Zaino e Equipaggiamento Base</span> 🎒\nLo zaino non deve mai superare il 15% del vostro peso corporeo per non compromettere l'equilibrio. Sul fondo dello zaino vanno posizionati gli oggetti leggeri e voluminosi (sacco a pelo o indumenti di ricambio). Gli oggetti più pesanti, come le scorte d'acqua, vanno collocati al centro, il più vicino possibile alla schiena, per mantenere il baricentro stabile.\nÈ **tassativo** avere con sé:\n- Una giacca a vento impermeabile (guscio in Gore-Tex o materiale equivalente).\n- Un kit di primo soccorso contenente bende, disinfettante, cerotti per vesciche e una coperta termica di emergenza 🚑.\n- Una scorta idrica di almeno 2 litri e cibo ad alto contenuto calorico (frutta secca, cioccolato fondente, barrette energetiche).\n- Una torcia frontale con batterie di riserva, indispensabile in caso di ritardi imprevisti.\n\n<span style='color: #e74c3c; font-weight: bold;'>2. Orientamento Classico: Mappa Topografica e Bussola</span> 🧭\nSebbene i dispositivi GPS e gli smartphone siano utili, in alta montagna le batterie si scaricano rapidamente a causa del freddo e il segnale satellitare può essere assente. Saper leggere una mappa topografica cartacea è un requisito fondamentale.\n- Sulla mappa, le linee di livello (o isoipse) indicano l'altitudine. Se le linee sono molto ravvicinate, significa che il pendio è ripido; se sono distanziate, il terreno è pianeggiante o dolcemente inclinato.\n- Per orientare la mappa, estraete la bussola e ruotatela finché l'ago magnetico (la parte rossa) non si allinea con la lettera \"N\" (Nord). Fatto ciò, posizionate la mappa in modo che il Nord disegnato su di essa corrisponda al Nord indicato dalla bussola.\n\n<span style='color: #8e44ad; font-weight: bold;'>3. Gestione delle Emergenze: Temporali Improvvisi</span> ⛈️\nSe avvistate nuvole nere a sviluppo verticale (cumulonembi) o sentite un abbassamento improvviso della temperatura associato a raffiche di vento, un temporale è imminente. La montagna è un luogo estremamente esposto ai fulmini.\nIn caso di tempesta:\n- Abbandonate immediatamente le creste, le vette e i pendii aperti. Scendete di quota il più velocemente possibile verso una valle protetta.\n- Evitate assolutamente di ripararvi sotto alberi isolati, pali o strutture metalliche (come croci di vetta o tralicci).\n- Liberatevi momentaneamente dell'equipaggiamento metallico (piccozze, bastoncini telescopici, moschettoni), posizionandolo ad almeno venti metri di distanza da voi.\n- Assumete la \"posizione di sicurezza\": accovacciatevi su uno zaino asciutto o su una pietra isolata, tenendo i piedi uniti e abbracciando le ginocchia. Non sdraiatevi mai a terra, poiché l'umidità del suolo è un ottimo conduttore elettrico ⚡.\n\n<span style='color: #27ae60; font-weight: bold;'>4. Affrontare la Nebbia Fitta (Whiteout)</span> 🌫️\nSe venite avvolti da una nebbia fitta che azzera la visibilità (fenomeno noto come \"whiteout\"), la prima regola è **fermarsi**. Continuare a camminare senza punti di riferimento visivi vi farà procedere in cerchio o, peggio, vi porterà verso burroni invisibili.\nSe non disponete di un GPS funzionante, indossate abiti caldi, riparatevi dietro un grande masso o in un avvallamento e attendete che le condizioni atmosferiche migliorino. Usate un fischietto di emergenza per segnalare la vostra posizione: il segnale internazionale di soccorso alpino prevede sei fischi in un minuto (uno ogni dieci secondi), seguiti da un minuto di pausa.\n\nSeguendo scrupolosamente queste direttive, le vostre escursioni in alta montagna saranno sicure e memorabili. La prudenza e la prevenzione sono le migliori compagne di viaggio di ogni esploratore.",
+                        "questions": [
+                            {
+                                "question": "Dove vanno posizionati gli oggetti più pesanti all'interno dello zaino?",
+                                "options": [
+                                    "Sul fondo dello zaino",
+                                    "In alto, per renderli facilmente accessibili",
+                                    "Al centro, il più vicino possibile alla schiena"
+                                ],
+                                "answer": "Al centro, il più vicino possibile alla schiena"
+                            },
+                            {
+                                "question": "Cosa indicano le linee di livello (isoipse) su una mappa topografica cartacea?",
+                                "options": [
+                                    "L'altitudine e la pendenza del terreno",
+                                    "I corsi d'acqua e i laghi sotterranei",
+                                    "I sentieri più brevi e le strade asfaltate"
+                                ],
+                                "answer": "L'altitudine e la pendenza del terreno"
+                            },
+                            {
+                                "question": "Cosa non bisogna assolutamente fare durante un temporale improvviso in montagna?",
+                                "options": [
+                                    "Scendere di quota verso una valle protetta",
+                                    "Ripararsi sotto un grande albero isolato",
+                                    "Assumere la posizione di sicurezza"
+                                ],
+                                "answer": "Ripararsi sotto un grande albero isolato"
+                            },
+                            {
+                                "question": "Perché non bisogna mai sdraiarsi a terra durante un temporale?",
+                                "options": [
+                                    "Perché si rischia di perdere l'equipaggiamento",
+                                    "Perché l'umidità del suolo è un ottimo conduttore elettrico",
+                                    "Perché gli insetti potrebbero attaccare"
+                                ],
+                                "answer": "Perché l'umidità del suolo è un ottimo conduttore elettrico"
+                            },
+                            {
+                                "question": "Qual è il segnale internazionale di soccorso alpino da emettere con il fischietto?",
+                                "options": [
+                                    "Tre fischi brevi e tre fischi lunghi",
+                                    "Un fischio continuo fino all'esaurimento del fiato",
+                                    "Sei fischi in un minuto, seguiti da un minuto di pausa"
+                                ],
+                                "answer": "Sei fischi in un minuto, seguiti da un minuto di pausa"
+                            }
+                        ]
+                    }
                 ]
             },
             "espositivo": {
@@ -10408,6 +9906,60 @@ window.exercisesData = {
                                     "Bisogna tornare a uno stile di vita rurale per salvare il pianeta"
                                 ],
                                 "answer": "La transizione è un dovere etico urgente che richiede sforzi tecnologici, politici e comportamenti individuali corretti"
+                            }
+                        ]
+                    }
+                ],
+                "difficile": [
+                    {
+                        "id": 9006,
+                        "title": "L'Intelligenza Artificiale e il Futuro del Lavoro",
+                        "text": "<span style='color: #2980b9; font-weight: bold;'>L'Intelligenza Artificiale e il Futuro del Lavoro</span> 🤖\n\nL'Intelligenza Artificiale (spesso abbreviata con la sigla IA o, in inglese, AI) è senza dubbio una delle tecnologie più rivoluzionarie e discusse del ventunesimo secolo. Essa rappresenta la capacità di un sistema informatico di emulare alcune funzioni cognitive umane, come l'apprendimento, la risoluzione di problemi complessi, il riconoscimento del linguaggio naturale e persino la creatività. \n\nPer comprendere a fondo questo fenomeno, è essenziale distinguere tra due grandi categorie: l'<span style='color: #e74c3c; font-weight: bold;'>Intelligenza Artificiale Ristretta (Narrow AI)</span> e l'<span style='color: #8e44ad; font-weight: bold;'>Intelligenza Artificiale Generale (General AI)</span>.\nAttualmente, tutte le tecnologie che utilizziamo rientrano nella \"Narrow AI\". Questi sistemi sono progettati per eccellere in un compito molto specifico e limitato. Ne sono un esempio gli algoritmi che suggeriscono quali film guardare sulle piattaforme di streaming, gli assistenti vocali dei nostri smartphone o i programmi capaci di battere i campioni mondiali di scacchi ♟️. L'Intelligenza Artificiale Generale, invece, è ancora un concetto puramente teorico, tipico dei film di fantascienza: si tratterebbe di una macchina dotata di una coscienza e di una flessibilità cognitiva pari (o superiore) a quella del cervello umano, capace di imparare a svolgere qualsiasi compito intellettuale senza essere stata specificamente programmata per farlo.\n\nIl nucleo pulsante dell'IA moderna è il <span style='color: #27ae60; font-weight: bold;'>Machine Learning</span> (apprendimento automatico) 🧠. A differenza dei software tradizionali, in cui un programmatore scrive manualmente ogni singola istruzione, un sistema di Machine Learning viene \"addestrato\" fornendogli enormi quantità di dati. Analizzando milioni di esempi, l'algoritmo individua schemi ricorrenti (chiamati *pattern*) e impara autonomamente a fare previsioni o prendere decisioni con un margine di errore sempre più ridotto.\n\nL'impatto dell'IA sul mondo del lavoro è il tema centrale di un acceso dibattito globale 💼. Da una parte ci sono i timori, legittimi, legati all'automazione. Si prevede che nei prossimi decenni molte professioni ripetitive e basate su procedure standardizzate potrebbero essere sostituite dalle macchine. Lavori nel settore manifatturiero, nella contabilità di base, nei call center e persino nei trasporti (con l'avvento dei veicoli a guida autonoma 🚗) subiranno una forte contrazione.\n\nDall'altra parte, gli ottimisti sottolineano che l'innovazione tecnologica ha storicamente sempre creato più posti di lavoro di quanti ne abbia distrutti. L'IA darà vita a nuove professioni che oggi facciamo persino fatica a immaginare. Si svilupperà un'enorme domanda per ingegneri dei dati, analisti predittivi, specialisti in etica dell'Intelligenza Artificiale e manutentori di reti neurali. Inoltre, l'automazione delle mansioni noiose e ripetitive permetterà agli esseri umani di concentrarsi sui lavori in cui la macchina non può competere: quelli che richiedono <span style='color: #f39c12; font-weight: bold;'>empatia, creatività, pensiero critico e intelligenza emotiva</span> 💡.\n\nUn altro aspetto fondamentale riguarda le sfide etiche e sociali. I sistemi di IA, imparando dai dati forniti dagli esseri umani, possono ereditare i nostri pregiudizi sociali (fenomeno noto come *bias cognitivo*). Ad esempio, un software per la selezione del personale addestrato su dati storici potrebbe penalizzare ingiustamente candidati di determinate minoranze etniche o di genere. È quindi indispensabile che lo sviluppo tecnologico sia affiancato da normative rigorose, trasparenza degli algoritmi e supervisione umana costante ⚖️.\n\nIn conclusione, l'Intelligenza Artificiale non deve essere vista come una forza aliena e inarrestabile, ma come uno strumento potentissimo plasmato dalle nostre scelte. Prepararsi al futuro significa non solo investire in nuove competenze tecnologiche, ma anche rafforzare le qualità squisitamente umane, costruendo un mondo in cui le macchine siano al servizio del benessere collettivo e non della sostituzione dell'individuo.",
+                        "questions": [
+                            {
+                                "question": "Qual è la differenza tra Narrow AI (IA Ristretta) e General AI (IA Generale)?",
+                                "options": [
+                                    "La Narrow AI fa parte della fantascienza, la General AI è quella dei nostri smartphone.",
+                                    "La Narrow AI eccelle in compiti specifici, la General AI avrebbe un'intelligenza flessibile e autonoma pari a quella umana.",
+                                    "Non c'è differenza, sono solo due nomi diversi per indicare la stessa tecnologia."
+                                ],
+                                "answer": "La Narrow AI eccelle in compiti specifici, la General AI avrebbe un'intelligenza flessibile e autonoma pari a quella umana."
+                            },
+                            {
+                                "question": "Come funziona un sistema di Machine Learning (apprendimento automatico)?",
+                                "options": [
+                                    "Un programmatore inserisce manualmente tutte le istruzioni riga per riga.",
+                                    "Il sistema viene addestrato analizzando enormi quantità di dati per individuare schemi ricorrenti (pattern).",
+                                    "Il sistema si collega ad altre macchine rubando le loro informazioni."
+                                ],
+                                "answer": "Il sistema viene addestrato analizzando enormi quantità di dati per individuare schemi ricorrenti (pattern)."
+                            },
+                            {
+                                "question": "Secondo il testo, quali tipi di lavori sono maggiormente a rischio a causa dell'automazione?",
+                                "options": [
+                                    "I lavori che richiedono forte empatia e creatività",
+                                    "I lavori politici e artistici",
+                                    "Le professioni ripetitive e basate su procedure standardizzate"
+                                ],
+                                "answer": "Le professioni ripetitive e basate su procedure standardizzate"
+                            },
+                            {
+                                "question": "Cosa si intende per 'bias cognitivo' nei sistemi di IA?",
+                                "options": [
+                                    "Un virus informatico che distrugge la memoria della macchina.",
+                                    "Il rischio che la macchina erediti i pregiudizi sociali presenti nei dati forniti dagli esseri umani.",
+                                    "La capacità della macchina di spegnersi automaticamente in caso di errore."
+                                ],
+                                "answer": "Il rischio che la macchina erediti i pregiudizi sociali presenti nei dati forniti dagli esseri umani."
+                            },
+                            {
+                                "question": "Quali qualità umane dovranno essere rafforzate in futuro per non essere sostituiti dalle macchine?",
+                                "options": [
+                                    "La capacità di fare calcoli matematici velocemente",
+                                    "Empatia, creatività, pensiero critico e intelligenza emotiva",
+                                    "La forza fisica e la resistenza alla fatica"
+                                ],
+                                "answer": "Empatia, creatività, pensiero critico e intelligenza emotiva"
                             }
                         ]
                     }
@@ -10629,6 +10181,60 @@ window.exercisesData = {
                             }
                         ]
                     }
+                ],
+                "difficile": [
+                    {
+                        "id": 9007,
+                        "title": "Il Mercato delle Spezie di Marrakech",
+                        "text": "<span style='color: #e67e22; font-weight: bold;'>Il Mercato delle Spezie di Marrakech</span> 🐪\n\nAddentrarsi nel cuore della Medina di Marrakech, dirigendosi verso lo storico Mercato delle Spezie (conosciuto localmente come Rahba Kedima), significa intraprendere un viaggio sensoriale stordente, dove il tempo sembra essersi cristallizzato in un’epoca antica. L’ingresso al mercato è quasi nascosto, inghiottito dal caos dei vicoli stretti e tortuosi della città vecchia 🇲🇦.\n\nVisivamente, la piazza è un'esplosione cromatica che satura lo sguardo 🎨. La luce abbagliante del sole nordafricano filtra a fatica attraverso i tetti di canne intrecciate, proiettando intricate geometrie di luci e ombre sul lastricato di pietra consunta. Sotto queste tettoie di fortuna si accalcano decine di banchi in legno grezzo. Ognuno di essi è dominato da piramidi perfette di spezie, modellate con una cura quasi maniacale dai mercanti. Si erge il <span style='color: #e74c3c; font-weight: bold;'>rosso acceso</span> della paprika dolce, affiancato al bordeaux vellutato del sommacco. Accanto, spicca il <span style='color: #f1c40f; font-weight: bold;'>giallo abbagliante</span> della curcuma e dello zafferano pregiato, mentre le tonalità calde della cannella e del cumino si confondono con il <span style='color: #27ae60; font-weight: bold;'>verde scuro</span> delle foglie di menta essiccata e del cardamomo. \n\nMa è l'olfatto il senso maggiormente sollecitato in questo luogo 👃. L'aria è densa, quasi palpabile, carica di effluvi contrastanti che stordiscono i polmoni. C'è il profumo pungente e terroso del cumino, l'aroma dolce e avvolgente della noce moscata e dei chiodi di garofano, interrotto periodicamente dalla scia balsamica dell'eucalipto e dalla delicatezza floreale dell'acqua di rose. È un profumo che penetra nei vestiti, che impregna i capelli e che ti accompagna per ore anche dopo aver lasciato la piazza.\n\nIl tappeto sonoro del mercato è altrettanto caotico e affascinante 🎶. È un frastuono costante in cui si mescolano lingue e dialetti diversi. Il richiamo cantilenante dei venditori, che invitano i passanti a \"guardare, solo guardare, senza impegno\", si intreccia al suono ritmico dei mortai di bronzo in cui vengono pestate le bacche di pepe e le radici dure. Si sente il brusio incessante delle contrattazioni infinite, vere e proprie opere teatrali in cui il mercante e l'acquirente recitano le loro parti alzando e abbassando i toni della voce, gesticolando animatamente fino a raggiungere l'accordo finale con un sorriso e una stretta di mano 🤝. In lontananza, si distingue il richiamo alla preghiera del Muezzin, che scende dai minareti per avvolgere la piazza, imponendo un istante di pace in mezzo al fervore commerciale.\n\nToccando la merce, si percepiscono infinite consistenze: la polvere finissima dello zenzero che scivola via tra le dita come sabbia impalpabile, la ruvidità legnosa dei bastoncini di cannella, l'untuosità dei saponi neri all'olio d'oliva e la freschezza dei blocchi di allume di rocca.\n\nE se ci si ferma presso uno dei minuscoli tavolini in ottone sbalzato che circondano la piazza, si può coinvolgere anche il senso del gusto ☕. Un mercante dall'aria saggia versa, con gesti lenti e precisi, il tradizionale tè alla menta maghrebino. La teiera d'argento viene sollevata in alto per creare una spessa schiuma in cima al bicchiere di vetro decorato. Il liquido dorato è ustionante al tatto, ma il primo sorso rivela un contrasto perfetto: un sapore fortissimo e pungente di tè verde, addolcito all'inverosimile da grossi zollette di zucchero di canna, con l'aroma pungente delle foglie di menta fresca appena stropicciate 🌿.\n\nIl Mercato delle Spezie di Marrakech non è un semplice luogo dove fare acquisti; è un organismo vivo, pulsante ed eterno. È un affresco vivido della cultura marocchina, capace di sovraccaricare la mente e inebriare l'anima di chiunque decida di perdersi tra i suoi colori e i suoi profumi indimenticabili.",
+                        "questions": [
+                            {
+                                "question": "Come vengono esposte le spezie sui banchi del mercato?",
+                                "options": [
+                                    "Dentro sacchi di juta chiusi ermeticamente",
+                                    "Modellate a forma di piramidi perfette",
+                                    "In grandi barattoli di vetro trasparente"
+                                ],
+                                "answer": "Modellate a forma di piramidi perfette"
+                            },
+                            {
+                                "question": "Quale elemento naturale crea 'intricate geometrie di luci e ombre' sulla piazza?",
+                                "options": [
+                                    "I fari colorati installati dal comune",
+                                    "Il sole che filtra attraverso i tetti di canne intrecciate",
+                                    "I fuochi accesi dai mercanti per riscaldarsi"
+                                ],
+                                "answer": "Il sole che filtra attraverso i tetti di canne intrecciate"
+                            },
+                            {
+                                "question": "Come vengono descritte le contrattazioni sui prezzi nel mercato?",
+                                "options": [
+                                    "Rapide e silenziose, senza possibilità di discutere",
+                                    "Lente e noiose, condotte tramite bigliettini scritti",
+                                    "Vere e proprie opere teatrali con gesti animati e toni di voce variabili"
+                                ],
+                                "answer": "Vere e proprie opere teatrali con gesti animati e toni di voce variabili"
+                            },
+                            {
+                                "question": "Che sapore ha il tradizionale tè maghrebino servito al mercato?",
+                                "options": [
+                                    "Un sapore amaro, freddo e leggermente salato",
+                                    "Un contrasto perfetto tra il tè verde forte, molto zucchero e menta fresca",
+                                    "Un sapore delicato e completamente privo di zuccheri"
+                                ],
+                                "answer": "Un contrasto perfetto tra il tè verde forte, molto zucchero e menta fresca"
+                            },
+                            {
+                                "question": "A quale senso viene dedicata una particolare attenzione nel testo descrittivo?",
+                                "options": [
+                                    "Esclusivamente alla vista, per i colori",
+                                    "L'olfatto, per la grande varietà e intensità dei profumi descritti",
+                                    "Esclusivamente al tatto, per la consistenza delle rocce"
+                                ],
+                                "answer": "L'olfatto, per la grande varietà e intensità dei profumi descritti"
+                            }
+                        ]
+                    }
                 ]
             },
             "poesia": {
@@ -10844,6 +10450,60 @@ window.exercisesData = {
                                     "Incentiva l'egoismo individuale"
                                 ],
                                 "answer": "Agisce come una forza terapeutica che dona pace e favorisce la rinascita"
+                            }
+                        ]
+                    }
+                ],
+                "difficile": [
+                    {
+                        "id": 9008,
+                        "title": "Ode al Vento d'Autunno e Commento Critico",
+                        "text": "<span style='color: #8e44ad; font-weight: bold;'>Ode al Vento d'Autunno</span> 🍂\n<br>\nSoffia invisibile, signore del freddo,<br>\nscuotendo i rami del bosco dormiente.<br>\nUn manto d’oro si posa silente,<br>\nmentre l’estate cede il suo eredo.<br>\nLe foglie danzano in vortici gialli,<br>\nseguendo il ritmo dei tuoi aspri balli.<br>\n<br>\nScompigli i capelli del viandante stanco,<br>\nporti profumi di terra bagnata.<br>\nSopra la collina, di nebbia velata,<br>\ndipingi di grigio l'orizzonte bianco.<br>\nSei il respiro cupo della stagione,<br>\nche spoglia la quercia senza ragione.<br>\n<br>\nNei camini si accende il fuoco vivace,<br>\nquando tu ululi dietro il cancello.<br>\nStrappi dal ramo l'ultimo orpello,<br>\ncercando, inquieto, una fredda pace.<br>\nE mentre la natura chiude il suo occhio,<br>\ntu pieghi l’orgoglio del vecchio ginocchio.<br>\n<br>\nPassa, o vento, prepara l'inverno,<br>\nporta la neve sul picco lontano.<br>\nNon c'è paura nel cuore sovrano,<br>\nche osserva placido il muto eterno.<br>\nSappiamo che al termine del tuo rigore,<br>\nla terra risveglierà il suo colore.<br>\n<br>\n<hr>\n<br>\n<span style='color: #2980b9; font-weight: bold;'>Commento Critico e Analisi del Testo</span> 📖<br>\nQuesta poesia, strutturata in quattro strofe composte da sei versi (sestine), rappresenta una profonda riflessione allegorica sul passare del tempo e sul ciclo immutabile della natura 🍁. L'autore sceglie il *vento autunnale* come vero protagonista e soggetto attivo della composizione. Il vento viene personificato sin dai primi versi: è chiamato \"signore del freddo\" e \"respiro cupo\", entità invisibile ma capace di modellare il paesaggio a suo piacimento.\n\nIl testo si avvale di immagini fortemente evocative (i \"vortici gialli\" delle foglie, la \"nebbia velata\", il \"fuoco vivace\" nei camini) per attivare tutti i sensi del lettore. È presente una forte dicotomia tra l'inquietudine violenta dell'elemento naturale all'esterno (il vento che \"ulula dietro il cancello\" e \"spoglia la quercia\") e la ricerca di intimità e rassicurazione all'interno (\"nei camini si accende il fuoco\"). \n\nL'autunno non viene visto solo come portatore di morte e spoliazione, ma come una fase necessaria e ineluttabile di preparazione. L'ultima strofa introduce una nota di speranza e accettazione filosofica: l'essere umano, definito come \"cuore sovrano\", osserva lo scorrere delle stagioni senza timore, consapevole che il gelido rigore dell'inverno è solo il passaggio obbligato prima che la terra \"risveglierà il suo colore\" con la primavera 🌸.",
+                        "questions": [
+                            {
+                                "question": "Come viene definito il vento nella prima strofa della poesia?",
+                                "options": [
+                                    "Un amico invisibile",
+                                    "Il signore del freddo",
+                                    "Un pittore autunnale"
+                                ],
+                                "answer": "Il signore del freddo"
+                            },
+                            {
+                                "question": "Quale immagine sensoriale utilizza il poeta per descrivere le foglie autunnali?",
+                                "options": [
+                                    "Foglie che danzano in vortici gialli",
+                                    "Foglie che diventano rigide come il ghiaccio",
+                                    "Foglie che coprono i fiumi in silenzio"
+                                ],
+                                "answer": "Foglie che danzano in vortici gialli"
+                            },
+                            {
+                                "question": "Secondo il commento critico, cosa simboleggia l'autunno in questo componimento?",
+                                "options": [
+                                    "La fine assoluta e definitiva di ogni forma di vita",
+                                    "Una fase necessaria di preparazione prima della rinascita primaverile",
+                                    "Un periodo di grande gioia e calore interiore"
+                                ],
+                                "answer": "Una fase necessaria di preparazione prima della rinascita primaverile"
+                            },
+                            {
+                                "question": "Che tipo di reazione ha il 'cuore sovrano' (l'essere umano) di fronte al vento autunnale nell'ultima strofa?",
+                                "options": [
+                                    "Tenta di fermare il vento con la forza",
+                                    "Prova terrore e cerca rifugio",
+                                    "Lo osserva con speranza e accettazione filosofica"
+                                ],
+                                "answer": "Lo osserva con speranza e accettazione filosofica"
+                            },
+                            {
+                                "question": "Quale contrasto viene evidenziato dal commento critico?",
+                                "options": [
+                                    "Tra i colori caldi dell'estate e quelli freddi dell'autunno",
+                                    "Tra l'inquietudine violenta dell'esterno e l'intimità rassicurante dell'interno (il camino)",
+                                    "Tra il silenzio degli animali e il rumore degli esseri umani"
+                                ],
+                                "answer": "Tra l'inquietudine violenta dell'esterno e l'intimità rassicurante dell'interno (il camino)"
                             }
                         ]
                     }
@@ -11065,6 +10725,60 @@ window.exercisesData = {
                             }
                         ]
                     }
+                ],
+                "difficile": [
+                    {
+                        "id": 9009,
+                        "title": "Il Segreto dell'Orologio ad Acqua",
+                        "text": "<span style='color: #8e44ad; font-weight: bold;'>Il Segreto dell'Orologio ad Acqua</span> 🕰️\n\nLa bottega dell'antiquario <span style='color: #2980b9; font-weight: bold;'>Elias Thorne</span> era un dedalo di oggetti impolverati, mobili di epoca vittoriana e curiosità provenienti da ogni angolo del mondo. Elias era un uomo solitario, noto per la sua abilità nel riparare qualsiasi meccanismo, per quanto antico o complesso fosse. Un piovoso giovedì pomeriggio, una donna dal volto coperto da un velo nero entrò nel suo negozio, portando con sé una pesante cassa di legno.\n\nSenza dire una parola, la donna posò la cassa sul bancone, lasciò una busta gonfia di banconote e uscì rapidamente, scomparendo nella nebbia londinese 🌫️. Elias, incuriosito, aprì la cassa. Al suo interno c'era uno strano oggetto: un antico <span style='color: #e67e22; font-weight: bold;'>orologio ad acqua</span> (chiamato clessidra ad acqua o clepsidra), realizzato in ottone massiccio e vetro di Murano.\n\nNon era un orologio comune. Invece dei classici numeri romani, il quadrante era inciso con strani simboli zodiacali e rune celtiche. Ma la cosa più inquietante era il suo funzionamento. Pur essendo completamente vuoto e scollegato da qualsiasi fonte d'acqua, l'orologio emetteva un ticchettio regolare e, allo scoccare di quella che sembrava essere la mezzanotte, i suoi ingranaggi si muovevano producendo un suono cupo, simile a un lamento 🎶.\n\nElias decise di smontarlo per capirne il segreto. Lavorò per tre notti consecutive alla luce di una lampada a petrolio. Scoprì che l'orologio non funzionava ad acqua, ma tramite un ingegnoso sistema di calamite nascoste e pesi microscopici che sfruttavano le variazioni della pressione atmosferica. Tuttavia, c'era qualcosa di più. Il ticchettio irregolare che aveva notato la prima notte non era un difetto meccanico, ma un codice.\n\nArmato di un taccuino, Elias iniziò a trascrivere i suoni: *tic-tic-pausa-tic...* Era <span style='color: #c0392b; font-weight: bold;'>Codice Morse</span>. Il messaggio, ripetuto in loop, diceva: \"SOTTO LA LUNA NUOVA, IL LEONE GUARDA LA TORRE\".\n\nElias consultò vecchie mappe della città. Capì che \"il leone\" si riferiva a una statua di bronzo situata nel parco centrale, mentre \"la torre\" era la vecchia torre campanaria abbandonata. Ma cosa significava \"sotto la luna nuova\"? Guardò il calendario: la luna nuova sarebbe stata quella stessa notte 🌑.\n\nIndossato un impermeabile scuro, l'antiquario si recò al parco. La città era immersa in un silenzio irreale. Seguendo lo sguardo della statua del leone di bronzo, Elias si incamminò verso la vecchia torre. Alla base dell'edificio, coperta da edera rampicante, notò una pietra leggermente sporgente. Facendo leva con un cacciavite, riuscì a rimuoverla.\n\nAll'interno di una piccola cavità c'era una scatola di metallo arrugginito. La aprì con le mani tremanti. Conteneva un diario rilegato in pelle e una spilla d'oro a forma di clessidra ⏳. Il diario apparteneva a un famoso inventore del Diciottesimo secolo, scomparso misteriosamente. Sfogliando le pagine, Elias scoprì progetti per macchinari rivoluzionari capaci di generare energia pulita dal moto perpetuo, progetti che le potenti compagnie del carbone dell'epoca avevano cercato di insabbiare.\n\nL'orologio non era solo un bizzarro pezzo d'antiquariato, ma la chiave per ritrovare un'eredità perduta che avrebbe potuto cambiare le sorti della rivoluzione industriale. Mentre Elias stringeva il diario, sentì dei passi avvicinarsi nell'oscurità. \n\n\"Vedo che hai risolto il mio enigma, signor Thorne,\" disse una voce femminile, la stessa donna velata che era entrata nel suo negozio. \"Ora, se non le dispiace, quell'orologio e i segreti del mio bisnonno devono tornare alla nostra famiglia.\"\n\nIl mistero dell'orologio ad acqua era stato svelato, ma per Elias, l'avventura era appena cominciata.",
+                        "questions": [
+                            {
+                                "question": "Cosa consegna la donna misteriosa all'antiquario Elias Thorne?",
+                                "options": [
+                                    "Un diario rilegato in pelle",
+                                    "Una pesante cassa di legno contenente un antico orologio ad acqua",
+                                    "Una spilla d'oro a forma di clessidra"
+                                ],
+                                "answer": "Una pesante cassa di legno contenente un antico orologio ad acqua"
+                            },
+                            {
+                                "question": "Qual è la caratteristica più strana e inquietante dell'orologio?",
+                                "options": [
+                                    "Emette un ticchettio e si muove pur essendo completamente vuoto e senza acqua",
+                                    "Le lancette girano in senso antiorario",
+                                    "È fatto di un metallo radioattivo che brilla al buio"
+                                ],
+                                "answer": "Emette un ticchettio e si muove pur essendo completamente vuoto e senza acqua"
+                            },
+                            {
+                                "question": "In che modo Elias scopre il messaggio nascosto nell'orologio?",
+                                "options": [
+                                    "Smontando un doppiofondo segreto nel legno",
+                                    "Trascrivendo il ticchettio irregolare che si rivela essere Codice Morse",
+                                    "Leggendo le antiche rune celtiche incise sul vetro"
+                                ],
+                                "answer": "Trascrivendo il ticchettio irregolare che si rivela essere Codice Morse"
+                            },
+                            {
+                                "question": "Cosa trova Elias nascosto alla base della vecchia torre campanaria?",
+                                "options": [
+                                    "Il tesoro perduto della corona inglese",
+                                    "Un diario contenente progetti rivoluzionari di un inventore del Diciottesimo secolo",
+                                    "Una mappa del tesoro disegnata con inchiostro simpatico"
+                                ],
+                                "answer": "Un diario contenente progetti rivoluzionari di un inventore del Diciottesimo secolo"
+                            },
+                            {
+                                "question": "Chi si nasconde dietro la figura della donna velata?",
+                                "options": [
+                                    "Una ladra internazionale di opere d'arte",
+                                    "Un fantasma che infesta la bottega",
+                                    "La pronipote dell'inventore scomparso"
+                                ],
+                                "answer": "La pronipote dell'inventore scomparso"
+                            }
+                        ]
+                    }
                 ]
             },
             "horror": {
@@ -11280,6 +10994,60 @@ window.exercisesData = {
                                     "Rimane cieco a causa della forte luce"
                                 ],
                                 "answer": "I suoi capelli diventano completamente bianchi"
+                            }
+                        ]
+                    }
+                ],
+                "difficile": [
+                    {
+                        "id": 9010,
+                        "title": "La Locanda dei Sussurri",
+                        "text": "<span style='color: #c0392b; font-weight: bold;'>La Locanda dei Sussurri</span> 🏚️\n\nLa tempesta si abbatté sui Monti Carpazi con una furia inaudita. La neve cadeva così fitta da formare un muro bianco invalicabile, e il vento ululava tra le gole rocciose come un lupo affamato 🐺. All'interno della loro carrozza ormai bloccata in un cumulo di neve, tre viaggiatori - un medico, una giovane istitutrice e un mercante - capirono di non poter proseguire. \n\nAttraverso la nebbia fitta, intravidero una debole luce tremolante. Si fecero strada a fatica nella neve alta fino alle ginocchia, giungendo davanti a un edificio di pietra grigia: <span style='color: #7f8c8d; font-weight: bold;'>La Locanda del Corvo Nero</span>. L'insegna di legno cigolava sinistramente sospinta dalle raffiche di vento.\n\nIl proprietario, un uomo anziano e curvo con un occhio velato di cataratta, aprì la pesante porta di rovere senza dire una parola, facendoli accomodare nella sala comune dove ardeva un grande camino. L'atmosfera era pesante, viziata dall'odore di legna bruciata e carne stantia. \n\n\"Siete fortunati ad aver trovato questo posto,\" gracchiò il vecchio oste, servendo loro uno stufato dall'aspetto discutibile. \"Nessuno viaggia su questa strada dopo il tramonto. Il bosco... <span style='color: #e74c3c; font-weight: bold;'>trattiene</span> chi si attarda.\"\n\nNon avendo alternative, i tre viaggiatori accettarono le stanze per la notte. La stanza della giovane istitutrice, Clara, si trovava in fondo al corridoio del secondo piano. Appena si distese sul letto dal materasso umido, un brivido le corse lungo la schiena 🥶. La stanza era glaciale, ma il camino era acceso. \n\nNel cuore della notte, Clara fu svegliata da un suono lieve, quasi impercettibile. Non proveniva da fuori, ma *dall'interno* delle pareti. Erano <span style='color: #2c3e50; font-weight: bold;'>sussurri</span>. Voci raschianti e sovrapposte che mormoravano in una lingua sconosciuta. Cercò di convincersi che fosse solo il vento nelle tubature, ma i sussurri diventarono sempre più chiari. \n\n*\"...lasciaci uscire... abbiamo così freddo...\"*\n\nClara si alzò di scatto e accese una candela 🕯️. La fiammella tremolante illuminò la carta da parati sbiadita, che sembrava... muoversi. Sotto il motivo a fiori scoloriti, la carta si gonfiava e si sgonfiava al ritmo di un respiro affannoso. Terrorizzata, Clara corse verso la porta per uscire, ma la maniglia non girava. Era bloccata dall'esterno.\n\nIniziò a battere i pugni sul legno urlando, sperando che il medico o il mercante la sentissero. Improvvisamente, i sussurri si trasformarono in lamenti di dolore puro. Dalle fessure del pavimento di legno scuro iniziò a filtrare una densa nebbia nera che puzzava di terra smossa e decomposizione. \n\nClara indietreggiò fino a inciampare sul tappeto, cadendo pesantemente. Mentre era a terra, notò qualcosa sotto il letto. Non era polvere. Era un'incisione nel legno del pavimento: <span style='color: #e74c3c; font-weight: bold;'>una lapide</span>. \n\nCon orrore, capì la verità. La locanda non era stata costruita su un normale terreno, ma sopra un antico cimitero appestato del XVII secolo. I morti non erano mai stati benedetti, e l'edificio li teneva prigionieri sotto le sue fondamenta. L'oste non offriva riparo ai viaggiatori: offriva sacrifici per placare la rabbia degli spiriti.\n\nLa nebbia nera iniziò a prendere forma. Dapprima furono solo mani scheletriche che sbucavano dal pavimento cercando un appiglio, poi volti emaciati con orbite vuote che la fissavano dal soffitto 👻. La candela si spense all'improvviso.\n\nNel buio totale, Clara sentì il freddo glaciale di dita invisibili che le afferravano le caviglie, trascinandola inesorabilmente verso le assi di legno, che ora si aprivano in una voragine senza fondo. Il suo urlo fu inghiottito dal rumore assordante della tempesta di neve. \n\nLa mattina seguente, il vento si placò e il cielo tornò sereno. Il medico e il mercante, scesi nella sala comune, chiesero all'oste dove fosse l'istitutrice. L'uomo, mescolando un nuovo calderone di stufato, sorrise mostrando i denti marci. \"È partita molto presto,\" rispose. \"Ha detto che aveva troppa fretta.\" \n\nNessuno la cercò. E i sussurri nelle pareti, per quella notte, si placarono.",
+                        "questions": [
+                            {
+                                "question": "Perché i tre viaggiatori sono costretti a fermarsi alla locanda?",
+                                "options": [
+                                    "La loro carrozza è bloccata da una tempesta di neve",
+                                    "Uno di loro è gravemente malato e ha bisogno di cure",
+                                    "Hanno perso la mappa e non sanno più dove andare"
+                                ],
+                                "answer": "La loro carrozza è bloccata da una tempesta di neve"
+                            },
+                            {
+                                "question": "Cosa sente Clara nel cuore della notte all'interno della sua stanza?",
+                                "options": [
+                                    "Il rumore di passi pesanti sul tetto",
+                                    "Dei sussurri e voci raschianti provenienti dalle pareti",
+                                    "Il pianto disperato di un bambino proveniente dal corridoio"
+                                ],
+                                "answer": "Dei sussurri e voci raschianti provenienti dalle pareti"
+                            },
+                            {
+                                "question": "Quale terrificante scoperta fa Clara sotto il letto?",
+                                "options": [
+                                    "Trova uno scheletro umano nascosto in un baule",
+                                    "Trova un'incisione nel pavimento che si rivela essere una lapide",
+                                    "Trova un libro di incantesimi usato dallo stregone"
+                                ],
+                                "answer": "Trova un'incisione nel pavimento che si rivela essere una lapide"
+                            },
+                            {
+                                "question": "Qual è il terribile segreto della Locanda del Corvo Nero?",
+                                "options": [
+                                    "L'oste avvelena il cibo degli ospiti per derubarli",
+                                    "È stata costruita sopra un antico cimitero di appestati le cui anime sono intrappolate",
+                                    "È un covo segreto di vampiri che attaccano di notte"
+                                ],
+                                "answer": "È stata costruita sopra un antico cimitero di appestati le cui anime sono intrappolate"
+                            },
+                            {
+                                "question": "Cosa succede a Clara alla fine del racconto?",
+                                "options": [
+                                    "Riesce a scappare saltando dalla finestra",
+                                    "Viene trascinata sotto il pavimento dagli spiriti, mentre l'oste mente agli altri viaggiatori",
+                                    "Viene salvata all'ultimo momento dal medico e dal mercante"
+                                ],
+                                "answer": "Viene trascinata sotto il pavimento dagli spiriti, mentre l'oste mente agli altri viaggiatori"
                             }
                         ]
                     }
@@ -11501,6 +11269,60 @@ window.exercisesData = {
                             }
                         ]
                     }
+                ],
+                "difficile": [
+                    {
+                        "id": 9011,
+                        "title": "Il Furto del Diamante Blu",
+                        "text": "<span style='color: #2980b9; font-weight: bold;'>Il Furto del Diamante Blu</span> 🔍\n\nL'<span style='color: #f1c40f; font-weight: bold;'>Ispettore Lamberti</span> si accese un fiammifero, lo fece spegnere con un rapido movimento del polso e lo gettò nel posacenere. Non fumava da anni, ma quel gesto lo aiutava a concentrarsi. Davanti a lui, nel lussuoso salone di Villa Farnese, regnava il caos assoluto. L'evento mondano dell'anno si era trasformato nella scena del crimine del secolo: la cassaforte a muro era aperta, vuota. Il leggendario \"Occhio di Zaffiro\", un diamante blu dal valore inestimabile 💎, era sparito.\n\nL'aspetto sconcertante della vicenda non era *cosa* fosse stato rubato, ma *come*. La cassaforte si trovava nello studio privato del conte Farnese, una stanza accessibile solo tramite una porta di rovere massiccio blindata. Durante il ricevimento, la porta era stata chiusa a chiave dall'interno e la finestra, situata al terzo piano, non mostrava segni di effrazione ed era sbarrata da pesanti inferriate antiche 🚪.\n\nEra il classico, apparentemente insolubile, <span style='color: #e74c3c; font-weight: bold;'>mistero della camera chiusa</span>.\n\nLamberti interrogò i principali sospettati. C'era il *maggiordomo*, un uomo dall'aria austera ma con evidenti debiti di gioco; la *nipote del conte*, una giovane ereditiera diseredata di recente a causa del suo stile di vita sregolato; e infine, l'*esperto d'arte*, il professor Malaspina, l'unico ad avere le competenze per piazzare la pietra sul mercato nero senza destare sospetti.\n\nIl conte giurava che nessuno, oltre a lui, conosceva la combinazione. \"L'ho controllato alle dieci in punto,\" spiegò, asciugandosi il sudore dalla fronte. \"Poi sono uscito dallo studio, ho chiuso a chiave e ho tenuto la chiave nel taschino del gilet per tutto il tempo.\"\n\nL'ispettore esaminò minuziosamente lo studio. Sulla scrivania in noce antico, c'era un bicchiere di cristallo contenente un sottile strato d'acqua. Un vassoio d'argento vicino alla cassaforte mostrava una strana pozza d'acqua asimmetrica. Lamberti alzò lo sguardo. Sopra la cassaforte, c'era un condotto dell'aria condizionata, stretto e protetto da una griglia metallica. \n\n\"Impossibile passare di lì,\" commentò l'agente scelto Rizzi, intuendo i pensieri dell'ispettore. \"Nemmeno un bambino di cinque anni ci passerebbe, e la grata è avvitata dall'interno.\"\n\n\"Esatto, Rizzi. Nessun essere umano è passato da quel condotto,\" rispose Lamberti, sfiorando la pozzanghera sul vassoio d'argento. \"Ma qualcosa ci è passato. Qualcosa di... temporaneo.\"\n\nLamberti radunò tutti i sospettati nel salone. La tensione era palpabile.\n\"Signori,\" esordì l'ispettore, \"abbiamo un ladro molto ingegnoso. Ha rubato il diamante senza mai entrare fisicamente nello studio e senza conoscere la combinazione.\"\n\nUn mormorio di incredulità attraversò la sala.\n\n\"Tutti voi sapevate che il conte soffre di una leggera amnesia e ha l'abitudine di lasciare la cassaforte semiaperta quando è nello studio da solo,\" continuò Lamberti. \"Il ladro ha sfruttato questo dettaglio. Ma come ha estratto la pietra da una stanza chiusa a chiave?\"\n\nL'ispettore indicò il professor Malaspina 🕵️‍♂️. \"Siete stato voi, professore. E l'arma del delitto è stata la fisica elementare.\"\nIl professore impallidì ma mantenne un sorriso arrogante. \"E come avrei fatto, sentiamo?\"\n\n\"Avete utilizzato il condotto dell'aria condizionata che collega la stanza degli ospiti al tetto, passando esattamente sopra la scrivania del conte. Sapevate che il conte beve sempre acqua ghiacciata. Avete creato una sorta di 'amo' utilizzando un pezzo di spago robusto e... <span style='color: #3498db; font-weight: bold;'>un grosso blocco di ghiaccio</span> 🧊.\"\n\nLamberti spiegò l'ingegnoso meccanismo: \"Avete calato il blocco di ghiaccio attraverso la grata fino a farlo appoggiare all'interno della cassaforte semiaperta, facendolo aderire perfettamente al diamante. Con l'aria calda del riscaldamento acceso, il ghiaccio si è fuso parzialmente inglobando la pietra preziosa. Poi, avete semplicemente tirato lo spago, sollevando il blocco di ghiaccio con il diamante incastrato dentro, facendolo passare attraverso le larghe sbarre del condotto. Il ghiaccio si è sciolto completamente nel vostro secchiello per lo champagne, lasciandovi solo il diamante, e sullo stipite dello studio... solo una pozza d'acqua inspiegabile.\"\n\nMalaspina fece un passo indietro, sconvolto. Nelle tasche del suo cappotto, gli agenti trovarono l'Occhio di Zaffiro, freddo e brillante come il ghiaccio che lo aveva rapito. Il caso era chiuso.",
+                        "questions": [
+                            {
+                                "question": "Qual è il principale problema che rende questo furto un mistero apparentemente insolubile?",
+                                "options": [
+                                    "La cassaforte è scomparsa nel nulla assieme al diamante",
+                                    "Il diamante è stato rubato da una stanza chiusa a chiave dall'interno e senza segni di effrazione",
+                                    "Il diamante rubato era in realtà un falso di vetro"
+                                ],
+                                "answer": "Il diamante è stato rubato da una stanza chiusa a chiave dall'interno e senza segni di effrazione"
+                            },
+                            {
+                                "question": "Quale debolezza o abitudine del conte ha sfruttato il ladro per rubare il diamante?",
+                                "options": [
+                                    "L'abitudine di lasciare la cassaforte semiaperta quando è solo nello studio",
+                                    "Il fatto che scrivesse la combinazione su un post-it attaccato al computer",
+                                    "L'abitudine di bere un bicchiere di latte caldo prima di dormire"
+                                ],
+                                "answer": "L'abitudine di lasciare la cassaforte semiaperta quando è solo nello studio"
+                            },
+                            {
+                                "question": "Quale indizio fondamentale permette all'Ispettore Lamberti di risolvere il caso?",
+                                "options": [
+                                    "Una ciocca di capelli biondi incastrata nella serratura",
+                                    "Una strana pozza d'acqua asimmetrica trovata sul vassoio d'argento",
+                                    "Un frammento di spago trovato sul davanzale della finestra"
+                                ],
+                                "answer": "Una strana pozza d'acqua asimmetrica trovata sul vassoio d'argento"
+                            },
+                            {
+                                "question": "Come ha fatto il ladro a sollevare il diamante dalla cassaforte attraverso il condotto dell'aria?",
+                                "options": [
+                                    "Calando un magnete potentissimo legato a una fune",
+                                    "Usando un braccio meccanico radiocomandato",
+                                    "Calando un blocco di ghiaccio che, sciogliendosi e ricongelandosi in parte, ha inglobato la pietra"
+                                ],
+                                "answer": "Calando un blocco di ghiaccio che, sciogliendosi e ricongelandosi in parte, ha inglobato la pietra"
+                            },
+                            {
+                                "question": "Chi è il colpevole smascherato dall'Ispettore?",
+                                "options": [
+                                    "Il maggiordomo con problemi di gioco d'azzardo",
+                                    "La nipote ereditiera",
+                                    "Il professor Malaspina, l'esperto d'arte"
+                                ],
+                                "answer": "Il professor Malaspina, l'esperto d'arte"
+                            }
+                        ]
+                    }
                 ]
             },
             "comico": {
@@ -11716,6 +11538,60 @@ window.exercisesData = {
                                     "La tristezza per i fallimenti"
                                 ],
                                 "answer": "L'assurdità delle situazioni umane che genera il riso"
+                            }
+                        ]
+                    }
+                ],
+                "difficile": [
+                    {
+                        "id": 9012,
+                        "title": "Il Giorno in cui la Nonna Ha Imparato a Usare lo Smartphone",
+                        "text": "<span style='color: #f39c12; font-weight: bold;'>Il Giorno in cui la Nonna Ha Imparato a Usare lo Smartphone</span> 😂\n\nTutto è iniziato un tranquillo sabato pomeriggio, quando la mia famiglia, in preda a un delirio di ottimismo tecnologico, ha deciso di regalare a nonna <span style='color: #e74c3c; font-weight: bold;'>Erminia</span> (78 anni, specialista in lasagne e lavorazione a maglia) un fiammante smartphone di ultima generazione 📱. Fino a quel giorno, la nonna considerava \"tecnologia avanzata\" il telecomando della televisione, che gestiva rigorosamente premendo i tasti con forza sovrumana usando l'indice irrigidito, convinta che maggiore fosse la pressione, migliore sarebbe stata la qualità dell'immagine.\n\nL'installazione e la spiegazione di base furono affidate a me. \"Guarda nonna, questo è WhatsApp. Serve per mandare messaggi gratuiti a tutti,\" le spiegai con pazienza zen. Lei annuì, afferrando il telefono a due mani, tenendolo a mezzo metro dal viso e socchiudendo gli occhi come se l'apparecchio stesse per esplodere.\n\nIl primo disastro avvenne due giorni dopo. Ero a lezione all'università, nell'aula magna silenziosa, quando il mio telefono squillò a tutto volume con una suoneria tremenda. Sul display c'era scritto: <span style='color: #27ae60; font-weight: bold;'>Videochiamata in arrivo da NONNA</span> 📹. Preso dal panico (pensando a un'emergenza medica), rifiutai la chiamata, nascondendomi sotto il banco. Ma lei richiamò. E ancora. E ancora. Finché il professore non interruppe la spiegazione di Diritto Privato per dirmi: \"Se la signora ci tiene così tanto, risponda pure, magari vuole partecipare al dibattito\".\n\nIn preda all'imbarazzo, accettai la videochiamata. Sullo schermo apparve non il volto sorridente di mia nonna, ma un primissimo piano mozzafiato del suo *naso*, seguito da una rapida e vertiginosa inquadratura del lampadario della cucina.\n\"Pronto? Pronto?! Roberto, sei intrappolato dentro questo coso piatto?!\" urlò la nonna, con una voce che rimbombò in tutta l'aula. \"Non riesco a girare il tegame del sugo! Perché sei buio? Hai pagato la bolletta della luce?\"\nTutta l'aula scoppiò in una risata fragorosa 🤣. Impiegai dieci minuti per spiegarle come spegnere la chiamata.\n\nMa il capolavoro assoluto avvenne la settimana successiva, durante un tentativo di modernizzazione culinaria. Nonna Erminia aveva sentito dire al mercato che su \"quel faccialibro di internet\" (così chiamava i social in generale) si trovavano ricette eccezionali. Ignorando completamente i concetti di privacy e selezione dell'app, aprì <span style='color: #8e44ad; font-weight: bold;'>TikTok</span> invece di Google, e premette involontariamente il pulsante \"Registra\" invece della barra di ricerca 🎥.\n\nIniziò così una diretta involontaria in cui la nonna, credendo di parlare con un'entità digitale chiamata \"Siri-Alexa\", iniziò a imprecare in dialetto stretto contro la besciamella che stava facendo i grumi. \"Maledetta farina moderna! Ai miei tempi l'acqua era diversa! Come si fa a togliere questi pallini, eh, signor telefono?!\" gridava, sventolando un mestolo di legno coperto di salsa bianca verso l'obiettivo del telefono, sfoggiando un grembiule fiorato abbinato a delle pantofole a forma di orso 🐻.\n\nSenza saperlo, aveva attivato un filtro che le aggiungeva delle orecchie da gatto rosa e dei brillantini arcobaleno intorno alla testa. La scena di una nonna infuriata con la besciamella, con orecchie da gatto scintillanti, era troppo perfetta per passare inosservata. In meno di tre ore, il video divenne virale 📈. Centinaia di migliaia di visualizzazioni. Migliaia di commenti di adolescenti che la elessero a loro \"spirito guida per affrontare i problemi della vita\".\n\nQuando la domenica andai a pranzo da lei, trovai mio cugino seduto sul divano che le leggeva i commenti entusiasti. \"Nonna, sei un'influencer! Hai più follower del sindaco!\" le disse emozionato.\n\nNonna Erminia lo guardò sistemandosi gli occhiali. \"Influ-che? Speriamo non sia contagioso. Piuttosto, prendimi quel telefono piatto. Ho schiacciato un pulsante rosso e adesso c'è un uomo pelato che mi parla in inglese di come investire in criptovalute. Io volevo solo sapere quanta noce moscata serve per le lasagne!\" 🤷‍♀️\n\nDa quel giorno, abbiamo imparato una lezione preziosa: la tecnologia non ha età, ma la besciamella della nonna rimane l'unica cosa veramente imbattibile.",
+                        "questions": [
+                            {
+                                "question": "Come considerava la nonna Erminia la tecnologia prima di ricevere lo smartphone?",
+                                "options": [
+                                    "Era già esperta perché usava spesso il computer",
+                                    "Considerava 'tecnologia avanzata' il telecomando della TV, che premeva fortissimo",
+                                    "Odiava i dispositivi elettronici e si rifiutava di toccarli"
+                                ],
+                                "answer": "Considerava 'tecnologia avanzata' il telecomando della TV, che premeva fortissimo"
+                            },
+                            {
+                                "question": "Quale imbarazzante episodio avviene mentre il protagonista è a lezione all'università?",
+                                "options": [
+                                    "La nonna gli invia centinaia di messaggi vocali vuoti",
+                                    "La nonna avvia una lunga videochiamata inquadrando solo il suo naso e il lampadario",
+                                    "Lo smartphone della nonna fa partire una canzone a tutto volume durante la notte"
+                                ],
+                                "answer": "La nonna avvia una lunga videochiamata inquadrando solo il suo naso e il lampadario"
+                            },
+                            {
+                                "question": "Quale errore commette la nonna mentre cerca una ricetta su internet?",
+                                "options": [
+                                    "Cancella per sbaglio tutte le foto di famiglia",
+                                    "Ordina per errore 100 kg di farina online",
+                                    "Apre TikTok e avvia una registrazione video involontaria invece di usare Google"
+                                ],
+                                "answer": "Apre TikTok e avvia una registrazione video involontaria invece di usare Google"
+                            },
+                            {
+                                "question": "Perché il video della nonna diventa incredibilmente virale sui social?",
+                                "options": [
+                                    "Perché la ricetta della besciamella era geniale e innovativa",
+                                    "Perché inveisce in dialetto contro la besciamella con un esilarante filtro con orecchie da gatto rosa",
+                                    "Perché cantava una canzone famosa mentre cucinava"
+                                ],
+                                "answer": "Perché inveisce in dialetto contro la besciamella con un esilarante filtro con orecchie da gatto rosa"
+                            },
+                            {
+                                "question": "Qual è la preoccupazione principale della nonna alla fine della storia?",
+                                "options": [
+                                    "Capire quanta noce moscata inserire nelle lasagne, ignorando il successo sui social",
+                                    "Diventare ricca diventando un'influencer professionista",
+                                    "Comprare un nuovo telefono ancora più costoso"
+                                ],
+                                "answer": "Capire quanta noce moscata inserire nelle lasagne, ignorando il successo sui social"
                             }
                         ]
                     }
@@ -11937,6 +11813,60 @@ window.exercisesData = {
                             }
                         ]
                     }
+                ],
+                "difficile": [
+                    {
+                        "id": 9013,
+                        "title": "Diario di un Mese Senza Internet",
+                        "text": "<span style='color: #2980b9; font-weight: bold;'>Diario di un Mese Senza Internet</span> 📓\n\n*15 Maggio*\nCaro Diario,\noggi è ufficialmente iniziato il mio personalissimo esperimento: trenta giorni di totale <span style='color: #e74c3c; font-weight: bold;'>Digital Detox</span> 📵. Niente smartphone, niente social network, niente video in streaming. Solo un vecchio telefono a conchiglia degli anni Duemila per le emergenze. La prima giornata è stata un incubo. Mi sono svegliato e, per istinto, ho allungato la mano verso il comodino per controllare le notifiche. Ho afferrato solo l'aria. Durante il tragitto in autobus verso scuola, non sapendo cosa fare, ho fissato fuori dal finestrino per venti minuti. È incredibile quanto le persone sembrino isolate quando indossano le cuffiette e fissano uno schermo luminoso. Mi sono sentito... strano. E anche molto annoiato.\n\n*22 Maggio*\nÈ passata una settimana. I primi giorni ho sofferto di quella che gli esperti chiamano \"FOMO\" (*Fear Of Missing Out*), la paura terribile di perdermi qualcosa di importante 😰. Ero convinto che i miei amici stessero organizzando feste epiche a mia insaputa. Invece, scoprirlo alla vecchia maniera (parlandoci a ricreazione) mi ha fatto capire che non mi stavo perdendo assolutamente nulla di speciale. Ho ripreso in mano un libro che avevo comprato mesi fa e lasciato a prendere polvere sulla mensola. Si intitola *Fahrenheit 451*. L'ho divorato in tre giorni. Senza le continue distrazioni delle notifiche, la mia soglia di concentrazione è raddoppiata 📖.\n\n*28 Maggio*\nIeri pomeriggio pioveva e non potevo uscire. Di solito, avrei passato ore su TikTok scorrendo video senza senso fino a farmi venire il mal di testa. Ieri, invece, sono andato in cucina. Mia madre stava preparando una torta di mele. Mi sono offerto di aiutarla a sbucciare le mele. Abbiamo parlato per quasi due ore 🍏. Mi ha raccontato storie di quando aveva la mia età, aneddoti che non avevo mai sentito. Mi sono reso conto che, vivendo sotto lo stesso tetto, spesso ci comportiamo come perfetti sconosciuti. È stato il pomeriggio più bello di questo mese.\n\n*5 Giugno*\nL'esperimento sta diventando sorprendentemente normale. Non ho più l'impulso compulsivo di fotografare il mio pranzo prima di mangiarlo 📸. Mangio, assaporo e basta. Quando esco con i miei amici, io sono l'unico che non ha il telefono sul tavolo. Li osservo: a volte cala il silenzio e tutti e quattro abbassano contemporaneamente la testa sui loro schermi. Quando succede, inizio a fare domande assurde ad alta voce (\"Ma secondo voi, i pinguini hanno le ginocchia?\") solo per farli staccare. Funziona. Ridiamo di più. Mi sento più presente, più connesso alla realtà.\n\n*14 Giugno*\nDomani scade il trentesimo giorno. L'esperimento è finito. Potrò riaccendere il mio smartphone e rituffarmi nel mare di Internet 🌐. La verità? Ne ho un po' paura. Mi è mancata la comodità di usare le mappe per non perdermi in città, o la velocità di cercare informazioni per i compiti scolastici. Internet è uno strumento straordinario, sarebbe sciocco negarlo. Ma ho capito una cosa fondamentale: <span style='color: #27ae60; font-weight: bold;'>i social network non sono la vita vera</span>. Sono solo una vetrina. \n\nDa domani riprenderò a usare lo smartphone, ma ho deciso di impormi delle regole rigide. Nessun telefono a tavola, niente schermi un'ora prima di dormire e disattivazione di tutte le notifiche non essenziali. Voglio essere io a usare la tecnologia, non voglio più che sia la tecnologia a usare me 💡.",
+                        "questions": [
+                            {
+                                "question": "Cos'è la 'FOMO' di cui parla il protagonista?",
+                                "options": [
+                                    "La sindrome da stanchezza visiva causata dagli schermi",
+                                    "La paura terribile di perdersi qualcosa di importante che accade online",
+                                    "Un virus informatico che cancella i dati dal telefono"
+                                ],
+                                "answer": "La paura terribile di perdersi qualcosa di importante che accade online"
+                            },
+                            {
+                                "question": "Come trascorre il pomeriggio piovoso del 28 Maggio?",
+                                "options": [
+                                    "Leggendo un libro di fantascienza per tutto il tempo",
+                                    "Aiutando la madre a sbucciare le mele e ascoltando le sue storie",
+                                    "Chiamando gli amici dal vecchio telefono a conchiglia"
+                                ],
+                                "answer": "Aiutando la madre a sbucciare le mele e ascoltando le sue storie"
+                            },
+                            {
+                                "question": "Cosa fa il protagonista quando i suoi amici guardano il telefono mentre sono insieme?",
+                                "options": [
+                                    "Si arrabbia e se ne va via indignato",
+                                    "Scrive le sue osservazioni sul diario",
+                                    "Fa domande assurde ad alta voce per farli staccare dagli schermi"
+                                ],
+                                "answer": "Fa domande assurde ad alta voce per farli staccare dagli schermi"
+                            },
+                            {
+                                "question": "Cosa è mancato maggiormente al protagonista di Internet durante il mese?",
+                                "options": [
+                                    "I video divertenti su TikTok",
+                                    "La possibilità di fotografare i suoi pranzi",
+                                    "La comodità delle mappe e la ricerca di informazioni per la scuola"
+                                ],
+                                "answer": "La comodità delle mappe e la ricerca di informazioni per la scuola"
+                            },
+                            {
+                                "question": "Quale regola decide di imporsi alla fine dell'esperimento?",
+                                "options": [
+                                    "Usare il telefono solo nel fine settimana",
+                                    "Nessun telefono a tavola e niente schermi prima di dormire",
+                                    "Disinstallare per sempre tutti i social network"
+                                ],
+                                "answer": "Nessun telefono a tavola e niente schermi prima di dormire"
+                            }
+                        ]
+                    }
                 ]
             },
             "lettera": {
@@ -12152,6 +12082,60 @@ window.exercisesData = {
                                     "Qualcosa da ignorare con indifferenza"
                                 ],
                                 "answer": "Un valore inestimabile da accogliere con curiosità"
+                            }
+                        ]
+                    }
+                ],
+                "difficile": [
+                    {
+                        "id": 9014,
+                        "title": "Lettera Aperta sulla Sostenibilità Urbana",
+                        "text": "<span style='color: #8e44ad; font-weight: bold;'>Lettera Aperta al Sindaco sulla Sostenibilità Urbana</span> ✉️\n\nOggetto: Richiesta di un piano d'azione urgente per la mobilità e gli spazi verdi.\n\nEgregio Signor Sindaco,\n\nLe scriviamo a nome del \"Comitato Giovani per una Città Sostenibile\", un'associazione che raccoglie oltre duemila studenti e giovani lavoratori del nostro comune. Ci rivolgiamo a Lei non con spirito polemico, ma con la forte determinazione di chi desidera partecipare attivamente al miglioramento della propria comunità 🏙️.\n\nSiamo profondamente preoccupati per l'attuale gestione degli spazi urbani e per la scarsa qualità dell'aria che respiriamo quotidianamente. Negli ultimi cinque anni, la nostra città ha visto un aumento sproporzionato del traffico veicolare privato. Le strade del centro sono perennemente congestionate, e il rumore assordante dei clacson è diventato la colonna sonora delle nostre giornate 🚗. Ma il problema più grave è invisibile: i livelli di <span style='color: #e74c3c; font-weight: bold;'>inquinamento da polveri sottili (PM10)</span> hanno superato i limiti di sicurezza stabiliti dall'Organizzazione Mondiale della Sanità per oltre 40 giorni consecutivi durante l'ultimo inverno.\n\nQuesto ha un impatto diretto sulla nostra salute, con un aumento preoccupante di malattie respiratorie e allergie, soprattutto tra i bambini e gli anziani. Non possiamo continuare a considerare il diritto alla salute come secondario rispetto alla comodità degli spostamenti in auto.\n\nInoltre, notiamo con rammarico la continua cementificazione del territorio 🏗️. I pochi parchi storici rimasti sono mal curati, e i nuovi quartieri residenziali vengono progettati senza includere adeguati spazi di aggregazione all'aperto. Una città senza alberi è una città che soffoca.\n\nPer questi motivi, Le proponiamo formalmente le seguenti soluzioni concrete e realizzabili a breve e medio termine:\n\n<span style='color: #27ae60; font-weight: bold;'>1. Potenziamento del Trasporto Pubblico Locale</span> 🚌: Richiediamo l'acquisto di nuovi autobus elettrici e un aumento della frequenza delle corse, specialmente nelle fasce orarie dedicate a pendolari e studenti. Inoltre, proponiamo di rendere i mezzi pubblici gratuiti per gli under 25, per incentivare l'abbandono del mezzo privato.\n\n<span style='color: #f39c12; font-weight: bold;'>2. Implementazione della Rete Ciclabile</span> 🚲: L'attuale rete di piste ciclabili è frammentata e insicura. È necessario creare \"corridoi sicuri\" che colleghino in modo ininterrotto le periferie al centro città, separando fisicamente le piste dalle carreggiate destinate alle automobili.\n\n<span style='color: #2980b9; font-weight: bold;'>3. Creazione di Nuove Aree Verdi e Pedonalizzazione</span> 🌳: Chiediamo che il centro storico diventi gradualmente un'area totalmente pedonale (ZTL rigorosa). Proponiamo inoltre un piano di forestazione urbana: piantare almeno mille nuovi alberi all'anno nelle zone industriali dimesse per mitigare le isole di calore estive.\n\nSignor Sindaco, sappiamo bene che queste transizioni richiedono tempo e fondi, e che alcune scelte potrebbero risultare impopolari tra i commercianti e gli automobilisti più intransigenti. Tuttavia, una politica lungimirante deve guardare al futuro delle prossime generazioni, non al consenso immediato.\n\nSiamo pronti a fare la nostra parte, offrendo volontariato per la pulizia dei parchi e per campagne di sensibilizzazione nelle scuole. Ci aspettiamo, però, che l'Amministrazione Comunale dia un segnale forte e immediato.\n\nRestiamo in attesa di un Suo riscontro e Le chiediamo un incontro pubblico per discutere approfonditamente queste proposte. \n\nCordiali saluti,\n*Il Comitato Giovani per una Città Sostenibile*",
+                        "questions": [
+                            {
+                                "question": "Qual è il motivo principale che spinge il Comitato a scrivere la lettera?",
+                                "options": [
+                                    "Chiedere nuovi parcheggi per le automobili in centro",
+                                    "Denunciare i problemi di traffico, inquinamento e scarsità di spazi verdi",
+                                    "Protestare contro le tasse comunali troppo alte"
+                                ],
+                                "answer": "Denunciare i problemi di traffico, inquinamento e scarsità di spazi verdi"
+                            },
+                            {
+                                "question": "Quale dato preoccupante viene citato riguardo all'inquinamento?",
+                                "options": [
+                                    "L'acqua del fiume è diventata nera",
+                                    "Il PM10 ha superato i limiti di sicurezza per oltre 40 giorni consecutivi",
+                                    "Le industrie locali bruciano troppa plastica"
+                                ],
+                                "answer": "Il PM10 ha superato i limiti di sicurezza per oltre 40 giorni consecutivi"
+                            },
+                            {
+                                "question": "Cosa propone il Comitato riguardo al trasporto pubblico per gli studenti?",
+                                "options": [
+                                    "Sostituire tutti gli autobus con dei taxi",
+                                    "Rendere i mezzi pubblici gratuiti per gli under 25",
+                                    "Permettere agli studenti di guidare a 16 anni"
+                                ],
+                                "answer": "Rendere i mezzi pubblici gratuiti per gli under 25"
+                            },
+                            {
+                                "question": "Qual è la richiesta del Comitato in merito al centro storico della città?",
+                                "options": [
+                                    "Trasformarlo in un'area gradualmente pedonale (ZTL rigorosa)",
+                                    "Costruirci un grande centro commerciale",
+                                    "Riaprirlo al traffico pesante per favorire i negozianti"
+                                ],
+                                "answer": "Trasformarlo in un'area gradualmente pedonale (ZTL rigorosa)"
+                            },
+                            {
+                                "question": "Cosa offrono in cambio i giovani del Comitato all'Amministrazione?",
+                                "options": [
+                                    "Soldi ricavati da raccolte fondi",
+                                    "Volontariato per pulire i parchi e sensibilizzare le scuole",
+                                    "Il loro voto alle prossime elezioni politiche"
+                                ],
+                                "answer": "Volontariato per pulire i parchi e sensibilizzare le scuole"
                             }
                         ]
                     }
@@ -12373,6 +12357,60 @@ window.exercisesData = {
                             }
                         ]
                     }
+                ],
+                "difficile": [
+                    {
+                        "id": 9015,
+                        "title": "I Compiti a Casa: Utili o Dannosi?",
+                        "text": "<span style='color: #2c3e50; font-weight: bold;'>I Compiti a Casa: Strumento Utile o Fonte di Stress?</span> 📚\n\nIl dibattito sull'utilità dei compiti a casa è vecchio quanto la scuola stessa. Da una parte troviamo docenti e pedagogisti convinti che l'impegno pomeridiano sia fondamentale per consolidare le conoscenze; dall'altra, psicologi e associazioni di genitori sostengono che un carico di lavoro eccessivo finisca per schiacciare i ragazzi, privandoli del tempo necessario per lo svago e la crescita personale. È dunque necessario analizzare entrambe le posizioni per comprendere quale sia l'approccio più corretto ed equilibrato.\n\nIniziamo con le <span style='color: #27ae60; font-weight: bold;'>argomentazioni a favore</span> dei compiti a casa ✍️. Il primo elemento da considerare è la memorizzazione. La mente umana necessita di ripetizione per trasformare una nozione appresa a breve termine in un ricordo a lungo termine. Ripassare una regola di matematica o una lezione di storia nel pomeriggio permette al cervello di \"fissare\" il concetto. Inoltre, lo studio autonomo insegna la <span style='color: #f1c40f; font-weight: bold;'>gestione del tempo</span> e la responsabilità. Uno studente che impara a pianificare i propri pomeriggi, dividendo lo sforzo tra le varie materie, sta acquisendo un'abilità organizzativa (le cosiddette *soft skills*) che gli sarà indispensabile nel mondo del lavoro o all'università.\n\nTuttavia, le <span style='color: #e74c3c; font-weight: bold;'>argomentazioni contrarie</span> sono altrettanto solide e supportate da studi recenti 📉. I detrattori del lavoro pomeridiano sottolineano che l'Italia è uno dei Paesi europei con il carico di compiti più elevato, ma questo non si traduce automaticamente in risultati migliori nei test internazionali (come le prove INVALSI o PISA). Al contrario, il \"sovraccarico\" genera ansia, disturbi del sonno e demotivazione. \n\nUn secondo aspetto critico riguarda le <span style='color: #8e44ad; font-weight: bold;'>disuguaglianze sociali</span>. I compiti a casa amplificano le differenze tra gli studenti: chi ha genitori istruiti e presenti, capaci di aiutare nello studio o di pagare ripetizioni private, è ampiamente avvantaggiato. Chi proviene da contesti difficili, magari in case rumorose o senza connessione a internet, viene penalizzato doppiamente, trasformando la scuola in un sistema non equo. Infine, lo sport, le passioni artistiche e il semplice \"tempo libero\" sono essenziali per lo sviluppo psicofisico dei giovani; rubare queste ore con eccessivi esercizi di grammatica significa ostacolare la loro creatività 🎨.\n\nQual è, dunque, la sintesi di questo dibattito? L'eliminazione totale dei compiti a casa appare una soluzione estrema che priverebbe gli studenti dell'opportunità di imparare a lavorare in autonomia. D'altro canto, il sistema attuale, basato su montagne di esercizi spesso mnemonici o punitivi, è obsoleto e dannoso.\n\nLa soluzione più ragionevole risiede nella <span style='color: #2980b9; font-weight: bold;'>qualità piuttosto che nella quantità</span>. I compiti non dovrebbero essere una mera prosecuzione della lezione in classe, ma attività mirate, stimolanti e personalizzate. Una ricerca su un argomento di attualità, la lettura di un capitolo di un romanzo, o la risoluzione di un problema logico-pratico sono molto più formativi di quaranta operazioni matematiche tutte uguali.\n\nLa vera sfida per la scuola del futuro non è abolire lo studio pomeridiano, ma trasformarlo. I compiti devono smettere di essere un dovere opprimente che toglie il sonno ai ragazzi e la pace alle famiglie, per diventare un momento sereno di curiosità intellettuale e consolidamento personale.",
+                        "questions": [
+                            {
+                                "question": "Qual è una delle principali argomentazioni a favore dei compiti a casa citata nel testo?",
+                                "options": [
+                                    "Aiutano le famiglie a risparmiare sui libri di testo",
+                                    "Insegnano la gestione del tempo e la responsabilità autonoma",
+                                    "Garantiscono agli studenti di ottenere il massimo dei voti nei test"
+                                ],
+                                "answer": "Insegnano la gestione del tempo e la responsabilità autonoma"
+                            },
+                            {
+                                "question": "Secondo i detrattori, cosa genera l'eccesso di compiti a casa negli studenti italiani?",
+                                "options": [
+                                    "Eccellenti risultati a livello europeo",
+                                    "Competizione malsana tra i compagni di classe",
+                                    "Ansia, disturbi del sonno e forte demotivazione"
+                                ],
+                                "answer": "Ansia, disturbi del sonno e forte demotivazione"
+                            },
+                            {
+                                "question": "Perché i compiti a casa rischiano di amplificare le disuguaglianze sociali?",
+                                "options": [
+                                    "Perché costano molto ai genitori",
+                                    "Perché gli studenti senza un ambiente familiare adeguato o senza aiuti sono penalizzati",
+                                    "Perché alcune scuole non assegnano i compiti"
+                                ],
+                                "answer": "Perché gli studenti senza un ambiente familiare adeguato o senza aiuti sono penalizzati"
+                            },
+                            {
+                                "question": "Qual è la sintesi proposta dall'autore alla fine del testo?",
+                                "options": [
+                                    "Abolire completamente i compiti a casa per legge",
+                                    "Puntare sulla qualità dei compiti, rendendoli stimolanti invece che ripetitivi",
+                                    "Aumentare le punizioni per chi non fa i compiti"
+                                ],
+                                "answer": "Puntare sulla qualità dei compiti, rendendoli stimolanti invece che ripetitivi"
+                            },
+                            {
+                                "question": "Cosa ritiene l'autore riguardo al 'tempo libero' e allo sport dei giovani?",
+                                "options": [
+                                    "Sono perdite di tempo che andrebbero eliminate a favore dello studio",
+                                    "Sono essenziali per lo sviluppo psicofisico e non vanno ostacolati dai troppi compiti",
+                                    "Possono essere praticati solo durante il fine settimana"
+                                ],
+                                "answer": "Sono essenziali per lo sviluppo psicofisico e non vanno ostacolati dai troppi compiti"
+                            }
+                        ]
+                    }
                 ]
             },
             "formazione": {
@@ -12588,6 +12626,60 @@ window.exercisesData = {
                                     "Abbandona definitivamente la scuola superiore"
                                 ],
                                 "answer": "Invia un messaggio a Sofia chiedendole di uscire"
+                            }
+                        ]
+                    }
+                ],
+                "difficile": [
+                    {
+                        "id": 9016,
+                        "title": "Il Primo Giorno di Lavoro di Leonardo",
+                        "text": "<span style='color: #27ae60; font-weight: bold;'>Il Primo Giorno di Lavoro di Leonardo</span> 🍳\n\nLa sveglia suonò alle cinque in punto. Fuori era ancora buio pesto e la città di Milano dormiva avvolta nella sua consueta coperta di nebbia. Leonardo, diciannove anni appena compiuti, balzò giù dal letto con lo stomaco chiuso in una morsa d'ansia. Quella mattina non doveva andare a scuola. Quella mattina iniziava il suo primo vero lavoro: aiuto cuoco al *Bistrot d'Or*, uno dei ristoranti più rinomati del centro 🍽️.\n\nPer Leonardo, cucinare non era mai stato solo un passatempo. Era cresciuto osservando sua nonna impastare le tagliatelle la domenica mattina, imparando che il cibo era il modo migliore per dire \"ti voglio bene\" senza usare le parole. Ma cucinare per la propria famiglia era una cosa; entrare in una brigata professionale era tutt'altro.\n\nArrivato al ristorante, entrò dal retrobottega. L'aria era già satura dell'odore acre delle cipolle soffritte e del brodo in ebollizione. La cucina sembrava una trincea militare: acciaio inossidabile ovunque, fuochi ruggenti e un rumore assordante di pentole sbatacchiate. A capo di quel caos organizzato c'era lo <span style='color: #c0392b; font-weight: bold;'>Chef Vivaldi</span>, un uomo imponente con una voce che faceva tremare i vetri.\n\n\"Tu sei il nuovo ragazzo?\" abbaiò lo Chef, senza nemmeno guardarlo negli occhi, mentre sfilettava un salmone con la precisione di un chirurgo. \"Mettiti il grembiule. Hai cinquanta chili di patate da pelare e tagliare a cubetti perfettamente identici. Muoviti!\" 🥔\n\nLeonardo annuì nervosamente, afferrò un pelapatate e iniziò. La prima ora fu un disastro. Le sue mani tremavano, il coltello gli scivolava e i cubetti di patata sembravano tutto tranne che identici. Lo Chef Vivaldi passò dietro di lui, prese una manciata di patate tagliate male e le gettò nel cestino dell'umido con disprezzo.\n\"In questa cucina non si serve spazzatura. Se non sai fare un cubo, come pretendi di cucinare un piatto intero? Ricomincia.\"\n\nLe lacrime pungevano gli occhi di Leonardo. La stanchezza e la frustrazione lo stavano sopraffacendo. Pensò di togliersi il grembiule e scappare via. *Forse non sono fatto per questo lavoro,* si disse. *Forse ho sognato troppo in grande.*\n\nMa poi ricordò i sacrifici dei suoi genitori per pagargli la scuola alberghiera e le ore passate in cucina con sua nonna. Non poteva arrendersi al primo ostacolo. Fece un respiro profondo, pulì il tagliere, affilò il coltello e ricominciò. Questa volta, si concentrò solo sul movimento della lama. Dimenticò il rumore, dimenticò lo Chef, dimenticò la paura. Tagliò la prima patata: perfetta. Poi la seconda. Poi la terza 🔪.\n\nA metà servizio, il ristorante si riempì. Le comande iniziarono a uscire dalla stampante come un fiume in piena. La brigata lavorava a ritmi forsennati. Improvvisamente, uno dei cuochi addetti agli antipasti si tagliò un dito e fu costretto a fermarsi. La linea andò in tilt.\nLo Chef Vivaldi, pallido dalla tensione, si voltò verso Leonardo. \"Ragazzo! Hai finito le patate?\"\n\"Sì, Chef.\"\n\"Bene. Prendi la sua postazione. Impiatta le capesante scottate. E non osare rovinarle!\"\n\nLeonardo non ebbe il tempo di farsi prendere dal panico. Prese le pinze, scottò le capesante nel burro sfrigolante, dispose la crema di zucca sul piatto e appoggiò i molluschi con delicatezza, guarnendo con polvere di caffè, esattamente come aveva visto fare la settimana prima durante la sua prova.\nIl piatto arrivò al pass. Lo Chef lo esaminò con occhio critico, in cerca di un difetto. Non ne trovò. \"Servizio,\" grugnì, passando il piatto al cameriere 🛎️.\n\nAlla fine della serata, Leonardo era distrutto. Le mani gli dolevano, la divisa era sporca e i piedi sembravano di piombo. Mentre si cambiava nello spogliatoio, lo Chef Vivaldi si affacciò alla porta.\n\"I tuoi cubetti di patata fanno ancora schifo,\" disse lo Chef. Poi, per la prima volta in dodici ore, fece un mezzo sorriso. \"Ma sulle capesante te la sei cavata bene. Ci vediamo domani alle cinque in punto. Non fare tardi.\"\n\nLeonardo uscì nella notte milanese. Era esausto, ma per la prima volta nella sua vita si sentì un adulto. Aveva affrontato la paura, aveva resistito alla tentazione di mollare e aveva dimostrato a se stesso di cosa era capace. Il suo viaggio era appena iniziato 🌟.",
+                        "questions": [
+                            {
+                                "question": "Qual è l'atteggiamento iniziale dello Chef Vivaldi verso Leonardo?",
+                                "options": [
+                                    "Severo, burbero e molto esigente",
+                                    "Molto accogliente, gentile e paterno",
+                                    "Totalmente indifferente e disinteressato"
+                                ],
+                                "answer": "Severo, burbero e molto esigente"
+                            },
+                            {
+                                "question": "Cosa fa lo Chef quando vede i primi cubetti di patata tagliati da Leonardo?",
+                                "options": [
+                                    "Lo aiuta a tagliare le patate correttamente",
+                                    "Lo licenzia immediatamente urlandogli contro",
+                                    "Li getta nel cestino dell'umido con disprezzo chiedendogli di ricominciare"
+                                ],
+                                "answer": "Li getta nel cestino dell'umido con disprezzo chiedendogli di ricominciare"
+                            },
+                            {
+                                "question": "Cosa spinge Leonardo a non arrendersi quando pensa di fuggire via?",
+                                "options": [
+                                    "La minaccia dello Chef Vivaldi di non pagarlo",
+                                    "Il ricordo dei sacrifici dei suoi genitori e le ore passate in cucina con la nonna",
+                                    "Il desiderio di diventare subito famoso e ricco"
+                                ],
+                                "answer": "Il ricordo dei sacrifici dei suoi genitori e le ore passate in cucina con la nonna"
+                            },
+                            {
+                                "question": "In quale occasione improvvisa Leonardo deve dimostrare il suo valore?",
+                                "options": [
+                                    "Quando deve preparare una torta di mele per un cliente speciale",
+                                    "Quando deve sostituire un cuoco che si taglia un dito impiattando le capesante",
+                                    "Quando il ristorante prende fuoco a causa di una padella"
+                                ],
+                                "answer": "Quando deve sostituire un cuoco che si taglia un dito impiattando le capesante"
+                            },
+                            {
+                                "question": "Quale sensazione prova Leonardo alla fine della sua prima faticosa giornata?",
+                                "options": [
+                                    "Un profondo disgusto per il mondo della cucina",
+                                    "Disperazione totale perché è stato licenziato",
+                                    "Grande stanchezza ma anche la consapevolezza di essere diventato un adulto capace di resistere alle difficoltà"
+                                ],
+                                "answer": "Grande stanchezza ma anche la consapevolezza di essere diventato un adulto capace di resistere alle difficoltà"
                             }
                         ]
                     }
@@ -12809,6 +12901,60 @@ window.exercisesData = {
                             }
                         ]
                     }
+                ],
+                "difficile": [
+                    {
+                        "id": 9017,
+                        "title": "Il Labirinto degli Specchi",
+                        "text": "<span style='color: #8e44ad; font-weight: bold;'>Il Labirinto degli Specchi</span> 🪞\n\nIl corridoio del Conservatorio era lungo, freddo e illuminato da luci al neon che sfarfallavano leggermente, emettendo un ronzio fastidioso. Seduta su una sedia di plastica rigida, <span style='color: #2980b9; font-weight: bold;'>Marta</span> stringeva la custodia del suo violino così forte che le nocche le erano diventate bianche. Mancavano esattamente quindici minuti alla sua audizione per l'Orchestra Sinfonica Nazionale, il momento per il quale si era preparata per dieci anni 🎻.\n\nEppure, invece della concentrazione, la sua mente era intrappolata in un labirinto oscuro. Era un fenomeno che gli psicologi chiamano <span style='color: #e74c3c; font-weight: bold;'>Sindrome dell'Impostore</span>. Nonostante i voti eccellenti, le lodi dei maestri e le innumerevoli ore di studio, una voce perfida le sussurrava costantemente all'orecchio: *\"Non sei abbastanza brava. È stato solo un caso fino ad ora. Oggi se ne accorgeranno tutti. Scopriranno che sei una truffatrice.\"* 🧠\n\nMarta chiuse gli occhi. Nella sua mente, il corridoio si trasformò in un luna park abbandonato, un labirinto di specchi deformanti. Ogni volta che si guardava in uno di essi, vedeva una versione distorta di sé stessa. In uno specchio vedeva una bambina spaventata che non sapeva tenere in mano l'archetto; in un altro, vedeva i volti dei giurati che ridevano di lei, sottolineando ogni minima sbavatura nel suo modo di suonare.\n\nIl respiro si fece corto. Il cuore batteva all'impazzata contro le costole, come un uccello intrappolato in una gabbia. Stava per avere un attacco di panico 😰. L'impulso di alzarsi, prendere il violino e fuggire via dalla porta principale era travolgente. Nessuno l'avrebbe giudicata se fosse scappata. Avrebbe potuto dire che stava male. Avrebbe evitato il fallimento.\n\n*Ma avrei evitato anche la possibilità di farcela,* pensò all'improvviso, aggrappandosi a un frammento di razionalità.\n\nIniziò a praticare una tecnica di radicamento che il suo terapeuta le aveva insegnato. Trovò cinque oggetti che poteva vedere: la sedia, la custodia nera, la scarpa del ragazzo seduto di fronte a lei, un granello di polvere, l'interruttore della luce. Poi trovò quattro cose che poteva toccare: la cerniera fredda della custodia, il tessuto ruvido dei suoi pantaloni, il legno della sedia, il calore del suo stesso palmo. Tre cose che poteva sentire: il ronzio del neon, il respiro del ragazzo di fronte, il rumore del traffico lontano 🧘‍♀️.\n\nIl labirinto di specchi nella sua mente iniziò a sgretolarsi. La voce perfida dell'impostore era ancora lì, ma ora era solo un sussurro in sottofondo, non più un urlo assordante. Marta si rese conto che i suoi dubbi non erano prove del suo fallimento, ma testimoni della sua passione. Aveva paura perché ci teneva immensamente.\n\n\"Il prossimo candidato, Marta Rossi,\" disse una segretaria aprendo la pesante porta di quercia dell'auditorium.\n\nMarta si alzò. Le gambe le tremavano ancora leggermente, ma la morsa allo stomaco si era allentata. Non aveva sconfitto del tutto la Sindrome dell'Impostore – forse non sarebbe mai scomparsa del tutto – ma aveva deciso che non le avrebbe permesso di rubarle il palco. Prese un respiro profondo, varcò la soglia e aprì la custodia del suo violino. Non c'era più nessun labirinto. C'era solo la musica 🎶.",
+                        "questions": [
+                            {
+                                "question": "Cos'è la 'Sindrome dell'Impostore' di cui soffre Marta?",
+                                "options": [
+                                    "Una malattia infettiva che provoca allucinazioni visive",
+                                    "La convinzione di non meritare i propri successi e la paura costante di essere scoperti come 'truffatori'",
+                                    "Un disturbo fisico che impedisce di muovere correttamente le dita sul violino"
+                                ],
+                                "answer": "La convinzione di non meritare i propri successi e la paura costante di essere scoperti come 'truffatori'"
+                            },
+                            {
+                                "question": "Quale immagine mentale utilizza il testo per descrivere i dubbi e le paure di Marta?",
+                                "options": [
+                                    "Un deserto senza fine in cui si muore di sete",
+                                    "Una prigione sotterranea buia e fredda",
+                                    "Un luna park abbandonato con un labirinto di specchi deformanti"
+                                ],
+                                "answer": "Un luna park abbandonato con un labirinto di specchi deformanti"
+                            },
+                            {
+                                "question": "Quale forte impulso prova Marta mentre aspetta fuori dalla porta?",
+                                "options": [
+                                    "L'impulso di alzarsi, prendere il violino e fuggire via per evitare il giudizio",
+                                    "L'impulso di rompere il suo violino dalla rabbia",
+                                    "L'impulso di entrare prepotentemente e interrompere l'audizione precedente"
+                                ],
+                                "answer": "L'impulso di alzarsi, prendere il violino e fuggire via per evitare il giudizio"
+                            },
+                            {
+                                "question": "Come riesce Marta a calmare il suo attacco di panico?",
+                                "options": [
+                                    "Prendendo delle medicine forti",
+                                    "Chiamando sua madre al telefono",
+                                    "Praticando una tecnica di radicamento sensoriale insegnatale dal terapeuta"
+                                ],
+                                "answer": "Praticando una tecnica di radicamento sensoriale insegnatale dal terapeuta"
+                            },
+                            {
+                                "question": "Alla fine, Marta sconfigge completamente e per sempre i suoi dubbi?",
+                                "options": [
+                                    "Sì, la sua ansia scompare magicamente",
+                                    "No, la voce dell'impostore rimane come sussurro, ma lei decide di affrontarla e non arrendersi",
+                                    "No, l'ansia aumenta e lei si rifiuta di suonare"
+                                ],
+                                "answer": "No, la voce dell'impostore rimane come sussurro, ma lei decide di affrontarla e non arrendersi"
+                            }
+                        ]
+                    }
                 ]
             },
             "sociale": {
@@ -13024,6 +13170,60 @@ window.exercisesData = {
                                     "Ospitando i senzatetto nella propria casa"
                                 ],
                                 "answer": "Donando parte dello stipendio a un'associazione per migranti"
+                            }
+                        ]
+                    }
+                ],
+                "difficile": [
+                    {
+                        "id": 9018,
+                        "title": "Il Muro del Quartiere San Lorenzo",
+                        "text": "<span style='color: #e67e22; font-weight: bold;'>Il Muro del Quartiere San Lorenzo</span> 🏘️\n\nIl rione San Lorenzo era da sempre considerato l'anima ruvida e autentica della città. Le sue strade strette erano un mosaico di storie: operai, studenti universitari, anziani nati e cresciuti tra quei palazzi di mattoni rossi. Al centro della piazza principale c'era l'antico forno di Sor Mario, un'istituzione che da sessant'anni sfornava la pizza bianca più croccante di Roma 🍕. Ma negli ultimi due anni, San Lorenzo stava cambiando volto a una velocità allarmante a causa di un fenomeno silenzioso ma implacabile: la <span style='color: #2980b9; font-weight: bold;'>gentrificazione</span>.\n\nLe vecchie botteghe di artigiani venivano soppiantate da costosi \"concept store\" o locali notturni di tendenza. Gli affitti erano triplicati nel giro di pochi mesi, costringendo molte famiglie storiche a fare i bagagli e trasferirsi in periferie lontane, sradicate dalla loro comunità 📦. \n\nIl punto di rottura arrivò in una fredda mattina di novembre. Una grossa azienda immobiliare aveva acquistato l'intero isolato che comprendeva il forno di Sor Mario, con l'intenzione di demolirlo per costruire un lussuoso \"Eco-Supermercato Gourmet\" con annessa palestra privata 🏗️. A Sor Mario fu intimato lo sfratto entro trenta giorni.\n\nLa notizia si diffuse nel quartiere come un incendio. <span style='color: #27ae60; font-weight: bold;'>Chiara</span>, una studentessa di sociologia che viveva nel palazzo di fronte al forno, decise che non potevano restare a guardare mentre la loro identità veniva cancellata dai capitali speculativi. Insieme a un gruppo di residenti, formò il \"Comitato Difesa San Lorenzo\".\n\nInizialmente, la protesta si limitò a una raccolta firme e a lenzuoli bianchi appesi ai balconi con la scritta: <span style='color: #e74c3c; font-weight: bold;'>LA NOSTRA STORIA NON SI COMPRA</span> 📢. Ma l'azienda immobiliare ignorò completamente le richieste, forti dei loro permessi legali e dei loro avvocati milionari.\n\nFu allora che Chiara ebbe un'idea più radicale. \"Non possiamo combatterli solo con i fogli di carta,\" disse durante l'assemblea cittadina, tenutasi proprio dentro il forno. \"Dobbiamo fargli capire che demolire questo posto significa distruggere una comunità viva.\"\n\nIl giorno previsto per l'inizio dei lavori, all'alba, i bulldozer dell'azienda trovarono la strada bloccata. Ma non da barricate violente o cassonetti in fiamme. La piazza era piena di persone. Centinaia di residenti, dai bambini delle scuole elementari agli anziani con il bastone, si erano seduti a terra formando un \"muro umano\" pacifico attorno all'isolato 🧱.\n\nAl centro della piazza, Sor Mario continuava a sfornare pizza bianca, offrendola gratuitamente a tutti i presenti e persino agli operai dei bulldozer, visibilmente imbarazzati dalla situazione. La scena era così potente e surreale che nel giro di un'ora arrivarono le telecamere dei telegiornali nazionali 🎥.\n\nL'immagine del muro umano pacifico a difesa dell'antico fornaio fece il giro del Paese. La pressione mediatica divenne insostenibile per l'azienda immobiliare, che rischiava un gravissimo danno d'immagine. Tre giorni dopo, l'amministratore delegato dell'azienda annunciò pubblicamente di aver trovato un accordo con l'amministrazione comunale: l'Eco-Supermercato sarebbe stato costruito in una zona industriale dismessa fuori città, e il forno di Sor Mario, insieme ai palazzi storici circostanti, sarebbe stato vincolato come \"patrimonio culturale di quartiere\" 🏛️.\n\nLa vittoria di San Lorenzo non fermò la gentrificazione ovunque, ma dimostrò una verità fondamentale: una comunità unita, consapevole dei propri diritti e disposta a lottare pacificamente per i propri spazi, è un argine formidabile contro l'avidità speculativa. Quella sera, la piazza festeggiò fino all'alba, mangiando pizza e brindando al quartiere.",
+                        "questions": [
+                            {
+                                "question": "Cosa si intende per 'gentrificazione' nel contesto della storia?",
+                                "options": [
+                                    "L'aumento della criminalità nelle zone periferiche della città",
+                                    "Il processo in cui i vecchi abitanti vengono spinti via a causa dell'aumento degli affitti per far posto a locali e attività di lusso",
+                                    "La costruzione di nuovi parchi pubblici e scuole nel quartiere"
+                                ],
+                                "answer": "Il processo in cui i vecchi abitanti vengono spinti via a causa dell'aumento degli affitti per far posto a locali e attività di lusso"
+                            },
+                            {
+                                "question": "Quale evento rappresenta il 'punto di rottura' per gli abitanti di San Lorenzo?",
+                                "options": [
+                                    "La decisione di demolire il forno storico di Sor Mario per costruire un lussuoso supermercato",
+                                    "L'aumento del biglietto dell'autobus",
+                                    "La chiusura dell'università locale"
+                                ],
+                                "answer": "La decisione di demolire il forno storico di Sor Mario per costruire un lussuoso supermercato"
+                            },
+                            {
+                                "question": "Come si oppongono gli abitanti del quartiere all'arrivo dei bulldozer?",
+                                "options": [
+                                    "Dando fuoco ai cassonetti e costruendo barricate violente",
+                                    "Pagando gli operai per non lavorare",
+                                    "Formando un grande e pacifico 'muro umano' sedendosi attorno all'isolato"
+                                ],
+                                "answer": "Formando un grande e pacifico 'muro umano' sedendosi attorno all'isolato"
+                            },
+                            {
+                                "question": "Cosa fa Sor Mario durante la pacifica manifestazione in piazza?",
+                                "options": [
+                                    "Scappa dal quartiere per la paura",
+                                    "Continua a sfornare pizza bianca offrendola gratuitamente a tutti i presenti",
+                                    "Firma l'accordo con l'azienda immobiliare di nascosto"
+                                ],
+                                "answer": "Continua a sfornare pizza bianca offrendola gratuitamente a tutti i presenti"
+                            },
+                            {
+                                "question": "Qual è il messaggio finale o la morale del racconto sociale?",
+                                "options": [
+                                    "Che le grandi aziende sono sempre cattive e vanno distrutte fisicamente",
+                                    "Che una comunità unita e pacifica può arginare la speculazione e difendere i propri spazi storici",
+                                    "Che alla fine la gentrificazione non può essere fermata in nessun modo"
+                                ],
+                                "answer": "Che una comunità unita e pacifica può arginare la speculazione e difendere i propri spazi storici"
                             }
                         ]
                     }
