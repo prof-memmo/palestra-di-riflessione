@@ -7570,64 +7570,110 @@ window.exercisesData = {
                 ],
                 "allenati": [
                     {
-                        "id": 50001,
-                        "type": "classification-grid",
-                        "title": "Quante proposizioni?",
-                        "instruction": "Per ogni periodo, indica il numero di proposizioni (verbi) presenti.",
-                        "words": [
-                            "1. Quando arrivi, chiamami.",
-                            "2. Studio e ascolto musica.",
-                            "3. Se piove restiamo a casa.",
-                            "4. Mangio e bevo e rido.",
-                            "5. Penso che sia giusto."
+                        "id": 1001,
+                        "type": "multiple-choice",
+                        "title": "Esercizio 1 – Quante proposizioni?",
+                        "text": "Quando arrivi, chiamami.",
+                        "options": [
+                            "1",
+                            "2",
+                            "3"
                         ],
-                        "categories": ["1", "2", "3"],
-                        "answers": {
-                            "1. Quando arrivi, chiamami.": "2",
-                            "2. Studio e ascolto musica.": "2",
-                            "3. Se piove restiamo a casa.": "2",
-                            "4. Mangio e bevo e rido.": "3",
-                            "5. Penso che sia giusto.": "2"
-                        }
+                        "answer": "2"
                     },
                     {
-                        "id": 50002,
+                        "id": 1002,
                         "type": "multiple-choice",
-                        "title": "È un periodo?",
-                        "text": "Quale delle due opzioni è un PERIODO (frase complessa)?",
-                        "options": ["Luca corre", "Luca corre mentre io cammino"],
+                        "text": "Studio e ascolto musica.",
+                        "options": [
+                            "1",
+                            "2",
+                            "3"
+                        ],
+                        "answer": "2"
+                    },
+                    {
+                        "id": 1003,
+                        "type": "multiple-choice",
+                        "text": "Se piove restiamo a casa.",
+                        "options": [
+                            "1",
+                            "2",
+                            "3"
+                        ],
+                        "answer": "2"
+                    },
+                    {
+                        "id": 1004,
+                        "type": "multiple-choice",
+                        "text": "Mangio e bevo e rido.",
+                        "options": [
+                            "2",
+                            "3",
+                            "4"
+                        ],
+                        "answer": "3"
+                    },
+                    {
+                        "id": 1005,
+                        "type": "multiple-choice",
+                        "text": "Penso che sia giusto.",
+                        "options": [
+                            "1",
+                            "2",
+                            "3"
+                        ],
+                        "answer": "2"
+                    },
+                    {
+                        "id": 1006,
+                        "type": "multiple-choice",
+                        "title": "Esercizio 2 – È un periodo?",
+                        "text": "Scegli la frase che è un periodo:",
+                        "options": [
+                            "Luca corre",
+                            "Luca corre mentre io cammino"
+                        ],
                         "answer": "Luca corre mentre io cammino"
                     },
                     {
-                        "id": 50003,
+                        "id": 1007,
                         "type": "multiple-choice",
-                        "title": "È un periodo?",
-                        "text": "Quale delle due opzioni è un PERIODO?",
-                        "options": ["Studio", "Studio perché voglio migliorare"],
+                        "text": "Scegli la frase che è un periodo:",
+                        "options": [
+                            "Studio",
+                            "Studio perché voglio migliorare"
+                        ],
                         "answer": "Studio perché voglio migliorare"
                     },
                     {
-                        "id": 50004,
+                        "id": 1008,
                         "type": "multiple-choice",
-                        "title": "È un periodo?",
-                        "text": "Quale delle due opzioni è un PERIODO?",
-                        "options": ["Piove", "Piove ma esco"],
+                        "text": "Scegli la frase che è un periodo:",
+                        "options": [
+                            "Piove",
+                            "Piove ma esco"
+                        ],
                         "answer": "Piove ma esco"
                     },
                     {
-                        "id": 50005,
+                        "id": 1009,
                         "type": "multiple-choice",
-                        "title": "È un periodo?",
-                        "text": "Quale delle due opzioni è un PERIODO?",
-                        "options": ["Mangio", "Mangio e bevo"],
+                        "text": "Scegli la frase che è un periodo:",
+                        "options": [
+                            "Mangio",
+                            "Mangio e bevo"
+                        ],
                         "answer": "Mangio e bevo"
                     },
                     {
-                        "id": 50006,
+                        "id": 1010,
                         "type": "multiple-choice",
-                        "title": "È un periodo?",
-                        "text": "Quale delle due opzioni è un PERIODO?",
-                        "options": ["Dormo", "Dormo quando sono stanco"],
+                        "text": "Scegli la frase che è un periodo:",
+                        "options": [
+                            "Dormo",
+                            "Dormo quando sono stanco"
+                        ],
                         "answer": "Dormo quando sono stanco"
                     }
                 ],
@@ -7661,106 +7707,106 @@ window.exercisesData = {
                 ],
                 "allenati": [
                     {
-                        "id": 50007,
-                        "type": "classification-grid",
-                        "title": "Riconosci la principale",
-                        "instruction": "Individua quale parte del periodo è la proposizione principale.",
-                        "words": [
-                            "Quando arrivi, chiamami.",
-                            "Se studi, passi.",
-                            "Anche se piove, esco.",
-                            "Quando torno, ti vedo.",
-                            "Se vieni, partiamo."
+                        "id": 2001,
+                        "type": "multiple-choice",
+                        "title": "Esercizio 1 – Riconosci la principale",
+                        "text": "Quando arrivi, chiamami.",
+                        "options": [
+                            "Quando arrivi",
+                            "chiamami"
                         ],
-                        "categories": ["Principale", "Secondaria"],
-                        "answers": {
-                            "Quando arrivi, chiamami.": "Principale",
-                            "Se studi, passi.": "Principale",
-                            "Anche se piove, esco.": "Principale",
-                            "Quando torno, ti vedo.": "Principale",
-                            "Se vieni, partiamo.": "Principale"
-                        },
-                        "custom_answers": {
-                            "Quando arrivi, chiamami.": "chiamami",
-                            "Se studi, passi.": "passi",
-                            "Anche se piove, esco.": "esco",
-                            "Quando torno, ti vedo.": "ti vedo",
-                            "Se vieni, partiamo.": "partiamo"
-                        }
+                        "answer": "chiamami"
                     },
                     {
-                        "id": 50008,
+                        "id": 2002,
                         "type": "multiple-choice",
-                        "title": "Completa il periodo",
-                        "text": "Quando arrivo...",
-                        "options": ["piove", "ti chiamo"],
-                        "answer": "ti chiamo"
+                        "text": "Se studi, passi.",
+                        "options": [
+                            "Se studi",
+                            "passi"
+                        ],
+                        "answer": "passi"
                     },
                     {
-                        "id": 50009,
+                        "id": 2003,
                         "type": "multiple-choice",
-                        "title": "Completa il periodo",
-                        "text": "Se studi...",
-                        "options": ["passi l’esame", "perché sei bravo"],
-                        "answer": "passi l’esame"
-                    },
-                    {
-                        "id": 50010,
-                        "type": "multiple-choice",
-                        "title": "Completa il periodo",
-                        "text": "Anche se piove...",
-                        "options": ["esco", "perché esco"],
+                        "text": "Anche se piove, esco.",
+                        "options": [
+                            "Anche se piove",
+                            "esco"
+                        ],
                         "answer": "esco"
                     },
                     {
-                        "id": 50011,
+                        "id": 2004,
                         "type": "multiple-choice",
-                        "title": "Completa il periodo",
-                        "text": "Quando torni...",
-                        "options": ["ti vedo", "vedo"],
+                        "text": "Quando torno, ti vedo.",
+                        "options": [
+                            "Quando torno",
+                            "ti vedo"
+                        ],
                         "answer": "ti vedo"
                     },
                     {
-                        "id": 50012,
+                        "id": 2005,
                         "type": "multiple-choice",
-                        "title": "Completa il periodo",
-                        "text": "Se vieni...",
-                        "options": ["partiamo", "partiamo perché"],
+                        "text": "Se vieni, partiamo.",
+                        "options": [
+                            "Se vieni",
+                            "partiamo"
+                        ],
                         "answer": "partiamo"
                     },
                     {
-                        "id": 3111,
-                        "type": "word-selector",
-                        "instruction": "Nei seguenti periodi, CLICCA sulla PRIMA PAROLA della proposizione principale di ogni frase.",
-                        "text": "1. Andate dritti al parco, e poi sedetevi sulla panchina.<br>2. Anche se c'era molto traffico, Anna è arrivata puntuale.<br>3. Siccome sono molto stanco, stasera vado a letto presto.<br>4. Il nonno sta leggendo il giornale che ha comprato in edicola.",
-                        "answer": "andate|anna|stasera|il"
+                        "id": 2006,
+                        "type": "multiple-choice",
+                        "title": "Esercizio 2 – Completa",
+                        "text": "Quando arrivo,",
+                        "options": [
+                            "piove",
+                            "ti chiamo"
+                        ],
+                        "answer": "ti chiamo"
                     },
                     {
-                        "id": 3113,
-                        "type": "classification-grid",
-                        "title": "Tipi di Proposizione Principale",
-                        "instruction": "Classifica ogni proposizione principale in base alla sua funzione comunicativa.",
-                        "words": [
-                            "Che fortuna che hai avuto!",
-                            "Non correre così veloce nel corridoio!",
-                            "Quanti anni compie tuo cugino?",
-                            "Domani andremo a visitare il museo di storia naturale.",
-                            "Oh, se potessi vincere alla lotteria!"
+                        "id": 2007,
+                        "type": "multiple-choice",
+                        "text": "Se studi,",
+                        "options": [
+                            "passi l’esame",
+                            "perché sei bravo"
                         ],
-                        "categories": [
-                            "Informativa",
-                            "Interrogativa",
-                            "Esclamativa",
-                            "Volitiva",
-                            "Desiderativa"
+                        "answer": "passi l’esame"
+                    },
+                    {
+                        "id": 2008,
+                        "type": "multiple-choice",
+                        "text": "Anche se piove,",
+                        "options": [
+                            "esco",
+                            "perché esco"
                         ],
-                        "answers": {
-                            "Che fortuna che hai avuto!": "Esclamativa",
-                            "Non correre così veloce nel corridoio!": "Volitiva",
-                            "Quanti anni compie tuo cugino?": "Interrogativa",
-                            "Domani andremo a visitare il museo di storia naturale.": "Informativa",
-                            "Oh, se potessi vincere alla lotteria!": "Desiderativa"
-                        }
+                        "answer": "esco"
+                    },
+                    {
+                        "id": 2009,
+                        "type": "multiple-choice",
+                        "text": "Quando torni,",
+                        "options": [
+                            "ti vedo",
+                            "vedo"
+                        ],
+                        "answer": "ti vedo"
+                    },
+                    {
+                        "id": 2010,
+                        "type": "multiple-choice",
+                        "text": "Se vieni,",
+                        "options": [
+                            "partiamo",
+                            "partiamo perché"
+                        ],
+                        "answer": "partiamo"
                     }
                 ],
                 "verifica": [],
@@ -7782,68 +7828,106 @@ window.exercisesData = {
                 ],
                 "allenati": [
                     {
-                        "id": 50021,
-                        "type": "classification-grid",
-                        "title": "Coordinazione o Subordinazione?",
-                        "instruction": "Indica il tipo di legame tra le proposizioni.",
-                        "words": [
-                            "Studio e ascolto musica.",
-                            "Studio perché voglio migliorare.",
-                            "Esco ma piove.",
-                            "Resto perché sono stanco.",
-                            "Corro e salto."
+                        "id": 5001,
+                        "type": "multiple-choice",
+                        "title": "Esercizio 1 – Classifica",
+                        "text": "Studio e ascolto musica.",
+                        "options": [
+                            "Coordinazione",
+                            "Subordinazione"
                         ],
-                        "categories": ["Coordinazione", "Subordinazione"],
-                        "answers": {
-                            "Studio e ascolto musica.": "Coordinazione",
-                            "Studio perché voglio migliorare.": "Subordinazione",
-                            "Esco ma piove.": "Coordinazione",
-                            "Resto perché sono stanco.": "Subordinazione",
-                            "Corro e salto.": "Coordinazione"
-                        }
+                        "answer": "Coordinazione"
                     },
                     {
-                        "id": 50022,
-                        "type": "classification-grid",
-                        "title": "Riconosci il legame",
-                        "instruction": "A quale categoria appartiene la congiunzione?",
-                        "words": [
-                            "e",
-                            "perché",
-                            "ma",
-                            "quando",
-                            "o"
+                        "id": 5002,
+                        "type": "multiple-choice",
+                        "text": "Studio perché voglio migliorare.",
+                        "options": [
+                            "Coordinazione",
+                            "Subordinazione"
                         ],
-                        "categories": ["Coordinazione", "Subordinazione"],
-                        "answers": {
-                            "e": "Coordinazione",
-                            "perché": "Subordinazione",
-                            "ma": "Coordinazione",
-                            "quando": "Subordinazione",
-                            "o": "Coordinazione"
-                        }
+                        "answer": "Subordinazione"
                     },
                     {
-                        "id": 3112,
-                        "type": "classification-grid",
-                        "title": "Coordinazione o Subordinazione?",
-                        "instruction": "Per ogni periodo, indica se la proposizione evidenziata è coordinata o subordinata.",
-                        "words": [
-                            "Mio fratello suona la chitarra PERCHÉ AMA LA MUSICA.",
-                            "Abbiamo studiato molto, PERCIÒ ADESSO CI RIPOSIAMO.",
-                            "Vorrei uscire MA FUORI STA PIOVENDO FORTE.",
-                            "MENTRE GUARDAVA LA TELEVISIONE, il gatto si è addormentato sul divano."
+                        "id": 5003,
+                        "type": "multiple-choice",
+                        "text": "Esco ma piove.",
+                        "options": [
+                            "Coordinazione",
+                            "Subordinazione"
                         ],
-                        "categories": [
-                            "Coordinata",
-                            "Subordinata"
+                        "answer": "Coordinazione"
+                    },
+                    {
+                        "id": 5004,
+                        "type": "multiple-choice",
+                        "text": "Resto perché sono stanco.",
+                        "options": [
+                            "Coordinazione",
+                            "Subordinazione"
                         ],
-                        "answers": {
-                            "Mio fratello suona la chitarra PERCHÉ AMA LA MUSICA.": "Subordinata",
-                            "Abbiamo studiato molto, PERCIÒ ADESSO CI RIPOSIAMO.": "Coordinata",
-                            "Vorrei uscire MA FUORI STA PIOVENDO FORTE.": "Coordinata",
-                            "MENTRE GUARDAVA LA TELEVISIONE, il gatto si è addormentato sul divano.": "Subordinata"
-                        }
+                        "answer": "Subordinazione"
+                    },
+                    {
+                        "id": 5005,
+                        "type": "multiple-choice",
+                        "text": "Corro e salto.",
+                        "options": [
+                            "Coordinazione",
+                            "Subordinazione"
+                        ],
+                        "answer": "Coordinazione"
+                    },
+                    {
+                        "id": 5006,
+                        "type": "multiple-choice",
+                        "title": "Esercizio 2 – Riconosci il legame",
+                        "text": "Il legame “e” indica:",
+                        "options": [
+                            "Coordinazione",
+                            "Subordinazione"
+                        ],
+                        "answer": "Coordinazione"
+                    },
+                    {
+                        "id": 5007,
+                        "type": "multiple-choice",
+                        "text": "Il legame “perché” indica:",
+                        "options": [
+                            "Coordinazione",
+                            "Subordinazione"
+                        ],
+                        "answer": "Subordinazione"
+                    },
+                    {
+                        "id": 5008,
+                        "type": "multiple-choice",
+                        "text": "Il legame “ma” indica:",
+                        "options": [
+                            "Coordinazione",
+                            "Subordinazione"
+                        ],
+                        "answer": "Coordinazione"
+                    },
+                    {
+                        "id": 5009,
+                        "type": "multiple-choice",
+                        "text": "Il legame “quando” indica:",
+                        "options": [
+                            "Coordinazione",
+                            "Subordinazione"
+                        ],
+                        "answer": "Subordinazione"
+                    },
+                    {
+                        "id": 5010,
+                        "type": "multiple-choice",
+                        "text": "Il legame “o” indica:",
+                        "options": [
+                            "Coordinazione",
+                            "Subordinazione"
+                        ],
+                        "answer": "Coordinazione"
                     }
                 ],
                 "verifica": [],
@@ -7865,89 +7949,106 @@ window.exercisesData = {
                 ],
                 "allenati": [
                     {
-                        "id": 50013,
-                        "type": "classification-grid",
-                        "title": "Diretta o Indiretta?",
-                        "instruction": "Indica se l'interrogativa è DIRETTA (punto di domanda) o INDIRETTA (senza punto di domanda).",
-                        "words": [
-                            "Dove vai?",
-                            "Mi chiedo dove vai.",
-                            "Non so perché ridi.",
-                            "Quando arrivi?",
-                            "Dimmi cosa fai."
+                        "id": 3001,
+                        "type": "multiple-choice",
+                        "title": "Esercizio 1 – Diretta o indiretta",
+                        "text": "Dove vai?",
+                        "options": [
+                            "Diretta",
+                            "Indiretta"
                         ],
-                        "categories": ["Diretta", "Indiretta"],
-                        "answers": {
-                            "Dove vai?": "Diretta",
-                            "Mi chiedo dove vai.": "Indiretta",
-                            "Non so perché ridi.": "Indiretta",
-                            "Quando arrivi?": "Diretta",
-                            "Dimmi cosa fai.": "Indiretta"
-                        }
+                        "answer": "Diretta"
                     },
                     {
-                        "id": 50014,
+                        "id": 3002,
                         "type": "multiple-choice",
-                        "title": "Trasforma l'interrogativa",
-                        "text": "Trasforma in indiretta: 'Dove vai?'",
-                        "options": ["Dimmi dove vai", "So dove vai"],
+                        "text": "Mi chiedo dove vai.",
+                        "options": [
+                            "Diretta",
+                            "Indiretta"
+                        ],
+                        "answer": "Indiretta"
+                    },
+                    {
+                        "id": 3003,
+                        "type": "multiple-choice",
+                        "text": "Non so perché ridi.",
+                        "options": [
+                            "Diretta",
+                            "Indiretta"
+                        ],
+                        "answer": "Indiretta"
+                    },
+                    {
+                        "id": 3004,
+                        "type": "multiple-choice",
+                        "text": "Quando arrivi?",
+                        "options": [
+                            "Diretta",
+                            "Indiretta"
+                        ],
+                        "answer": "Diretta"
+                    },
+                    {
+                        "id": 3005,
+                        "type": "multiple-choice",
+                        "text": "Dimmi cosa fai.",
+                        "options": [
+                            "Diretta",
+                            "Indiretta"
+                        ],
+                        "answer": "Indiretta"
+                    },
+                    {
+                        "id": 3006,
+                        "type": "multiple-choice",
+                        "title": "Esercizio 2 – Trasformazione",
+                        "text": "Dove vai? →",
+                        "options": [
+                            "Dimmi dove vai",
+                            "So dove vai"
+                        ],
                         "answer": "Dimmi dove vai"
                     },
                     {
-                        "id": 50015,
+                        "id": 3007,
                         "type": "multiple-choice",
-                        "title": "Trasforma l'interrogativa",
-                        "text": "Trasforma in indiretta: 'Quando arrivi?'",
-                        "options": ["Chiedo quando arrivi", "Dimmi quando arrivi"],
+                        "text": "Quando arrivi? →",
+                        "options": [
+                            "Chiedo quando arrivi",
+                            "Dimmi quando arrivi"
+                        ],
                         "answer": "Dimmi quando arrivi"
                     },
                     {
-                        "id": 50016,
+                        "id": 3008,
                         "type": "multiple-choice",
-                        "title": "Trasforma l'interrogativa",
-                        "text": "Trasforma in indiretta: 'Perché ridi?'",
-                        "options": ["Dimmi perché ridi", "Perché ridi"],
+                        "text": "Perché ridi? →",
+                        "options": [
+                            "Dimmi perché ridi",
+                            "Perché ridi"
+                        ],
                         "answer": "Dimmi perché ridi"
                     },
                     {
-                        "id": 50017,
+                        "id": 3009,
                         "type": "multiple-choice",
-                        "title": "Trasforma l'interrogativa",
-                        "text": "Trasforma in indiretta: 'Chi viene?'",
-                        "options": ["Dimmi chi viene", "Chi viene"],
+                        "text": "Chi viene? →",
+                        "options": [
+                            "Dimmi chi viene",
+                            "Chi viene"
+                        ],
                         "answer": "Dimmi chi viene"
                     },
                     {
-                        "id": 50018,
+                        "id": 3010,
                         "type": "multiple-choice",
-                        "title": "Trasforma l'interrogativa",
-                        "text": "Trasforma in indiretta: 'Che fai?'",
-                        "options": ["Dimmi che fai", "Che fai"],
+                        "text": "Che fai? →",
+                        "options": [
+                            "Dimmi che fai",
+                            "Che fai"
+                        ],
                         "answer": "Dimmi che fai"
-                    },
-                    {
-                        "id": 3311,
-                        "type": "classification-grid",
-                        "title": "Analizza le Interrogative",
-                        "instruction": "Classifica le seguenti frasi interrogative trascinandole nella categoria corretta, in base alla combinazione delle loro caratteristiche.",
-                        "words": [
-                            "Chi ha scoperto l'America?",
-                            "Hai finito di fare i compiti oppure devi ancora iniziare?",
-                            "Forse che il sole non sorge ogni mattina?",
-                            "Ti ho forse offeso o ti ho detto solo la verità?"
-                        ],
-                        "categories": [
-                            "Semplice e Reale",
-                            "Disgiuntiva e Reale",
-                            "Semplice e Retorica",
-                            "Disgiuntiva e Retorica"
-                        ],
-                        "answers": {
-                            "Chi ha scoperto l'America?": "Semplice e Reale",
-                            "Hai finito di fare i compiti oppure devi ancora iniziare?": "Disgiuntiva e Reale",
-                            "Forse che il sole non sorge ogni mattina?": "Semplice e Retorica",
-                            "Ti ho forse offeso o ti ho detto solo la verità?": "Disgiuntiva e Retorica"
-                        }
                     }
                 ],
                 "verifica": [],
@@ -7969,67 +8070,106 @@ window.exercisesData = {
                 ],
                 "allenati": [
                     {
-                        "id": 50019,
-                        "type": "classification-grid",
-                        "title": "Individua l'incidentale",
-                        "instruction": "Quale parte della frase è la proposizione incidentale?",
-                        "words": [
-                            "Marco, che è gentile, mi aiuta.",
-                            "Il film, devo dirlo, è bello.",
-                            "Luca, come sai, studia.",
-                            "Il libro, secondo me, è interessante.",
-                            "Gianni, credo, arriverà."
+                        "id": 4001,
+                        "type": "multiple-choice",
+                        "title": "Esercizio 1 – Individua",
+                        "text": "Marco, che è gentile, mi aiuta.",
+                        "options": [
+                            "Marco",
+                            "che è gentile"
                         ],
-                        "categories": ["Principale", "Incidentale"],
-                        "answers": {
-                            "Marco, che è gentile, mi aiuta.": "Incidentale",
-                            "Il film, devo dirlo, è bello.": "Incidentale",
-                            "Luca, come sai, studia.": "Incidentale",
-                            "Il libro, secondo me, è interessante.": "Incidentale",
-                            "Gianni, credo, arriverà.": "Incidentale"
-                        },
-                        "custom_answers": {
-                            "Marco, che è gentile, mi aiuta.": "che è gentile",
-                            "Il film, devo dirlo, è bello.": "devo dirlo",
-                            "Luca, come sai, studia.": "come sai",
-                            "Il libro, secondo me, è interessante.": "secondo me",
-                            "Gianni, credo, arriverà.": "credo"
-                        }
+                        "answer": "che è gentile"
                     },
                     {
-                        "id": 50020,
-                        "type": "classification-grid",
-                        "title": "Funzione dell'incidentale",
-                        "instruction": "Rispondi alle domande sulla proposizione incidentale.",
-                        "words": [
-                            "A cosa serve?",
-                            "È una parte...",
-                            "Si può togliere senza cambiare il senso?",
-                            "Da cosa è separata?",
-                            "Cosa introduce?"
+                        "id": 4002,
+                        "type": "multiple-choice",
+                        "text": "Il film, devo dirlo, è bello.",
+                        "options": [
+                            "devo dirlo",
+                            "è bello"
                         ],
-                        "categories": ["Opzione A", "Opzione B"],
-                        "answers": {
-                            "A cosa serve?": "Opzione A",
-                            "È una parte...": "Opzione B",
-                            "Si può togliere senza cambiare il senso?": "Opzione A",
-                            "Da cosa è separata?": "Opzione A",
-                            "Cosa introduce?": "Opzione A"
-                        },
-                        "labels": {
-                            "A cosa serve?": ["aggiungere informazione", "indicare tempo"],
-                            "È una parte...": ["essenziale", "accessoria"],
-                            "Si può togliere senza cambiare il senso?": ["sì", "no"],
-                            "Da cosa è separata?": ["virgole", "punti"],
-                            "Cosa introduce?": ["informazione secondaria", "azione principale"]
-                        }
+                        "answer": "devo dirlo"
                     },
                     {
-                        "id": 3411,
-                        "type": "word-selector",
-                        "instruction": "Nei seguenti periodi individua la proposizione incidentale e CLICCA sulla sua PRIMA PAROLA.",
-                        "text": "1. La nuova automobile, mi hanno detto, è molto silenziosa e veloce.<br>2. Luca non è arrivato in tempo per la riunione – si era addormentato – quindi il capo si è arrabbiato.<br>3. Domani, se non piove, faremo una bella scampagnata in montagna.<br>4. Questo ristorante (sebbene sia costoso) offre piatti di altissima qualità.",
-                        "answer": "mi|si|se|sebbene"
+                        "id": 4003,
+                        "type": "multiple-choice",
+                        "text": "Luca, come sai, studia.",
+                        "options": [
+                            "come sai",
+                            "studia"
+                        ],
+                        "answer": "come sai"
+                    },
+                    {
+                        "id": 4004,
+                        "type": "multiple-choice",
+                        "text": "Il libro, secondo me, è interessante.",
+                        "options": [
+                            "secondo me",
+                            "è interessante"
+                        ],
+                        "answer": "secondo me"
+                    },
+                    {
+                        "id": 4005,
+                        "type": "multiple-choice",
+                        "text": "Gianni, credo, arriverà.",
+                        "options": [
+                            "credo",
+                            "arriverà"
+                        ],
+                        "answer": "credo"
+                    },
+                    {
+                        "id": 4006,
+                        "type": "multiple-choice",
+                        "title": "Esercizio 2 – Funzione",
+                        "text": "A cosa serve la proposizione incidentale?",
+                        "options": [
+                            "aggiungere informazione",
+                            "indicare tempo"
+                        ],
+                        "answer": "aggiungere informazione"
+                    },
+                    {
+                        "id": 4007,
+                        "type": "multiple-choice",
+                        "text": "La proposizione incidentale è:",
+                        "options": [
+                            "essenziale",
+                            "accessoria"
+                        ],
+                        "answer": "accessoria"
+                    },
+                    {
+                        "id": 4008,
+                        "type": "multiple-choice",
+                        "text": "Si può togliere senza cambiare il senso principale:",
+                        "options": [
+                            "sì",
+                            "no"
+                        ],
+                        "answer": "sì"
+                    },
+                    {
+                        "id": 4009,
+                        "type": "multiple-choice",
+                        "text": "La proposizione incidentale è separata da:",
+                        "options": [
+                            "virgole",
+                            "punti"
+                        ],
+                        "answer": "virgole"
+                    },
+                    {
+                        "id": 4010,
+                        "type": "multiple-choice",
+                        "text": "La proposizione incidentale introduce:",
+                        "options": [
+                            "informazione secondaria",
+                            "azione principale"
+                        ],
+                        "answer": "informazione secondaria"
                     }
                 ],
                 "verifica": [],
@@ -8062,117 +8202,106 @@ window.exercisesData = {
                 ],
                 "allenati": [
                     {
-                        "id": 50023,
-                        "type": "classification-grid",
-                        "title": "Tipo di coordinata",
-                        "instruction": "Indica il tipo di coordinata presente nel periodo.",
-                        "words": [
-                            "Studio e ascolto musica.",
-                            "Esco ma piove.",
-                            "Mangi o bevi?",
-                            "Ha piovuto, perciò resto a casa.",
-                            "Infatti ho ragione."
-                        ],
-                        "categories": ["Copulativa", "Avversativa", "Disgiuntiva", "Conclusiva", "Esplicativa"],
-                        "answers": {
-                            "Studio e ascolto musica.": "Copulativa",
-                            "Esco ma piove.": "Avversativa",
-                            "Mangi o bevi?": "Disgiuntiva",
-                            "Ha piovuto, perciò resto a casa.": "Conclusiva",
-                            "Infatti ho ragione.": "Esplicativa"
-                        }
-                    },
-                    {
-                        "id": 50024,
+                        "id": 6001,
                         "type": "multiple-choice",
-                        "title": "Completa con la coordinata",
-                        "text": "Studio...",
-                        "options": ["e imparo", "perché imparo"],
-                        "answer": "e imparo"
-                    },
-                    {
-                        "id": 50025,
-                        "type": "multiple-choice",
-                        "title": "Completa con la coordinata",
-                        "text": "Piove...",
-                        "options": ["ma esco", "se esco"],
-                        "answer": "ma esco"
-                    },
-                    {
-                        "id": 50026,
-                        "type": "multiple-choice",
-                        "title": "Completa con la coordinata",
-                        "text": "Vieni...",
-                        "options": ["o resti?", "perché resti?"],
-                        "answer": "o resti?"
-                    },
-                    {
-                        "id": 50027,
-                        "type": "multiple-choice",
-                        "title": "Completa con la coordinata",
-                        "text": "Sono stanco...",
-                        "options": ["perciò dormo", "quando dormo"],
-                        "answer": "perciò dormo"
-                    },
-                    {
-                        "id": 50028,
-                        "type": "multiple-choice",
-                        "title": "Completa con la coordinata",
-                        "text": "Ho fame...",
-                        "options": ["infatti mangio", "mentre mangio"],
-                        "answer": "infatti mangio"
-                    },
-                    {
-                        "id": 3611,
-                        "type": "classification-grid",
-                        "title": "Congiunzione o Asindeto?",
-                        "instruction": "Classifica i seguenti periodi indicando se la coordinazione avviene tramite una CONGIUNZIONE o per ASINDETO (cioè tramite punteggiatura).",
-                        "words": [
-                            "Ho fatto la spesa e poi ho cucinato la cena.",
-                            "Il sole splendeva alto nel cielo, gli uccellini cantavano gioiosi.",
-                            "Vorrei uscire a fare una passeggiata, ma sta piovendo a dirotto.",
-                            "Entrò nella stanza in silenzio, si sedette sul divano, accese la televisione.",
-                            "Devi sbrigarti oppure perderemo l'autobus per il centro.",
-                            "La porta si aprì all'improvviso: un forte vento invase la stanza."
+                        "title": "Esercizio 1 – Tipo",
+                        "text": "Mangio e bevo.",
+                        "options": [
+                            "Copulativa",
+                            "Avversativa"
                         ],
-                        "categories": [
-                            "Per Congiunzione",
-                            "Per Asindeto"
-                        ],
-                        "answers": {
-                            "Ho fatto la spesa e poi ho cucinato la cena.": "Per Congiunzione",
-                            "Il sole splendeva alto nel cielo, gli uccellini cantavano gioiosi.": "Per Asindeto",
-                            "Vorrei uscire a fare una passeggiata, ma sta piovendo a dirotto.": "Per Congiunzione",
-                            "Entrò nella stanza in silenzio, si sedette sul divano, accese la televisione.": "Per Asindeto",
-                            "Devi sbrigarti oppure perderemo l'autobus per il centro.": "Per Congiunzione",
-                            "La porta si aprì all'improvviso: un forte vento invase la stanza.": "Per Asindeto"
-                        }
+                        "answer": "Copulativa"
                     },
                     {
-                        "id": 3612,
-                        "type": "classification-grid",
-                        "title": "Coordinata alla Principale o alla Subordinata?",
-                        "instruction": "Leggi le proposizioni in ROSSO e classificale: sono coordinate alla frase PRINCIPALE o sono coordinate a un'altra SUBORDINATA?",
-                        "words": [
-                            "Ho risposto male al professore, <span style='color: red; font-weight: bold;'>perciò adesso sono in punizione</span>.",
-                            "Non so se guardare un film <span style='color: red; font-weight: bold;'>oppure leggere un bel libro</span>.",
-                            "Ha detto che arriverà in ritardo <span style='color: red; font-weight: bold;'>e che non cenerà con noi</span>.",
-                            "Ieri sono andato in piscina, <span style='color: red; font-weight: bold;'>tuttavia l'acqua era freddissima</span>.",
-                            "Credeva di avere ragione, <span style='color: red; font-weight: bold;'>invece si sbagliava di grosso</span>.",
-                            "Quando tornerai a casa <span style='color: red; font-weight: bold;'>e ti toglierai le scarpe</span>, potrai riposarti."
+                        "id": 6002,
+                        "type": "multiple-choice",
+                        "text": "Esco ma piove.",
+                        "options": [
+                            "Copulativa",
+                            "Avversativa"
                         ],
-                        "categories": [
-                            "Coordinata alla Principale",
-                            "Coordinata alla Subordinata"
+                        "answer": "Avversativa"
+                    },
+                    {
+                        "id": 6003,
+                        "type": "multiple-choice",
+                        "text": "Vuoi tè o caffè?",
+                        "options": [
+                            "Disgiuntiva",
+                            "Copulativa"
                         ],
-                        "answers": {
-                            "Ho risposto male al professore, <span style='color: red; font-weight: bold;'>perciò adesso sono in punizione</span>.": "Coordinata alla Principale",
-                            "Non so se guardare un film <span style='color: red; font-weight: bold;'>oppure leggere un bel libro</span>.": "Coordinata alla Subordinata",
-                            "Ha detto che arriverà in ritardo <span style='color: red; font-weight: bold;'>e che non cenerà con noi</span>.": "Coordinata alla Subordinata",
-                            "Ieri sono andato in piscina, <span style='color: red; font-weight: bold;'>tuttavia l'acqua era freddissima</span>.": "Coordinata alla Principale",
-                            "Credeva di avere ragione, <span style='color: red; font-weight: bold;'>invece si sbagliava di grosso</span>.": "Coordinata alla Principale",
-                            "Quando tornerai a casa <span style='color: red; font-weight: bold;'>e ti toglierai le scarpe</span>, potrai riposarti.": "Coordinata alla Subordinata"
-                        }
+                        "answer": "Disgiuntiva"
+                    },
+                    {
+                        "id": 6004,
+                        "type": "multiple-choice",
+                        "text": "Studio quindi passo.",
+                        "options": [
+                            "Conclusiva",
+                            "Avversativa"
+                        ],
+                        "answer": "Conclusiva"
+                    },
+                    {
+                        "id": 6005,
+                        "type": "multiple-choice",
+                        "text": "Non solo studia ma lavora.",
+                        "options": [
+                            "Correlativa",
+                            "Disgiuntiva"
+                        ],
+                        "answer": "Correlativa"
+                    },
+                    {
+                        "id": 6006,
+                        "type": "multiple-choice",
+                        "title": "Esercizio 2 – Completa",
+                        "text": "Studio ___ sono stanco.",
+                        "options": [
+                            "ma",
+                            "e"
+                        ],
+                        "answer": "ma"
+                    },
+                    {
+                        "id": 6007,
+                        "type": "multiple-choice",
+                        "text": "Mangio ___ bevo.",
+                        "options": [
+                            "e",
+                            "ma"
+                        ],
+                        "answer": "e"
+                    },
+                    {
+                        "id": 6010,
+                        "type": "multiple-choice",
+                        "text": "Vieni ___ resti?",
+                        "options": [
+                            "o",
+                            "e"
+                        ],
+                        "answer": "o"
+                    },
+                    {
+                        "id": 6011,
+                        "type": "multiple-choice",
+                        "text": "Studio ___ passo.",
+                        "options": [
+                            "quindi",
+                            "ma"
+                        ],
+                        "answer": "quindi"
+                    },
+                    {
+                        "id": 6012,
+                        "type": "multiple-choice",
+                        "text": "Non esco ___ piove.",
+                        "options": [
+                            "perché",
+                            "ma"
+                        ],
+                        "answer": "ma"
                     }
                 ],
                 "verifica": [],
@@ -8216,142 +8345,106 @@ window.exercisesData = {
                 ],
                 "allenati": [
                     {
-                        "id": 50029,
+                        "id": 7001,
                         "type": "multiple-choice",
-                        "title": "Individua la subordinata",
-                        "text": "Studio perché voglio imparare.",
-                        "options": ["Studio", "perché voglio imparare"],
-                        "answer": "perché voglio imparare"
+                        "title": "Esercizio 1 – Individua",
+                        "text": "Penso che tu abbia ragione.",
+                        "options": [
+                            "Penso",
+                            "che tu abbia ragione"
+                        ],
+                        "answer": "che tu abbia ragione"
                     },
                     {
-                        "id": 50030,
+                        "id": 7002,
                         "type": "multiple-choice",
-                        "title": "Individua la subordinata",
-                        "text": "Se piove, resto a casa.",
-                        "options": ["Se piove", "resto a casa"],
-                        "answer": "Se piove"
+                        "text": "Vado a casa perché sono stanco.",
+                        "options": [
+                            "perché sono stanco",
+                            "vado a casa"
+                        ],
+                        "answer": "perché sono stanco"
                     },
                     {
-                        "id": 50031,
+                        "id": 7003,
                         "type": "multiple-choice",
-                        "title": "Individua la subordinata",
-                        "text": "Vengo anche se sono stanco.",
-                        "options": ["Vengo", "anche se sono stanco"],
-                        "answer": "anche se sono stanco"
+                        "text": "Quando arrivo, ti chiamo.",
+                        "options": [
+                            "quando arrivo",
+                            "ti chiamo"
+                        ],
+                        "answer": "quando arrivo"
                     },
                     {
-                        "id": 50032,
+                        "id": 7004,
                         "type": "multiple-choice",
-                        "title": "Individua la subordinata",
-                        "text": "Quando arrivi, chiamami.",
-                        "options": ["Quando arrivi", "chiamami"],
-                        "answer": "Quando arrivi"
+                        "text": "Se studi, passi.",
+                        "options": [
+                            "se studi",
+                            "passi"
+                        ],
+                        "answer": "se studi"
                     },
                     {
-                        "id": 50033,
+                        "id": 7005,
                         "type": "multiple-choice",
-                        "title": "Individua la subordinata",
-                        "text": "Esco per comprare il pane.",
-                        "options": ["Esco", "per comprare il pane"],
-                        "answer": "per comprare il pane"
+                        "text": "Anche se piove, esco.",
+                        "options": [
+                            "anche se piove",
+                            "esco"
+                        ],
+                        "answer": "anche se piove"
                     },
                     {
-                        "id": 50034,
-                        "type": "classification-grid",
-                        "title": "Caratteristiche della subordinata",
-                        "instruction": "Rispondi alle domande sulla proposizione subordinata.",
-                        "words": [
-                            "È autonoma?",
-                            "Cosa indica?",
-                            "Come si lega?",
-                            "Di che grado può essere?",
-                            "Può essere implicita?"
+                        "id": 7006,
+                        "type": "multiple-choice",
+                        "title": "Esercizio 2 – Caratteristica",
+                        "text": "La proposizione subordinata dipende da un’altra proposizione:",
+                        "options": [
+                            "sì",
+                            "no"
                         ],
-                        "categories": ["Opzione A", "Opzione B"],
-                        "answers": {
-                            "È autonoma?": "Opzione B",
-                            "Cosa indica?": "Opzione A",
-                            "Come si lega?": "Opzione A",
-                            "Di che grado può essere?": "Opzione A",
-                            "Può essere implicita?": "Opzione A"
-                        },
-                        "labels": {
-                            "È autonoma?": ["sì", "no"],
-                            "Cosa indica?": ["una circostanza", "un'azione principale"],
-                            "Come si lega?": ["con congiunzioni", "con punti"],
-                            "Di che grado può essere?": ["1°, 2°, ecc.", "solo 1°"],
-                            "Può essere implicita?": ["sì, con l’infinito", "no, mai"]
-                        }
+                        "answer": "sì"
                     },
                     {
-                        "id": 4511,
-                        "type": "classification-grid",
-                        "title": "Principale o Subordinata?",
-                        "instruction": "Leggi le frasi evidenziate in ROSSO e classificale: si tratta della frase PRINCIPALE o di una frase NON PRINCIPALE (subordinata)?",
-                        "words": [
-                            "Sono tornato a casa contento <span style='color: red; font-weight: bold;'>dopo aver fatto una lunga passeggiata</span>.",
-                            "<span style='color: red; font-weight: bold;'>Porto dal veterinario il mio cane</span>, dal momento che ha gli occhi arrossati.",
-                            "<span style='color: red; font-weight: bold;'>Non posso uscire</span> perché fuori piove.",
-                            "Ho comprato delle uova <span style='color: red; font-weight: bold;'>affinché tu possa cucinare una frittata</span>."
+                        "id": 7007,
+                        "type": "multiple-choice",
+                        "text": "La proposizione subordinata può stare da sola:",
+                        "options": [
+                            "sì",
+                            "no"
                         ],
-                        "categories": [
-                            "Principale",
-                            "Non Principale"
-                        ],
-                        "answers": {
-                            "Sono tornato a casa contento <span style='color: red; font-weight: bold;'>dopo aver fatto una lunga passeggiata</span>.": "Non Principale",
-                            "<span style='color: red; font-weight: bold;'>Porto dal veterinario il mio cane</span>, dal momento che ha gli occhi arrossati.": "Principale",
-                            "<span style='color: red; font-weight: bold;'>Non posso uscire</span> perché fuori piove.": "Principale",
-                            "Ho comprato delle uova <span style='color: red; font-weight: bold;'>affinché tu possa cucinare una frittata</span>.": "Non Principale"
-                        }
+                        "answer": "no"
                     },
                     {
-                        "id": 4512,
-                        "type": "classification-grid",
-                        "title": "Esplicita o Implicita?",
-                        "instruction": "Classifica le proposizioni subordinate in base alla forma del loro verbo (Esplicita se ha un modo finito come l'indicativo, Implicita se ha un modo indefinito come l'infinito o il gerundio).",
-                        "words": [
-                            "Pensavamo che tu fossi già arrivato.",
-                            "Credo di avere dimenticato le chiavi di casa.",
-                            "Uscendo dal negozio, ho incontrato un vecchio amico.",
-                            "Mi chiedo chi abbia lasciato la finestra aperta.",
-                            "Pur avendo studiato molto, non ho superato l'esame.",
-                            "Il nonno mi ha regalato un libro affinché io lo legga."
+                        "id": 7008,
+                        "type": "multiple-choice",
+                        "text": "La proposizione subordinata introduce:",
+                        "options": [
+                            "informazione dipendente",
+                            "azione principale"
                         ],
-                        "categories": [
-                            "Esplicita",
-                            "Implicita"
-                        ],
-                        "answers": {
-                            "Pensavamo che tu fossi già arrivato.": "Esplicita",
-                            "Credo di avere dimenticato le chiavi di casa.": "Implicita",
-                            "Uscendo dal negozio, ho incontrato un vecchio amico.": "Implicita",
-                            "Mi chiedo chi abbia lasciato la finestra aperta.": "Esplicita",
-                            "Pur avendo studiato molto, non ho superato l'esame.": "Implicita",
-                            "Il nonno mi ha regalato un libro affinché io lo legga.": "Esplicita"
-                        }
+                        "answer": "informazione dipendente"
                     },
                     {
-                        "id": 4513,
-                        "type": "classification-grid",
-                        "title": "Gradi della Subordinazione",
-                        "instruction": "Individua se la proposizione sottolineata è una subordinata di 1° GRADO (dipende direttamente dalla principale) o di 2° GRADO (dipende a sua volta da una subordinata).",
-                        "words": [
-                            "Ti ho chiamato / perché volevo sapere / <u>come stavi</u>.",
-                            "Ho deciso / <u>di andare al mare</u>.",
-                            "Non riesco a capire / se hai fame / o <u>se hai sete</u>.",
-                            "Voglio credere / che la situazione migliorerà / <u>se tutti faremo la nostra parte</u>."
+                        "id": 7009,
+                        "type": "multiple-choice",
+                        "text": "La proposizione subordinata è:",
+                        "options": [
+                            "indipendente",
+                            "dipendente"
                         ],
-                        "categories": [
-                            "1° Grado",
-                            "2° Grado"
+                        "answer": "dipendente"
+                    },
+                    {
+                        "id": 7010,
+                        "type": "multiple-choice",
+                        "text": "La proposizione subordinata è legata alla principale:",
+                        "options": [
+                            "sì",
+                            "no"
                         ],
-                        "answers": {
-                            "Ti ho chiamato / perché volevo sapere / <u>come stavi</u>.": "2° Grado",
-                            "Ho deciso / <u>di andare al mare</u>.": "1° Grado",
-                            "Non riesco a capire / se hai fame / o <u>se hai sete</u>.": "1° Grado",
-                            "Voglio credere / che la situazione migliorerà / <u>se tutti faremo la nostra parte</u>.": "2° Grado"
-                        }
+                        "answer": "sì"
                     }
                 ],
                 "verifica": [],
@@ -8384,84 +8477,106 @@ window.exercisesData = {
                 ],
                 "allenati": [
                     {
-                        "id": 50035,
-                        "type": "classification-grid",
-                        "title": "Individua la soggettiva",
-                        "instruction": "Quale parte della frase è la proposizione soggettiva?",
-                        "words": [
-                            "Si dice che pioverà.",
-                            "Pare che tu abbia ragione.",
-                            "È bene studiare.",
-                            "Bisogna andare.",
-                            "Sembra che tutto vada bene."
-                        ],
-                        "categories": ["Principale", "Soggettiva"],
-                        "answers": {
-                            "Si dice che pioverà.": "Soggettiva",
-                            "Pare che tu abbia ragione.": "Soggettiva",
-                            "È bene studiare.": "Soggettiva",
-                            "Bisogna andare.": "Soggettiva",
-                            "Sembra che tutto vada bene.": "Soggettiva"
-                        },
-                        "custom_answers": {
-                            "Si dice che pioverà.": "che pioverà",
-                            "Pare che tu abbia ragione.": "che tu abbia ragione",
-                            "È bene studiare.": "studiare",
-                            "Bisogna andare.": "andare",
-                            "Sembra che tutto vada bene.": "che tutto vada bene"
-                        }
-                    },
-                    {
-                        "id": 50036,
+                        "id": 8001,
                         "type": "multiple-choice",
-                        "title": "Riconosci la soggettiva",
-                        "text": "Quale di queste è una soggettiva?",
-                        "options": ["Si spera di vincere", "Io spero di vincere"],
-                        "answer": "Si spera di vincere"
-                    },
-                    {
-                        "id": 50037,
-                        "type": "multiple-choice",
-                        "title": "Riconosci la soggettiva",
-                        "text": "Quale di queste è una soggettiva?",
-                        "options": ["È chiaro che hai capito", "Ho capito che è chiaro"],
-                        "answer": "È chiaro che hai capito"
-                    },
-                    {
-                        "id": 811,
-                        "type": "multiple-choice",
-                        "text": "Laboratorio di ripasso: Cosa sono le proposizioni?",
+                        "title": "Esercizio 1 – Riconosci",
+                        "text": "È giusto che tu dica la verità.",
                         "options": [
-                            "Sono le singole parole che compongono una frase.",
-                            "Sono le frasi (ognuna con il proprio verbo) che compongono un periodo."
+                            "Soggettiva",
+                            "Oggettiva"
                         ],
-                        "answer": "Sono le frasi (ognuna con il proprio verbo) che compongono un periodo."
+                        "answer": "Soggettiva"
                     },
                     {
-                        "id": 812,
-                        "type": "classification-grid",
-                        "title": "Soggettiva o Oggettiva?",
-                        "instruction": "Leggi le seguenti frasi e trascinandole, classificale in base al tipo di proposizione subordinata (evidenziata in ROSSO). Ricorda: guarda il verbo della frase principale!",
-                        "words": [
-                            "È necessario <span style='color: red; font-weight: bold;'>che voi partiate subito</span>.",
-                            "Il professore ha annunciato <span style='color: red; font-weight: bold;'>che non ci sarà lezione</span>.",
-                            "Si mormora <span style='color: red; font-weight: bold;'>che il tesoro sia nascosto sull'isola</span>.",
-                            "Spero tanto <span style='color: red; font-weight: bold;'>di arrivare in tempo per l'inizio del film</span>.",
-                            "Non mi sembra <span style='color: red; font-weight: bold;'>che tu abbia capito bene le istruzioni</span>.",
-                            "Ricordati <span style='color: red; font-weight: bold;'>di comprare il latte al supermercato</span>."
+                        "id": 8002,
+                        "type": "multiple-choice",
+                        "text": "È importante che studi.",
+                        "options": [
+                            "Soggettiva",
+                            "Oggettiva"
                         ],
-                        "categories": [
-                            "Subordinata Soggettiva",
-                            "Subordinata Oggettiva"
+                        "answer": "Soggettiva"
+                    },
+                    {
+                        "id": 8003,
+                        "type": "multiple-choice",
+                        "text": "Mi piace che tu sia qui.",
+                        "options": [
+                            "Soggettiva",
+                            "Oggettiva"
                         ],
-                        "answers": {
-                            "È necessario <span style='color: red; font-weight: bold;'>che voi partiate subito</span>.": "Subordinata Soggettiva",
-                            "Il professore ha annunciato <span style='color: red; font-weight: bold;'>che non ci sarà lezione</span>.": "Subordinata Oggettiva",
-                            "Si mormora <span style='color: red; font-weight: bold;'>che il tesoro sia nascosto sull'isola</span>.": "Subordinata Soggettiva",
-                            "Spero tanto <span style='color: red; font-weight: bold;'>di arrivare in tempo per l'inizio del film</span>.": "Subordinata Oggettiva",
-                            "Non mi sembra <span style='color: red; font-weight: bold;'>che tu abbia capito bene le istruzioni</span>.": "Subordinata Soggettiva",
-                            "Ricordati <span style='color: red; font-weight: bold;'>di comprare il latte al supermercato</span>.": "Subordinata Oggettiva"
-                        }
+                        "answer": "Oggettiva"
+                    },
+                    {
+                        "id": 8004,
+                        "type": "multiple-choice",
+                        "text": "È necessario partire.",
+                        "options": [
+                            "Soggettiva",
+                            "Finale"
+                        ],
+                        "answer": "Soggettiva"
+                    },
+                    {
+                        "id": 8005,
+                        "type": "multiple-choice",
+                        "text": "È bello vincere.",
+                        "options": [
+                            "Soggettiva",
+                            "Causale"
+                        ],
+                        "answer": "Soggettiva"
+                    },
+                    {
+                        "id": 8006,
+                        "type": "multiple-choice",
+                        "title": "Esercizio 2 – Funzione",
+                        "text": "La proposizione soggettiva fa da soggetto?",
+                        "options": [
+                            "sì",
+                            "no"
+                        ],
+                        "answer": "sì"
+                    },
+                    {
+                        "id": 8007,
+                        "type": "multiple-choice",
+                        "text": "La proposizione soggettiva risponde a:",
+                        "options": [
+                            "chi? che cosa?",
+                            "perché?"
+                        ],
+                        "answer": "chi? che cosa?"
+                    },
+                    {
+                        "id": 8008,
+                        "type": "multiple-choice",
+                        "text": "La proposizione soggettiva dipende da:",
+                        "options": [
+                            "verbo impersonale",
+                            "nome"
+                        ],
+                        "answer": "verbo impersonale"
+                    },
+                    {
+                        "id": 8009,
+                        "type": "multiple-choice",
+                        "text": "La proposizione soggettiva può essere implicita:",
+                        "options": [
+                            "sì",
+                            "no"
+                        ],
+                        "answer": "sì"
+                    },
+                    {
+                        "id": 8010,
+                        "type": "multiple-choice",
+                        "text": "La proposizione soggettiva può essere esplicita:",
+                        "options": [
+                            "sì",
+                            "no"
+                        ],
+                        "answer": "sì"
                     }
                 ],
                 "verifica": [],
@@ -8483,70 +8598,106 @@ window.exercisesData = {
                 ],
                 "allenati": [
                     {
-                        "id": 50038,
-                        "type": "classification-grid",
-                        "title": "Individua l'oggettiva",
-                        "instruction": "Quale parte della frase è la proposizione oggettiva?",
-                        "words": [
-                            "Dico che hai ragione.",
-                            "Credo di aver capito.",
-                            "Spero che tu venga.",
-                            "Voglio mangiare.",
-                            "Penso che sia tardi."
-                        ],
-                        "categories": ["Principale", "Oggettiva"],
-                        "answers": {
-                            "Dico che hai ragione.": "Oggettiva",
-                            "Credo di aver capito.": "Oggettiva",
-                            "Spero che tu venga.": "Oggettiva",
-                            "Voglio mangiare.": "Oggettiva",
-                            "Penso che sia tardi.": "Oggettiva"
-                        },
-                        "custom_answers": {
-                            "Dico che hai ragione.": "che hai ragione",
-                            "Credo di aver capito.": "di aver capito",
-                            "Spero che tu venga.": "che tu venga",
-                            "Voglio mangiare.": "mangiare",
-                            "Penso che sia tardi.": "che sia tardi"
-                        }
-                    },
-                    {
-                        "id": 50039,
+                        "id": 9001,
                         "type": "multiple-choice",
-                        "title": "Riconosci l'oggettiva",
-                        "text": "Quale di queste è una oggettiva?",
-                        "options": ["Io credo che tu sia bravo", "Si crede che tu sia bravo"],
-                        "answer": "Io credo che tu sia bravo"
+                        "title": "Esercizio 1 – Riconosci",
+                        "text": "Penso che sia tardi.",
+                        "options": [
+                            "Oggettiva",
+                            "Soggettiva"
+                        ],
+                        "answer": "Oggettiva"
                     },
                     {
-                        "id": 50040,
+                        "id": 9002,
                         "type": "multiple-choice",
-                        "title": "Riconosci l'oggettiva",
-                        "text": "Quale di queste è una oggettiva?",
-                        "options": ["Luca dice di no", "Si dice di no"],
-                        "answer": "Luca dice di no"
+                        "text": "Credo di aver capito.",
+                        "options": [
+                            "Oggettiva",
+                            "Finale"
+                        ],
+                        "answer": "Oggettiva"
                     },
                     {
-                        "id": 911,
-                        "type": "classification-grid",
-                        "title": "Soggettive Esplicite e Implicite",
-                        "instruction": "Leggi le seguenti proposizioni SOGGETTIVE (in rosso) e classificale in ESPLICITE (verbo di modo finito) o IMPLICITE (verbo all'infinito).",
-                        "words": [
-                            "Pare <span style='color: red; font-weight: bold;'>che domani nevicherà in montagna</span>.",
-                            "È bello <span style='color: red; font-weight: bold;'>passeggiare nel bosco in autunno</span>.",
-                            "Bisognerebbe <span style='color: red; font-weight: bold;'>studiare di più per l'esame</span>.",
-                            "È noto a tutti <span style='color: red; font-weight: bold;'>che Roma è la capitale d'Italia</span>."
+                        "id": 9003,
+                        "type": "multiple-choice",
+                        "text": "So che arrivi.",
+                        "options": [
+                            "Oggettiva",
+                            "Temporale"
                         ],
-                        "categories": [
-                            "Esplicita",
-                            "Implicita"
+                        "answer": "Oggettiva"
+                    },
+                    {
+                        "id": 9004,
+                        "type": "multiple-choice",
+                        "text": "Dico che hai ragione.",
+                        "options": [
+                            "Oggettiva",
+                            "Causale"
                         ],
-                        "answers": {
-                            "Pare <span style='color: red; font-weight: bold;'>che domani nevicherà in montagna</span>.": "Esplicita",
-                            "È bello <span style='color: red; font-weight: bold;'>passeggiare nel bosco in autunno</span>.": "Implicita",
-                            "Bisognerebbe <span style='color: red; font-weight: bold;'>studiare di più per l'esame</span>.": "Implicita",
-                            "È noto a tutti <span style='color: red; font-weight: bold;'>che Roma è la capitale d'Italia</span>.": "Esplicita"
-                        }
+                        "answer": "Oggettiva"
+                    },
+                    {
+                        "id": 9005,
+                        "type": "multiple-choice",
+                        "text": "Immagino di vincere.",
+                        "options": [
+                            "Oggettiva",
+                            "Finale"
+                        ],
+                        "answer": "Oggettiva"
+                    },
+                    {
+                        "id": 9006,
+                        "type": "multiple-choice",
+                        "title": "Esercizio 2 – Funzione",
+                        "text": "La proposizione oggettiva completa il verbo?",
+                        "options": [
+                            "sì",
+                            "no"
+                        ],
+                        "answer": "sì"
+                    },
+                    {
+                        "id": 9007,
+                        "type": "multiple-choice",
+                        "text": "La proposizione oggettiva risponde a:",
+                        "options": [
+                            "che cosa?",
+                            "quando?"
+                        ],
+                        "answer": "che cosa?"
+                    },
+                    {
+                        "id": 9008,
+                        "type": "multiple-choice",
+                        "text": "La proposizione oggettiva dipende da verbo:",
+                        "options": [
+                            "sì",
+                            "no"
+                        ],
+                        "answer": "sì"
+                    },
+                    {
+                        "id": 9009,
+                        "type": "multiple-choice",
+                        "text": "La proposizione oggettiva è complemento oggetto:",
+                        "options": [
+                            "sì",
+                            "no"
+                        ],
+                        "answer": "sì"
+                    },
+                    {
+                        "id": 9010,
+                        "type": "multiple-choice",
+                        "text": "La proposizione oggettiva può essere implicita:",
+                        "options": [
+                            "sì",
+                            "no"
+                        ],
+                        "answer": "sì"
                     }
                 ],
                 "verifica": [],
@@ -8590,80 +8741,106 @@ window.exercisesData = {
                 ],
                 "allenati": [
                     {
-                        "id": 50041,
-                        "type": "classification-grid",
-                        "title": "Individua la dichiarativa",
-                        "instruction": "Quale parte della frase è la proposizione dichiarativa?",
-                        "words": [
-                            "Ho questo pensiero: che pioverà.",
-                            "Ti dico questo: che hai ragione.",
-                            "Mi spaventa l'idea di cadere.",
-                            "Ho la speranza di farcela.",
-                            "Ti chiedo una cosa: che tu sia sincero."
-                        ],
-                        "categories": ["Principale", "Dichiarativa"],
-                        "answers": {
-                            "Ho questo pensiero: che pioverà.": "Dichiarativa",
-                            "Ti dico questo: che hai ragione.": "Dichiarativa",
-                            "Mi spaventa l'idea di cadere.": "Dichiarativa",
-                            "Ho la speranza di farcela.": "Dichiarativa",
-                            "Ti chiedo una cosa: che tu sia sincero.": "Dichiarativa"
-                        },
-                        "custom_answers": {
-                            "Ho questo pensiero: che pioverà.": "che pioverà",
-                            "Ti dico questo: che hai ragione.": "che hai ragione",
-                            "Mi spaventa l'idea di cadere.": "di cadere",
-                            "Ho la speranza di farcela.": "di farcela",
-                            "Ti chiedo una cosa: che tu sia sincero.": "che tu sia sincero"
-                        }
-                    },
-                    {
-                        "id": 50042,
+                        "id": 10001,
                         "type": "multiple-choice",
-                        "title": "Riconosci la dichiarativa",
-                        "text": "Quale di queste è una dichiarativa?",
-                        "options": ["Ho il dubbio che tu menta", "Dubito che tu menta"],
-                        "answer": "Ho il dubbio che tu menta"
-                    },
-                    {
-                        "id": 50043,
-                        "type": "multiple-choice",
-                        "title": "Riconosci la dichiarativa",
-                        "text": "Quale di queste è una dichiarativa?",
-                        "options": ["Ti prometto questo: che verrò", "Ti prometto che verrò"],
-                        "answer": "Ti prometto questo: che verrò"
-                    },
-                    {
-                        "id": 1011,
-                        "type": "classification-grid",
-                        "title": "Soggettiva, Oggettiva, Dichiarativa o Interrogativa Indiretta?",
-                        "instruction": "Leggi le seguenti proposizioni subordinate (evidenziate in rosso) e classificale correttamente.",
-                        "words": [
-                            "È chiaro a tutti <span style='color: red; font-weight: bold;'>che il progetto sarà un successo</span>.",
-                            "Il professore ci ha spiegato <span style='color: red; font-weight: bold;'>che l'esame sarà difficile</span>.",
-                            "Ho questo dubbio: <span style='color: red; font-weight: bold;'>che Marco non venga alla festa</span>.",
-                            "Vorrei sapere <span style='color: red; font-weight: bold;'>perché hai pianto ieri sera</span>.",
-                            "Si spera <span style='color: red; font-weight: bold;'>di arrivare in tempo per l'inizio dello spettacolo</span>.",
-                            "Mi ha promesso <span style='color: red; font-weight: bold;'>di comportarsi bene</span>.",
-                            "Ho la sensazione <span style='color: red; font-weight: bold;'>che pioverà a breve</span>.",
-                            "Mi chiedo <span style='color: red; font-weight: bold;'>chi abbia rotto il vaso in salotto</span>."
-                        ],
-                        "categories": [
-                            "Soggettiva",
-                            "Oggettiva",
+                        "title": "Esercizio 1 – Riconosci",
+                        "text": "Ti dico che hai ragione.",
+                        "options": [
                             "Dichiarativa",
-                            "Interrogativa Indiretta"
+                            "Interrogativa"
                         ],
-                        "answers": {
-                            "È chiaro a tutti <span style='color: red; font-weight: bold;'>che il progetto sarà un successo</span>.": "Soggettiva",
-                            "Il professore ci ha spiegato <span style='color: red; font-weight: bold;'>che l'esame sarà difficile</span>.": "Oggettiva",
-                            "Ho questo dubbio: <span style='color: red; font-weight: bold;'>che Marco non venga alla festa</span>.": "Dichiarativa",
-                            "Vorrei sapere <span style='color: red; font-weight: bold;'>perché hai pianto ieri sera</span>.": "Interrogativa Indiretta",
-                            "Si spera <span style='color: red; font-weight: bold;'>di arrivare in tempo per l'inizio dello spettacolo</span>.": "Soggettiva",
-                            "Mi ha promesso <span style='color: red; font-weight: bold;'>di comportarsi bene</span>.": "Oggettiva",
-                            "Ho la sensazione <span style='color: red; font-weight: bold;'>che pioverà a breve</span>.": "Dichiarativa",
-                            "Mi chiedo <span style='color: red; font-weight: bold;'>chi abbia rotto il vaso in salotto</span>.": "Interrogativa Indiretta"
-                        }
+                        "answer": "Dichiarativa"
+                    },
+                    {
+                        "id": 10002,
+                        "type": "multiple-choice",
+                        "text": "Afferma che verrà.",
+                        "options": [
+                            "Dichiarativa",
+                            "Finale"
+                        ],
+                        "answer": "Dichiarativa"
+                    },
+                    {
+                        "id": 10003,
+                        "type": "multiple-choice",
+                        "text": "Dice che parte.",
+                        "options": [
+                            "Dichiarativa",
+                            "Temporale"
+                        ],
+                        "answer": "Dichiarativa"
+                    },
+                    {
+                        "id": 10004,
+                        "type": "multiple-choice",
+                        "text": "Racconta che ha vinto.",
+                        "options": [
+                            "Dichiarativa",
+                            "Causale"
+                        ],
+                        "answer": "Dichiarativa"
+                    },
+                    {
+                        "id": 10005,
+                        "type": "multiple-choice",
+                        "text": "Spiega che studia.",
+                        "options": [
+                            "Dichiarativa",
+                            "Finale"
+                        ],
+                        "answer": "Dichiarativa"
+                    },
+                    {
+                        "id": 10006,
+                        "type": "multiple-choice",
+                        "title": "Esercizio 2 – Funzione",
+                        "text": "La proposizione dichiarativa serve a dichiarare?",
+                        "options": [
+                            "sì",
+                            "no"
+                        ],
+                        "answer": "sì"
+                    },
+                    {
+                        "id": 10007,
+                        "type": "multiple-choice",
+                        "text": "La proposizione dichiarativa introduce:",
+                        "options": [
+                            "informazione",
+                            "domanda"
+                        ],
+                        "answer": "informazione"
+                    },
+                    {
+                        "id": 10008,
+                        "type": "multiple-choice",
+                        "text": "La proposizione dichiarativa dipende da verbi di dire:",
+                        "options": [
+                            "sì",
+                            "no"
+                        ],
+                        "answer": "sì"
+                    },
+                    {
+                        "id": 10009,
+                        "type": "multiple-choice",
+                        "text": "La proposizione dichiarativa risponde a:",
+                        "options": [
+                            "che cosa?",
+                            "quando?"
+                        ],
+                        "answer": "che cosa?"
+                    },
+                    {
+                        "id": 10010,
+                        "type": "multiple-choice",
+                        "text": "La proposizione dichiarativa è simile all’oggettiva:",
+                        "options": [
+                            "sì",
+                            "no"
+                        ],
+                        "answer": "sì"
                     }
                 ],
                 "verifica": [],
@@ -8685,84 +8862,106 @@ window.exercisesData = {
                 ],
                 "allenati": [
                     {
-                        "id": 50044,
-                        "type": "classification-grid",
-                        "title": "Individua la relativa",
-                        "instruction": "Quale parte della frase è la proposizione relativa?",
-                        "words": [
-                            "L'uomo che corre è mio padre.",
-                            "Il libro che leggi è bello.",
-                            "La casa dove abito è vecchia.",
-                            "L'amico di cui ti parlo è qui.",
-                            "Il cane che abbaia non morde."
-                        ],
-                        "categories": ["Principale", "Relativa"],
-                        "answers": {
-                            "L'uomo che corre è mio padre.": "Relativa",
-                            "Il libro che leggi è bello.": "Relativa",
-                            "La casa dove abito è vecchia.": "Relativa",
-                            "L'amico di cui ti parlo è qui.": "Relativa",
-                            "Il cane che abbaia non morde.": "Relativa"
-                        },
-                        "custom_answers": {
-                            "L'uomo che corre è mio padre.": "che corre",
-                            "Il libro che leggi è bello.": "che leggi",
-                            "La casa dove abito è vecchia.": "dove abito",
-                            "L'amico di cui ti parlo è qui.": "di cui ti parlo",
-                            "Il cane che abbaia non morde.": "che abbaia"
-                        }
-                    },
-                    {
-                        "id": 50045,
+                        "id": 11001,
                         "type": "multiple-choice",
-                        "title": "Riconosci la relativa",
-                        "text": "Quale di queste è una relativa?",
-                        "options": ["Ho comprato un libro che mi piace", "Ho comprato un libro perché mi piace"],
-                        "answer": "Ho comprato un libro che mi piace"
-                    },
-                    {
-                        "id": 1111,
-                        "type": "word-selector",
-                        "instruction": "Nei seguenti periodi, individua la proposizione relativa e CLICCA sulla sua PRIMA PAROLA.",
-                        "text": "1. La torta che ha preparato la nonna è davvero squisita.<br>2. I ragazzi ai quali ho prestato il libro non me lo hanno ancora restituito.<br>3. Il paese dove sono nato si trova in collina.<br>4. Non c'è nessuno a cui io voglia più bene di te.",
-                        "answer": "che|ai|dove|a"
-                    },
-                    {
-                        "id": 1112,
-                        "type": "multiple-choice",
-                        "text": "Trasforma le frasi semplici in un periodo inserendo una proposizione subordinata relativa! Scegli la trasformazione corretta:<br><br>Frasi semplici: <b>Il professore spiega la lezione. Il professore è molto severo.</b>",
+                        "title": "Esercizio 1 – Individua",
+                        "text": "Il ragazzo che corre è mio amico.",
                         "options": [
-                            "Il professore che spiega la lezione è molto severo.",
-                            "Poiché il professore spiega la lezione, è molto severo.",
-                            "Il professore spiega la lezione e lui è molto severo."
+                            "Il ragazzo",
+                            "che corre"
                         ],
-                        "answer": "Il professore che spiega la lezione è molto severo."
+                        "answer": "che corre"
                     },
                     {
-                        "id": 1113,
-                        "type": "classification-grid",
-                        "title": "Relative Esplicite o Implicite?",
-                        "instruction": "Classifica le seguenti proposizioni relative (in rosso) in ESPLICITE (verbo finito) o IMPLICITE (verbo indefinito come l'infinito o il participio).",
-                        "words": [
-                            "Ho visto un film <span style='color: red; font-weight: bold;'>che mi ha fatto piangere</span>.",
-                            "Cerco un libro <span style='color: red; font-weight: bold;'>da leggere sotto l'ombrellone</span>.",
-                            "L'albero <span style='color: red; font-weight: bold;'>colpito da un fulmine</span> è caduto sulla strada.",
-                            "Il ragazzo <span style='color: red; font-weight: bold;'>con cui ho parlato ieri</span> è mio cugino.",
-                            "Ho bisogno di qualcuno <span style='color: red; font-weight: bold;'>di cui fidarmi ciecamente</span>.",
-                            "La ragazza <span style='color: red; font-weight: bold;'>che canta nel coro</span> ha una voce stupenda."
+                        "id": 11002,
+                        "type": "multiple-choice",
+                        "text": "Il libro che leggo è bello.",
+                        "options": [
+                            "che leggo",
+                            "è bello"
                         ],
-                        "categories": [
-                            "Esplicita",
-                            "Implicita"
+                        "answer": "che leggo"
+                    },
+                    {
+                        "id": 11003,
+                        "type": "multiple-choice",
+                        "text": "La casa che vedi è mia.",
+                        "options": [
+                            "che vedi",
+                            "è mia"
                         ],
-                        "answers": {
-                            "Ho visto un film <span style='color: red; font-weight: bold;'>che mi ha fatto piangere</span>.": "Esplicita",
-                            "Cerco un libro <span style='color: red; font-weight: bold;'>da leggere sotto l'ombrellone</span>.": "Implicita",
-                            "L'albero <span style='color: red; font-weight: bold;'>colpito da un fulmine</span> è caduto sulla strada.": "Implicita",
-                            "Il ragazzo <span style='color: red; font-weight: bold;'>con cui ho parlato ieri</span> è mio cugino.": "Esplicita",
-                            "Ho bisogno di qualcuno <span style='color: red; font-weight: bold;'>di cui fidarmi ciecamente</span>.": "Implicita",
-                            "La ragazza <span style='color: red; font-weight: bold;'>che canta nel coro</span> ha una voce stupenda.": "Esplicita"
-                        }
+                        "answer": "che vedi"
+                    },
+                    {
+                        "id": 11004,
+                        "type": "multiple-choice",
+                        "text": "L’amico che arriva saluta.",
+                        "options": [
+                            "che arriva",
+                            "saluta"
+                        ],
+                        "answer": "che arriva"
+                    },
+                    {
+                        "id": 11005,
+                        "type": "multiple-choice",
+                        "text": "Il film che guardo è lungo.",
+                        "options": [
+                            "che guardo",
+                            "è lungo"
+                        ],
+                        "answer": "che guardo"
+                    },
+                    {
+                        "id": 11006,
+                        "type": "multiple-choice",
+                        "title": "Esercizio 2 – Pronome relativo",
+                        "text": "“che” è:",
+                        "options": [
+                            "pronome relativo",
+                            "congiunzione"
+                        ],
+                        "answer": "pronome relativo"
+                    },
+                    {
+                        "id": 11007,
+                        "type": "multiple-choice",
+                        "text": "Il pronome relativo sostituisce:",
+                        "options": [
+                            "un nome",
+                            "un verbo"
+                        ],
+                        "answer": "un nome"
+                    },
+                    {
+                        "id": 11008,
+                        "type": "multiple-choice",
+                        "text": "Il pronome relativo collega:",
+                        "options": [
+                            "due proposizioni",
+                            "due parole"
+                        ],
+                        "answer": "due proposizioni"
+                    },
+                    {
+                        "id": 11009,
+                        "type": "multiple-choice",
+                        "text": "Il pronome relativo introduce:",
+                        "options": [
+                            "relativa",
+                            "causale"
+                        ],
+                        "answer": "relativa"
+                    },
+                    {
+                        "id": 11010,
+                        "type": "multiple-choice",
+                        "text": "Il pronome relativo ha funzione:",
+                        "options": [
+                            "riferita a un nome",
+                            "indipendente"
+                        ],
+                        "answer": "riferita a un nome"
                     }
                 ],
                 "verifica": [],
@@ -8784,47 +8983,106 @@ window.exercisesData = {
                 ],
                 "allenati": [
                     {
-                        "id": 50046,
+                        "id": 12001,
                         "type": "multiple-choice",
-                        "title": "Individua la causale",
+                        "title": "Esercizio 1 – Riconosci",
                         "text": "Non esco perché piove.",
-                        "options": ["Non esco", "perché piove"],
-                        "answer": "perché piove"
-                    },
-                    {
-                        "id": 50047,
-                        "type": "multiple-choice",
-                        "title": "Individua la causale",
-                        "text": "Siccome sono stanco, dormo.",
-                        "options": ["Siccome sono stanco", "dormo"],
-                        "answer": "Siccome sono stanco"
-                    },
-                    {
-                        "id": 1211,
-                        "type": "word-selector",
-                        "instruction": "Nei seguenti periodi, individua la proposizione causale e CLICCA sulla sua PRIMA PAROLA.",
-                        "text": "1. Non sono uscito in giardino siccome pioveva a dirotto.<br>2. Dal momento che sei stanco, faresti meglio a riposarti.<br>3. Ho mangiato troppo, perciò ora ho mal di pancia.<br>4. Poiché il treno era in ritardo, abbiamo perso la coincidenza.",
-                        "answer": "siccome|dal|perciò|poiché"
-                    },
-                    {
-                        "id": 1212,
-                        "type": "multiple-choice",
-                        "text": "Trasforma il complemento di causa in una proposizione subordinata causale! Scegli la frase corretta:<br><br>Frase di partenza: <b>La partita è stata sospesa per la pioggia.</b>",
                         "options": [
-                            "La partita è stata sospesa poiché pioveva.",
-                            "La partita è stata sospesa per giocare sotto la pioggia."
+                            "Causale",
+                            "Finale"
                         ],
-                        "answer": "La partita è stata sospesa poiché pioveva."
+                        "answer": "Causale"
                     },
                     {
-                        "id": 1213,
+                        "id": 12002,
                         "type": "multiple-choice",
-                        "text": "Trasforma la proposizione causale IMPLICITA in ESPLICITA. Scegli la frase corretta:<br><br>Frase di partenza: <b>Essendo malato, non sono andato a scuola.</b>",
+                        "text": "Piango perché sono triste.",
                         "options": [
-                            "Siccome sono malato, non sono andato a scuola.",
-                            "Per non essere malato, non sono andato a scuola."
+                            "Causale",
+                            "Temporale"
                         ],
-                        "answer": "Siccome sono malato, non sono andato a scuola."
+                        "answer": "Causale"
+                    },
+                    {
+                        "id": 12003,
+                        "type": "multiple-choice",
+                        "text": "Rido perché sono felice.",
+                        "options": [
+                            "Causale",
+                            "Finale"
+                        ],
+                        "answer": "Causale"
+                    },
+                    {
+                        "id": 12004,
+                        "type": "multiple-choice",
+                        "text": "Studio perché voglio migliorare.",
+                        "options": [
+                            "Causale",
+                            "Finale"
+                        ],
+                        "answer": "Causale"
+                    },
+                    {
+                        "id": 12005,
+                        "type": "multiple-choice",
+                        "text": "Resto perché è tardi.",
+                        "options": [
+                            "Causale",
+                            "Temporale"
+                        ],
+                        "answer": "Causale"
+                    },
+                    {
+                        "id": 12006,
+                        "type": "multiple-choice",
+                        "title": "Esercizio 2 – Congiunzione",
+                        "text": "Sono felice ___ ho vinto.",
+                        "options": [
+                            "perché",
+                            "quando"
+                        ],
+                        "answer": "perché"
+                    },
+                    {
+                        "id": 12007,
+                        "type": "multiple-choice",
+                        "text": "Non esco ___ piove.",
+                        "options": [
+                            "perché",
+                            "per"
+                        ],
+                        "answer": "perché"
+                    },
+                    {
+                        "id": 12008,
+                        "type": "multiple-choice",
+                        "text": "Studio ___ voglio imparare.",
+                        "options": [
+                            "perché",
+                            "per"
+                        ],
+                        "answer": "perché"
+                    },
+                    {
+                        "id": 12009,
+                        "type": "multiple-choice",
+                        "text": "Piango ___ sono triste.",
+                        "options": [
+                            "perché",
+                            "quando"
+                        ],
+                        "answer": "perché"
+                    },
+                    {
+                        "id": 12010,
+                        "type": "multiple-choice",
+                        "text": "Resto ___ è tardi.",
+                        "options": [
+                            "perché",
+                            "mentre"
+                        ],
+                        "answer": "perché"
                     }
                 ],
                 "verifica": [],
@@ -8846,62 +9104,106 @@ window.exercisesData = {
                 ],
                 "allenati": [
                     {
-                        "id": 50048,
+                        "id": 13001,
                         "type": "multiple-choice",
-                        "title": "Individua la finale",
-                        "text": "Studio per imparare.",
-                        "options": ["Studio", "per imparare"],
-                        "answer": "per imparare"
-                    },
-                    {
-                        "id": 50049,
-                        "type": "multiple-choice",
-                        "title": "Individua la finale",
-                        "text": "Ti chiamo affinché tu venga.",
-                        "options": ["Ti chiamo", "affinché tu venga"],
-                        "answer": "affinché tu venga"
-                    },
-                    {
-                        "id": 1311,
-                        "type": "completion",
-                        "text": "Associa ad ogni proposizione principale la sua corretta proposizione finale. Scrivi nel riquadro la lettera minuscola corrispondente (a, b, c, d, e, f):<br><br><b>Principali:</b><br>1. Ho impostato tre sveglie ___<br>2. L'attore indossò occhiali scuri ___<br>3. Mi sono iscritto a un corso serale ___<br>4. I pompieri sono intervenuti rapidamente ___<br>5. Domani chiamerò un tecnico specializzato ___<br>6. Abbiamo prenotato un tavolo al ristorante ___<br><br><b>Finali:</b><br>a. affinché ripari il guasto del computer.<br>b. per non essere riconosciuto dai giornalisti.<br>c. per non rischiare di arrivare in ritardo al lavoro.<br>d. allo scopo di festeggiare il compleanno di Alice.<br>e. per domare l'incendio scoppiato in collina.<br>f. al fine di migliorare il mio francese.",
-                        "answer": "c|b|f|e|a|d"
-                    },
-                    {
-                        "id": 1312,
-                        "type": "multiple-choice",
-                        "text": "Trasforma il complemento di fine in una proposizione subordinata finale! Scegli la trasformazione corretta:<br><br>Frase di partenza: <b>Studio molto per il superamento dell'esame.</b>",
+                        "title": "Esercizio 1 – Riconosci",
+                        "text": "Studio per superare l’esame.",
                         "options": [
-                            "Studio molto affinché io superi l'esame.",
-                            "Studio molto perché l'esame è difficile."
+                            "Finale",
+                            "Causale"
                         ],
-                        "answer": "Studio molto affinché io superi l'esame."
+                        "answer": "Finale"
                     },
                     {
-                        "id": 1313,
-                        "type": "classification-grid",
-                        "title": "Causale o Finale?",
-                        "instruction": "Leggi le seguenti frasi subordinate e classificale: indicano la CAUSA dell'azione (perché è successo?) o il FINE dell'azione (a quale scopo?)",
-                        "words": [
-                            "Mi sono coperto bene per non prendere freddo.",
-                            "Siccome faceva molto freddo, ho indossato il cappotto.",
-                            "Hanno lavorato tutta la notte per finire il progetto in tempo.",
-                            "Essendo in forte ritardo, l'avvocato ha dovuto prendere un taxi.",
-                            "Ho nascosto il regalo affinché Luca non lo veda.",
-                            "Non sono uscito perché pioveva a dirotto."
+                        "id": 13002,
+                        "type": "multiple-choice",
+                        "text": "Ti aiuto affinché tu riesca.",
+                        "options": [
+                            "Finale",
+                            "Temporale"
                         ],
-                        "categories": [
-                            "Causale",
-                            "Finale"
+                        "answer": "Finale"
+                    },
+                    {
+                        "id": 13003,
+                        "type": "multiple-choice",
+                        "text": "Parlo per spiegare.",
+                        "options": [
+                            "Finale",
+                            "Causale"
                         ],
-                        "answers": {
-                            "Mi sono coperto bene per non prendere freddo.": "Finale",
-                            "Siccome faceva molto freddo, ho indossato il cappotto.": "Causale",
-                            "Hanno lavorato tutta la notte per finire il progetto in tempo.": "Finale",
-                            "Essendo in forte ritardo, l'avvocato ha dovuto prendere un taxi.": "Causale",
-                            "Ho nascosto il regalo affinché Luca non lo veda.": "Finale",
-                            "Non sono uscito perché pioveva a dirotto.": "Causale"
-                        }
+                        "answer": "Finale"
+                    },
+                    {
+                        "id": 13004,
+                        "type": "multiple-choice",
+                        "text": "Corro per vincere.",
+                        "options": [
+                            "Finale",
+                            "Temporale"
+                        ],
+                        "answer": "Finale"
+                    },
+                    {
+                        "id": 13005,
+                        "type": "multiple-choice",
+                        "text": "Studio affinché migliori.",
+                        "options": [
+                            "Finale",
+                            "Causale"
+                        ],
+                        "answer": "Finale"
+                    },
+                    {
+                        "id": 13006,
+                        "type": "multiple-choice",
+                        "title": "Esercizio 2 – Congiunzione",
+                        "text": "Ti aiuto ___ tu riesca.",
+                        "options": [
+                            "affinché",
+                            "perché"
+                        ],
+                        "answer": "affinché"
+                    },
+                    {
+                        "id": 13007,
+                        "type": "multiple-choice",
+                        "text": "Studio ___ migliorare.",
+                        "options": [
+                            "per",
+                            "perché"
+                        ],
+                        "answer": "per"
+                    },
+                    {
+                        "id": 13008,
+                        "type": "multiple-choice",
+                        "text": "Parlo ___ spiegare.",
+                        "options": [
+                            "per",
+                            "quando"
+                        ],
+                        "answer": "per"
+                    },
+                    {
+                        "id": 13009,
+                        "type": "multiple-choice",
+                        "text": "Corro ___ vincere.",
+                        "options": [
+                            "per",
+                            "perché"
+                        ],
+                        "answer": "per"
+                    },
+                    {
+                        "id": 13010,
+                        "type": "multiple-choice",
+                        "text": "Lavoro ___ guadagnare.",
+                        "options": [
+                            "per",
+                            "mentre"
+                        ],
+                        "answer": "per"
                     }
                 ],
                 "verifica": [],
@@ -8923,47 +9225,106 @@ window.exercisesData = {
                 ],
                 "allenati": [
                     {
-                        "id": 50050,
+                        "id": 14001,
                         "type": "multiple-choice",
-                        "title": "Individua la temporale",
-                        "text": "Quando piove, non esco.",
-                        "options": ["Quando piove", "non esco"],
-                        "answer": "Quando piove"
-                    },
-                    {
-                        "id": 50051,
-                        "type": "multiple-choice",
-                        "title": "Individua la temporale",
-                        "text": "Mentre mangio, leggo.",
-                        "options": ["Mentre mangio", "leggo"],
-                        "answer": "Mentre mangio"
-                    },
-                    {
-                        "id": 1411,
-                        "type": "multiple-choice",
-                        "text": "Riordina! Qual è l'ordine logico corretto per formare un periodo con una frase principale e una temporale?<br>Elementi: [il cielo] [quando] [è sereno] [le stelle] [splendono]",
+                        "title": "Esercizio 1 – Riconosci",
+                        "text": "Quando arrivo, ti chiamo.",
                         "options": [
-                            "Quando il cielo è sereno, le stelle splendono.",
-                            "Quando le stelle è sereno, il cielo splendono.",
-                            "Il cielo è sereno quando le stelle splendono sereno."
+                            "Temporale",
+                            "Finale"
                         ],
-                        "answer": "Quando il cielo è sereno, le stelle splendono."
+                        "answer": "Temporale"
                     },
                     {
-                        "id": 1412,
+                        "id": 14002,
                         "type": "multiple-choice",
-                        "text": "Trasforma il complemento di tempo in una proposizione subordinata temporale! Scegli la frase corretta:<br><br>Frase di partenza: <b>Al tramonto, rientriamo in albergo.</b>",
+                        "text": "Mentre studiavo, dormiva.",
                         "options": [
-                            "Quando tramonta il sole, rientriamo in albergo.",
-                            "Per vedere il sole, rientriamo in albergo."
+                            "Temporale",
+                            "Causale"
                         ],
-                        "answer": "Quando tramonta il sole, rientriamo in albergo."
+                        "answer": "Temporale"
                     },
                     {
-                        "id": 1413,
-                        "type": "completion",
-                        "text": "Fai l'analisi del periodo: dividi le seguenti frasi in proposizioni inserendo una barretta verticale `|` in ogni spazio vuoto.<br><br>1. Ieri pomeriggio sono andato al parco con gli amici ___ e abbiamo giocato a pallone ___ finché non è calato il sole.<br><br>2. Mentre passeggiavo nel bosco ___ ho trovato un cucciolo ___ che si era perso.",
-                        "answer": "|||||"
+                        "id": 14003,
+                        "type": "multiple-choice",
+                        "text": "Appena arrivi, partiamo.",
+                        "options": [
+                            "Temporale",
+                            "Finale"
+                        ],
+                        "answer": "Temporale"
+                    },
+                    {
+                        "id": 14004,
+                        "type": "multiple-choice",
+                        "text": "Dopo che mangio, esco.",
+                        "options": [
+                            "Temporale",
+                            "Causale"
+                        ],
+                        "answer": "Temporale"
+                    },
+                    {
+                        "id": 14005,
+                        "type": "multiple-choice",
+                        "text": "Prima che parta, ti saluto.",
+                        "options": [
+                            "Temporale",
+                            "Finale"
+                        ],
+                        "answer": "Temporale"
+                    },
+                    {
+                        "id": 14006,
+                        "type": "multiple-choice",
+                        "title": "Esercizio 2 – Congiunzione",
+                        "text": "___ arrivi, iniziamo.",
+                        "options": [
+                            "Quando",
+                            "Perché"
+                        ],
+                        "answer": "Quando"
+                    },
+                    {
+                        "id": 14007,
+                        "type": "multiple-choice",
+                        "text": "___ studiavo, ascoltavo musica.",
+                        "options": [
+                            "Mentre",
+                            "Per"
+                        ],
+                        "answer": "Mentre"
+                    },
+                    {
+                        "id": 14008,
+                        "type": "multiple-choice",
+                        "text": "___ finisci, esci.",
+                        "options": [
+                            "Quando",
+                            "Affinché"
+                        ],
+                        "answer": "Quando"
+                    },
+                    {
+                        "id": 14009,
+                        "type": "multiple-choice",
+                        "text": "___ arrivi, chiamami.",
+                        "options": [
+                            "Appena",
+                            "Perché"
+                        ],
+                        "answer": "Appena"
+                    },
+                    {
+                        "id": 14010,
+                        "type": "multiple-choice",
+                        "text": "___ mangi, esci.",
+                        "options": [
+                            "Dopo che",
+                            "Perché"
+                        ],
+                        "answer": "Dopo che"
                     }
                 ],
                 "verifica": [],
@@ -18495,3 +18856,5 @@ window.exercisesData = {
         }
     }
 };
+
+if (typeof module !== 'undefined') module.exports = window.exercisesData;
