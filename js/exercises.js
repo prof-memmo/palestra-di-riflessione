@@ -7568,7 +7568,7 @@ window.exercisesData = {
                         "answer": "PUNTEGGIATURA FORTE"
                     }
                 ],
-                    },
+                "allenati": [
                     {
                         "id": 50001,
                         "type": "classification-grid",
