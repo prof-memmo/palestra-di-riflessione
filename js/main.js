@@ -503,7 +503,21 @@ async function renderProfiloPage() {
     const user = Auth.getUser();
     const vocabulary = JSON.parse(localStorage.getItem('palestra_vocab') || '[]');
     const history = JSON.parse(localStorage.getItem('palestra_history') || '[]');
-    const classes = JSON.parse(localStorage.getItem('palestra_classes') || '[]');
+    let classes = JSON.parse(localStorage.getItem('palestra_classes') || '[]');
+    
+    // Se docente, sincronizziamo le classi dal database
+    if (user.role === 'docente' && !user.isGuest && window.fbDb) {
+        try {
+            const classesSnapshot = await window.fbDb.collection('classes').where('teacherId', '==', user.uid).get();
+            classes = [];
+            classesSnapshot.forEach(doc => {
+                classes.push({ id: doc.id, ...doc.data() });
+            });
+            localStorage.setItem('palestra_classes', JSON.stringify(classes));
+        } catch (e) {
+            console.error("Errore sincronizzazione classi:", e);
+        }
+    }
     const assignments = JSON.parse(localStorage.getItem('palestra_assignments') || '[]');
     const studentClassCode = localStorage.getItem('palestra_student_class_code') || null;
 
@@ -920,88 +934,166 @@ window.adminDeleteUser = async function(uid, name) {
 };
 
 // --- TEACHER FUNCTIONS ---
-window.addTeacherClass = function() {
+window.addTeacherClass = async function() {
     const input = document.getElementById('new-class-name');
     const name = input.value.trim().toUpperCase();
     if (!name) return;
     
-    let classes = JSON.parse(localStorage.getItem('palestra_classes') || '[]');
-    if (!classes.some(c => c.name === name)) {
-        classes.push({ name: name, students: 0 });
+    const user = Auth.getUser();
+    if (user.isGuest || !window.fbDb) {
+        alert("Devi essere loggato con un account per creare classi cloud.");
+        return;
+    }
+
+    try {
+        const code = "PG-" + Math.random().toString(36).substring(2, 6).toUpperCase();
+        const classData = {
+            name: name,
+            code: code,
+            teacherId: user.uid,
+            createdAt: new Date().toISOString()
+        };
+
+        const docRef = await window.fbDb.collection('classes').add(classData);
+        
+        // Aggiorna locale
+        let classes = JSON.parse(localStorage.getItem('palestra_classes') || '[]');
+        classes.push({ id: docRef.id, ...classData });
         localStorage.setItem('palestra_classes', JSON.stringify(classes));
+        
+        input.value = '';
         renderProfiloPage();
+        alert(`✅ Classe ${name} creata con codice: ${code}`);
+    } catch (e) {
+        console.error("Errore creazione classe:", e);
+        alert("Errore durante la creazione della classe: " + e.message);
     }
 };
 
-window.removeTeacherClass = function(index) {
+window.removeTeacherClass = async function(index) {
     let classes = JSON.parse(localStorage.getItem('palestra_classes') || '[]');
-    const classCode = classes[index].code;
+    const classObj = classes[index];
+    const classCode = classObj.code;
     
-    if (confirm(`Sei sicuro di voler eliminare la classe ${classes[index].name}? Verranno rimossi anche tutti i compiti assegnati.`)) {
-        // Rimuovi classe
-        classes.splice(index, 1);
-        localStorage.setItem('palestra_classes', JSON.stringify(classes));
-        
-        // Rimuovi compiti associati
-        let assignments = JSON.parse(localStorage.getItem('palestra_assignments') || '[]');
-        assignments = assignments.filter(a => a.classCode !== classCode);
-        localStorage.setItem('palestra_assignments', JSON.stringify(assignments));
-        
-        renderProfiloPage();
+    if (confirm(`Sei sicuro di voler eliminare la classe ${classObj.name}? Verranno rimossi anche tutti i compiti assegnati.`)) {
+        try {
+            // 1. Rimuovi da Firestore (se l'ID è presente)
+            if (classObj.id && window.fbDb) {
+                await window.fbDb.collection('classes').doc(classObj.id).delete();
+            } else if (window.fbDb) {
+                // Se non abbiamo l'ID, cerchiamo per codice
+                const q = await window.fbDb.collection('classes').where('code', '==', classCode).get();
+                q.forEach(doc => doc.ref.delete());
+            }
+
+            // 2. Rimuovi locale
+            classes.splice(index, 1);
+            localStorage.setItem('palestra_classes', JSON.stringify(classes));
+            
+            // 3. Rimuovi compiti associati
+            let assignments = JSON.parse(localStorage.getItem('palestra_assignments') || '[]');
+            assignments = assignments.filter(a => a.classCode !== classCode);
+            localStorage.setItem('palestra_assignments', JSON.stringify(assignments));
+            
+            renderProfiloPage();
+        } catch (e) {
+            console.error("Errore eliminazione classe:", e);
+            alert("Errore durante l'eliminazione della classe: " + e.message);
+        }
     }
 };
 
-window.viewClassStudents = function(code, name) {
+window.viewClassStudents = async function(code, name) {
     const content = document.getElementById('class-register-content');
     if (!content) return;
 
-    // Simulazione del registro voti per la classe
-    const mockStudents = [
-        { name: "Mario Rossi", exercise: "Analisi Logica", score: 85, date: "02/05/2026" },
-        { name: "Sofia Bianchi", exercise: "Analisi Grammaticale", score: 92, date: "02/05/2026" },
-        { name: "Luca Verdi", exercise: "Comprensione del Testo", score: 70, date: "01/05/2026" }
-    ];
-
-    let tableHtml = `
-        <div style="font-family: inherit; animation: fadeIn 0.5s ease-out;">
-            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem; background: #f0f7ff; padding: 1rem; border-radius: 15px;">
-                <h3 style="color: var(--primary-color); margin: 0; font-size: 1.1rem;">Registro Progressi: Classe ${name}</h3>
-                <span style="color: #3498db; font-size: 0.8rem; font-weight: 800;">CODICE: ${code}</span>
-            </div>
-            <div style="overflow-x: auto;">
-                <table style="width: 100%; border-collapse: collapse; font-size: 0.85rem;">
-                    <thead>
-                        <tr style="text-align: left; color: #95a5a6; border-bottom: 2px solid #eee;">
-                            <th style="padding: 12px;">STUDENTE</th>
-                            <th style="padding: 12px;">ESERCIZIO</th>
-                            <th style="padding: 12px;">PUNTEGGIO</th>
-                            <th style="padding: 12px;">DATA</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        ${mockStudents.map(s => `
-                            <tr>
-                                <td style="padding: 12px; border-bottom: 1px solid #f9f9f9; font-weight: 700; color: #2c3e50;">${s.name}</td>
-                                <td style="padding: 12px; border-bottom: 1px solid #f9f9f9; color: #7f8c8d;">${s.exercise}</td>
-                                <td style="padding: 12px; border-bottom: 1px solid #f9f9f9;">
-                                    <span style="padding: 0.3rem 0.6rem; border-radius: 8px; font-weight: 800; ${s.score >= 80 ? 'background: #e8f5e9; color: #2e7d32;' : 'background: #fff3e0; color: #ef6c00;'}">
-                                        ${s.score}%
-                                    </span>
-                                </td>
-                                <td style="padding: 12px; border-bottom: 1px solid #f9f9f9; color: #bdc3c7;">${s.date}</td>
-                            </tr>
-                        `).join('')}
-                    </tbody>
-                </table>
-            </div>
-            <div style="margin-top: 1.5rem; text-align: center;">
-                <button class="btn btn-secondary" onclick="renderProfiloPage()" style="font-size: 0.7rem; padding: 0.5rem 1rem;">RESETTA VISTA</button>
-            </div>
+    content.innerHTML = `
+        <div style="text-align: center; padding: 2rem;">
+            <div class="spinner"></div>
+            <p>Caricamento studenti in corso...</p>
         </div>
     `;
 
-    content.innerHTML = tableHtml;
-    content.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    try {
+        // 1. Trova gli studenti della classe
+        const usersSnapshot = await window.fbDb.collection('users')
+            .where('role', '==', 'studente')
+            .get();
+        
+        const students = [];
+        usersSnapshot.forEach(doc => {
+            students.push({ id: doc.id, ...doc.data() });
+        });
+
+        // Recuperiamo il classId reale per questo codice
+        const classQ = await window.fbDb.collection('classes').where('code', '==', code).get();
+        if (classQ.empty) throw new Error("Classe non trovata");
+        const realClassId = classQ.docs[0].id;
+        
+        // Filtriamo gli studenti che appartengono a questa classe specifica
+        const classStudents = students.filter(s => s.classId === realClassId);
+
+        if (classStudents.length === 0) {
+            content.innerHTML = `
+                <div style="text-align: center; padding: 2rem; background: #f8f9fa; border-radius: 20px;">
+                    <p style="color: #888;">Nessun utente si è ancora unito alla classe <b>${name}</b>.</p>
+                    <p style="font-size: 0.8rem;">Condividi il codice <b>${code}</b> con i tuoi studenti.</p>
+                </div>
+            `;
+            return;
+        }
+
+        // 2. Recupera i progressi di questi studenti
+        const progressSnapshot = await window.fbDb.collection('progress').get();
+        const progressMap = {};
+        progressSnapshot.forEach(doc => { progressMap[doc.id] = doc.data(); });
+
+        let tableRows = classStudents.map(s => {
+            const p = progressMap[s.id] || { points: 0, completed: [] };
+            const lastActivity = p.lastUpdated ? new Date(p.lastUpdated).toLocaleDateString() : 'N/D';
+            const completedCount = p.completed ? p.completed.length : 0;
+            
+            return `
+                <tr style="border-bottom: 1px solid #eee;">
+                    <td style="padding: 12px; display: flex; align-items: center; gap: 0.5rem;">
+                        <span style="font-size: 1.2rem;">${s.avatar || '👤'}</span>
+                        <span style="font-weight: 700;">${s.name}</span>
+                    </td>
+                    <td style="padding: 12px; font-weight: 800; color: var(--primary-color);">${p.points || 0} XP</td>
+                    <td style="padding: 12px;">${completedCount} attività</td>
+                    <td style="padding: 12px; color: #95a5a6;">${lastActivity}</td>
+                </tr>
+            `;
+        }).join('');
+
+        content.innerHTML = `
+            <div style="font-family: inherit; animation: fadeIn 0.5s ease-out;">
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem; background: #f0f7ff; padding: 1rem; border-radius: 15px;">
+                    <h3 style="color: var(--primary-color); margin: 0; font-size: 1.1rem;">Registro Progressi: Classe ${name}</h3>
+                    <span style="color: #3498db; font-size: 0.8rem; font-weight: 800;">CODICE: ${code}</span>
+                </div>
+                <div style="overflow-x: auto;">
+                    <table style="width: 100%; border-collapse: collapse; font-size: 0.85rem;">
+                        <thead>
+                            <tr style="text-align: left; color: #95a5a6; border-bottom: 2px solid #eee;">
+                                <th style="padding: 12px;">STUDENTE</th>
+                                <th style="padding: 12px;">PUNTI</th>
+                                <th style="padding: 12px;">ATTIVITÀ</th>
+                                <th style="padding: 12px;">ULTIMO ACCESSO</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${tableRows}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        `;
+        content.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    } catch (e) {
+        console.error("Errore recupero studenti:", e);
+        content.innerHTML = `<p style="color: #e74c3c; padding: 1rem;">Errore nel caricamento dei dati: ${e.message}</p>`;
+    }
 };
 
 window.updateShareSubtypes = function() {
