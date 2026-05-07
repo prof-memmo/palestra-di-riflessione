@@ -509,10 +509,24 @@ async function renderProfiloPage() {
     if (user.role === 'docente' && !user.isGuest && window.fbDb) {
         try {
             const classesSnapshot = await window.fbDb.collection('classes').where('teacherId', '==', user.uid).get();
-            classes = [];
+            const firestoreClasses = [];
             classesSnapshot.forEach(doc => {
-                classes.push({ id: doc.id, ...doc.data() });
+                firestoreClasses.push({ id: doc.id, ...doc.data() });
             });
+            
+            // Merge: aggiungi le classi locali che non sono già in Firestore
+            // (es. classi recuperate manualmente con il codice)
+            firestoreClasses.forEach(fc => {
+                const alreadyInLocal = classes.find(lc => lc.id === fc.id || lc.code === fc.code);
+                if (!alreadyInLocal) classes.push(fc);
+            });
+            
+            // Aggiungi anche classi Firestore non ancora in locale
+            // (De-duplica per sicurezza)
+            classes = classes.filter((c, index, self) =>
+                index === self.findIndex(t => t.code === c.code)
+            );
+            
             localStorage.setItem('palestra_classes', JSON.stringify(classes));
         } catch (e) {
             console.error("Errore sincronizzazione classi:", e);
