@@ -603,6 +603,7 @@ async function renderProfiloPage() {
                                     <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.8rem; background: white; border-radius: 12px; margin-bottom: 0.5rem; border: 1px solid #e0e0e0;">
                                         <div>
                                             <span style="font-weight: 800;">Classe ${c.name}</span>
+                                            ${c.school ? `<span style="color: #7f8c8d; font-size: 0.75rem; margin-left: 0.5rem;">${c.school}${c.city ? ', ' + c.city : ''}</span>` : ''}
                                             <div style="font-size: 0.7rem; color: var(--primary-color); font-weight: 800; cursor: pointer; margin-top: 0.2rem;" onclick="navigator.clipboard.writeText('${c.code}'); alert('Codice copiato!')">
                                                 CODICE: ${c.code} 📋 <span style="color: #7f8c8d; font-weight: 400; margin-left: 0.5rem; font-style: italic;">(condividi il codice con la classe)</span>
                                             </div>
@@ -614,8 +615,12 @@ async function renderProfiloPage() {
                                     </div>
                                 `).join('') : '<p style="color: #888; font-size: 0.9rem;">Non hai ancora creato nessuna classe.</p>'}
                             </div>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; margin-bottom: 0.5rem;">
+                                <input type="text" id="new-class-school" placeholder="Istituto (es: I.C. Manzoni)" style="padding: 0.7rem; border-radius: 10px; border: 1px solid #ddd; font-size: 0.85rem;">
+                                <input type="text" id="new-class-city" placeholder="Città (es: Roma)" style="padding: 0.7rem; border-radius: 10px; border: 1px solid #ddd; font-size: 0.85rem;">
+                            </div>
                             <div style="display: flex; gap: 0.5rem;">
-                                <input type="text" id="new-class-name" placeholder="Esempio: 1A" style="flex: 1; padding: 0.8rem; border-radius: 10px; border: 1px solid #ddd;">
+                                <input type="text" id="new-class-name" placeholder="Classe (es: 3D)" style="flex: 1; padding: 0.8rem; border-radius: 10px; border: 1px solid #ddd;">
                                 <button class="btn btn-primary" onclick="window.addTeacherClass()" style="padding: 0.8rem 1.2rem;">CREA</button>
                             </div>
                             <div style="display: flex; gap: 0.5rem; margin-top: 1rem; padding-top: 1rem; border-top: 1px solid #eee;">
@@ -957,6 +962,9 @@ window.addTeacherClass = async function() {
     const name = input.value.trim().toUpperCase();
     if (!name) return;
     
+    const school = (document.getElementById('new-class-school')?.value || '').trim();
+    const city = (document.getElementById('new-class-city')?.value || '').trim();
+    
     const user = Auth.getUser();
     if (user.isGuest || !window.fbDb) {
         alert("Devi essere loggato con un account per creare classi cloud.");
@@ -969,6 +977,8 @@ window.addTeacherClass = async function() {
             name: name,
             code: code,
             teacherId: user.uid,
+            school: school || null,
+            city: city || null,
             createdAt: new Date().toISOString()
         };
 
@@ -1087,9 +1097,10 @@ window.viewClassStudents = async function(code, name) {
         const classDoc = classQ.docs[0];
         const realClassId = classDoc.id;
 
-        // 2. Trova SOLO gli studenti di questa specifica classe
+        // 2. Trova SOLO gli studenti di questa specifica classe (esclude docenti e admin)
         const usersSnapshot = await window.fbDb.collection('users')
             .where('classId', '==', realClassId)
+            .where('role', '==', 'studente')
             .get();
         
         const classStudents = [];
