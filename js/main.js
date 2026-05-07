@@ -987,34 +987,38 @@ window.recoverTeacherClass = async function() {
 
     try {
         console.log("🔍 Ricerca classe con codice:", code);
+        // Leggiamo la classe (la lettura è sempre permessa)
         const q = await window.fbDb.collection('classes').where('code', '==', code).get();
         
         if (q.empty) {
-            alert("❌ Nessuna classe trovata con questo codice.");
+            alert("❌ Nessuna classe trovata con questo codice: " + code);
             return;
         }
 
         const classDoc = q.docs[0];
         const classData = classDoc.data();
-        console.log("Found class:", classData);
+        console.log("✅ Classe trovata:", classData);
 
-        // Collega la classe al docente attuale
-        console.log("💾 Tentativo di collegamento a UID:", user.uid);
-        await window.fbDb.collection('classes').doc(classDoc.id).update({
-            teacherId: user.uid
-        });
+        // Invece di modificare Firestore (che richiede permessi extra),
+        // aggiungiamo la classe direttamente al localStorage del docente.
+        let classes = JSON.parse(localStorage.getItem('palestra_classes') || '[]');
+        const alreadyExists = classes.find(c => c.code === code || c.id === classDoc.id);
+        
+        if (alreadyExists) {
+            alert(`ℹ️ La classe "${classData.name}" (${code}) è già nel tuo profilo!`);
+            input.value = '';
+            return;
+        }
 
-        alert(`✅ Classe "${classData.name}" recuperata e collegata al tuo profilo!`);
+        classes.push({ id: classDoc.id, ...classData });
+        localStorage.setItem('palestra_classes', JSON.stringify(classes));
+        
+        alert(`✅ Classe "${classData.name}" (${code}) aggiunta al tuo profilo!`);
         input.value = '';
         renderProfiloPage();
     } catch (e) {
         console.error("ERRORE DETTAGLIATO RECUPERO:", e);
-        // Se l'errore è sui permessi, diamo un consiglio specifico
-        if (e.message.includes("permissions")) {
-            alert("🚫 Errore di Permessi: Il database sta bloccando l'operazione. Assicurati di aver pubblicato le nuove regole su Firebase Console e di essere loggato come docente.");
-        } else {
-            alert("Errore durante il recupero: " + e.message);
-        }
+        alert("Errore durante il recupero: " + e.message);
     }
 };
 
