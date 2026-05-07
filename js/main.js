@@ -1015,23 +1015,21 @@ window.viewClassStudents = async function(code, name) {
     `;
 
     try {
-        // 1. Trova gli studenti della classe
-        const usersSnapshot = await window.fbDb.collection('users')
-            .where('role', '==', 'studente')
-            .get();
-        
-        const students = [];
-        usersSnapshot.forEach(doc => {
-            students.push({ id: doc.id, ...doc.data() });
-        });
-
-        // Recuperiamo il classId reale per questo codice
+        // 1. Recuperiamo il classId reale per questo codice
         const classQ = await window.fbDb.collection('classes').where('code', '==', code).get();
         if (classQ.empty) throw new Error("Classe non trovata");
-        const realClassId = classQ.docs[0].id;
+        const classDoc = classQ.docs[0];
+        const realClassId = classDoc.id;
+
+        // 2. Trova SOLO gli studenti di questa specifica classe
+        const usersSnapshot = await window.fbDb.collection('users')
+            .where('classId', '==', realClassId)
+            .get();
         
-        // Filtriamo gli studenti che appartengono a questa classe specifica
-        const classStudents = students.filter(s => s.classId === realClassId);
+        const classStudents = [];
+        usersSnapshot.forEach(doc => {
+            classStudents.push({ id: doc.id, ...doc.data() });
+        });
 
         if (classStudents.length === 0) {
             content.innerHTML = `
@@ -1043,10 +1041,22 @@ window.viewClassStudents = async function(code, name) {
             return;
         }
 
-        // 2. Recupera i progressi di questi studenti
-        const progressSnapshot = await window.fbDb.collection('progress').get();
+        // 3. Recupera i progressi solo per questi studenti
         const progressMap = {};
-        progressSnapshot.forEach(doc => { progressMap[doc.id] = doc.data(); });
+        // Per ogni studente, recuperiamo il suo documento di progresso specifico
+        // Questo è più sicuro per le regole di sicurezza (lettura per ID)
+        const progressPromises = classStudents.map(async (s) => {
+            try {
+                const pDoc = await window.fbDb.collection('progress').doc(s.id).get();
+                if (pDoc.exists) {
+                    progressMap[s.id] = pDoc.data();
+                }
+            } catch (err) {
+                console.warn(`Impossibile caricare progresso per ${s.name}:`, err);
+            }
+        });
+
+        await Promise.all(progressPromises);
 
         let tableRows = classStudents.map(s => {
             const p = progressMap[s.id] || { points: 0, completed: [] };
