@@ -500,15 +500,17 @@ const UI = {
                 <button class="btn btn-primary btn-verify" style="width: 100%; padding: 1.5rem; font-size: 1.25rem; font-weight: 800; margin-top: 2rem; border-radius: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.05);" onclick="UI.verifyMultiLetturaAnswers(${exercise.id})">VERIFICA LE RISPOSTE</button>
             `;
         } else {
+            // Domanda singola: selezione + tasto VERIFICA
             questionsHtml = `
-                <div style="background: #fdfdfd; padding: 3rem; border-radius: 30px; border: 1px solid #eee; box-shadow: 0 5px 15px rgba(0,0,0,0.02);">
-                    <p style="font-size: 1.3rem; font-weight: 800; margin-bottom: 2rem; color: var(--text-color); text-align: justify;">🤔 DOMANDA: ${exercise.question}</p>
-                    <div class="options-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+                <div style="background: #fdfdfd; padding: 2.5rem; border-radius: 20px; border: 2px solid #eee; margin-bottom: 2rem;">
+                    <p style="font-size: 1.2rem; font-weight: 800; margin-bottom: 1.5rem; color: var(--text-color);">🤔 ${exercise.question}</p>
+                    <div class="options-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;" id="single-lettura-container">
                         ${(exercise.options || []).map(opt => `
-                            <button class="btn btn-secondary" style="padding: 1.5rem;" onclick="checkAnswer(this.textContent.trim(), '${exercise.answer.replace(/'/g, "\\'")}', 'lettura', ${exercise.id})">${opt}</button>
+                            <button class="btn btn-secondary lettura-opt" style="padding: 1.2rem; font-size: 1.05rem; font-weight: 600; border-radius: 12px; border: 2px solid #eee; background: white;" onclick="UI.selectLetturaOption(this, '${opt.replace(/'/g, "\\'")}')">${opt}</button>
                         `).join('')}
                     </div>
                 </div>
+                <button class="btn btn-primary btn-verify" style="width: 100%; padding: 1.5rem; font-size: 1.25rem; font-weight: 800; margin-top: 1rem; border-radius: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.05);" onclick="UI.verifyLetturaAnswer(${exercise.id}, '${exercise.answer.replace(/'/g, "\\'")}')">VERIFICA LA RISPOSTA</button>
             `;
         }
 
@@ -1293,6 +1295,62 @@ window.UI.selectMultiLetturaOption = (btn, qIdx, selectedOpt) => {
     btn.style.background = 'var(--primary-color)';
     btn.style.color = 'white';
     btn.style.borderColor = 'var(--primary-color)';
+};
+
+window.UI.selectLetturaOption = (btn, value) => {
+    // Deseleziona tutti gli altri pulsanti
+    const container = btn.closest('.options-grid');
+    if (container) {
+        container.querySelectorAll('.lettura-opt').forEach(b => {
+            b.style.background = 'white';
+            b.style.borderColor = '#eee';
+            b.style.color = '';
+        });
+    }
+    // Seleziona questo
+    btn.style.background = 'var(--primary-color)';
+    btn.style.borderColor = 'var(--primary-color)';
+    btn.style.color = 'white';
+    window._selectedLetturaOption = value;
+};
+
+window.UI.verifyLetturaAnswer = (exerciseId, correctAnswer) => {
+    const selected = window._selectedLetturaOption;
+    if (!selected) {
+        alert('Seleziona prima una risposta!');
+        return;
+    }
+    
+    const container = document.getElementById('single-lettura-container');
+    const btns = container ? container.querySelectorAll('.lettura-opt') : [];
+    
+    btns.forEach(btn => {
+        const isCorrect = btn.textContent.trim() === correctAnswer;
+        const isSelected = btn.textContent.trim() === selected;
+        if (isCorrect) {
+            btn.style.background = '#e8f5e9';
+            btn.style.borderColor = '#27ae60';
+            btn.style.color = '#1b5e20';
+        } else if (isSelected && !isCorrect) {
+            btn.style.background = '#ffebee';
+            btn.style.borderColor = '#e74c3c';
+            btn.style.color = '#b71c1c';
+        }
+        btn.onclick = null; // Disabilita ulteriori clic
+    });
+
+    if (selected === correctAnswer) {
+        window.Progress.addPoints(10);
+        if (window.Progress.currentLessonCorrectCount !== undefined) window.Progress.currentLessonCorrectCount++;
+        window.Progress.sync();
+        const btn = document.querySelector('.btn-verify');
+        if (btn) { btn.textContent = '✅ Risposta corretta! +10 XP'; btn.style.background = '#27ae60'; }
+    } else {
+        if (window.Progress.currentLessonMistakeCount !== undefined) window.Progress.currentLessonMistakeCount++;
+        const btn = document.querySelector('.btn-verify');
+        if (btn) { btn.textContent = `❌ Risposta errata. Era: "${correctAnswer}"`; btn.style.background = '#e74c3c'; }
+    }
+    window._selectedLetturaOption = null;
 };
 
 window.UI.verifyMultiLetturaAnswers = (exerciseId) => {
