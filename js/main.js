@@ -986,16 +986,20 @@ window.recoverTeacherClass = async function() {
     }
 
     try {
+        console.log("🔍 Ricerca classe con codice:", code);
         const q = await window.fbDb.collection('classes').where('code', '==', code).get();
+        
         if (q.empty) {
-            alert("Nessuna classe trovata con questo codice.");
+            alert("❌ Nessuna classe trovata con questo codice.");
             return;
         }
 
         const classDoc = q.docs[0];
         const classData = classDoc.data();
+        console.log("Found class:", classData);
 
         // Collega la classe al docente attuale
+        console.log("💾 Tentativo di collegamento a UID:", user.uid);
         await window.fbDb.collection('classes').doc(classDoc.id).update({
             teacherId: user.uid
         });
@@ -1004,8 +1008,13 @@ window.recoverTeacherClass = async function() {
         input.value = '';
         renderProfiloPage();
     } catch (e) {
-        console.error("Errore recupero classe:", e);
-        alert("Errore durante il recupero: " + e.message);
+        console.error("ERRORE DETTAGLIATO RECUPERO:", e);
+        // Se l'errore è sui permessi, diamo un consiglio specifico
+        if (e.message.includes("permissions")) {
+            alert("🚫 Errore di Permessi: Il database sta bloccando l'operazione. Assicurati di aver pubblicato le nuove regole su Firebase Console e di essere loggato come docente.");
+        } else {
+            alert("Errore durante il recupero: " + e.message);
+        }
     }
 };
 
