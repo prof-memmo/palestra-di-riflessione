@@ -65,6 +65,12 @@ const Auth = {
             }
 
             localStorage.setItem('palestra_user', JSON.stringify(Auth._user));
+            
+            // Carica progressi dal cloud se esistono
+            if (window.Progress && typeof window.Progress.load === 'function') {
+                await window.Progress.load();
+            }
+
             window.dispatchEvent(new CustomEvent('authChange'));
         } catch (e) {
             console.error("Errore recupero/creazione dati cloud:", e);

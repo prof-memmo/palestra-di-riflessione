@@ -2442,6 +2442,25 @@ window.Progress = {
     currentLessonCorrectCount: 0,
     currentLessonMistakeCount: 0,
 
+    load: async () => {
+        if (!window.fbAuth || !window.fbAuth.currentUser || Auth.getUser().isGuest) return;
+        const uid = window.fbAuth.currentUser.uid;
+        try {
+            const doc = await window.fbDb.collection('progress').doc(uid).get();
+            if (doc.exists) {
+                const data = doc.data();
+                if (data.points !== undefined) localStorage.setItem('user_points', data.points.toString());
+                if (data.completed) localStorage.setItem('user_completed_exercises', JSON.stringify(data.completed));
+                if (data.mistakes) localStorage.setItem('user_mistakes', JSON.stringify(data.mistakes));
+                if (data.vocab) localStorage.setItem('palestra_vocab', JSON.stringify(data.vocab));
+                console.log("☁️ Progressi caricati dal cloud con successo");
+                
+                // Aggiorna UI se siamo nel profilo
+                if (window.currentSection === 'profilo') renderProfiloPage();
+            }
+        } catch (e) { console.error("Load error:", e); }
+    },
+
     sync: async () => {
         if (!window.fbAuth || !window.fbAuth.currentUser || Auth.getUser().isGuest) return;
         const uid = window.fbAuth.currentUser.uid;
