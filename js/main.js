@@ -604,6 +604,10 @@ async function renderProfiloPage() {
                                 <input type="text" id="new-class-name" placeholder="Esempio: 1A" style="flex: 1; padding: 0.8rem; border-radius: 10px; border: 1px solid #ddd;">
                                 <button class="btn btn-primary" onclick="window.addTeacherClass()" style="padding: 0.8rem 1.2rem;">CREA</button>
                             </div>
+                            <div style="display: flex; gap: 0.5rem; margin-top: 1rem; padding-top: 1rem; border-top: 1px solid #eee;">
+                                <input type="text" id="recover-class-code" placeholder="Recupera con Codice (es: PG-MCC5)" style="flex: 1; padding: 0.8rem; border-radius: 10px; border: 1px solid #ddd; font-family: monospace; font-size: 0.8rem;">
+                                <button class="btn" onclick="window.recoverTeacherClass()" style="padding: 0.8rem 1.2rem; background: #f1f2f6; color: #57606f; border: none; border-radius: 10px; font-weight: 700; cursor: pointer; font-size: 0.8rem;">RECUPERA</button>
+                            </div>
                         </div>
                     </div>
 
@@ -967,6 +971,41 @@ window.addTeacherClass = async function() {
     } catch (e) {
         console.error("Errore creazione classe:", e);
         alert("Errore durante la creazione della classe: " + e.message);
+    }
+};
+
+window.recoverTeacherClass = async function() {
+    const input = document.getElementById('recover-class-code');
+    const code = input.value.trim().toUpperCase();
+    if (!code) return;
+
+    const user = Auth.getUser();
+    if (user.isGuest || !window.fbDb) {
+        alert("Devi essere loggato per recuperare una classe.");
+        return;
+    }
+
+    try {
+        const q = await window.fbDb.collection('classes').where('code', '==', code).get();
+        if (q.empty) {
+            alert("Nessuna classe trovata con questo codice.");
+            return;
+        }
+
+        const classDoc = q.docs[0];
+        const classData = classDoc.data();
+
+        // Collega la classe al docente attuale
+        await window.fbDb.collection('classes').doc(classDoc.id).update({
+            teacherId: user.uid
+        });
+
+        alert(`✅ Classe "${classData.name}" recuperata e collegata al tuo profilo!`);
+        input.value = '';
+        renderProfiloPage();
+    } catch (e) {
+        console.error("Errore recupero classe:", e);
+        alert("Errore durante il recupero: " + e.message);
     }
 };
 
