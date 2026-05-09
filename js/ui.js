@@ -275,24 +275,52 @@ const UI = {
         </div>
     `,
 
-    renderPeriodo: (exercise, isUda, path, total) => `
-        <div class="exercise-container" style="position: relative;">
-            <h2 class="exercise-title" style="display: flex; align-items: center; justify-content: space-between;">
-                <span>⏳ ANALISI DEL PERIODO</span>
-                <span style="font-size: 1.5rem; font-weight: 700; color: #888; background: #eee; padding: 0.3rem 0.8rem; border-radius: 12px;">${window.currentExerciseIndex + 1}/${total}</span>
-            </h2>
-            <div style="background: white; border: 2px solid #eee; padding: 2rem; border-radius: 25px; margin-bottom: 2rem; font-size: 1.5rem; line-height: 1.8; text-align: center;">
-                ${exercise.word ? `<div style="font-weight: 800; font-size: 1.8rem; margin-bottom: 1rem; color: var(--primary-color); text-align: center;">${exercise.word}</div>` : ''}
-                <div style="font-style: italic; color: #666; text-align: justify;">${exercise.text}</div>
+    renderPeriodo: (exercise, isUda, path, total) => {
+        const isMulti = exercise.questions && exercise.questions.length > 0;
+        
+        let questionsHtml = '';
+        if (isMulti) {
+            questionsHtml = exercise.questions.map((q, qIdx) => {
+                return `
+                    <div class="question-block" style="background: #fdfdfd; padding: 2rem; border-radius: 20px; border: 2px solid #eee; margin-bottom: 2rem;">
+                        <p style="font-size: 1.2rem; font-weight: 800; margin-bottom: 1.5rem; color: var(--text-color);">🤔 ${qIdx + 1}. ${q.question || q.text}</p>
+                        <div class="options-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                            ${(q.options || []).map(opt => `
+                                <button class="btn btn-secondary" style="padding: 1.2rem; font-weight: 600;" onclick="checkSubAnswer('${opt.replace(/'/g, "\\'")}', '${q.answer.replace(/'/g, "\\'")}', ${exercise.id})">${opt}</button>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        } else {
+            questionsHtml = `
+                <div style="background: white; border: 2px solid #eee; padding: 2rem; border-radius: 25px; margin-bottom: 2rem; font-size: 1.5rem; line-height: 1.8; text-align: center;">
+                    ${exercise.word ? `<div style="font-weight: 800; font-size: 1.8rem; margin-bottom: 1rem; color: var(--primary-color); text-align: center;">${exercise.word}</div>` : ''}
+                    <div style="font-style: italic; color: #666; text-align: justify;">${exercise.text || ''}</div>
+                </div>
+                <div class="options-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+                    ${(exercise.options || []).map(opt => `
+                        <button class="btn btn-secondary" style="padding: 1.5rem; text-align: center;" onclick="checkAnswer('${opt.replace(/'/g, "\\'")}', '${exercise.answer.replace(/'/g, "\\'")}', 'periodo', ${exercise.id})">${opt}</button>
+                    `).join('')}
+                </div>
+            `;
+        }
+
+        return `
+            <div class="exercise-container" style="position: relative;">
+                <h2 class="exercise-title" style="display: flex; align-items: center; justify-content: space-between;">
+                    <span>⏳ ANALISI DEL PERIODO</span>
+                    <span style="font-size: 1.5rem; font-weight: 700; color: #888; background: #eee; padding: 0.3rem 0.8rem; border-radius: 12px;">${window.currentExerciseIndex + 1}/${total}</span>
+                </h2>
+                ${exercise.title ? `<h3 style="color: var(--primary-color); font-weight: 800; text-align: center; margin-bottom: 1.5rem; font-size: 1.6rem;">${exercise.title}</h3>` : ''}
+                ${exercise.instruction ? `<div style="background: #f0f7ff; padding: 1.2rem; border-radius: 15px; border-left: 5px solid var(--primary-color); margin-bottom: 2rem; font-weight: 700; color: #2c3e50; text-align: justify;">${exercise.instruction}</div>` : ''}
+                <div class="questions-stack">
+                    ${questionsHtml}
+                </div>
+                ${path ? window.UI.renderNav(path, total) : ''}
             </div>
-            <div class="options-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
-                ${(exercise.options || []).map(opt => `
-                    <button class="btn btn-secondary" style="padding: 1.5rem; text-align: center;" onclick="checkAnswer('${opt.replace(/'/g, "\\'")}', '${exercise.answer.replace(/'/g, "\\'")}', 'periodo', ${exercise.id})">${opt}</button>
-                `).join('')}
-            </div>
-            ${path ? window.UI.renderNav(path, total) : ''}
-        </div>
-    `,
+        `;
+    },
 
     // --- RENDERERS INTERATTIVI ---
 
