@@ -3177,7 +3177,7 @@ window.exercisesData = {
                     {
                         "id": 7001,
                         "title": "La Concordanza dell'Aggettivo",
-                        "theory": "Quando l'aggettivo qualificativo si riferisce a un solo nome, concorda nel <span style='color: #e74c3c; font-weight: bold;'>GENERE</span> e nel <span style='color: #2980b9; font-weight: bold;'>NUMERO</span> con il nome cui si riferisce.<br><br>Esempi:<br>\u2022 <em>Ho conosciuto un bambino educato</em> (M sing = M sing)<br>\u2022 <em>Ho letto delle poesie stupende</em> (F plur = F plur)<br><br>Quando l'aggettivo si riferisce a <strong>pi\u00f9 nomi</strong>:<br>\u2022 Se i nomi sono di <span style='color: #27ae60; font-weight: bold;'>GENERE MASCHILE</span>, l'aggettivo concorda al maschile plurale.<br>\u2022 Se i nomi sono di <span style='color: #8e44ad; font-weight: bold;'>GENERE FEMMINILE</span>, l'aggettivo concorda al femminile plurale.<br>\u2022 Se i nomi sono di <span style='color: #d35400; font-weight: bold;'>GENERE DIVERSO</span>, l'aggettivo concorda al <strong>maschile plurale</strong> (es. <em>Claudio e Anna sono svogliati</em>).",
+                        "theory": "Quando l'aggettivo qualificativo si riferisce a un solo nome, concorda nel <span style='color: #e74c3c; font-weight: bold;'>GENERE</span> e nel <span style='color: #2980b9; font-weight: bold;'>NUMERO</span> con il nome cui si riferisce.<br><br>Esempi:<br>\u2022 <em>Ho conosciuto un bambino educato</em> (M sing = M sing)<br>\u2022 <em>Ho letto delle poesie stupende</em> (F plur = F plur)<br><br>Quando l'aggettivo si riferisce a <strong>pi\u00f9 nomi</strong>:<br>\u2022 Se i nomi sono di <span style='color: #27ae60; font-weight: bold;'>GENERE MASCHILE</span>, l'aggettivo concorda al maschile plurale.<br>\u2022 Se i nomi sono di <span style='color: #8e44ad; font-weight: bold;'>GENERE FEMMINILE</span>, l'aggettivo concorda al femminile plurale.<br>\u2022 Se i nomi sono di <span style='color: #d35400; font-weight: bold;'>GENERE DIVERSO</span>, l'aggettivo concorda al <strong>maschile plurale</strong> (es. <em>Claudio e Anna sono svogliati</em>).<br><br>\u26a0\ufe0f <span style='color: #e74c3c; font-weight: bold;'>AGGETTIVI INVARIABILI</span>: Alcuni aggettivi non cambiano forma n\u00e9 per genere n\u00e9 per numero (rimangono identici). Tra questi troviamo alcuni colori (<em>rosa, blu, viola</em>), parole straniere (<em>snob, pop</em>) e altre parole particolari (<em>pari, dispari, arrosto</em>).",
                         "text": "Se ho due nomi (uno maschile e uno femminile), l'aggettivo sar\u00e0:",
                         "options": [
                             "Al maschile plurale",
@@ -3201,85 +3201,67 @@ window.exercisesData = {
                     {
                         "id": 7101,
                         "type": "completion",
-                        "title": "Esercizio 1 \u2013 Volgi al plurale",
-                        "instruction": "Volgi al plurale le seguenti espressioni contenenti aggettivi qualificativi, scrivendole esattamente nei riquadri (es. \"un cane fedele\" -> \"dei cani fedeli\").",
-                        "text": "1. un panino gustoso -> ___<br><br>2. una borsa capiente -> ___<br><br>3. uno studente diligente -> ___<br><br>4. un'idea geniale -> ___<br><br>5. un uomo generoso -> ___<br><br>6. un bosco fitto -> ___",
-                        "answer": "dei panini gustosi|delle borse capienti|degli studenti diligenti|delle idee geniali|degli uomini generosi|dei boschi fitti"
+                        "title": "Esercizio 5 \u2013 Volgi al plurale",
+                        "instruction": "Volgi al plurale le seguenti espressioni contenenti aggettivi qualificativi.",
+                        "text": "1. un prato verde -> ___<br><br>2. una giacca nuova -> ___<br><br>3. un viso sorridente -> ___<br><br>4. un amico sincero -> ___<br><br>5. un compito difficile -> ___<br><br>6. una borsa pesante -> ___",
+                        "answer": "dei prati verdi|delle giacche nuove|dei visi sorridenti|degli amici sinceri|dei compiti difficili|delle borse pesanti"
                     },
                     {
                         "id": 7102,
                         "type": "completion",
-                        "title": "Esercizio 2 \u2013 Premetti gli aggettivi",
-                        "instruction": "Inserisci la forma corretta dell'aggettivo indicato tra parentesi concordandolo con il nome che segue.",
-                        "text": "1. (bello) ___ spettacolo<br><br>2. (buono) ___ amica<br><br>3. (grande) ___ uomo<br><br>4. (santo) ___ Antonio<br><br>5. (bello) ___ occhi<br><br>6. (buono) ___ odore<br><br>7. (grande) ___ scoperte<br><br>8. (santo) ___ Francesco",
-                        "answer": "bello|buon'|grand'|Sant'|begli|buon|grandi|San"
+                        "title": "Esercizio 6 \u2013 Premetti BELLO",
+                        "instruction": "Premetti ai seguenti nomi l'aggettivo qualificativo BELLO, concordato nel genere e nel numero.",
+                        "text": "1. ___ tramonto<br><br>2. ___ attore<br><br>3. ___ zaino<br><br>4. ___ avventura<br><br>5. ___ favola<br><br>6. ___ ragazzi<br><br>7. ___ alberi<br><br>8. ___ psicologi<br><br>9. ___ amiche",
+                        "answer": "bel|bell'|bello|bell'|bella|bei|begli|begli|belle"
                     },
                     {
                         "id": 7103,
                         "type": "completion",
-                        "title": "Esercizio 3 \u2013 Volgi al maschile o femminile",
-                        "instruction": "Scrivi l'espressione volta al sesso opposto, concordando l'aggettivo con il nuovo nome.",
-                        "text": "1. amico leale -> amica ___<br><br>2. maestra severa -> maestro ___<br><br>3. ragazzo audace -> ragazza ___<br><br>4. re crudele -> regina ___<br><br>5. gatto tigrato -> gatta ___<br><br>6. attrice famosa -> attore ___",
-                        "answer": "leale|severo|audace|crudele|tigrata|famoso"
+                        "title": "Esercizio 7 \u2013 Premetti BUONO",
+                        "instruction": "Premetti ai seguenti nomi l'aggettivo qualificativo BUONO, concordato nel genere e nel numero.",
+                        "text": "1. ___ affare<br><br>2. ___ sapore<br><br>3. ___ idea<br><br>4. ___ psicologo<br><br>5. ___ zia<br><br>6. ___ amici<br><br>7. ___ vacanze",
+                        "answer": "buon|buon|buon'|buono|buona|buoni|buone"
                     },
                     {
                         "id": 7104,
                         "type": "completion",
-                        "title": "Esercizio 4 \u2013 Forme dei quattro generi",
-                        "instruction": "Per ogni aggettivo maschile singolare dato, scrivi rispettivamente il Femminile Singolare, Maschile Plurale e Femminile Plurale (separati da uno spazio e un trattino, es. \"bella - belli - belle\").",
-                        "text": "1. alto -> ___<br><br>2. intelligente -> ___<br><br>3. fantastico -> ___<br><br>4. audace -> ___<br><br>5. stanco -> ___",
-                        "answer": "alta - alti - alte|intelligente - intelligenti - intelligenti|fantastica - fantastici - fantastiche|audace - audaci - audaci|stanca - stanchi - stanche"
+                        "title": "Esercizio 8 \u2013 Premetti GRANDE",
+                        "instruction": "Premetti ai seguenti nomi l'aggettivo qualificativo GRANDE, concordato nel genere e nel numero.",
+                        "text": "1. ___ successo<br><br>2. ___ scienziato<br><br>3. ___ amica<br><br>4. ___ maestro<br><br>5. ___ progetti<br><br>6. ___ scoperte",
+                        "answer": "grande|grande|grand'|gran|grandi|grandi"
                     },
                     {
                         "id": 7105,
-                        "type": "multiple-choice",
-                        "title": "Esercizio 5 \u2013 Regole di concordanza",
-                        "text": "In quale frase l'aggettivo \u00e8 concordato correttamente?",
-                        "options": [
-                            "La maglia e i pantaloni sono nuovi.",
-                            "La maglia e i pantaloni sono nuove."
-                        ],
-                        "answer": "La maglia e i pantaloni sono nuovi."
+                        "type": "completion",
+                        "title": "Esercizio 9 \u2013 Premetti SANTO",
+                        "instruction": "Premetti ai seguenti nomi l'aggettivo qualificativo SANTO, concordato nel genere e nel numero.",
+                        "text": "1. ___ Pietro<br><br>2. ___ Antonio<br><br>3. ___ Rita<br><br>4. ___ Stefano<br><br>5. ___ Agnese",
+                        "answer": "San|Sant'|Santa|Santo|Sant'"
                     },
                     {
                         "id": 7106,
                         "type": "multiple-choice",
-                        "text": "In quale frase c'\u00e8 un errore di concordanza?",
+                        "title": "INVALSI",
+                        "text": "10. In quale dei seguenti gruppi un aggettivo qualificativo NON \u00e8 volto al plurale in modo esatto?",
                         "options": [
-                            "Marco e Luigi sono simpatici.",
-                            "Sara e Lucia sono coraggiosi."
+                            "sedie comode - tavoli rotondi - cieli azzurri",
+                            "facce simpatiche - amici leale - gatti neri",
+                            "storie antiche - poteri magici - ragazzi pigri",
+                            "forze oscure - mari profondi - grandi autori"
                         ],
-                        "answer": "Sara e Lucia sono coraggiosi."
+                        "answer": "facce simpatiche - amici leale - gatti neri"
                     },
                     {
                         "id": 7107,
                         "type": "multiple-choice",
-                        "text": "Scegli la forma corretta:",
+                        "text": "11. In quale delle seguenti frasi sono presenti SOLO aggettivi qualificativi invariabili?",
                         "options": [
-                            "un gran clamore",
-                            "un grande clamore"
+                            "Ho indossato un maglione rosa e una sciarpa blu.",
+                            "Abbiamo mangiato una torta buonissima.",
+                            "Mio fratello ha comprato una camicia azzurra e un pantalone nero.",
+                            "Il cane marrone abbaia sempre al postino."
                         ],
-                        "answer": "un gran clamore"
-                    },
-                    {
-                        "id": 7108,
-                        "type": "multiple-choice",
-                        "text": "Scegli la forma corretta:",
-                        "options": [
-                            "begli zaini",
-                            "bei zaini"
-                        ],
-                        "answer": "begli zaini"
-                    },
-                    {
-                        "id": 7109,
-                        "type": "multiple-choice",
-                        "text": "Scegli la forma corretta:",
-                        "options": [
-                            "buon appetito",
-                            "buono appetito"
-                        ],
-                        "answer": "buon appetito"
+                        "answer": "Ho indossato un maglione rosa e una sciarpa blu."
                     }
                 ],
                 "verifica": [],
