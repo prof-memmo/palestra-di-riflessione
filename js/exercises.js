@@ -3172,6 +3172,262 @@ window.exercisesData = {
                 ],
                 "recupera": "L'aggettivo \u00e8 una parte variabile del discorso che si aggiunge a un nome.<br><br><strong>AGGETTIVO QUALIFICATIVO</strong>: indica una qualit\u00e0 del nome.<br>\u2022 Gradi: <em>positivo</em> (bello), <em>comparativo</em> (pi\u00f9 bello), <em>superlativo</em> (bellissimo)<br>\u2022 Struttura: primitivo (buono), derivato (nuvoloso), alterato (bruttino), composto (agrodolce)<br><br><strong>AGGETTIVO DETERMINATIVO</strong>: determina il nome in modo preciso.<br>\u2022 <em>Possessivi</em>: mio, tuo, suo, nostro, vostro, loro<br>\u2022 <em>Dimostrativi</em>: questo, quello, stesso, medesimo<br>\u2022 <em>Indefiniti</em>: qualche, ogni, nessun, certo, molto, poco<br>\u2022 <em>Interrogativi/Esclamativi</em>: quale?, quanto!, che!<br>\u2022 <em>Numerali</em>: cardinali (uno, due) / ordinali (primo, secondo) / moltiplicativi (doppio) / frazionari (mezzo)"
             },
+            "uda7": {
+                "scopri": [
+                    {
+                        "id": 7001,
+                        "title": "La Concordanza dell'Aggettivo",
+                        "theory": "Quando l'aggettivo qualificativo si riferisce a un solo nome, concorda nel <span style='color: #e74c3c; font-weight: bold;'>GENERE</span> e nel <span style='color: #2980b9; font-weight: bold;'>NUMERO</span> con il nome cui si riferisce.<br><br>Esempi:<br>\u2022 <em>Ho conosciuto un bambino educato</em> (M sing = M sing)<br>\u2022 <em>Ho letto delle poesie stupende</em> (F plur = F plur)<br><br>Quando l'aggettivo si riferisce a <strong>pi\u00f9 nomi</strong>:<br>\u2022 Se i nomi sono di <span style='color: #27ae60; font-weight: bold;'>GENERE MASCHILE</span>, l'aggettivo concorda al maschile plurale.<br>\u2022 Se i nomi sono di <span style='color: #8e44ad; font-weight: bold;'>GENERE FEMMINILE</span>, l'aggettivo concorda al femminile plurale.<br>\u2022 Se i nomi sono di <span style='color: #d35400; font-weight: bold;'>GENERE DIVERSO</span>, l'aggettivo concorda al <strong>maschile plurale</strong> (es. <em>Claudio e Anna sono svogliati</em>).",
+                        "text": "Se ho due nomi (uno maschile e uno femminile), l'aggettivo sar\u00e0:",
+                        "options": [
+                            "Al maschile plurale",
+                            "Al femminile plurale"
+                        ],
+                        "answer": "Al maschile plurale"
+                    },
+                    {
+                        "id": 7002,
+                        "title": "Le particolarit\u00e0: bello, buono, grande, santo",
+                        "theory": "Alcuni aggettivi cambiano forma a seconda di come inizia il nome che li segue:<br><br>\u2022 <span style='color: #2980b9; font-weight: bold;'>BELLO</span>: davanti a consonante diventa <em>bel / bei</em>, davanti a vocale <em>bell' / begli</em>, davanti a s+cons/z/gn/ps <em>bello / begli</em>.<br>\u2022 <span style='color: #27ae60; font-weight: bold;'>BUONO</span>: diventa <em>buon</em> (M) e <em>buon'</em> (F) davanti a vocale. Plurale sempre <em>buoni/buone</em>.<br>\u2022 <span style='color: #e74c3c; font-weight: bold;'>GRANDE</span>: pu\u00f2 troncare in <em>gran</em> davanti a nomi singolari o plurali (es. <em>un gran bel film</em>, <em>gran signori</em>), oppure elidere in <em>grand'</em> davanti a vocale.<br>\u2022 <span style='color: #8e44ad; font-weight: bold;'>SANTO</span>: diventa <em>san</em> davanti a consonante (es. <em>San Pietro</em>) e <em>sant'</em> davanti a vocale (es. <em>Sant'Anna</em>).",
+                        "text": "Davanti a 'zaino', quale forma di 'bello' usiamo?",
+                        "options": [
+                            "bello",
+                            "bel"
+                        ],
+                        "answer": "bello"
+                    }
+                ],
+                "allenati": [
+                    {
+                        "id": 7101,
+                        "type": "completion",
+                        "title": "Esercizio 1 \u2013 Volgi al plurale",
+                        "instruction": "Volgi al plurale le seguenti espressioni contenenti aggettivi qualificativi, scrivendole esattamente nei riquadri (es. \"un cane fedele\" -> \"dei cani fedeli\").",
+                        "text": "1. un panino gustoso -> ___<br><br>2. una borsa capiente -> ___<br><br>3. uno studente diligente -> ___<br><br>4. un'idea geniale -> ___<br><br>5. un uomo generoso -> ___<br><br>6. un bosco fitto -> ___",
+                        "answer": "dei panini gustosi|delle borse capienti|degli studenti diligenti|delle idee geniali|degli uomini generosi|dei boschi fitti"
+                    },
+                    {
+                        "id": 7102,
+                        "type": "completion",
+                        "title": "Esercizio 2 \u2013 Premetti gli aggettivi",
+                        "instruction": "Inserisci la forma corretta dell'aggettivo indicato tra parentesi concordandolo con il nome che segue.",
+                        "text": "1. (bello) ___ spettacolo<br><br>2. (buono) ___ amica<br><br>3. (grande) ___ uomo<br><br>4. (santo) ___ Antonio<br><br>5. (bello) ___ occhi<br><br>6. (buono) ___ odore<br><br>7. (grande) ___ scoperte<br><br>8. (santo) ___ Francesco",
+                        "answer": "bello|buon'|grand'|Sant'|begli|buon|grandi|San"
+                    },
+                    {
+                        "id": 7103,
+                        "type": "completion",
+                        "title": "Esercizio 3 \u2013 Volgi al maschile o femminile",
+                        "instruction": "Scrivi l'espressione volta al sesso opposto, concordando l'aggettivo con il nuovo nome.",
+                        "text": "1. amico leale -> amica ___<br><br>2. maestra severa -> maestro ___<br><br>3. ragazzo audace -> ragazza ___<br><br>4. re crudele -> regina ___<br><br>5. gatto tigrato -> gatta ___<br><br>6. attrice famosa -> attore ___",
+                        "answer": "leale|severo|audace|crudele|tigrata|famoso"
+                    },
+                    {
+                        "id": 7104,
+                        "type": "completion",
+                        "title": "Esercizio 4 \u2013 Forme dei quattro generi",
+                        "instruction": "Per ogni aggettivo maschile singolare dato, scrivi rispettivamente il Femminile Singolare, Maschile Plurale e Femminile Plurale (separati da uno spazio e un trattino, es. \"bella - belli - belle\").",
+                        "text": "1. alto -> ___<br><br>2. intelligente -> ___<br><br>3. fantastico -> ___<br><br>4. audace -> ___<br><br>5. stanco -> ___",
+                        "answer": "alta - alti - alte|intelligente - intelligenti - intelligenti|fantastica - fantastici - fantastiche|audace - audaci - audaci|stanca - stanchi - stanche"
+                    },
+                    {
+                        "id": 7105,
+                        "type": "multiple-choice",
+                        "title": "Esercizio 5 \u2013 Regole di concordanza",
+                        "text": "In quale frase l'aggettivo \u00e8 concordato correttamente?",
+                        "options": [
+                            "La maglia e i pantaloni sono nuovi.",
+                            "La maglia e i pantaloni sono nuove."
+                        ],
+                        "answer": "La maglia e i pantaloni sono nuovi."
+                    },
+                    {
+                        "id": 7106,
+                        "type": "multiple-choice",
+                        "text": "In quale frase c'\u00e8 un errore di concordanza?",
+                        "options": [
+                            "Marco e Luigi sono simpatici.",
+                            "Sara e Lucia sono coraggiosi."
+                        ],
+                        "answer": "Sara e Lucia sono coraggiosi."
+                    },
+                    {
+                        "id": 7107,
+                        "type": "multiple-choice",
+                        "text": "Scegli la forma corretta:",
+                        "options": [
+                            "un gran clamore",
+                            "un grande clamore"
+                        ],
+                        "answer": "un gran clamore"
+                    },
+                    {
+                        "id": 7108,
+                        "type": "multiple-choice",
+                        "text": "Scegli la forma corretta:",
+                        "options": [
+                            "begli zaini",
+                            "bei zaini"
+                        ],
+                        "answer": "begli zaini"
+                    },
+                    {
+                        "id": 7109,
+                        "type": "multiple-choice",
+                        "text": "Scegli la forma corretta:",
+                        "options": [
+                            "buon appetito",
+                            "buono appetito"
+                        ],
+                        "answer": "buon appetito"
+                    }
+                ],
+                "verifica": [],
+                "recupera": []
+            },
+            "uda7b": {
+                "scopri": [
+                    {
+                        "id": 7201,
+                        "title": "Funzioni dell'Aggettivo",
+                        "theory": "Oltre a qualificare un nome, l'aggettivo pu\u00f2 avere altre funzioni:<br><br>\u2022 <span style='color: #27ae60; font-weight: bold;'>FUNZIONE DI SOSTANTIVO (Aggettivo Sostantivato)</span>: quando l'aggettivo \u00e8 preceduto dall'articolo e usato da solo al posto di un nome. Esempio: <em>Oggi <strong>il caldo</strong> \u00e8 insopportabile</em> (invece di 'il tempo caldo').<br><br>\u2022 <span style='color: #e74c3c; font-weight: bold;'>FUNZIONE DI AVVERBIO (Aggettivo Avverbiale)</span>: quando l'aggettivo si riferisce a un <span style='color: #8e44ad; font-weight: bold;'>VERBO</span> e ne modifica il significato. Rimane <strong>invariabile</strong> al maschile singolare! Esempio: <em>Corri <strong>veloce</strong>!</em> (significa 'velocemente').",
+                        "text": "Nella frase 'Parlate chiaro!', la parola 'chiaro' che funzione ha?",
+                        "options": [
+                            "Funzione di sostantivo",
+                            "Funzione di avverbio"
+                        ],
+                        "answer": "Funzione di avverbio"
+                    },
+                    {
+                        "id": 7202,
+                        "title": "La Posizione dell'Aggettivo",
+                        "theory": "La posizione dell'aggettivo qualificativo non \u00e8 casuale!<br><br>\u2022 <span style='color: #2980b9; font-weight: bold;'>PRIMA DEL NOME</span> ha una funzione <strong>Descrittiva</strong>: attribuisce una qualit\u00e0 generica o soggettiva. (es. <em>Ho conosciuto un bravo medico</em>).<br><br>\u2022 <span style='color: #d35400; font-weight: bold;'>DOPO IL NOME</span> ha una funzione <strong>Distintiva</strong>: serve a distinguere e precisare. (es. <em>Ho conosciuto un medico bravo</em> = diverso da uno scarso).<br><br>\u26a0\ufe0f In alcuni casi la posizione <strong>cambia completamente il significato</strong>:<br>- <em>un uomo grande</em> = di notevoli dimensioni fisiche<br>- <em>un grand'uomo</em> = di grandi capacit\u00e0 morali o intellettuali.",
+                        "text": "Quale delle due frasi ha funzione descrittiva?",
+                        "options": [
+                            "Ho comprato una nuova maglia",
+                            "Ho comprato una maglia nuova"
+                        ],
+                        "answer": "Ho comprato una nuova maglia"
+                    }
+                ],
+                "allenati": [
+                    {
+                        "id": 7301,
+                        "type": "classification-grid",
+                        "title": "Esercizio 1 \u2013 Sostantivo, Avverbio o Aggettivo?",
+                        "instruction": "Classifica la parola evidenziata in rosso indicando se svolge la funzione di AGGETTIVO, SOSTANTIVO o AVVERBIO.",
+                        "words": [
+                            "Secondo gli <span style='color: red; font-weight: bold;'>esperti</span>, il futuro sar\u00e0 luminoso.",
+                            "Quel ragazzo veste davvero <span style='color: red; font-weight: bold;'>semplice</span>.",
+                            "Guarda come guida <span style='color: red; font-weight: bold;'>pericoloso</span>!",
+                            "Mi piace molto il maglione <span style='color: red; font-weight: bold;'>azzurro</span>.",
+                            "Alla fine, ha vinto il <span style='color: red; font-weight: bold;'>bene</span> sul male.",
+                            "Hai risposto <span style='color: red; font-weight: bold;'>esatto</span> a tutte le domande."
+                        ],
+                        "categories": [
+                            "Aggettivo",
+                            "Sostantivo",
+                            "Avverbio"
+                        ],
+                        "answers": {
+                            "Secondo gli <span style='color: red; font-weight: bold;'>esperti</span>, il futuro sar\u00e0 luminoso.": "Sostantivo",
+                            "Quel ragazzo veste davvero <span style='color: red; font-weight: bold;'>semplice</span>.": "Avverbio",
+                            "Guarda come guida <span style='color: red; font-weight: bold;'>pericoloso</span>!": "Avverbio",
+                            "Mi piace molto il maglione <span style='color: red; font-weight: bold;'>azzurro</span>.": "Aggettivo",
+                            "Alla fine, ha vinto il <span style='color: red; font-weight: bold;'>bene</span> sul male.": "Sostantivo",
+                            "Hai risposto <span style='color: red; font-weight: bold;'>esatto</span> a tutte le domande.": "Avverbio"
+                        }
+                    },
+                    {
+                        "id": 7302,
+                        "type": "classification-grid",
+                        "title": "Esercizio 2 \u2013 Descrittivo o Distintivo?",
+                        "instruction": "Indica se l'aggettivo evidenziato ha funzione DESCRITTIVA (prima del nome) o DISTINTIVA (dopo il nome).",
+                        "words": [
+                            "Un <span style='color: red; font-weight: bold;'>violento</span> acquazzone ha allagato la strada.",
+                            "Il professore ha premiato gli studenti <span style='color: red; font-weight: bold;'>diligenti</span>.",
+                            "Ho un dolore <span style='color: red; font-weight: bold;'>lancinante</span> alla spalla.",
+                            "Quella <span style='color: red; font-weight: bold;'>gentile</span> signora mi ha aiutato.",
+                            "Ho letto una <span style='color: red; font-weight: bold;'>lunga</span> lettera d'addio.",
+                            "Hanno comprato una macchina <span style='color: red; font-weight: bold;'>sportiva</span>."
+                        ],
+                        "categories": [
+                            "Descrittiva",
+                            "Distintiva"
+                        ],
+                        "answers": {
+                            "Un <span style='color: red; font-weight: bold;'>violento</span> acquazzone ha allagato la strada.": "Descrittiva",
+                            "Il professore ha premiato gli studenti <span style='color: red; font-weight: bold;'>diligenti</span>.": "Distintiva",
+                            "Ho un dolore <span style='color: red; font-weight: bold;'>lancinante</span> alla spalla.": "Distintiva",
+                            "Quella <span style='color: red; font-weight: bold;'>gentile</span> signora mi ha aiutato.": "Descrittiva",
+                            "Ho letto una <span style='color: red; font-weight: bold;'>lunga</span> lettera d'addio.": "Descrittiva",
+                            "Hanno comprato una macchina <span style='color: red; font-weight: bold;'>sportiva</span>.": "Distintiva"
+                        }
+                    },
+                    {
+                        "id": 7303,
+                        "type": "completion",
+                        "title": "Esercizio 3 \u2013 Spiega la differenza",
+                        "instruction": "Associa il significato corretto a seconda della posizione dell'aggettivo, digitando la lettera giusta:<br>A = di et\u00e0 avanzata<br>B = di lunga data (amicizia)<br>C = di livello economico basso<br>D = sfortunato/infelice<br>E = soldato semplice (grado)<br>F = come un altro / qualunque",
+                        "text": "1. un amico vecchio -> ___<br><br>2. un vecchio amico -> ___<br><br>3. un uomo povero -> ___<br><br>4. un pover'uomo -> ___<br><br>5. un soldato semplice -> ___<br><br>6. un semplice soldato -> ___",
+                        "answer": "A|B|C|D|E|F"
+                    },
+                    {
+                        "id": 7304,
+                        "type": "multiple-choice",
+                        "title": "Esercizio 4 \u2013 Consolida le Funzioni",
+                        "text": "Quale aggettivo \u00e8 sostantivato in questa frase: 'I buoni vinceranno sui cattivi'?",
+                        "options": [
+                            "Solo 'buoni'",
+                            "Solo 'cattivi'",
+                            "Sia 'buoni' che 'cattivi'"
+                        ],
+                        "answer": "Sia 'buoni' che 'cattivi'"
+                    },
+                    {
+                        "id": 7305,
+                        "type": "multiple-choice",
+                        "text": "L'aggettivo 'giusto' ha funzione avverbiale in:",
+                        "options": [
+                            "\u00c8 stato un verdetto giusto.",
+                            "Hai agito giusto."
+                        ],
+                        "answer": "Hai agito giusto."
+                    },
+                    {
+                        "id": 7306,
+                        "type": "multiple-choice",
+                        "text": "Quale espressione indica un'amicizia che dura da tanto tempo?",
+                        "options": [
+                            "Un amico vecchio",
+                            "Un vecchio amico"
+                        ],
+                        "answer": "Un vecchio amico"
+                    },
+                    {
+                        "id": 7307,
+                        "type": "multiple-choice",
+                        "text": "L'aggettivo con funzione avverbiale \u00e8:",
+                        "options": [
+                            "sempre invariabile al maschile singolare",
+                            "concordato in genere e numero col verbo"
+                        ],
+                        "answer": "sempre invariabile al maschile singolare"
+                    },
+                    {
+                        "id": 7308,
+                        "type": "multiple-choice",
+                        "text": "In 'Ho comprato un maglione rosso', la funzione \u00e8:",
+                        "options": [
+                            "Descrittiva",
+                            "Distintiva"
+                        ],
+                        "answer": "Distintiva"
+                    }
+                ],
+                "verifica": [],
+                "recupera": []
+            },
             "uda8": {
                 "scopri": [
                     {

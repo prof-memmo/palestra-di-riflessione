@@ -1460,6 +1460,8 @@ window.MATERIE_HIERARCHY = {
             { id: 'uda5', title: 'Il nome', icon: '🏷️', type: 'uda' },
             { id: 'uda_gram_guidata1', title: 'Allenamento Combinato 1', icon: '🏋️', type: 'uda', color: 'verde' },
             { id: 'uda6', title: "L'aggettivo", icon: '🎨', type: 'uda' },
+            { id: 'uda7', title: "Aggettivi qualificativi: la concordanza", icon: '⚖️', type: 'uda' },
+            { id: 'uda7b', title: "Aggettivi qualificativi: funzioni e posizione", icon: '🧭', type: 'uda' },
             { id: 'uda8', title: 'Il pronome', icon: '🔁', type: 'uda' },
             { id: 'uda9', title: 'Introduzione al verbo', icon: '⚙️', type: 'uda' },
             { id: 'uda10', title: 'I modi finiti e indefiniti del verbo', icon: '🎭', type: 'uda' },
