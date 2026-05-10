@@ -204,13 +204,10 @@ const UI = {
                                 <button class="btn btn-secondary opt-btn-${qIdx}" style="padding: 1.2rem; font-weight: 600;" onclick="UI.selectMultiLetturaOption(this, ${qIdx}, '${opt.replace(/'/g, "\\'")}')">${opt}</button>
                             `).join('')}
                         </div>
+                        <button class="btn btn-primary btn-verify-card" id="verify-btn-${qIdx}" style="width: 100%; padding: 1.2rem; font-size: 1.1rem; font-weight: 800; margin-top: 1.5rem; border-radius: 12px;" onclick="UI.verifySingleCard(this, ${exercise.id}, ${qIdx}, '${q.answer.replace(/'/g, "\\'")}', ${exercise.questions.length})">VERIFICA</button>
                     </div>
                 `;
             }).join('');
-            
-            questionsHtml += `
-                <button class="btn btn-primary btn-verify" style="width: 100%; padding: 1.5rem; font-size: 1.25rem; font-weight: 800; margin-top: 2rem; border-radius: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.05);" onclick="UI.verifyMultiLetturaAnswers(${exercise.id})">VERIFICA LE RISPOSTE</button>
-            `;
         } else {
             questionsHtml = `
                 <div style="background: white; padding: 2rem; border-radius: 20px; border: 2px solid #eee; text-align: center;">
@@ -588,13 +585,10 @@ renderLessico: (exercise, isUda, path, total) => {
                                 <button class="btn btn-secondary opt-btn-${qIdx}" style="padding: 1.2rem; font-size: 1.05rem; font-weight: 600; border-radius: 12px; border: 2px solid #eee; background: white;" onclick="UI.selectMultiLetturaOption(this, ${qIdx}, '${opt.replace(/'/g, "\\'")}')">${opt}</button>
                             `).join('')}
                         </div>
+                        <button class="btn btn-primary btn-verify-card" id="verify-btn-${qIdx}" style="width: 100%; padding: 1.2rem; font-size: 1.1rem; font-weight: 800; margin-top: 1.5rem; border-radius: 12px;" onclick="UI.verifySingleCard(this, ${exercise.id}, ${qIdx}, '${q.answer.replace(/'/g, "\\'")}', ${exercise.questions.length})">VERIFICA</button>
                     </div>
                 `;
             }).join('');
-            
-            questionsHtml += `
-                <button class="btn btn-primary btn-verify" style="width: 100%; padding: 1.5rem; font-size: 1.25rem; font-weight: 800; margin-top: 2rem; border-radius: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.05);" onclick="UI.verifyMultiLetturaAnswers(${exercise.id})">VERIFICA LE RISPOSTE</button>
-            `;
         } else {
             // Domanda singola: selezione + tasto VERIFICA
             questionsHtml = `
@@ -1391,6 +1385,85 @@ window.UI.selectMultiLetturaOption = (btn, qIdx, selectedOpt) => {
     btn.style.background = 'var(--primary-color)';
     btn.style.color = 'white';
     btn.style.borderColor = 'var(--primary-color)';
+};
+
+
+window.UI.verifySingleCard = (btn, exerciseId, qIdx, correctAnswer, totalQuestions) => {
+    const selected = window.multiLetturaSelections && window.multiLetturaSelections[qIdx];
+    if (!selected) {
+        alert("Seleziona prima una risposta!");
+        return;
+    }
+    const container = document.getElementById(`q-container-${qIdx}`);
+    if (!container) return;
+    
+    let isCorrect = selected === correctAnswer;
+    
+    if (isCorrect) {
+        container.querySelectorAll('button').forEach(b => {
+            const text = b.textContent.trim();
+            if (text === correctAnswer) {
+                b.style.background = '#e8f5e9';
+                b.style.borderColor = '#27ae60';
+                b.style.color = '#1b5e20';
+            }
+            b.onclick = null;
+        });
+        
+        btn.style.display = 'none';
+        window.Progress.addPoints(10);
+        
+        if (!window.cardsVerifiedCount) window.cardsVerifiedCount = 0;
+        window.cardsVerifiedCount++;
+        
+        if (window.cardsVerifiedCount >= totalQuestions) {
+            setTimeout(() => {
+                window.UI.showFeedback(true, {
+                    map: "Ottimo lavoro!",
+                    reasoning: "Hai completato correttamente tutte le domande di questo esercizio.",
+                    example: "Continua così!"
+                }, () => {
+                    window.cardsVerifiedCount = 0;
+                    window.multiLetturaSelections = {};
+                    window.currentExerciseIndex++;
+                    
+                    const hash = window.location.hash.substring(1);
+                    const parts = hash.split('/').filter(p => p && p !== 'null');
+                    
+                    if (window.currentExerciseIndex >= totalQuestions) {
+                        // this is handled in loadExercise usually, but we need to check the actual data length
+                    }
+                    
+                    const data = getExerciseData(parts);
+                    const exercises = Array.isArray(data) ? data : (data?.facile || []);
+                    
+                    if (window.currentExerciseIndex >= exercises.length) {
+                        const phase = parts[parts.length - 1];
+                        const pathKey = `progress_${parts.join('_')}`;
+                        localStorage.setItem('concluded_' + pathKey, 'true');
+                        const score = window.Progress.getUdaScore ? window.Progress.getUdaScore() : 100;
+                        document.getElementById('exercise-mount').innerHTML = window.UI.renderUdaPhaseEnd(phase, score, score < 70, parts);
+                    } else {
+                        loadExercise(parts);
+                    }
+                });
+            }, 500);
+        }
+    } else {
+        if (window.Progress.currentLessonMistakeCount !== undefined) window.Progress.currentLessonMistakeCount++;
+        window.UI.showFeedback(false, {
+            map: "Riprova!",
+            reasoning: "Rileggi il testo con attenzione."
+        });
+        
+        // Reset selections for this card
+        container.querySelectorAll('button').forEach(b => {
+            b.style.background = 'white';
+            b.style.borderColor = '#eee';
+            b.style.color = 'var(--text-color)';
+        });
+        window.multiLetturaSelections[qIdx] = null;
+    }
 };
 
 window.UI.selectLetturaOption = (btn, value) => {
