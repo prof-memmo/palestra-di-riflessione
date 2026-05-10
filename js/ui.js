@@ -190,7 +190,70 @@ const UI = {
         `;
     },
 
-    renderLessico: (exercise, isUda, path, total) => {
+    renderDescrizione: (exercise, isUda, path, total) => {
+        const isMulti = exercise.questions && exercise.questions.length > 0;
+        
+        let questionsHtml = '';
+        if (isMulti) {
+            questionsHtml = exercise.questions.map((q, qIdx) => {
+                return `
+                    <div class="question-block" style="background: #fdfdfd; padding: 2rem; border-radius: 20px; border: 2px solid #eee; margin-bottom: 2rem;">
+                        <p style="font-size: 1.2rem; font-weight: 800; margin-bottom: 1.5rem; color: var(--text-color);">🤔 ${qIdx + 1}. ${q.question}</p>
+                        <div class="options-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                            ${q.options.map(opt => `
+                                <button class="btn btn-secondary" style="padding: 1.2rem; font-weight: 600;" onclick="checkSubAnswer('${opt.replace(/'/g, "\\'")}', '${q.answer.replace(/'/g, "\\'")}', ${exercise.id})">${opt}</button>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        } else {
+            questionsHtml = `
+                <div style="background: white; padding: 2rem; border-radius: 20px; border: 2px solid #eee; text-align: center;">
+                    <p style="font-size: 1.2rem; font-weight: 800; margin-bottom: 2rem;">${exercise.question || 'SCEGLI LA RISPOSTA CORRETTA:'}</p>
+                    <div class="options-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+                        ${(exercise.options || []).map(opt => `
+                            <button class="btn btn-secondary" style="padding: 1.5rem; font-weight: 700;" onclick="checkAnswer('${opt.replace(/'/g, "\\'")}', '${exercise.answer.replace(/'/g, "\\'")}', 'descrizione', ${exercise.id})">${opt}</button>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+        }
+
+        return `
+            <div class="exercise-container">
+                <h2 class="exercise-title" style="display: flex; align-items: center; justify-content: space-between;">
+                    <span>🖼️ DESCRIZIONE E TESTO</span>
+                    <span style="font-size: 1.5rem; font-weight: 700; color: #888; background: #eee; padding: 0.3rem 0.8rem; border-radius: 12px;">${window.currentExerciseIndex + 1}/${total}</span>
+                </h2>
+                
+                ${exercise.title ? `<h3 style="color: var(--primary-color); font-weight: 800; text-align: center; margin-bottom: 1.5rem; font-size: 1.6rem;">${exercise.title}</h3>` : ''}
+                
+                ${exercise.instruction ? `
+                    <div style="background: #f0f7ff; padding: 1.2rem; border-radius: 15px; border-left: 5px solid var(--primary-color); margin-bottom: 2rem; font-weight: 700; color: #2c3e50; text-align: justify;">
+                        ${exercise.instruction}
+                    </div>
+                ` : ''}
+
+                ${exercise.text || exercise.word ? `
+                    <div style="background: #fff; padding: 2.5rem; border-radius: 30px; border: 1px solid #eee; margin-bottom: 2.5rem; text-align: center; box-shadow: 0 10px 20px rgba(0,0,0,0.02);">
+                        <div style="font-size: 1.8rem; line-height: 1.8; font-weight: 700; text-align: justify;">
+                            ${(exercise.text || exercise.word).replace(/\\n/g, '<br>')}
+                        </div>
+                    </div>
+                ` : ''}
+
+                <div class="questions-stack">
+                    ${questionsHtml}
+                </div>
+                
+                ${path ? window.UI.renderNav(path, total) : ''}
+            </div>
+        `;
+    },
+
+    
+renderLessico: (exercise, isUda, path, total) => {
         const isMulti = exercise.questions && exercise.questions.length > 0;
         
         let questionsHtml = '';

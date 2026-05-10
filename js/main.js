@@ -1578,7 +1578,9 @@ window.MATERIE_HIERARCHY = {
     'descrizione': {
         title: 'Descrizione', parent: 'produzione', type: 'submenu', items: [
             { id: 'persona', title: 'Persona', icon: '👤', type: 'exercises' },
-            { id: 'animali', title: 'Animali', icon: '🐾', type: 'exercises' }
+            { id: 'animale', title: 'Animale', icon: '🐾', type: 'exercises' },
+            { id: 'oggetto', title: 'Oggetto', icon: '📦', type: 'exercises' },
+            { id: 'luogo', title: 'Luogo', icon: '🏞️', type: 'exercises' }
         ]
     },
     'lessico': {
@@ -1687,7 +1689,9 @@ window.MATERIE_HIERARCHY = {
     'biografia': { type: 'exercises', parent: 'generi' },
     'cronaca': { type: 'exercises', parent: 'generi' },
     'persona': { type: 'exercises', parent: 'descrizione' },
-    'animali': { type: 'exercises', parent: 'descrizione' },
+    'animale': { type: 'exercises', parent: 'descrizione' },
+    'oggetto': { type: 'exercises', parent: 'descrizione' },
+    'luogo': { type: 'exercises', parent: 'descrizione' },
     'campi_semantici': { type: 'exercises', parent: 'lessico' },
     'significati': { type: 'exercises', parent: 'lessico' },
     'relazioni': { type: 'exercises', parent: 'lessico' },
@@ -2038,6 +2042,7 @@ function loadExercise(path) {
     else if (exercise.target) mount.innerHTML = path.includes('analisiLogica') ? window.UI.renderLogica(exercise, false, path, exercises.length) : window.UI.renderPeriodo(exercise, false, path, exercises.length);
     else if (path.includes('punteggiatura')) mount.innerHTML = window.UI.renderPunteggiatura(exercise, false, path, exercises.length);
     else if (path.includes('lettura')) mount.innerHTML = window.UI.renderLettura(exercise, false, path, exercises.length);
+    else if (path.includes('descrizione') || path.includes('produzione')) mount.innerHTML = window.UI.renderDescrizione(exercise, false, path, exercises.length);
     else if (path.includes('lessico')) mount.innerHTML = window.UI.renderLessico(exercise, false, path, exercises.length);
     else mount.innerHTML = window.UI.renderGrammatica(exercise, false, path, exercises.length);
 
