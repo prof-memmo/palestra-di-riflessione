@@ -1,9 +1,20 @@
 const Auth = {
     _user: null,
     _fbUser: null,
+    _isReady: false,
+    _readyPromise: null,
+    _resolveReady: null,
 
     init: () => {
-        // Fallback locale per utenti già esistenti
+        // Inizializza la promise di ready
+        Auth._readyPromise = new Promise((resolve) => {
+            Auth._resolveReady = () => {
+                Auth._isReady = true;
+                resolve();
+            };
+        });
+
+        // Fallback locale per utenti già esistenti (caricamento sincrono iniziale)
         const savedUser = localStorage.getItem('palestra_user');
         if (savedUser) {
             Auth._user = JSON.parse(savedUser);
@@ -11,27 +22,46 @@ const Auth = {
 
         // Inizializza listener Firebase
         if (window.fbAuth) {
+            let redirectProcessed = false;
+
             // Gestisci il risultato del redirect (per mobile)
-            window.fbAuth.getRedirectResult().then((result) => {
+            const redirectPromise = window.fbAuth.getRedirectResult().then((result) => {
+                redirectProcessed = true;
                 if (result && result.user) {
-                    Auth._handleFirebaseUser(result.user);
+                    return Auth._handleFirebaseUser(result.user);
                 }
             }).catch(e => {
+                redirectProcessed = true;
                 console.error("Errore redirect:", e);
                 if (e.code === 'auth/unauthorized-domain') {
-                    alert("Errore: Questo dominio non è autorizzato nelle impostazioni di Firebase. Aggiungi l'URL corrente ai 'Authorized Domains'.");
-                } else if (e.code !== 'auth/web-storage-unsupported') {
-                    alert("Errore durante il login: " + e.message);
+                    alert("Errore: Questo dominio non è autorizzato nelle impostazioni di Firebase.");
                 }
+                return null;
             });
 
+            let firstAuthCheck = true;
             window.fbAuth.onAuthStateChanged(async (user) => {
                 if (user) {
                     Auth._fbUser = user;
-                    Auth._handleFirebaseUser(user);
+                    await Auth._handleFirebaseUser(user);
+                } else {
+                    Auth._fbUser = null;
+                    // Aspetta che anche il redirect sia processato prima di dichiarare "pronto" un utente nullo
+                    await redirectPromise;
+                    if (firstAuthCheck) {
+                        Auth._resolveReady();
+                    }
                 }
+                firstAuthCheck = false;
             });
+        } else {
+            // Se Firebase non è presente, siamo pronti subito
+            Auth._resolveReady();
         }
+    },
+
+    whenReady: () => {
+        return Auth._readyPromise;
     },
 
     _handleFirebaseUser: async (fbUser) => {
@@ -82,8 +112,10 @@ const Auth = {
             }
 
             window.dispatchEvent(new CustomEvent('authChange'));
+            Auth._resolveReady(); // Auth è definitivamente pronto dopo l'handling
         } catch (e) {
             console.error("Errore recupero/creazione dati cloud:", e);
+            Auth._resolveReady(); // Risolviamo comunque per non bloccare l'app
             if (e.code === 'permission-denied') {
                 alert("Errore di sincronizzazione: Permessi insufficienti sul database Firebase. Contatta l'amministratore per verificare le Security Rules.");
             }

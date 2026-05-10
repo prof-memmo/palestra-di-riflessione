@@ -171,14 +171,26 @@ function updateHistory(title, icon, hash) {
 }
 
 // Router Initialization
-window.addEventListener('load', () => {
-    setTimeout(handleRoute, 300);
+window.addEventListener('load', async () => {
+    // Aspetta che l'autenticazione sia risolta (fondamentale per i redirect Google su mobile)
+    if (window.Auth && typeof window.Auth.whenReady === 'function') {
+        await window.Auth.whenReady();
+    }
+    
+    // Piccolo ritardo per assicurarsi che il DOM sia stabile e exercisesData caricato
+    setTimeout(handleRoute, 100);
 });
 window.addEventListener('hashchange', handleRoute);
 
 function handleRoute() {
     const appContainer = document.getElementById('app');
     if (!appContainer) return;
+
+    // Se l'autenticazione non è ancora pronta, aspettiamo che lo sia prima di decidere se mostrare il login
+    if (window.Auth && window.Auth._readyPromise && !window.Auth._isReady) {
+        window.Auth._readyPromise.then(handleRoute);
+        return;
+    }
 
     try {
         const hash = window.location.hash.substring(1);
