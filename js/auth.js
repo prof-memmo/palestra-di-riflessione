@@ -16,7 +16,14 @@ const Auth = {
                 if (result && result.user) {
                     Auth._handleFirebaseUser(result.user);
                 }
-            }).catch(e => console.error("Errore redirect:", e));
+            }).catch(e => {
+                console.error("Errore redirect:", e);
+                if (e.code === 'auth/unauthorized-domain') {
+                    alert("Errore: Questo dominio non è autorizzato nelle impostazioni di Firebase. Aggiungi l'URL corrente ai 'Authorized Domains'.");
+                } else if (e.code !== 'auth/web-storage-unsupported') {
+                    alert("Errore durante il login: " + e.message);
+                }
+            });
 
             window.fbAuth.onAuthStateChanged(async (user) => {
                 if (user) {
@@ -66,6 +73,9 @@ const Auth = {
 
             localStorage.setItem('palestra_user', JSON.stringify(Auth._user));
             
+            // Nascondi l'overlay di login (fondamentale per il redirect su mobile)
+            if (typeof hideLoginOverlay === 'function') hideLoginOverlay();
+            
             // Carica progressi dal cloud se esistono
             if (window.Progress && typeof window.Progress.load === 'function') {
                 await window.Progress.load();
@@ -74,6 +84,9 @@ const Auth = {
             window.dispatchEvent(new CustomEvent('authChange'));
         } catch (e) {
             console.error("Errore recupero/creazione dati cloud:", e);
+            if (e.code === 'permission-denied') {
+                alert("Errore di sincronizzazione: Permessi insufficienti sul database Firebase. Contatta l'amministratore per verificare le Security Rules.");
+            }
         }
     },
 
