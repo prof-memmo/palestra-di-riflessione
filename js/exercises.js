@@ -5845,6 +5845,39 @@ window.exercisesData = {
                             "Giovanni"
                         ],
                         "answer": "Ingegnere"
+                    },
+                    {
+                        "id": 2303,
+                        "title": "Il Genere e il Numero dell'Attributo",
+                        "theory": "Poich\u00e8 l'attributo \u00e8 un <span style='color: #c0392b; font-weight: bold;'>AGGETTIVO</span>, concorda sempre nel <span style='color: #2980b9; font-weight: bold;'>GENERE</span> e nel <span style='color: #27ae60; font-weight: bold;'>NUMERO</span> col nome a cui si riferisce.<br><br>Per la formazione del femminile e del plurale, dividiamo gli aggettivi in quattro classi:<br>\u2022 <span style='color: #8e44ad; font-weight: bold;'>PRIMA CLASSE</span> (4 desinenze: <i>-o, -a, -i, -e</i>): <i>superbo, caldo...</i><br>\u2022 <span style='color: #8e44ad; font-weight: bold;'>SECONDA CLASSE</span> (2 desinenze: <i>-e, -i</i>): <i>intelligente, vivace...</i><br>\u2022 <span style='color: #8e44ad; font-weight: bold;'>TERZA CLASSE</span> (3 desinenze: <i>-a, -i, -e</i>): <i>ottimista, ipocrita...</i><br>\u2022 <span style='color: #8e44ad; font-weight: bold;'>QUARTA CLASSE</span> (invariabili): <i>pari, blu...</i>",
+                        "text": "Quante desinenze hanno gli aggettivi della prima classe?",
+                        "options": [
+                            "Quattro",
+                            "Tre"
+                        ],
+                        "answer": "Quattro"
+                    },
+                    {
+                        "id": 2304,
+                        "title": "Attributi Invariabili",
+                        "theory": "Alcuni attributi non cambiano mai forma: sono gli <span style='color: #e74c3c; font-weight: bold;'>AGGETTIVI INVARIABILI</span>.<br><br>Tra i pi\u00f9 comuni troviamo:<br>\u2022 Quelli in <span style='color: #2980b9; font-weight: bold;'>-i</span>: <i>pari, dispari...</i><br>\u2022 Quelli accentati o <span style='color: #27ae60; font-weight: bold;'>STRANIERI</span>: <i>blu, snob, rock...</i><br>\u2022 L'aggettivo <span style='color: #d35400; font-weight: bold;'>ARROSTO</span>: <i>pollo arrosto, polli arrosto...</i><br>\u2022 I <span style='color: #8e44ad; font-weight: bold;'>COLORI</span> derivati da nomi (<i>rosa, viola</i>) o accoppiati (<i>verde smeraldo</i>).<br>\u2022 I composti: <i>perbene, antimissile...</i>",
+                        "text": "Quale tra queste frasi \u00e8 corretta?",
+                        "options": [
+                            "Delle maglie rose",
+                            "Delle maglie rosa"
+                        ],
+                        "answer": "Delle maglie rosa"
+                    },
+                    {
+                        "id": 2305,
+                        "title": "Forme Particolari di Plurale",
+                        "theory": "Per il plurale, ci sono alcune regole particolari (consulta sempre il <span style='color: #e67e22; font-weight: bold;'>DIZIONARIO</span> se hai dubbi!):<br><br>\u2022 Gli aggettivi in <span style='color: #2980b9; font-weight: bold;'>-CO / -CA</span> e <span style='color: #2980b9; font-weight: bold;'>-GO / -GA</span> fanno spesso <i>-chi / -che</i> (<i>bianco &rarr; bianchi</i>) ma ci sono eccezioni (<i>amico &rarr; amici</i>).<br>\u2022 Quelli in <span style='color: #27ae60; font-weight: bold;'>-IO</span> fanno <i>-ii</i> se la <i>i</i> \u00e8 accentata (<i>rest\u00eco &rarr; rest\u00eci</i>), o una sola <i>-i</i> (<i>vario &rarr; vari</i>).<br>\u2022 I femminili in <span style='color: #8e44ad; font-weight: bold;'>-CIA / -GIA</span> fanno <i>-cie / -gie</i> dopo vocale (<i>grigia &rarr; grigie</i>) e <i>-ce / -ge</i> dopo consonante (<i>liscia &rarr; lisce</i>).",
+                        "text": "Il plurale di 'amico' e 'nemico' \u00e8:",
+                        "options": [
+                            "Amici e nemici",
+                            "Amichi e nemichi"
+                        ],
+                        "answer": "Amici e nemici"
                     }
                 ],
                 "allenati": [
@@ -5901,6 +5934,30 @@ window.exercisesData = {
                         "instruction": "Inserisci prima l'attributo e poi l'apposizione.",
                         "text": "<div style='text-align:left;padding-left:2rem'><ol><li>Il <b>vecchio</b> <b>zio</b> Giovanni racconta storie. (ATTRIBUTO = ___, APPOSIZIONE = ___)</li><li>Il <b>famoso</b> <b>attore</b> sal\u00ec sul palco. (ATTRIBUTO = ___, APPOSIZIONE = ___)</li><li>La <b>giovane</b> <b>maestra</b> Sofia sorride. (ATTRIBUTO = ___, APPOSIZIONE = ___)</li><li>Il <b>coraggioso</b> <b>capitano</b> guid\u00f2 la nave. (ATTRIBUTO = ___, APPOSIZIONE = ___)</li></ol></div>",
                         "answer": "vecchio|zio|famoso|attore|giovane|maestra|coraggioso|capitano"
+                    },
+                    {
+                        "id": 2316,
+                        "type": "completion",
+                        "title": "Esercizio 6: Classi degli Aggettivi",
+                        "instruction": "Indica a quale classe appartiene l'aggettivo in grassetto (inserisci: prima, seconda, terza o quarta).",
+                        "text": "<div style='text-align:left;padding-left:2rem'><ol><li>L'automobile <b>veloce</b> sfrecciava in autostrada. (classe: ___)</li><li>È una persona molto <b>entusiasta</b>. (classe: ___)</li><li>Ho indossato una maglietta <b>amaranto</b>. (classe: ___)</li><li>Giorgio \u00e8 un bambino <b>generoso</b>. (classe: ___)</li><li>Abbiamo comprato del pesce <b>arrosto</b>. (classe: ___)</li></ol></div>",
+                        "answer": "seconda|terza|quarta|prima|quarta"
+                    },
+                    {
+                        "id": 2317,
+                        "type": "completion",
+                        "title": "Esercizio 7: Gli Attributi Invariabili",
+                        "instruction": "Trascrivi l'attributo invariabile presente in ciascuna frase.",
+                        "text": "<div style='text-align:left;padding-left:2rem'><ol><li>La cravatta lilla si abbinava perfettamente. (___)</li><li>I numeri dispari terminano con uno, tre, cinque... (___)</li><li>Si \u00e8 dimostrato un signore perbene. (___)</li><li>Hanno comprato una scrivania azzurro cielo. (___)</li><li>Il comportamento snob non piace a nessuno. (___)</li></ol></div>",
+                        "answer": "lilla|dispari|perbene|azzurro cielo|snob"
+                    },
+                    {
+                        "id": 2318,
+                        "type": "completion",
+                        "title": "Esercizio 8: Forme Particolari di Plurale",
+                        "instruction": "Scrivi il plurale corretto degli aggettivi tra parentesi.",
+                        "text": "<div style='text-align:left;padding-left:2rem'><ol><li>Questi monumenti sono molto (antico) ___.</li><li>Le querce del bosco sono (magnifico) ___.</li><li>Quei turisti sembrano (greco) ___.</li><li>Ho raccolto delle foglie (secco) ___.</li><li>I tuoi gatti sono molto (selvaggio) ___.</li></ol></div>",
+                        "answer": "antichi|magnifiche|greci|secche|selvaggi"
                     }
                 ],
                 "verifica": [],

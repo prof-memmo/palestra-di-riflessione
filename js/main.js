@@ -1607,6 +1607,7 @@ window.MATERIE_HIERARCHY = {
     'uda_gram_guidata1': { type: 'uda', parent: 'grammaticale' },
     'uda6': { type: 'uda', parent: 'grammaticale' },
     'uda7': { type: 'uda', parent: 'grammaticale' },
+    'uda7b': { type: 'uda', parent: 'grammaticale' },
     'uda8': { type: 'uda', parent: 'grammaticale' },
     'uda9': { type: 'uda', parent: 'grammaticale' },
     'uda10': { type: 'uda', parent: 'grammaticale' },
