@@ -190,7 +190,7 @@ const UI = {
         `;
     },
 
-    renderDescrizione: (exercise, isUda, path, total) => {
+    renderProduzione: (exercise, isUda, path, total) => {
         const isMulti = exercise.questions && exercise.questions.length > 0;
         
         let questionsHtml = '';
@@ -223,7 +223,7 @@ const UI = {
         return `
             <div class="exercise-container">
                 <h2 class="exercise-title" style="display: flex; align-items: center; justify-content: space-between;">
-                    <span>🖼️ DESCRIZIONE E TESTO</span>
+                    <span>📝 LABORATORIO DI PRODUZIONE</span>
                     <span style="font-size: 1.5rem; font-weight: 700; color: #888; background: #eee; padding: 0.3rem 0.8rem; border-radius: 12px;">${window.currentExerciseIndex + 1}/${total}</span>
                 </h2>
                 

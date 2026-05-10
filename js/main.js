@@ -1561,10 +1561,12 @@ window.MATERIE_HIERARCHY = {
         ]
     },
     'produzione': {
-        title: 'Produzione Scritta', parent: 'materie', type: 'submenu', items: [
+        title: 'Produzione', parent: 'materie', type: 'submenu', items: [
             { id: 'descrizione', title: 'Descrizione', icon: '🖼️', type: 'submenu' },
             { id: 'riassunto', title: 'Il Riassunto', icon: '📝', type: 'submenu' },
-            { id: 'riformulazione', title: 'Riformulazione', icon: '🔄', type: 'exercises' }
+            { id: 'riformulazione', title: 'Riformulazione', icon: '🔄', type: 'exercises' },
+            { id: 'esposizione', title: 'Esposizione Orale', icon: '🗣️', type: 'exercises' },
+            { id: 'dizionario', title: 'Il Dizionario', icon: '📖', type: 'exercises' }
         ]
     },
     'riassunto': {
@@ -1692,6 +1694,8 @@ window.MATERIE_HIERARCHY = {
     'animale': { type: 'exercises', parent: 'descrizione' },
     'oggetto': { type: 'exercises', parent: 'descrizione' },
     'luogo': { type: 'exercises', parent: 'descrizione' },
+    'esposizione': { type: 'exercises', parent: 'produzione' },
+    'dizionario': { type: 'exercises', parent: 'produzione' },
     'campi_semantici': { type: 'exercises', parent: 'lessico' },
     'significati': { type: 'exercises', parent: 'lessico' },
     'relazioni': { type: 'exercises', parent: 'lessico' },
@@ -2042,7 +2046,7 @@ function loadExercise(path) {
     else if (exercise.target) mount.innerHTML = path.includes('analisiLogica') ? window.UI.renderLogica(exercise, false, path, exercises.length) : window.UI.renderPeriodo(exercise, false, path, exercises.length);
     else if (path.includes('punteggiatura')) mount.innerHTML = window.UI.renderPunteggiatura(exercise, false, path, exercises.length);
     else if (path.includes('lettura')) mount.innerHTML = window.UI.renderLettura(exercise, false, path, exercises.length);
-    else if (path.includes('descrizione') || path.includes('produzione')) mount.innerHTML = window.UI.renderDescrizione(exercise, false, path, exercises.length);
+    else if (path.includes('descrizione') || path.includes('produzione')) mount.innerHTML = window.UI.renderProduzione(exercise, false, path, exercises.length);
     else if (path.includes('lessico')) mount.innerHTML = window.UI.renderLessico(exercise, false, path, exercises.length);
     else mount.innerHTML = window.UI.renderGrammatica(exercise, false, path, exercises.length);
 
