@@ -199,24 +199,29 @@ const UI = {
                 return `
                     <div class="question-block" style="background: #fdfdfd; padding: 2rem; border-radius: 20px; border: 2px solid #eee; margin-bottom: 2rem;">
                         <p style="font-size: 1.2rem; font-weight: 800; margin-bottom: 1.5rem; color: var(--text-color);">🤔 ${qIdx + 1}. ${q.question}</p>
-                        <div class="options-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                        <div class="options-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;" id="q-container-${qIdx}">
                             ${q.options.map(opt => `
-                                <button class="btn btn-secondary" style="padding: 1.2rem; font-weight: 600;" onclick="checkSubAnswer('${opt.replace(/'/g, "\\'")}', '${q.answer.replace(/'/g, "\\'")}', ${exercise.id})">${opt}</button>
+                                <button class="btn btn-secondary opt-btn-${qIdx}" style="padding: 1.2rem; font-weight: 600;" onclick="UI.selectMultiLetturaOption(this, ${qIdx}, '${opt.replace(/'/g, "\\'")}')">${opt}</button>
                             `).join('')}
                         </div>
                     </div>
                 `;
             }).join('');
+            
+            questionsHtml += `
+                <button class="btn btn-primary btn-verify" style="width: 100%; padding: 1.5rem; font-size: 1.25rem; font-weight: 800; margin-top: 2rem; border-radius: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.05);" onclick="UI.verifyMultiLetturaAnswers(${exercise.id})">VERIFICA LE RISPOSTE</button>
+            `;
         } else {
             questionsHtml = `
                 <div style="background: white; padding: 2rem; border-radius: 20px; border: 2px solid #eee; text-align: center;">
                     <p style="font-size: 1.2rem; font-weight: 800; margin-bottom: 2rem;">${exercise.question || 'SCEGLI LA RISPOSTA CORRETTA:'}</p>
-                    <div class="options-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+                    <div class="options-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;" id="single-lettura-container">
                         ${(exercise.options || []).map(opt => `
-                            <button class="btn btn-secondary" style="padding: 1.5rem; font-weight: 700;" onclick="checkAnswer('${opt.replace(/'/g, "\\'")}', '${exercise.answer.replace(/'/g, "\\'")}', 'descrizione', ${exercise.id})">${opt}</button>
+                            <button class="btn btn-secondary lettura-opt" style="padding: 1.5rem; font-weight: 700;" onclick="UI.selectLetturaOption(this, '${opt.replace(/'/g, "\\'")}')">${opt}</button>
                         `).join('')}
                     </div>
                 </div>
+                <button class="btn btn-primary btn-verify" style="width: 100%; padding: 1.5rem; font-size: 1.25rem; font-weight: 800; margin-top: 2rem; border-radius: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.05);" onclick="UI.verifyLetturaAnswer(${exercise.id}, '${exercise.answer.replace(/'/g, "\\'")}')">VERIFICA LA RISPOSTA</button>
             `;
         }
 
