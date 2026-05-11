@@ -227,8 +227,8 @@ const Auth = {
     loginWithGoogle: async () => {
         if (!window.fbAuth) return;
         const provider = new firebase.auth.GoogleAuthProvider();
+        provider.setCustomParameters({ prompt: 'select_account' });
         
-        // Su mobile usiamo il redirect, su desktop il popup
         const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
         
         try {
@@ -236,12 +236,13 @@ const Auth = {
                 await window.fbAuth.signInWithRedirect(provider);
             } else {
                 const result = await window.fbAuth.signInWithPopup(provider);
-                Auth._handleFirebaseUser(result.user);
-                hideLoginOverlay();
+                if (result && result.user) {
+                    await Auth._handleFirebaseUser(result.user);
+                    if (typeof hideLoginOverlay === 'function') hideLoginOverlay();
+                }
             }
         } catch (e) {
             console.error("Errore Google Login:", e);
-            // Se il popup fallisce (es. bloccato), prova il redirect
             try { await window.fbAuth.signInWithRedirect(provider); } catch(e2) {}
         }
     },
