@@ -221,20 +221,26 @@ function handleRoute() {
 
         // LOGIN LOGIC
         const isAuthInProgress = window.Auth && !window.Auth._isReady;
+        const hasFBUser = window.fbAuth && window.fbAuth.currentUser;
         
-        if (!Auth.isLoggedIn() && !isAuthInProgress && !window.hasShownInitialLogin) {
+        // Se abbiamo un utente Firebase o siamo loggati, nascondiamo SUBITO il login (evita loop su mobile)
+        if (Auth.isLoggedIn() || hasFBUser) {
+            hideLoginOverlay();
+        }
+
+        if (!Auth.isLoggedIn() && !isAuthInProgress && !hasFBUser && !window.hasShownInitialLogin) {
             window.hasShownInitialLogin = true;
             showLoginOverlay(hash);
             return;
         }
 
-        if (!Auth.isLoggedIn() && !isAuthInProgress && subType && section !== 'intro') {
+        if (!Auth.isLoggedIn() && !isAuthInProgress && !hasFBUser && subType && section !== 'intro') {
             showLoginOverlay(hash);
             return;
         }
 
-        // Nasconde l'overlay di login se siamo loggati (o se l'auth è pronta e l'utente c'è)
-        if (Auth.isLoggedIn()) {
+        // Ultimo controllo di sicurezza
+        if (Auth.isLoggedIn() || hasFBUser) {
             hideLoginOverlay();
         }
 

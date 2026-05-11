@@ -81,19 +81,39 @@ const Auth = {
     },
 
     _handleFirebaseUser: async (fbUser) => {
+        if (!fbUser) return;
+        
+        // FAST-PASS: Impostiamo subito un utente base per sbloccare la UI su mobile
+        if (!Auth._user) {
+            Auth._user = {
+                uid: fbUser.uid,
+                name: fbUser.displayName || 'Utente Google',
+                avatar: fbUser.photoURL || 'assets/avatar.png',
+                role: 'studente', // Default temporaneo
+                email: fbUser.email,
+                setupComplete: true, // Evitiamo loop di onboarding se possibile
+                isGuest: false
+            };
+            localStorage.setItem('palestra_user', JSON.stringify(Auth._user));
+        }
+
+        // Forza la chiusura del login IMMEDIATAMENTE
+        if (typeof hideLoginOverlay === 'function') {
+            console.log("🚀 Aggressive Hide Login");
+            hideLoginOverlay();
+        }
+
         try {
             const doc = await window.fbDb.collection('users').doc(fbUser.uid).get();
             const pendingRole = localStorage.getItem('pending_role');
 
             if (doc.exists) {
                 Auth._user = doc.data();
-                // Se l'utente ha selezionato un ruolo diverso (e non è admin), aggiorniamo il profilo esistente
                 if (pendingRole && Auth._user.role !== pendingRole && Auth._user.role !== 'admin') {
                     Auth._user.role = pendingRole;
                     await window.fbDb.collection('users').doc(fbUser.uid).update({ role: pendingRole });
                 }
             } else {
-                // Se l'utente non esiste nel database (es. primo accesso Google), creiamo un profilo base
                 Auth._user = {
                     uid: fbUser.uid,
                     name: fbUser.displayName || '',
@@ -102,43 +122,36 @@ const Auth = {
                     points: 0,
                     isGuest: false,
                     email: fbUser.email,
-                    setupComplete: false, // Richiede onboarding
+                    setupComplete: false,
                     createdAt: new Date().toISOString()
                 };
-                // Salvataggio iniziale nel DB per persistere il profilo
                 await window.fbDb.collection('users').doc(fbUser.uid).set(Auth._user);
             }
-            localStorage.removeItem('pending_role'); // Pulisci dopo l'uso
             
-            // Controllo privilegi Admin per email specifiche
+            localStorage.removeItem('pending_role');
+            
             const ADMIN_EMAILS = ['prof.memmo@gmail.com'];
             if (fbUser.email && ADMIN_EMAILS.includes(fbUser.email)) {
                 Auth._user.role = 'admin';
-                Auth._user.setupComplete = true; // Gli admin saltano l'onboarding se necessario o lo fanno una volta
+                Auth._user.setupComplete = true;
                 await window.fbDb.collection('users').doc(fbUser.uid).set({ role: 'admin', setupComplete: true }, { merge: true });
             }
 
             localStorage.setItem('palestra_user', JSON.stringify(Auth._user));
-            
-            // 1. Risolviamo la promise di ready PRIMA di dispatchare l'evento
             Auth._resolveReady();
             
-            // 2. Nascondi l'overlay
+            // Seconda passata di hiding per sicurezza
             if (typeof hideLoginOverlay === 'function') hideLoginOverlay();
             
-            // 3. Carica progressi
             if (window.Progress && typeof window.Progress.load === 'function') {
                 await window.Progress.load();
             }
-
-            // 4. Notifica il cambio di stato
             window.dispatchEvent(new CustomEvent('authChange'));
         } catch (e) {
-            console.error("Errore recupero/creazione dati cloud:", e);
-            Auth._resolveReady(); // Risolviamo comunque per non bloccare l'app
-            if (e.code === 'permission-denied') {
-                alert("Errore di sincronizzazione: Permessi insufficienti sul database Firebase. Contatta l'amministratore per verificare le Security Rules.");
-            }
+            console.error("Errore recupero cloud:", e);
+            Auth._resolveReady();
+            if (typeof hideLoginOverlay === 'function') hideLoginOverlay();
+            window.dispatchEvent(new CustomEvent('authChange'));
         }
     },
 
