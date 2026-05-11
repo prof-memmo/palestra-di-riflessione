@@ -2914,15 +2914,18 @@ function navigateExercise(direction, pathStr, skipVerify = false) {
 }
 
 window.checkMultiGridAnswer = (id, correctAnswers) => {
+    // Gestione di emergenza se correctAnswers non è un array (es. stringa singola da legacy data)
+    const answersArray = Array.isArray(correctAnswers) ? correctAnswers : [correctAnswers];
+    
     const selected = [];
-    for (let i = 0; i < correctAnswers.length; i++) {
+    for (let i = 0; i < answersArray.length; i++) {
         const sel = document.querySelector(`input[name="classif-${id}-${i}"]:checked`)?.value;
         selected.push(sel || "");
     }
 
     // Lo trasformiamo in stringa separata da | per compatibilità con checkAnswer
     const selectedStr = selected.join('|');
-    const correctStr = correctAnswers.join('|');
+    const correctStr = answersArray.join('|');
 
     checkAnswer(selectedStr, correctStr, 'classification-grid', id);
 };
