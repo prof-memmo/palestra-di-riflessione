@@ -799,10 +799,10 @@ async function loadAdminUsersInProfile() {
         const citiesMap = {};  
         const allClasses = [];
         
+        // 1. Mappiamo le classi e iniziamo a riempire scuole/città dalle classi
         classesSnapshot.forEach(doc => { 
             const d = doc.data();
-            const classId = doc.id;
-            allClasses.push({ id: classId, ...d });
+            allClasses.push({ id: doc.id, ...d });
             if (d.school) {
                 if (!schoolsMap[d.school]) schoolsMap[d.school] = { classCount: 0, studentCount: 0 };
                 schoolsMap[d.school].classCount++;
@@ -814,27 +814,37 @@ async function loadAdminUsersInProfile() {
         });
         window.allClassesForAdmin = allClasses;
 
+        // 2. Processiamo gli utenti e integriamo i conteggi (con ereditarietà)
         const allUsers = [];
         usersSnapshot.forEach(doc => {
             const u = doc.data();
             const userData = { id: doc.id, ...u, _progress: progressMap[doc.id] || {} };
             allUsers.push(userData);
-            
-            if (u.school) {
-                if (!schoolsMap[u.school]) schoolsMap[u.school] = { classCount: 0, studentCount: 0 };
-                schoolsMap[u.school].studentCount++;
+
+            let uSchool = u.school;
+            let uCity = u.city;
+
+            // Inheritance: se manca nel profilo, prendi dalla classe
+            if (!uSchool && u.classId) {
+                const c = allClasses.find(cls => cls.id === u.classId);
+                if (c) { uSchool = c.school; uCity = uCity || c.city; }
             }
-            if (u.city) {
-                if (!citiesMap[u.city]) citiesMap[u.city] = { userCount: 0 };
-                citiesMap[u.city].userCount++;
+
+            if (uSchool) {
+                if (!schoolsMap[uSchool]) schoolsMap[uSchool] = { classCount: 0, studentCount: 0 };
+                schoolsMap[uSchool].studentCount++;
+            }
+            if (uCity) {
+                if (!citiesMap[uCity]) citiesMap[uCity] = { userCount: 0 };
+                citiesMap[uCity].userCount++;
             }
         });
 
         const counts = { 
             tutti: allUsers.length, 
             docente: allUsers.filter(u => u.role === 'docente').length, 
-            studente: allUsers.filter(u => u.role === 'studente' || (!u.role && u.classId)).length, 
-            amico: allUsers.filter(u => u.role === 'amico' || u.role === 'guest' || (!u.role && !u.classId)).length,
+            studente: allUsers.filter(u => u.role === 'studente' || u.role === 'admin').length, 
+            amico: allUsers.filter(u => u.role === 'amico' || u.role === 'guest').length,
             classi: allClasses.length,
             scuole: Object.keys(schoolsMap).length,
             citta: Object.keys(citiesMap).length
@@ -1067,19 +1077,7 @@ window.adminEditAttribute = async function(type, oldValue) {
     } catch (e) { alert("Errore durante l'aggiornamento massivo: " + e.message); }
 };
 
-window.adminDeleteAttribute = async function(type, value) {
-    if (!confirm(`Vuoi rimuovere il valore "${value}" da tutti gli utenti e le classi? (Il campo diventerà vuoto)`)) return;
-    try {
-        const batch = window.fbDb.batch();
-        const classQ = await window.fbDb.collection('classes').where(type, '==', value).get();
-        classQ.forEach(doc => batch.update(doc.ref, { [type]: window.firebase.firestore.FieldValue.delete() }));
-        const userQ = await window.fbDb.collection('users').where(type, '==', value).get();
-        userQ.forEach(doc => batch.update(doc.ref, { [type]: window.firebase.firestore.FieldValue.delete() }));
-        await batch.commit();
-        alert("Campo ripulito con successo.");
-        loadAdminUsersInProfile();
-    } catch (e) { alert("Errore: " + e.message); }
-};
+
 
 window.adminActionOnSelected = async function(action) {
     const selectedCbs = document.querySelectorAll('.admin-student-checkbox:checked');
