@@ -115,7 +115,7 @@ const UI = {
                 </div>
                 
                 <button class="nav-arrow-btn left" onclick="window.navigateExercise(-1, '${pathStr}')" style="position: fixed; left: 1rem; bottom: 2rem; background: white; border: 2px solid #eee; width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; cursor: pointer; box-shadow: 0 5px 15px rgba(0,0,0,0.1); transition: all 0.3s; z-index: 5000;">⬅️</button>
-                <button class="nav-arrow-btn right" onclick="window.navigateExercise(1, '${pathStr}')" style="position: fixed; right: 1rem; bottom: 2rem; background: var(--primary-color); border: none; width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; cursor: pointer; box-shadow: 0 5px 15px rgba(0,0,0,0.2); transition: all 0.3s; z-index: 5000; color: white;">➡️</button>
+                <button class="nav-arrow-btn right" onclick="window.navigateExercise(1, '${pathStr}')" style="position: fixed; right: 1rem; bottom: 2rem; background: white; border: 2px solid #eee; width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; cursor: pointer; box-shadow: 0 5px 15px rgba(0,0,0,0.1); transition: all 0.3s; z-index: 5000;">➡️</button>
                 
                 <style>
                     .nav-arrow-btn:hover { transform: scale(1.1); }
