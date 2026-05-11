@@ -220,27 +220,22 @@ function handleRoute() {
         }
 
         // LOGIN LOGIC
-        const isAuthInProgress = window.Auth && !window.Auth._isReady;
-        const hasFBUser = window.fbAuth && window.fbAuth.currentUser;
-        
-        // Se abbiamo un utente Firebase o siamo loggati, nascondiamo SUBITO il login (evita loop su mobile)
-        if (Auth.isLoggedIn() || hasFBUser) {
-            hideLoginOverlay();
-        }
-
-        if (!Auth.isLoggedIn() && !isAuthInProgress && !hasFBUser && !window.hasShownInitialLogin) {
+        if (!Auth.isLoggedIn() && !window.hasShownInitialLogin) {
             window.hasShownInitialLogin = true;
             showLoginOverlay(hash);
             return;
         }
 
-        if (!Auth.isLoggedIn() && !isAuthInProgress && !hasFBUser && subType && section !== 'intro') {
+        if (!Auth.isLoggedIn() && subType && section !== 'intro') {
             showLoginOverlay(hash);
             return;
         }
 
-        // Ultimo controllo di sicurezza
-        if (Auth.isLoggedIn() || hasFBUser) {
+        // Nasconde l'overlay di login per tutti i path autenticati.
+        // Fondamentale per il redirect Google su mobile: _handleFirebaseUser
+        // potrebbe aver chiamato hideLoginOverlay() prima che main.js fosse
+        // completamente caricato, lasciando l'overlay visibile.
+        if (Auth.isLoggedIn()) {
             hideLoginOverlay();
         }
 
@@ -825,25 +820,13 @@ async function loadAdminUsersInProfile() {
             const userData = { id: doc.id, ...u, _progress: progressMap[doc.id] || {} };
             allUsers.push(userData);
             
-            // Determiniamo scuola e città (dal profilo o, se mancano, dalla classe)
-            let effectiveSchool = u.school;
-            let effectiveCity = u.city;
-            
-            if ((!effectiveSchool || !effectiveCity) && u.classId) {
-                const userClass = allClasses.find(c => c.id === u.classId);
-                if (userClass) {
-                    if (!effectiveSchool) effectiveSchool = userClass.school;
-                    if (!effectiveCity) effectiveCity = userClass.city;
-                }
+            if (u.school) {
+                if (!schoolsMap[u.school]) schoolsMap[u.school] = { classCount: 0, studentCount: 0 };
+                schoolsMap[u.school].studentCount++;
             }
-
-            if (effectiveSchool) {
-                if (!schoolsMap[effectiveSchool]) schoolsMap[effectiveSchool] = { classCount: 0, studentCount: 0 };
-                schoolsMap[effectiveSchool].studentCount++;
-            }
-            if (effectiveCity) {
-                if (!citiesMap[effectiveCity]) citiesMap[effectiveCity] = { userCount: 0 };
-                citiesMap[effectiveCity].userCount++;
+            if (u.city) {
+                if (!citiesMap[u.city]) citiesMap[u.city] = { userCount: 0 };
+                citiesMap[u.city].userCount++;
             }
         });
 

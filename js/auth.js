@@ -7,6 +7,7 @@ const Auth = {
     _handledByRedirect: false, // Flag: redirect ha già gestito l'auth, salta onAuthStateChanged
 
     init: () => {
+        // Inizializza la promise di ready
         Auth._readyPromise = new Promise((resolve) => {
             Auth._resolveReady = () => {
                 if (!Auth._isReady) {
@@ -16,39 +17,50 @@ const Auth = {
             };
         });
 
-        // Fallback locale immediato
+        // Fallback locale per utenti già esistenti (caricamento sincrono iniziale)
         const savedUser = localStorage.getItem('palestra_user');
         if (savedUser) {
-            try { Auth._user = JSON.parse(savedUser); } catch(e) { Auth._user = null; }
+            try {
+                Auth._user = JSON.parse(savedUser);
+            } catch(e) {
+                Auth._user = null;
+                localStorage.removeItem('palestra_user');
+            }
         }
 
+        // Inizializza listener Firebase
         if (window.fbAuth) {
-            // Risolviamo il risultato del redirect (fondamentale per mobile)
-            window.fbAuth.getRedirectResult().then(async (result) => {
+            // Gestisci il risultato del redirect (per mobile)
+            // Fondamentale: su mobile getRedirectResult DEVE essere risolto prima di onAuthStateChanged
+            const redirectPromise = window.fbAuth.getRedirectResult().then(async (result) => {
                 if (result && result.user) {
                     Auth._handledByRedirect = true;
                     await Auth._handleFirebaseUser(result.user);
                 }
             }).catch(e => {
                 console.error("Errore redirect:", e);
+                Auth._resolveReady();
             });
 
-            // Listener stato
             window.fbAuth.onAuthStateChanged(async (user) => {
                 if (user) {
                     Auth._fbUser = user;
+                    // Se il redirect ha già processato questo stesso utente, evitiamo la doppia chiamata
                     if (!Auth._handledByRedirect) {
                         await Auth._handleFirebaseUser(user);
                     }
+                    Auth._resolveReady();
                 } else {
+                    // Aspettiamo che il redirect sia processato prima di dire che l'utente è nullo
+                    // (potrebbe essere in corso un login via redirect)
+                    await redirectPromise;
                     if (!Auth._handledByRedirect) {
                         Auth._fbUser = null;
                         Auth._user = null;
                         localStorage.removeItem('palestra_user');
+                        Auth._resolveReady();
                     }
                 }
-                // Risolviamo sempre dopo un minimo di tempo per dare modo al redirect result di arrivare
-                setTimeout(Auth._resolveReady, 500);
             });
         } else {
             Auth._resolveReady();
@@ -60,39 +72,19 @@ const Auth = {
     },
 
     _handleFirebaseUser: async (fbUser) => {
-        if (!fbUser) return;
-        
-        // FAST-PASS: Impostiamo subito un utente base per sbloccare la UI su mobile
-        if (!Auth._user) {
-            Auth._user = {
-                uid: fbUser.uid,
-                name: fbUser.displayName || 'Utente Google',
-                avatar: fbUser.photoURL || 'assets/avatar.png',
-                role: 'studente', // Default temporaneo
-                email: fbUser.email,
-                setupComplete: true, // Evitiamo loop di onboarding se possibile
-                isGuest: false
-            };
-            localStorage.setItem('palestra_user', JSON.stringify(Auth._user));
-        }
-
-        // Forza la chiusura del login IMMEDIATAMENTE
-        if (typeof hideLoginOverlay === 'function') {
-            console.log("🚀 Aggressive Hide Login");
-            hideLoginOverlay();
-        }
-
         try {
             const doc = await window.fbDb.collection('users').doc(fbUser.uid).get();
             const pendingRole = localStorage.getItem('pending_role');
 
             if (doc.exists) {
                 Auth._user = doc.data();
+                // Se l'utente ha selezionato un ruolo diverso (e non è admin), aggiorniamo il profilo esistente
                 if (pendingRole && Auth._user.role !== pendingRole && Auth._user.role !== 'admin') {
                     Auth._user.role = pendingRole;
                     await window.fbDb.collection('users').doc(fbUser.uid).update({ role: pendingRole });
                 }
             } else {
+                // Se l'utente non esiste nel database (es. primo accesso Google), creiamo un profilo base
                 Auth._user = {
                     uid: fbUser.uid,
                     name: fbUser.displayName || '',
@@ -101,36 +93,43 @@ const Auth = {
                     points: 0,
                     isGuest: false,
                     email: fbUser.email,
-                    setupComplete: false,
+                    setupComplete: false, // Richiede onboarding
                     createdAt: new Date().toISOString()
                 };
+                // Salvataggio iniziale nel DB per persistere il profilo
                 await window.fbDb.collection('users').doc(fbUser.uid).set(Auth._user);
             }
+            localStorage.removeItem('pending_role'); // Pulisci dopo l'uso
             
-            localStorage.removeItem('pending_role');
-            
+            // Controllo privilegi Admin per email specifiche
             const ADMIN_EMAILS = ['prof.memmo@gmail.com'];
             if (fbUser.email && ADMIN_EMAILS.includes(fbUser.email)) {
                 Auth._user.role = 'admin';
-                Auth._user.setupComplete = true;
+                Auth._user.setupComplete = true; // Gli admin saltano l'onboarding se necessario o lo fanno una volta
                 await window.fbDb.collection('users').doc(fbUser.uid).set({ role: 'admin', setupComplete: true }, { merge: true });
             }
 
             localStorage.setItem('palestra_user', JSON.stringify(Auth._user));
+            
+            // 1. Risolviamo la promise di ready PRIMA di dispatchare l'evento
             Auth._resolveReady();
             
-            // Seconda passata di hiding per sicurezza
+            // 2. Nascondi l'overlay
             if (typeof hideLoginOverlay === 'function') hideLoginOverlay();
             
+            // 3. Carica progressi
             if (window.Progress && typeof window.Progress.load === 'function') {
                 await window.Progress.load();
             }
+
+            // 4. Notifica il cambio di stato
             window.dispatchEvent(new CustomEvent('authChange'));
         } catch (e) {
-            console.error("Errore recupero cloud:", e);
-            Auth._resolveReady();
-            if (typeof hideLoginOverlay === 'function') hideLoginOverlay();
-            window.dispatchEvent(new CustomEvent('authChange'));
+            console.error("Errore recupero/creazione dati cloud:", e);
+            Auth._resolveReady(); // Risolviamo comunque per non bloccare l'app
+            if (e.code === 'permission-denied') {
+                alert("Errore di sincronizzazione: Permessi insufficienti sul database Firebase. Contatta l'amministratore per verificare le Security Rules.");
+            }
         }
     },
 
