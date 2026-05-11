@@ -383,7 +383,9 @@ function renderIntroPage() {
                         <p style="font-size: 0.95rem; line-height: 1.6;">
                             • <b>Classi Digitali</b>: Accedi con Google, crea la tua classe e genera un <b>Codice Univoco</b>.<br>
                             • <b>Distribuzione Rapida</b>: Condividi il codice con gli studenti per collegarli istantaneamente al tuo profilo.<br>
-                            • <b>Monitoraggio</b>: Visualizza i progressi della classe e scopri quali argomenti richiedono più ripasso.
+                            • <b>Monitoraggio</b>: Visualizza i progressi della classe e scopri quali argomenti richiedono più ripasso.<br>
+                            • <b>Gestione Flessibile</b>: Sposta gli studenti tra le tue classi, modificale o rimuovile in ogni momento.<br>
+                            • <b>Assegnazione Diretta</b>: Assegna qualsiasi esercizio alle tue classi o condividilo su <b>Google Classroom</b> con un click.
                         </p>
                     </div>
                 </div>
@@ -612,7 +614,10 @@ async function renderProfiloPage() {
 
             ${user.role === 'docente' ? `
                 <div class="teacher-area" style="margin-bottom: 3rem; padding: 2rem; background: #f0f7ff; border-radius: 30px; border: 2px dashed #3498db;">
-                    <h3 style="color: #2980b9; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.8rem;">👨‍🏫 AREA CLASSI</h3>
+                    <h3 style="color: #2980b9; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.8rem;">
+                        👨‍🏫 AREA CLASSI
+                        <span onclick="window.showTeacherGuide()" title="Clicca per la Guida Docente" style="background: white; color: #3498db; width: 22px; height: 22px; display: inline-flex; align-items: center; justify-content: center; border-radius: 50%; font-size: 0.75rem; cursor: pointer; border: 2px solid #3498db; font-weight: 900; font-family: serif; font-style: italic; transition: all 0.2s; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">i</span>
+                    </h3>
                     
 
                     
@@ -935,7 +940,6 @@ async function loadAdminUsersInProfile() {
         console.error("Errore recupero utenti admin in profilo:", e);
         container.innerHTML = `<p style="color: #e74c3c;">Errore nel caricamento dei dati: ${e.message}</p>`;
     }
-}
 }
 
 window.setActiveAdminFilter = function(role) {
@@ -3711,6 +3715,45 @@ window.saveTeacherClass = async function(id) {
         console.error("Errore aggiornamento classe:", e);
         alert("Errore durante il salvataggio: " + e.message);
     }
+};
+
+window.showTeacherGuide = function() {
+    const modal = document.getElementById('feedback-modal');
+    const body = document.getElementById('feedback-body');
+    if (!modal || !body) return;
+
+    body.innerHTML = `
+        <div style="text-align: left; animation: fadeIn 0.3s ease-out;">
+            <h3 style="color: var(--primary-color); margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.8rem; font-weight: 900;">
+                📘 GUIDA DOCENTE
+            </h3>
+            <div style="display: flex; flex-direction: column; gap: 1.2rem; font-size: 0.95rem; line-height: 1.5; color: #444;">
+                <div style="background: #f0f7ff; padding: 1rem; border-radius: 15px; border-left: 5px solid #3498db;">
+                    <strong style="color: #2980b9; display: block; margin-bottom: 0.3rem;">📂 CREAZIONE E RECUPERO CLASSI</strong>
+                    Crea una classe digitale cliccando su <b>"CREA"</b>. Verrà generato un codice unico (es. PG-XXXX) da condividere con i tuoi studenti. Se cambi dispositivo, usa <b>"Recupera con Codice"</b> per ricollegare le tue classi.
+                </div>
+                
+                <div style="background: #f0fff4; padding: 1rem; border-radius: 15px; border-left: 5px solid #27ae60;">
+                    <strong style="color: #219150; display: block; margin-bottom: 0.3rem;">📊 MONITORAGGIO E REGISTRO</strong>
+                    Clicca su <b>"👥 STUDENTI"</b> per aprire il registro della classe. Qui vedrai in tempo reale i punti XP e il numero di attività completate da ogni studente.
+                </div>
+
+                <div style="background: #fff9f0; padding: 1rem; border-radius: 15px; border-left: 5px solid #e67e22;">
+                    <strong style="color: #d35400; display: block; margin-bottom: 0.3rem;">⚙️ GESTIONE STUDENTI</strong>
+                    Nel registro, seleziona gli studenti tramite le caselle per <b>spostarli</b> tra le tue classi o <b>rimuoverli</b> definitivamente dalla classe attuale.
+                </div>
+
+                <div style="background: #f5f6fa; padding: 1rem; border-radius: 15px; border-left: 5px solid #7f8c8d;">
+                    <strong style="color: #2c3e50; display: block; margin-bottom: 0.3rem;">📤 ASSEGNAZIONE ESERCIZI</strong>
+                    Mentre svolgi un esercizio, clicca sul tasto <b>"CONDIVIDI"</b> in alto a destra per assegnarlo a una classe specifica o generare un link per <b>Google Classroom</b>.
+                </div>
+            </div>
+            <div style="margin-top: 2rem; text-align: center;">
+                <button onclick="UI.hideModal()" class="btn btn-primary" style="padding: 0.8rem 2.5rem; border-radius: 50px; font-weight: 800;">HO CAPITO, GRAZIE!</button>
+            </div>
+        </div>
+    `;
+    modal.classList.remove('hidden');
 };
 
 window.addEventListener('authChange', () => {
