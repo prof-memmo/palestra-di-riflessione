@@ -114,24 +114,22 @@ const UI = {
                     <div style="width: ${pct}%; height: 100%; background: linear-gradient(90deg, var(--primary-color), var(--accent-color)); transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1); border-radius: 6px;"></div>
                 </div>
                 
-                <button class="nav-arrow-btn left" onclick="window.navigateExercise(-1, '${pathStr}')" style="position: fixed; left: calc(var(--sidebar-width) + 2rem); top: 50%; transform: translateY(-50%); background: white; border: 2px solid #eee; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; cursor: pointer; box-shadow: 0 5px 15px rgba(0,0,0,0.1); transition: all 0.3s; z-index: 1000;">⬅️</button>
-                <button class="nav-arrow-btn right" onclick="window.navigateExercise(1, '${pathStr}')" style="position: fixed; right: 2rem; top: 50%; transform: translateY(-50%); background: white; border: 2px solid #eee; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; cursor: pointer; box-shadow: 0 5px 15px rgba(0,0,0,0.1); transition: all 0.3s; z-index: 1000;">➡️</button>
+                <button class="nav-arrow-btn left" onclick="window.navigateExercise(-1, '${pathStr}')" style="position: fixed; left: 1rem; bottom: 2rem; background: white; border: 2px solid #eee; width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; cursor: pointer; box-shadow: 0 5px 15px rgba(0,0,0,0.1); transition: all 0.3s; z-index: 5000;">⬅️</button>
+                <button class="nav-arrow-btn right" onclick="window.navigateExercise(1, '${pathStr}')" style="position: fixed; right: 1rem; bottom: 2rem; background: var(--primary-color); border: none; width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; cursor: pointer; box-shadow: 0 5px 15px rgba(0,0,0,0.2); transition: all 0.3s; z-index: 5000; color: white;">➡️</button>
                 
                 <style>
-                    .nav-arrow-btn:hover { background: var(--primary-color) !important; color: white !important; border-color: var(--primary-color); transform: translateY(-50%) scale(1.1); }
+                    .nav-arrow-btn:hover { transform: scale(1.1); }
                     
-                    .navbar.hidden ~ main .nav-arrow-btn.left {
-                        left: 2rem !important;
+                    @media (min-width: 1025px) {
+                        .nav-arrow-btn { top: 50% !important; bottom: auto !important; transform: translateY(-50%) !important; width: 60px !important; height: 60px !important; font-size: 1.5rem !important; }
+                        .nav-arrow-btn.left { left: calc(var(--sidebar-width) + 2rem) !important; }
+                        .nav-arrow-btn.right { right: 2rem !important; }
+                        .navbar.hidden ~ main .nav-arrow-btn.left { left: 2rem !important; }
                     }
 
                     @media (max-width: 1024px) {
-                        .nav-arrow-btn.left { left: 2rem !important; }
-                    }
-
-                    @media (max-width: 768px) {
-                        .exercise-nav { flex-direction: row !important; justify-content: space-between !important; gap: 1rem !important; }
-                        .nav-arrow-btn { position: static !important; transform: none !important; width: 48% !important; border-radius: 12px !important; height: auto !important; padding: 1rem !important; margin-top: 0 !important; display: inline-flex !important; box-shadow: 0 2px 8px rgba(0,0,0,0.05) !important; justify-content: center !important; }
-                        .nav-arrow-btn:hover { transform: none !important; }
+                        .nav-arrow-btn.left { left: 1rem !important; bottom: 1.5rem !important; }
+                        .nav-arrow-btn.right { right: 1rem !important; bottom: 1.5rem !important; }
                     }
                 </style>
             </div>
