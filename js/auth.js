@@ -11,56 +11,65 @@ const Auth = {
         Auth._readyPromise = new Promise((resolve) => {
             Auth._resolveReady = () => {
                 if (!Auth._isReady) {
+                    console.log("🔓 Auth is Ready");
                     Auth._isReady = true;
                     resolve();
                 }
             };
         });
 
-        // Fallback locale per utenti già esistenti (caricamento sincrono iniziale)
+        // 1. Fallback locale immediato
         const savedUser = localStorage.getItem('palestra_user');
         if (savedUser) {
-            try {
-                Auth._user = JSON.parse(savedUser);
-            } catch(e) {
-                Auth._user = null;
-                localStorage.removeItem('palestra_user');
-            }
+            try { Auth._user = JSON.parse(savedUser); } catch(e) { Auth._user = null; }
         }
 
-        // Inizializza listener Firebase
         if (window.fbAuth) {
-            // Gestisci il risultato del redirect (per mobile)
-            // Fondamentale: su mobile getRedirectResult DEVE essere risolto prima di onAuthStateChanged
-            const redirectPromise = window.fbAuth.getRedirectResult().then(async (result) => {
+            // 2. Forza persistenza locale
+            window.fbAuth.setPersistence(firebase.auth.Auth.Persistence.LOCAL).catch(e => console.error("Persistence error:", e));
+
+            let redirectChecked = false;
+            let authStateChecked = false;
+
+            const checkFinished = () => {
+                if (redirectChecked && authStateChecked) {
+                    Auth._resolveReady();
+                }
+            };
+
+            // 3. Gestione Redirect (fondamentale per mobile)
+            window.fbAuth.getRedirectResult().then(async (result) => {
+                redirectChecked = true;
                 if (result && result.user) {
+                    console.log("🔄 Risultato redirect catturato");
                     Auth._handledByRedirect = true;
                     await Auth._handleFirebaseUser(result.user);
                 }
+                checkFinished();
             }).catch(e => {
                 console.error("Errore redirect:", e);
-                Auth._resolveReady();
+                redirectChecked = true;
+                checkFinished();
             });
 
+            // 4. Listener stato (per sessioni esistenti o login completati)
             window.fbAuth.onAuthStateChanged(async (user) => {
+                authStateChecked = true;
                 if (user) {
+                    console.log("👤 Utente trovato in sessione");
                     Auth._fbUser = user;
-                    // Se il redirect ha già processato questo stesso utente, evitiamo la doppia chiamata
                     if (!Auth._handledByRedirect) {
                         await Auth._handleFirebaseUser(user);
                     }
-                    Auth._resolveReady();
                 } else {
-                    // Aspettiamo che il redirect sia processato prima di dire che l'utente è nullo
-                    // (potrebbe essere in corso un login via redirect)
-                    await redirectPromise;
+                    console.log("🚫 Nessun utente in sessione");
                     if (!Auth._handledByRedirect) {
                         Auth._fbUser = null;
                         Auth._user = null;
                         localStorage.removeItem('palestra_user');
-                        Auth._resolveReady();
                     }
                 }
+                checkFinished();
             });
         } else {
             Auth._resolveReady();

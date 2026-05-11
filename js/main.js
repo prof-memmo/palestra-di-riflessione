@@ -220,21 +220,20 @@ function handleRoute() {
         }
 
         // LOGIN LOGIC
-        if (!Auth.isLoggedIn() && !window.hasShownInitialLogin) {
+        const isAuthInProgress = window.Auth && !window.Auth._isReady;
+        
+        if (!Auth.isLoggedIn() && !isAuthInProgress && !window.hasShownInitialLogin) {
             window.hasShownInitialLogin = true;
             showLoginOverlay(hash);
             return;
         }
 
-        if (!Auth.isLoggedIn() && subType && section !== 'intro') {
+        if (!Auth.isLoggedIn() && !isAuthInProgress && subType && section !== 'intro') {
             showLoginOverlay(hash);
             return;
         }
 
-        // Nasconde l'overlay di login per tutti i path autenticati.
-        // Fondamentale per il redirect Google su mobile: _handleFirebaseUser
-        // potrebbe aver chiamato hideLoginOverlay() prima che main.js fosse
-        // completamente caricato, lasciando l'overlay visibile.
+        // Nasconde l'overlay di login se siamo loggati (o se l'auth è pronta e l'utente c'è)
         if (Auth.isLoggedIn()) {
             hideLoginOverlay();
         }
