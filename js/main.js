@@ -630,7 +630,8 @@ async function renderProfiloPage() {
                                                 CODICE: ${c.code} 📋 <span style="color: #7f8c8d; font-weight: 400; margin-left: 0.5rem; font-style: italic;">(condividi il codice con la classe)</span>
                                             </div>
                                             <div style="margin-top: 0.5rem; display: flex; gap: 0.5rem;">
-                                                <button onclick="window.viewClassStudents('${c.code}', '${c.name}')" style="background: #eef2f7; border: none; color: #57606f; padding: 0.3rem 0.6rem; border-radius: 8px; font-size: 0.7rem; font-weight: 700; cursor: pointer;">👥 STUDENTI</button>
+                                                <button onclick="window.viewClassStudents('${c.code}', '${c.name.replace(/'/g, "\\'")}')" style="background: #eef2f7; border: none; color: #57606f; padding: 0.3rem 0.6rem; border-radius: 8px; font-size: 0.7rem; font-weight: 700; cursor: pointer;">👥 STUDENTI</button>
+                                                <button onclick="window.editTeacherClass('${c.id}', '${c.name.replace(/'/g, "\\'")}', '${(c.school || '').replace(/'/g, "\\'")}', '${(c.city || '').replace(/'/g, "\\'")}')" style="background: #eef2f7; border: none; color: #2980b9; padding: 0.3rem 0.6rem; border-radius: 8px; font-size: 0.7rem; font-weight: 700; cursor: pointer;">✏️ MODIFICA</button>
                                                 <button onclick="window.removeTeacherClass(${idx})" style="background: #fceaea; border: none; color: #e74c3c; padding: 0.3rem 0.6rem; border-radius: 8px; font-size: 0.7rem; font-weight: 700; cursor: pointer;">🗑️ ELIMINA</button>
                                             </div>
                                         </div>
@@ -773,16 +774,29 @@ async function loadAdminUsersInProfile() {
     if (!container) return;
 
     try {
-        const usersSnapshot = await window.fbDb.collection('users').get();
-        const progressSnapshot = await window.fbDb.collection('progress').get();
+        const [usersSnapshot, progressSnapshot, classesSnapshot] = await Promise.all([
+            window.fbDb.collection('users').get(),
+            window.fbDb.collection('progress').get(),
+            window.fbDb.collection('classes').get()
+        ]);
         
         const progressMap = {};
         progressSnapshot.forEach(doc => { progressMap[doc.id] = doc.data(); });
 
-        // Raccoglie tutti gli utenti
+        const allClasses = [];
+        const schools = new Set();
+        classesSnapshot.forEach(doc => { 
+            const d = doc.data();
+            allClasses.push({ id: doc.id, ...d });
+            if (d.school) schools.add(d.school);
+        });
+        window.allClassesForAdmin = allClasses;
+
         const allUsers = [];
         usersSnapshot.forEach(doc => {
-            allUsers.push({ id: doc.id, ...doc.data(), _progress: progressMap[doc.id] || {} });
+            const u = doc.data();
+            allUsers.push({ id: doc.id, ...u, _progress: progressMap[doc.id] || {} });
+            if (u.school) schools.add(u.school);
         });
 
         if (allUsers.length === 0) {
@@ -790,17 +804,18 @@ async function loadAdminUsersInProfile() {
             return;
         }
 
-        // Conta per ruolo
-        const counts = { tutti: allUsers.length, docente: 0, studente: 0, amico: 0 };
-        allUsers.forEach(u => {
-            const r = (u.role || '').toLowerCase();
-            if (r === 'docente') counts.docente++;
-            else if (r === 'amico' || r === 'guest') counts.amico++;
-            else counts.studente++;
-        });
+        // Conteggi
+        const counts = { 
+            tutti: allUsers.length, 
+            docente: allUsers.filter(u => u.role === 'docente').length, 
+            studente: allUsers.filter(u => u.role === 'studente' || (!u.role && u.classId)).length, 
+            amico: allUsers.filter(u => u.role === 'amico' || u.role === 'guest' || (!u.role && !u.classId)).length,
+            classi: allClasses.length,
+            scuole: schools.size
+        };
 
         // Render utente
-        function renderUserRow(userData, docId) {
+        function renderUserRow(userData) {
             const userProgress = userData._progress;
             const isImage = userData.avatar && (userData.avatar.includes('/') || userData.avatar.includes('.'));
             const avatarHtml = isImage ? `<img src="${userData.avatar}" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;">` : `<span style="font-size: 1.5rem;">${userData.avatar || '👤'}</span>`;
@@ -808,7 +823,25 @@ async function loadAdminUsersInProfile() {
             const roleColors = { docente: '#2980b9', amico: '#8e44ad', guest: '#8e44ad', studente: '#27ae60', admin: '#e74c3c' };
             const roleColor = roleColors[role] || '#27ae60';
 
-            return `<div class="admin-user-row" data-role="${role}" style="display: flex; flex-wrap: wrap; align-items: center; gap: 1rem; padding: 1.2rem; background: white; border-radius: 20px; border: 1px solid #eee; transition: all 0.2s;">
+            // Classe associata
+            let classLabel = '';
+            if (userData.classId) {
+                const c = allClasses.find(cl => cl.id === userData.classId);
+                classLabel = c ? `${c.name} (${c.code})` : userData.className || 'Classe N/D';
+            }
+
+            return `<div class="admin-user-row" 
+                        data-role="${role}" 
+                        data-name="${(userData.name || '').toLowerCase()}" 
+                        data-email="${(userData.email || '').toLowerCase()}"
+                        data-school="${(userData.school || '').toLowerCase()}"
+                        data-class="${classLabel.toLowerCase()}"
+                        style="display: flex; flex-wrap: wrap; align-items: center; gap: 1rem; padding: 1.2rem; background: white; border-radius: 20px; border: 1px solid #eee; transition: all 0.2s;">
+                
+                <div style="width: 40px; text-align: center;">
+                    ${role === 'studente' ? `<input type="checkbox" class="admin-student-checkbox" data-uid="${userData.id}" data-name="${userData.name}">` : ''}
+                </div>
+
                 <div style="width: 50px; height: 50px; background: #f8f9fa; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 2px solid #eee; overflow: hidden; flex-shrink: 0;">
                     ${avatarHtml}
                 </div>
@@ -818,62 +851,182 @@ async function loadAdminUsersInProfile() {
                         ${userData.email || 'No email'} • 
                         <span style="color: ${roleColor}; font-weight: 700;">${userData.roleLabel || userData.role || 'Studente'}</span>
                     </p>
-                    <p style="margin: 0; font-size: 0.75rem; color: #999;">Iscritto il: ${userData.joinedAt ? new Date(userData.joinedAt).toLocaleDateString() : 'N/D'}</p>
+                    <p style="margin: 0; font-size: 0.75rem; color: #999;">
+                        ${userData.school ? `🏫 ${userData.school} • ` : ''} 
+                        ${classLabel ? `📁 ${classLabel} • ` : ''}
+                        Iscritto il: ${userData.joinedAt ? new Date(userData.joinedAt).toLocaleDateString() : 'N/D'}
+                    </p>
                 </div>
                 <div style="text-align: right; margin-right: 1rem; flex-shrink: 0;">
                     <div style="font-weight: 800; color: var(--primary-color); font-size: 1.1rem;">${userProgress.points || 0} XP</div>
                     <div style="font-size: 0.8rem; color: #999;">${userProgress.vocab ? userProgress.vocab.length : 0} parole</div>
                 </div>
-                <button onclick="adminDeleteUserInProfile('${docId}', '${(userData.name || 'Anonimo').replace(/'/g, "\\'")}')" style="background: #fff0f0; border: none; padding: 0.8rem; border-radius: 15px; cursor: pointer; color: #e74c3c; font-size: 1.2rem; transition: all 0.2s; margin-left: auto;" title="Elimina Utente">
+                <button onclick="adminDeleteUserInProfile('${userData.id}', '${(userData.name || 'Anonimo').replace(/'/g, "\\'")}')" style="background: #fff0f0; border: none; padding: 0.8rem; border-radius: 15px; cursor: pointer; color: #e74c3c; font-size: 1.2rem; transition: all 0.2s; margin-left: auto;" title="Elimina Utente">
                     🗑️
                 </button>
             </div>`;
         }
 
-        const usersHtml = allUsers.map(u => renderUserRow(u, u.id)).join('');
+        const usersHtml = allUsers.map(u => renderUserRow(u)).join('');
 
         container.innerHTML = `
-            <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1.5rem;" id="admin-filter-btns">
-                <button onclick="filterAdminUsers('tutti')" class="admin-filter-btn active" data-filter="tutti" style="padding: 0.5rem 1.2rem; border-radius: 50px; border: none; background: var(--primary-color); color: white; font-weight: 800; cursor: pointer;">
-                    Tutti <span style="background: rgba(255,255,255,0.3); border-radius: 50px; padding: 0.1rem 0.5rem; font-size: 0.8rem;">${counts.tutti}</span>
-                </button>
-                <button onclick="filterAdminUsers('docente')" class="admin-filter-btn" data-filter="docente" style="padding: 0.5rem 1.2rem; border-radius: 50px; border: 2px solid #2980b9; background: white; color: #2980b9; font-weight: 800; cursor: pointer;">
-                    👨‍🏫 Docenti <span style="background: #eef2f7; border-radius: 50px; padding: 0.1rem 0.5rem; font-size: 0.8rem;">${counts.docente}</span>
-                </button>
-                <button onclick="filterAdminUsers('studente')" class="admin-filter-btn" data-filter="studente" style="padding: 0.5rem 1.2rem; border-radius: 50px; border: 2px solid #27ae60; background: white; color: #27ae60; font-weight: 800; cursor: pointer;">
-                    🎓 Studenti <span style="background: #eefaf3; border-radius: 50px; padding: 0.1rem 0.5rem; font-size: 0.8rem;">${counts.studente}</span>
-                </button>
-                <button onclick="filterAdminUsers('amico')" class="admin-filter-btn" data-filter="amico" style="padding: 0.5rem 1.2rem; border-radius: 50px; border: 2px solid #8e44ad; background: white; color: #8e44ad; font-weight: 800; cursor: pointer;">
-                    👥 Amici <span style="background: #f5eef8; border-radius: 50px; padding: 0.1rem 0.5rem; font-size: 0.8rem;">${counts.amico}</span>
-                </button>
+            <!-- Stats Bar -->
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 1rem; margin-bottom: 2rem;">
+                <div style="background: white; padding: 1rem; border-radius: 20px; text-align: center; border: 1px solid #eee; box-shadow: 0 4px 10px rgba(0,0,0,0.02);">
+                    <div style="font-size: 1.5rem; font-weight: 900; color: var(--primary-color);">${counts.studenti}</div>
+                    <div style="font-size: 0.7rem; color: #888; font-weight: 700; text-transform: uppercase;">Studenti</div>
+                </div>
+                <div style="background: white; padding: 1rem; border-radius: 20px; text-align: center; border: 1px solid #eee; box-shadow: 0 4px 10px rgba(0,0,0,0.02);">
+                    <div style="font-size: 1.5rem; font-weight: 900; color: #2980b9;">${counts.docenti}</div>
+                    <div style="font-size: 0.7rem; color: #888; font-weight: 700; text-transform: uppercase;">Docenti</div>
+                </div>
+                <div style="background: white; padding: 1rem; border-radius: 20px; text-align: center; border: 1px solid #eee; box-shadow: 0 4px 10px rgba(0,0,0,0.02);">
+                    <div style="font-size: 1.5rem; font-weight: 900; color: #8e44ad;">${counts.nonScolastici}</div>
+                    <div style="font-size: 0.7rem; color: #888; font-weight: 700; text-transform: uppercase;">Amici</div>
+                </div>
+                <div style="background: white; padding: 1rem; border-radius: 20px; text-align: center; border: 1px solid #eee; box-shadow: 0 4px 10px rgba(0,0,0,0.02);">
+                    <div style="font-size: 1.5rem; font-weight: 900; color: #e67e22;">${counts.classi}</div>
+                    <div style="font-size: 0.7rem; color: #888; font-weight: 700; text-transform: uppercase;">Classi</div>
+                </div>
+                <div style="background: white; padding: 1rem; border-radius: 20px; text-align: center; border: 1px solid #eee; box-shadow: 0 4px 10px rgba(0,0,0,0.02);">
+                    <div style="font-size: 1.5rem; font-weight: 900; color: #2c3e50;">${counts.scuole}</div>
+                    <div style="font-size: 0.7rem; color: #888; font-weight: 700; text-transform: uppercase;">Scuole</div>
+                </div>
             </div>
+
+            <!-- Search and Filter -->
+            <div style="background: #f8f9fa; padding: 1.5rem; border-radius: 25px; margin-bottom: 1.5rem;">
+                <div style="display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 1rem;">
+                    <input type="text" id="admin-search-input" oninput="window.filterAdminUsers()" placeholder="Cerca per nome, email, scuola o classe..." style="flex: 1; min-width: 250px; padding: 0.8rem 1.2rem; border-radius: 50px; border: 1px solid #ddd; outline: none; font-size: 0.9rem;">
+                    <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;" id="admin-filter-btns">
+                        <button onclick="window.setActiveAdminFilter('tutti')" class="admin-filter-btn active" data-filter="tutti" style="padding: 0.5rem 1.2rem; border-radius: 50px; border: none; background: var(--primary-color); color: white; font-weight: 800; cursor: pointer;">Tutti</button>
+                        <button onclick="window.setActiveAdminFilter('docente')" class="admin-filter-btn" data-filter="docente" style="padding: 0.5rem 1.2rem; border-radius: 50px; border: 1px solid #ddd; background: white; color: #666; font-weight: 800; cursor: pointer;">Docenti</button>
+                        <button onclick="window.setActiveAdminFilter('studente')" class="admin-filter-btn" data-filter="studente" style="padding: 0.5rem 1.2rem; border-radius: 50px; border: 1px solid #ddd; background: white; color: #666; font-weight: 800; cursor: pointer;">Studenti</button>
+                        <button onclick="window.setActiveAdminFilter('amico')" class="admin-filter-btn" data-filter="amico" style="padding: 0.5rem 1.2rem; border-radius: 50px; border: 1px solid #ddd; background: white; color: #666; font-weight: 800; cursor: pointer;">Non Scolastici</button>
+                    </div>
+                </div>
+
+                <!-- Admin Management Bar -->
+                <div id="admin-management-bar" style="background: #fff9f0; padding: 0.8rem; border-radius: 15px; border: 1px solid #ffeaa7; display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; display: none;">
+                    <span style="font-weight: 800; font-size: 0.75rem; color: #d35400;">GESTIONE SELEZIONATI:</span>
+                    <select id="admin-move-destination" style="padding: 0.4rem; border-radius: 8px; border: 1px solid #ddd; font-size: 0.8rem;">
+                        <option value="">Sposta in classe...</option>
+                        ${allClasses.sort((a,b) => a.name.localeCompare(b.name)).map(c => `<option value="${c.id}">${c.name} (${c.code})</option>`).join('')}
+                    </select>
+                    <button onclick="window.adminActionOnSelected('move')" style="background: #e67e22; color: white; border: none; padding: 0.4rem 1rem; border-radius: 8px; font-weight: 700; cursor: pointer; font-size: 0.8rem;">SPOSTA</button>
+                    <button onclick="window.adminActionOnSelected('delete')" style="background: #e74c3c; color: white; border: none; padding: 0.4rem 1rem; border-radius: 8px; font-weight: 700; cursor: pointer; font-size: 0.8rem;">ELIMINA DALLA CLASSE</button>
+                </div>
+            </div>
+
             <div id="admin-users-rows" style="display: flex; flex-direction: column; gap: 1rem;">
                 ${usersHtml}
-            </div>`;
+            </div>
+        `;
+
+        // Aggiunge listener per checkboxes per mostrare/nascondere la barra di gestione
+        document.querySelectorAll('.admin-student-checkbox').forEach(cb => {
+            cb.addEventListener('change', () => {
+                const selected = document.querySelectorAll('.admin-student-checkbox:checked').length;
+                document.getElementById('admin-management-bar').style.display = selected > 0 ? 'flex' : 'none';
+            });
+        });
+
     } catch (e) {
         console.error("Errore recupero utenti admin in profilo:", e);
         container.innerHTML = `<p style="color: #e74c3c;">Errore nel caricamento dei dati: ${e.message}</p>`;
     }
 }
+}
 
-window.filterAdminUsers = function(filterRole) {
-    // Aggiorna pulsanti
+window.setActiveAdminFilter = function(role) {
     document.querySelectorAll('.admin-filter-btn').forEach(btn => {
-        const isActive = btn.dataset.filter === filterRole;
-        btn.style.background = isActive ? 'var(--primary-color)' : 'white';
-        btn.style.color = isActive ? 'white' : btn.style.borderColor || '#666';
-        if (isActive) btn.classList.add('active'); else btn.classList.remove('active');
+        const isActive = btn.dataset.filter === role;
+        btn.classList.toggle('active', isActive);
+        if (isActive) {
+            btn.style.background = 'var(--primary-color)';
+            btn.style.color = 'white';
+            btn.style.border = 'none';
+        } else {
+            btn.style.background = 'white';
+            btn.style.color = '#666';
+            btn.style.border = '1px solid #ddd';
+        }
     });
+    window.currentAdminFilter = role;
+    window.filterAdminUsers();
+};
 
-    // Filtra righe
+window.filterAdminUsers = function() {
+    const search = (document.getElementById('admin-search-input')?.value || '').toLowerCase();
+    const filterRole = window.currentAdminFilter || 'tutti';
+    
     document.querySelectorAll('#admin-users-rows .admin-user-row').forEach(row => {
         const role = row.dataset.role || 'studente';
-        let show = filterRole === 'tutti';
-        if (filterRole === 'docente' && role === 'docente') show = true;
-        if (filterRole === 'studente' && role !== 'docente' && role !== 'amico' && role !== 'guest' && role !== 'admin') show = true;
-        if (filterRole === 'amico' && (role === 'amico' || role === 'guest')) show = true;
-        row.style.display = show ? 'flex' : 'none';
+        const name = row.dataset.name || '';
+        const email = row.dataset.email || '';
+        const school = row.dataset.school || '';
+        const className = row.dataset.class || '';
+
+        let showRole = filterRole === 'tutti';
+        if (filterRole === 'docente' && role === 'docente') showRole = true;
+        if (filterRole === 'studente' && (role === 'studente' || role === 'admin')) showRole = true;
+        if (filterRole === 'amico' && (role === 'amico' || role === 'guest')) showRole = true;
+
+        const showSearch = !search || 
+                           name.includes(search) || 
+                           email.includes(search) || 
+                           school.includes(search) || 
+                           className.includes(search);
+
+        row.style.display = (showRole && showSearch) ? 'flex' : 'none';
     });
+};
+
+window.adminActionOnSelected = async function(action) {
+    const selectedCbs = document.querySelectorAll('.admin-student-checkbox:checked');
+    if (selectedCbs.length === 0) return;
+
+    if (action === 'move') {
+        const destClassId = document.getElementById('admin-move-destination').value;
+        if (!destClassId) { alert("Seleziona una classe di destinazione."); return; }
+        
+        const destClass = window.allClassesForAdmin.find(c => c.id === destClassId);
+        if (!destClass) return;
+
+        if (!confirm(`Vuoi spostare ${selectedCbs.length} studenti nella classe ${destClass.name}?`)) return;
+
+        try {
+            const batch = window.fbDb.batch();
+            selectedCbs.forEach(cb => {
+                const uid = cb.dataset.uid;
+                batch.update(window.fbDb.collection('users').doc(uid), {
+                    classId: destClassId,
+                    className: destClass.name,
+                    teacherId: destClass.teacherId
+                });
+            });
+            await batch.commit();
+            alert("✅ Studenti spostati con successo!");
+            loadAdminUsersInProfile();
+        } catch (e) { alert("Errore: " + e.message); }
+    } else if (action === 'delete') {
+        if (!confirm(`Vuoi rimuovere ${selectedCbs.length} studenti dalle loro classi attuali?`)) return;
+
+        try {
+            const batch = window.fbDb.batch();
+            selectedCbs.forEach(cb => {
+                const uid = cb.dataset.uid;
+                batch.update(window.fbDb.collection('users').doc(uid), {
+                    classId: window.firebase.firestore.FieldValue.delete(),
+                    className: window.firebase.firestore.FieldValue.delete(),
+                    teacherId: window.firebase.firestore.FieldValue.delete()
+                });
+            });
+            await batch.commit();
+            alert("✅ Studenti rimossi dalle classi!");
+            loadAdminUsersInProfile();
+        } catch (e) { alert("Errore: " + e.message); }
+    }
 };
 
 window.adminDeleteUserInProfile = async function(uid, name) {
@@ -1196,10 +1349,11 @@ window.viewClassStudents = async function(code, name) {
                             <option value="">Sposta in classe...</option>
                             ${otherClasses.map(c => `<option value="${c.id}">${c.name} (${c.code})</option>`).join('')}
                         </select>
-                        <button onclick="window.moveSelectedStudents()" style="background: #e67e22; color: white; border: none; padding: 0.5rem 1rem; border-radius: 10px; font-weight: 700; cursor: pointer; font-size: 0.8rem;">SPOSTA</button>
+                        <button onclick="window.moveSelectedStudents('${code}', '${name.replace(/'/g, "\\'")}')" style="background: #e67e22; color: white; border: none; padding: 0.5rem 1rem; border-radius: 10px; font-weight: 700; cursor: pointer; font-size: 0.8rem;">SPOSTA</button>
+                        <button onclick="window.deleteSelectedStudents('${code}', '${name.replace(/'/g, "\\'")}')" style="background: #e74c3c; color: white; border: none; padding: 0.5rem 1rem; border-radius: 10px; font-weight: 700; cursor: pointer; font-size: 0.8rem;">ELIMINA</button>
                     </div>
                     <div style="font-size: 0.75rem; color: #888;">
-                        Seleziona gli studenti per spostarli in un'altra delle tue classi.
+                        Seleziona gli studenti per spostarli in un'altra classe o rimuoverli da questa.
                     </div>
                 </div>
 
@@ -1276,7 +1430,7 @@ window.toggleSelectAllStudents = function(master) {
     checkboxes.forEach(cb => cb.checked = master.checked);
 };
 
-window.moveSelectedStudents = async function() {
+window.moveSelectedStudents = async function(currentCode, currentName) {
     const selectedCbs = document.querySelectorAll('.student-checkbox:checked');
     const destClassId = document.getElementById('move-destination-class').value;
     
@@ -1313,14 +1467,48 @@ window.moveSelectedStudents = async function() {
         await batch.commit();
         alert(`✅ Successo! ${selectedCbs.length} studenti spostati in classe ${destClass.name}.`);
         
-        // Ricarichiamo il registro corrente (che ora sarà vuoto o con meno studenti)
-        const currentCode = document.querySelector('[style*="CODICE:"]').innerText.replace('CODICE: ', '');
-        const currentName = document.querySelector('h3').innerText.replace('Registro Progressi: Classe ', '');
+        // Ricarichiamo il registro corrente
         window.viewClassStudents(currentCode, currentName);
         
     } catch (e) {
         console.error("Errore spostamento:", e);
         alert("Errore durante lo spostamento: " + e.message);
+    }
+};
+
+window.deleteSelectedStudents = async function(currentCode, currentName) {
+    const selectedCbs = document.querySelectorAll('.student-checkbox:checked');
+    
+    if (selectedCbs.length === 0) {
+        alert("Seleziona almeno uno studente da rimuovere.");
+        return;
+    }
+
+    if (!confirm(`Vuoi rimuovere ${selectedCbs.length} studenti dalla classe ${currentName}? \n\nI loro dati non verranno cancellati, ma non faranno più parte di questa classe.`)) return;
+
+    try {
+        const db = window.fbDb;
+        const batch = db.batch();
+        
+        selectedCbs.forEach(cb => {
+            const uid = cb.dataset.uid;
+            const userRef = db.collection('users').doc(uid);
+            batch.update(userRef, {
+                classId: window.firebase.firestore.FieldValue.delete(),
+                className: window.firebase.firestore.FieldValue.delete(),
+                teacherId: window.firebase.firestore.FieldValue.delete()
+            });
+        });
+
+        await batch.commit();
+        alert(`✅ Successo! ${selectedCbs.length} studenti rimossi dalla classe.`);
+        
+        // Ricarichiamo il registro corrente
+        window.viewClassStudents(currentCode, currentName);
+        
+    } catch (e) {
+        console.error("Errore rimozione studenti:", e);
+        alert("Errore durante la rimozione: " + e.message);
     }
 };
 
@@ -3461,10 +3649,72 @@ window.saveOnboardingData = async function() {
     }
 };
 
+window.editTeacherClass = function(id, name, school, city) {
+    const modal = document.getElementById('feedback-modal');
+    const body = document.getElementById('feedback-body');
+    if (!modal || !body) return;
+
+    body.innerHTML = `
+        <h3 style="color: var(--primary-color); margin-bottom: 1.5rem; font-weight: 900;">✏️ MODIFICA CLASSE</h3>
+        <div style="display: flex; flex-direction: column; gap: 1rem; text-align: left;">
+            <div>
+                <label style="font-size: 0.8rem; font-weight: 700; color: #666; margin-left: 0.5rem;">NOME CLASSE (es: 3D)</label>
+                <input type="text" id="edit-class-name" value="${name}" style="width: 100%; padding: 0.9rem; border-radius: 15px; border: 1px solid #ddd; margin-top: 0.3rem; font-weight: 700;">
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                <div>
+                    <label style="font-size: 0.8rem; font-weight: 700; color: #666; margin-left: 0.5rem;">SCUOLA / ISTITUTO</label>
+                    <input type="text" id="edit-class-school" value="${school}" style="width: 100%; padding: 0.9rem; border-radius: 15px; border: 1px solid #ddd; margin-top: 0.3rem;">
+                </div>
+                <div>
+                    <label style="font-size: 0.8rem; font-weight: 700; color: #666; margin-left: 0.5rem;">CITTÀ</label>
+                    <input type="text" id="edit-class-city" value="${city}" style="width: 100%; padding: 0.9rem; border-radius: 15px; border: 1px solid #ddd; margin-top: 0.3rem;">
+                </div>
+            </div>
+            <div style="margin-top: 1.5rem; display: flex; gap: 1rem;">
+                <button onclick="window.saveTeacherClass('${id}')" class="btn btn-primary" style="flex: 2; padding: 1rem; font-weight: 800;">SALVA MODIFICHE</button>
+                <button onclick="UI.hideModal()" class="btn btn-secondary" style="flex: 1; padding: 1rem;">ANNULLA</button>
+            </div>
+        </div>
+    `;
+    modal.classList.remove('hidden');
+};
+
+window.saveTeacherClass = async function(id) {
+    const name = document.getElementById('edit-class-name').value.trim().toUpperCase();
+    const school = document.getElementById('edit-class-school').value.trim();
+    const city = document.getElementById('edit-class-city').value.trim();
+
+    if (!name) { alert("Inserisci il nome della classe."); return; }
+
+    try {
+        if (window.fbDb) {
+            await window.fbDb.collection('classes').doc(id).update({
+                name, school, city
+            });
+        }
+        
+        // Aggiorna locale
+        let classes = JSON.parse(localStorage.getItem('palestra_classes') || '[]');
+        const idx = classes.findIndex(c => c.id === id);
+        if (idx !== -1) {
+            classes[idx].name = name;
+            classes[idx].school = school;
+            classes[idx].city = city;
+            localStorage.setItem('palestra_classes', JSON.stringify(classes));
+        }
+
+        UI.hideModal();
+        renderProfiloPage();
+        alert("✅ Classe aggiornata con successo!");
+    } catch (e) {
+        console.error("Errore aggiornamento classe:", e);
+        alert("Errore durante il salvataggio: " + e.message);
+    }
+};
+
 window.addEventListener('authChange', () => {
     if (typeof updateSidebarMenu === 'function') updateSidebarMenu();
-    // Eseguiamo handleRoute solo se l'auth è già stata risolta,
-    // per evitare di mostrare il login overlay durante il redirect Google su mobile.
     if (typeof handleRoute === 'function' && window.Auth && window.Auth._isReady) {
         handleRoute();
     }
