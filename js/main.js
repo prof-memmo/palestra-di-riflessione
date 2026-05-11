@@ -809,6 +809,7 @@ async function loadAdminUsersInProfile() {
             }
             if (d.city) {
                 if (!citiesMap[d.city]) citiesMap[d.city] = { userCount: 0 };
+                citiesMap[d.city].userCount++;
             }
         });
         window.allClassesForAdmin = allClasses;
@@ -963,11 +964,10 @@ window.filterAdminEntities = function() {
                 <div style="font-size: 2rem;">🏫</div>
                 <div style="flex: 1;">
                     <h4 style="margin: 0; font-weight: 800;">${s.name}</h4>
-                    <p style="margin: 0; font-size: 0.85rem; color: #666;">${s.classCount} Classi • ${s.studentCount} Studenti</p>
+                    <p style="margin: 0; font-size: 0.85rem; color: #666;">${s.classCount} Classi • ${s.studentCount} Utenti con questa scuola</p>
                 </div>
                 <div style="display: flex; gap: 0.5rem;">
                     <button class="btn" onclick="window.adminEditAttribute('school', '${s.name.replace(/'/g, "\\'")}')" style="background: #f0f7ff; color: #3498db; border: none; padding: 0.6rem 1rem; border-radius: 12px; font-weight: 700;">RINOMINA</button>
-                    <button class="btn" onclick="window.adminDeleteAttribute('school', '${s.name.replace(/'/g, "\\'")}')" style="background: #fff0f0; color: #e74c3c; border: none; padding: 0.6rem 1rem; border-radius: 12px; font-weight: 700;">PULISCI TUTTI</button>
                 </div>
             </div>
         `).join('');
@@ -979,11 +979,10 @@ window.filterAdminEntities = function() {
                 <div style="font-size: 2rem;">📍</div>
                 <div style="flex: 1;">
                     <h4 style="margin: 0; font-weight: 800;">${c.name}</h4>
-                    <p style="margin: 0; font-size: 0.85rem; color: #666;">Presente in ${c.userCount} profili/classi</p>
+                    <p style="margin: 0; font-size: 0.85rem; color: #666;">Presente in ${c.userCount} tra classi e profili</p>
                 </div>
                 <div style="display: flex; gap: 0.5rem;">
                     <button class="btn" onclick="window.adminEditAttribute('city', '${c.name.replace(/'/g, "\\'")}')" style="background: #f0f7ff; color: #3498db; border: none; padding: 0.6rem 1rem; border-radius: 12px; font-weight: 700;">RINOMINA</button>
-                    <button class="btn" onclick="window.adminDeleteAttribute('city', '${c.name.replace(/'/g, "\\'")}')" style="background: #fff0f0; color: #e74c3c; border: none; padding: 0.6rem 1rem; border-radius: 12px; font-weight: 700;">PULISCI TUTTI</button>
                 </div>
             </div>
         `).join('');
