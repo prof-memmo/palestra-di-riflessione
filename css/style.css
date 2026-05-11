@@ -1507,3 +1507,64 @@ td .completion-input {
         gap: 0.8rem !important;
     }
 }
+
+/* 🚀 OTTIMIZZAZIONE SPAZI: Eliminazione totale dell'effetto "scatola" su mobile */
+@media (max-width: 992px) {
+    /* Rimuoviamo ogni traccia di card e bordi esterni */
+    main {
+        padding: 4rem 0.5rem 1rem 0.5rem !important; /* Meno spazio ai lati */
+        background-color: white !important; /* Uniformiamo lo sfondo per non avere stacchi grigi */
+    }
+
+    .exercise-container {
+        background: white !important;
+        padding: 1rem 0 !important; /* Azzeriamo padding laterale della card */
+        margin: 0 !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        border-radius: 0 !important;
+        box-shadow: none !important;
+        border: none !important;
+    }
+
+    /* Il testo della teoria deve usare tutto lo spazio */
+    .reading-text, .theory-schema, .map-container, .example-box {
+        margin: 1rem 0 !important;
+        padding: 1.5rem 1rem !important;
+        border-radius: 15px !important;
+        width: 100% !important;
+        box-shadow: none !important;
+        border: 1px solid #f0f0f0 !important;
+    }
+
+    .exercise-title {
+        font-size: 1.5rem !important;
+        padding: 0 1rem !important;
+        margin-bottom: 1.5rem !important;
+    }
+
+    /* Avviciniamo il pulsante menu al bordo */
+    .floating-toggle {
+        top: 1rem !important;
+        left: 1rem !important;
+        width: 45px !important;
+        height: 45px !important;
+        border-radius: 12px !important;
+    }
+    
+    /* Spostiamo un po' giù il contenuto per non sovrapporsi al toggle */
+    #app {
+        margin-top: 1rem !important;
+    }
+}
+
+@media (max-width: 480px) {
+    main {
+        padding: 3.5rem 0.2rem 1rem 0.2rem !important;
+    }
+    
+    .reading-text {
+        font-size: 1.25rem !important;
+        line-height: 1.6 !important;
+    }
+}
