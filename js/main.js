@@ -785,16 +785,24 @@ async function loadAdminUsersInProfile() {
     const container = document.getElementById('admin-users-list');
     if (!container) return;
 
-    try        // Liste e Conteggi
-        const schoolsMap = {}; // { name: { classCount: 0, studentCount: 0 } }
-        const citiesMap = {};  // { name: { userCount: 0 } }
+    try {
+        const [usersSnapshot, progressSnapshot, classesSnapshot] = await Promise.all([
+            window.fbDb.collection('users').get(),
+            window.fbDb.collection('progress').get(),
+            window.fbDb.collection('classes').get()
+        ]);
+        
+        const progressMap = {};
+        progressSnapshot.forEach(doc => { progressMap[doc.id] = doc.data(); });
+
+        const schoolsMap = {}; 
+        const citiesMap = {};  
         const allClasses = [];
         
         classesSnapshot.forEach(doc => { 
             const d = doc.data();
             const classId = doc.id;
             allClasses.push({ id: classId, ...d });
-            
             if (d.school) {
                 if (!schoolsMap[d.school]) schoolsMap[d.school] = { classCount: 0, studentCount: 0 };
                 schoolsMap[d.school].classCount++;
@@ -836,68 +844,7 @@ async function loadAdminUsersInProfile() {
             classes: allClasses,
             schools: Object.keys(schoolsMap).map(name => ({ name, ...schoolsMap[name] })),
             cities: Object.keys(citiesMap).map(name => ({ name, ...citiesMap[name] }))
-        }; || (!u.role && u.classId)).length, 
-            amico: allUsers.filter(u => u.role === 'amico' || u.role === 'guest' || (!u.role && !u.classId)).length,
-            classi: allClasses.length,
-            scuole: schools.size,
-            citta: cities.size
         };
-
-        // Render utente
-        function renderUserRow(userData) {
-            const userProgress = userData._progress;
-            const isImage = userData.avatar && (userData.avatar.includes('/') || userData.avatar.includes('.'));
-            const avatarHtml = isImage ? `<img src="${userData.avatar}" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;">` : `<span style="font-size: 1.5rem;">${userData.avatar || '👤'}</span>`;
-            const role = (userData.role || 'studente').toLowerCase();
-            const roleColors = { docente: '#2980b9', amico: '#8e44ad', guest: '#8e44ad', studente: '#27ae60', admin: '#e74c3c' };
-            const roleColor = roleColors[role] || '#27ae60';
-
-            // Classe associata
-            let classLabel = '';
-            if (userData.classId) {
-                const c = allClasses.find(cl => cl.id === userData.classId);
-                classLabel = c ? `${c.name} (${c.code})` : userData.className || 'Classe N/D';
-            }
-
-            return `<div class="admin-user-row" 
-                        data-role="${role}" 
-                        data-name="${(userData.name || '').toLowerCase()}" 
-                        data-email="${(userData.email || '').toLowerCase()}"
-                        data-school="${(userData.school || '').toLowerCase()}"
-                        data-city="${(userData.city || '').toLowerCase()}"
-                        data-class="${classLabel.toLowerCase()}"
-                        style="display: flex; flex-wrap: wrap; align-items: center; gap: 1rem; padding: 1.2rem; background: white; border-radius: 20px; border: 1px solid #eee; transition: all 0.2s;">
-                
-                <div style="width: 40px; text-align: center;">
-                    ${role === 'studente' ? `<input type="checkbox" class="admin-student-checkbox" data-uid="${userData.id}" data-name="${userData.name}">` : ''}
-                </div>
-
-                <div style="width: 50px; height: 50px; background: #f8f9fa; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 2px solid #eee; overflow: hidden; flex-shrink: 0;">
-                    ${avatarHtml}
-                </div>
-                <div style="flex: 1; min-width: 200px;">
-                    <h4 style="margin: 0; font-weight: 800; font-size: 1.1rem;">${userData.name || 'Anonimo'}</h4>
-                    <p style="margin: 0; font-size: 0.85rem; color: #666;">
-                        ${userData.email || 'No email'} • 
-                        <span style="color: ${roleColor}; font-weight: 700;">${userData.roleLabel || userData.role || 'Studente'}</span>
-                    </p>
-                    <p style="margin: 0; font-size: 0.75rem; color: #999;">
-                        ${userData.school ? `🏫 ${userData.school} • ` : ''} 
-                        ${classLabel ? `📁 ${classLabel} • ` : ''}
-                        Iscritto il: ${userData.joinedAt ? new Date(userData.joinedAt).toLocaleDateString() : 'N/D'}
-                    </p>
-                </div>
-                <div style="text-align: right; margin-right: 1rem; flex-shrink: 0;">
-                    <div style="font-weight: 800; color: var(--primary-color); font-size: 1.1rem;">${userProgress.points || 0} XP</div>
-                    <div style="font-size: 0.8rem; color: #999;">${userProgress.vocab ? userProgress.vocab.length : 0} parole</div>
-                </div>
-                <button onclick="adminDeleteUserInProfile('${userData.id}', '${(userData.name || 'Anonimo').replace(/'/g, "\\'")}')" style="background: #fff0f0; border: none; padding: 0.8rem; border-radius: 15px; cursor: pointer; color: #e74c3c; font-size: 1.2rem; transition: all 0.2s; margin-left: auto;" title="Elimina Utente">
-                    🗑️
-                </button>
-            </div>`;
-        }
-
-        const usersHtml = allUsers.map(u => renderUserRow(u)).join('');
 
         container.innerHTML = `
             <!-- Clickable Stats Bar -->
@@ -958,19 +905,6 @@ async function loadAdminUsersInProfile() {
         window.currentAdminFilter = 'tutti';
         window.filterAdminEntities();
 
-            <div id="admin-users-rows" style="display: flex; flex-direction: column; gap: 1rem;">
-                ${usersHtml}
-            </div>
-        `;
-
-        // Aggiunge listener per checkboxes per mostrare/nascondere la barra di gestione
-        document.querySelectorAll('.admin-student-checkbox').forEach(cb => {
-            cb.addEventListener('change', () => {
-                const selected = document.querySelectorAll('.admin-student-checkbox:checked').length;
-                document.getElementById('admin-management-bar').style.display = selected > 0 ? 'flex' : 'none';
-            });
-        });
-
     } catch (e) {
         console.error("Errore recupero utenti admin in profilo:", e);
         container.innerHTML = `<p style="color: #e74c3c;">Errore nel caricamento dei dati: ${e.message}</p>`;
@@ -995,10 +929,7 @@ window.filterAdminEntities = function() {
     if (!container || !window.adminData) return;
 
     let html = '';
-    
-    // VIEW SWITCHING LOGIC
     if (['tutti', 'docente', 'studente', 'amico'].includes(filter)) {
-        // Mostra UTENTI
         const filtered = window.adminData.users.filter(u => {
             const matchesSearch = !search || (u.name || '').toLowerCase().includes(search) || (u.email || '').toLowerCase().includes(search) || (u.school || '').toLowerCase().includes(search) || (u.className || '').toLowerCase().includes(search);
             let matchesFilter = filter === 'tutti';
@@ -1060,7 +991,6 @@ window.filterAdminEntities = function() {
 
     container.innerHTML = html || '<p style="text-align: center; color: #999; padding: 3rem;">Nessun risultato trovato per questa selezione.</p>';
 
-    // Riapplica i listener se siamo nella vista utenti
     if (['tutti', 'docente', 'studente', 'amico'].includes(filter)) {
         document.querySelectorAll('.admin-student-checkbox').forEach(cb => {
             cb.addEventListener('change', () => {
@@ -1072,7 +1002,6 @@ window.filterAdminEntities = function() {
     }
 };
 
-// Funzione interna per renderizzare la riga utente (estratta per riuso)
 function renderAdminUserRow(userData) {
     const allClasses = window.adminData.classes || [];
     const userProgress = userData._progress || {};
