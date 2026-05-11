@@ -4,6 +4,7 @@ const Auth = {
     _isReady: false,
     _readyPromise: null,
     _resolveReady: null,
+    _handledByRedirect: false, // Flag: redirect ha già gestito l'auth, salta onAuthStateChanged
 
     init: () => {
         // Inizializza la promise di ready
@@ -22,31 +23,36 @@ const Auth = {
 
         // Inizializza listener Firebase
         if (window.fbAuth) {
-            let redirectProcessed = false;
-
             // Gestisci il risultato del redirect (per mobile)
-            const redirectPromise = window.fbAuth.getRedirectResult().then((result) => {
-                redirectProcessed = true;
+            // DEVE essere avviato prima di onAuthStateChanged
+            const redirectPromise = window.fbAuth.getRedirectResult().then(async (result) => {
                 if (result && result.user) {
-                    return Auth._handleFirebaseUser(result.user);
+                    Auth._handledByRedirect = true;
+                    await Auth._handleFirebaseUser(result.user);
                 }
             }).catch(e => {
-                redirectProcessed = true;
                 console.error("Errore redirect:", e);
                 if (e.code === 'auth/unauthorized-domain') {
                     alert("Errore: Questo dominio non è autorizzato nelle impostazioni di Firebase.");
                 }
-                return null;
             });
 
             let firstAuthCheck = true;
             window.fbAuth.onAuthStateChanged(async (user) => {
                 if (user) {
                     Auth._fbUser = user;
-                    await Auth._handleFirebaseUser(user);
+                    // Se il redirect ha già processato questo stesso utente, evitiamo
+                    // la doppia chiamata a _handleFirebaseUser (e doppia scrittura Firestore)
+                    if (Auth._handledByRedirect) {
+                        // Auth è già pronto, assicuriamoci solo che la promise sia risolta
+                        Auth._resolveReady();
+                    } else {
+                        await Auth._handleFirebaseUser(user);
+                    }
                 } else {
                     Auth._fbUser = null;
-                    // Aspetta che anche il redirect sia processato prima di dichiarare "pronto" un utente nullo
+                    // Aspetta che anche il redirect sia processato prima di dichiarare
+                    // "pronto" un utente nullo (il redirect potrebbe ancora essere in corso)
                     await redirectPromise;
                     if (firstAuthCheck) {
                         Auth._resolveReady();
@@ -86,7 +92,8 @@ const Auth = {
                     points: 0,
                     isGuest: false,
                     email: fbUser.email,
-                    setupComplete: false // Richiede onboarding
+                    setupComplete: false, // Richiede onboarding
+                    createdAt: new Date().toISOString()
                 };
                 // Salvataggio iniziale nel DB per persistere il profilo
                 await window.fbDb.collection('users').doc(fbUser.uid).set(Auth._user);

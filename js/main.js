@@ -224,6 +224,14 @@ function handleRoute() {
             return;
         }
 
+        // Nasconde l'overlay di login per tutti i path autenticati.
+        // Fondamentale per il redirect Google su mobile: _handleFirebaseUser
+        // potrebbe aver chiamato hideLoginOverlay() prima che main.js fosse
+        // completamente caricato, lasciando l'overlay visibile.
+        if (Auth.isLoggedIn()) {
+            hideLoginOverlay();
+        }
+
         const user = Auth.getUser();
         // Se loggato ma onboarding non completo, forza redirect (tranne che per admin che saltano)
         if (Auth.isLoggedIn() && user.setupComplete === false && section !== 'onboarding') {
@@ -605,6 +613,12 @@ async function renderProfiloPage() {
             ${user.role === 'docente' ? `
                 <div class="teacher-area" style="margin-bottom: 3rem; padding: 2rem; background: #f0f7ff; border-radius: 30px; border: 2px dashed #3498db;">
                     <h3 style="color: #2980b9; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.8rem;">👨‍🏫 AREA CLASSI</h3>
+                    
+                    <div style="margin-bottom: 2rem; display: flex; justify-content: center;">
+                        <button class="btn" onclick="window.migrate3Dto2D()" style="background: #e67e22; color: white; padding: 0.8rem 1.5rem; border-radius: 50px; font-weight: 800; border: none; cursor: pointer; box-shadow: 0 4px 15px rgba(230, 126, 34, 0.2); display: flex; align-items: center; gap: 0.5rem;">
+                            🔄 SPOSTA STUDENTI DA 3D A 2D
+                        </button>
+                    </div>
                     
                     <div style="display: grid; grid-template-columns: 1fr; gap: 2rem; max-width: 600px; margin: 0 auto;">
                         <!-- Gestione Classi -->
@@ -1236,6 +1250,71 @@ window.copyCurrentLink = function() {
     });
 };
 
+window.migrate3Dto2D = async function() {
+    const user = Auth.getUser();
+    if (user.role !== 'docente') return;
+    
+    if (!confirm("Vuoi spostare tutti gli studenti attualmente registrati nella classe '3D' nella classe '2D'? \n\nQuesta operazione è utile per correggere l'errore di iscrizione di oggi.")) return;
+    
+    const btn = document.querySelector('button[onclick="window.migrate3Dto2D()"]');
+    if (btn) {
+        btn.disabled = true;
+        btn.innerText = "SPOSTAMENTO IN CORSO...";
+    }
+
+    try {
+        const db = window.fbDb;
+        // 1. Trova la classe 2D del docente
+        const classesQ = await db.collection('classes')
+            .where('teacherId', '==', user.uid)
+            .where('name', '==', '2D')
+            .get();
+            
+        if (classesQ.empty) {
+            alert("❌ Classe 2D non trovata nel cloud. Assicurati di averla creata (e che non sia solo locale). Se l'hai appena creata, attendi qualche secondo.");
+            if (btn) { btn.disabled = false; btn.innerText = "🔄 SPOSTA STUDENTI DA 3D A 2D"; }
+            return;
+        }
+        
+        const class2D = classesQ.docs[0];
+        const data2D = class2D.data();
+        
+        // 2. Trova studenti in 3D (di questo docente)
+        // Nota: non filtriamo per data perché l'utente ha specificato "iscritti oggi" e 3D è usata come parcheggio
+        const studentsQ = await db.collection('users')
+            .where('teacherId', '==', user.uid)
+            .where('className', '==', '3D')
+            .get();
+            
+        let count = 0;
+        const batch = db.batch();
+        
+        studentsQ.forEach(doc => {
+            batch.update(doc.ref, {
+                classId: class2D.id,
+                className: '2D'
+            });
+            count++;
+        });
+        
+        if (count > 0) {
+            await batch.commit();
+            alert(`✅ Successo! ${count} studenti sono stati spostati dalla classe 3D alla classe 2D.`);
+            renderProfiloPage();
+        } else {
+            alert("Non ho trovato studenti nella classe 3D collegati al tuo profilo.");
+        }
+    } catch (e) {
+        console.error("Errore migrazione:", e);
+        alert("Errore durante lo spostamento: " + e.message);
+    } finally {
+        if (btn) {
+            btn.disabled = false;
+            btn.innerText = "🔄 SPOSTA STUDENTI DA 3D A 2D";
+        }
+    }
+};
+
 window.toggleShareMenu = function() {
     const dropdown = document.getElementById('share-dropdown');
     if (dropdown) dropdown.classList.toggle('hidden');
@@ -1255,29 +1334,68 @@ window.assignToInternalClass = function(classCode) {
     window.toggleShareMenu();
 };
 
-window.addTeacherClass = function() {
-    const input = document.getElementById('new-class-name');
-    const name = input.value.trim().toUpperCase();
-    if (!name) return;
-    
-    const code = 'PG-' + Math.random().toString(36).substring(2, 6).toUpperCase();
-    
-    let classes = JSON.parse(localStorage.getItem('palestra_classes') || '[]');
-    classes.push({ name: name, code: code, students: 0 });
-    localStorage.setItem('palestra_classes', JSON.stringify(classes));
-    renderProfiloPage();
-};
 
-window.joinClass = function() {
+
+window.joinClass = async function() {
     const input = document.getElementById('join-class-code');
-    const code = input.value.trim().toUpperCase();
+    const code = (input.value || '').trim().toUpperCase();
     if (!code) return;
-    localStorage.setItem('palestra_student_class_code', code);
-    renderProfiloPage();
+    
+    const user = Auth.getUser();
+    if (user.isGuest || !window.fbDb) {
+        localStorage.setItem('palestra_student_class_code', code);
+        renderProfiloPage();
+        return;
+    }
+
+    try {
+        const q = await window.fbDb.collection('classes').where('code', '==', code).get();
+        if (q.empty) {
+            alert("❌ Codice classe non valido.");
+            return;
+        }
+
+        const classDoc = q.docs[0];
+        const classData = classDoc.data();
+        
+        user.classId = classDoc.id;
+        user.className = classData.name;
+        user.teacherId = classData.teacherId;
+        
+        await window.fbDb.collection('users').doc(user.uid).set(user, { merge: true });
+        localStorage.setItem('palestra_user', JSON.stringify(user));
+        localStorage.setItem('palestra_student_class_code', code);
+        
+        renderProfiloPage();
+        alert(`✅ Ti sei unito alla classe ${classData.name}!`);
+    } catch (e) {
+        console.error("Errore join classe:", e);
+        alert("Errore durante l'accesso alla classe: " + e.message);
+    }
 };
 
-window.leaveClass = function() {
+window.leaveClass = async function() {
+    if (!confirm("Sei sicuro di voler uscire dalla classe?")) return;
+    
+    const user = Auth.getUser();
     localStorage.removeItem('palestra_student_class_code');
+    
+    if (!user.isGuest && window.fbDb) {
+        // Rimuoviamo i campi relativi alla classe dal profilo Firestore
+        const updateData = {
+            classId: window.firebase.firestore.FieldValue.delete(),
+            className: window.firebase.firestore.FieldValue.delete(),
+            teacherId: window.firebase.firestore.FieldValue.delete()
+        };
+        
+        await window.fbDb.collection('users').doc(user.uid).update(updateData);
+        
+        delete user.classId;
+        delete user.className;
+        delete user.teacherId;
+        localStorage.setItem('palestra_user', JSON.stringify(user));
+    }
+    
     renderProfiloPage();
 };
 
@@ -3313,6 +3431,7 @@ window.saveOnboardingData = async function() {
         if (classId) finalUser.classId = classId;
         if (className) finalUser.className = className;
         if (teacherId) finalUser.teacherId = teacherId;
+        if (!finalUser.createdAt) finalUser.createdAt = new Date().toISOString();
 
         localStorage.setItem('palestra_user', JSON.stringify(finalUser));
         
@@ -3335,5 +3454,9 @@ window.saveOnboardingData = async function() {
 
 window.addEventListener('authChange', () => {
     if (typeof updateSidebarMenu === 'function') updateSidebarMenu();
-    if (typeof handleRoute === 'function') handleRoute();
+    // Eseguiamo handleRoute solo se l'auth è già stata risolta,
+    // per evitare di mostrare il login overlay durante il redirect Google su mobile.
+    if (typeof handleRoute === 'function' && window.Auth && window.Auth._isReady) {
+        handleRoute();
+    }
 });
