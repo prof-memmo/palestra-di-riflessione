@@ -20,6 +20,14 @@ function hideLoginOverlay() {
     if (overlay) overlay.classList.add('hidden');
 }
 
+// UI Helpers
+window.UI = {
+    hideModal: function() {
+        const modal = document.getElementById('feedback-modal');
+        if (modal) modal.classList.add('hidden');
+    }
+};
+
 // Role selection logic
 document.addEventListener('click', (e) => {
     if (e.target.classList.contains('role-opt')) {
@@ -635,7 +643,7 @@ async function renderProfiloPage() {
                                                 CODICE: ${c.code} 📋 <span style="color: #7f8c8d; font-weight: 400; margin-left: 0.5rem; font-style: italic;">(condividi il codice con la classe)</span>
                                             </div>
                                             <div style="margin-top: 0.5rem; display: flex; gap: 0.5rem;">
-                                                <button onclick="window.viewClassStudents('${c.code}', '${c.name.replace(/'/g, "\\'")}')" style="background: #eef2f7; border: none; color: #57606f; padding: 0.3rem 0.6rem; border-radius: 8px; font-size: 0.7rem; font-weight: 700; cursor: pointer;">👥 STUDENTI</button>
+                                                <button onclick="window.viewClassStudents('${c.code}', '${c.name.replace(/'/g, "\\'")}', '${c.id}')" style="background: #eef2f7; border: none; color: #57606f; padding: 0.3rem 0.6rem; border-radius: 8px; font-size: 0.7rem; font-weight: 700; cursor: pointer;">👥 STUDENTI</button>
                                                 <button onclick="window.editTeacherClass('${c.id}', '${c.name.replace(/'/g, "\\'")}', '${(c.school || '').replace(/'/g, "\\'")}', '${(c.city || '').replace(/'/g, "\\'")}')" style="background: #eef2f7; border: none; color: #2980b9; padding: 0.3rem 0.6rem; border-radius: 8px; font-size: 0.7rem; font-weight: 700; cursor: pointer;">✏️ MODIFICA</button>
                                                 <button onclick="window.removeTeacherClass(${idx})" style="background: #fceaea; border: none; color: #e74c3c; padding: 0.3rem 0.6rem; border-radius: 8px; font-size: 0.7rem; font-weight: 700; cursor: pointer;">🗑️ ELIMINA</button>
                                             </div>
@@ -1258,7 +1266,7 @@ window.removeTeacherClass = async function(index) {
     }
 };
 
-window.viewClassStudents = async function(code, name) {
+window.viewClassStudents = async function(code, name, classId = null) {
     const content = document.getElementById('class-register-content');
     if (!content) return;
 
@@ -1270,21 +1278,37 @@ window.viewClassStudents = async function(code, name) {
     `;
 
     try {
-        // 1. Recuperiamo il classId reale per questo codice
-        const classQ = await window.fbDb.collection('classes').where('code', '==', code).get();
-        if (classQ.empty) throw new Error("Classe non trovata");
-        const classDoc = classQ.docs[0];
+        let classDoc;
+        // 1. Cerchiamo la classe prioritariamente per ID, poi per Codice
+        if (classId) {
+            classDoc = await window.fbDb.collection('classes').doc(classId).get();
+            if (!classDoc.exists) {
+                // Fallback: se l'ID non trova nulla, proviamo il codice
+                const classQ = await window.fbDb.collection('classes').where('code', '==', code).get();
+                if (!classQ.empty) classDoc = classQ.docs[0];
+            }
+        } else {
+            const classQ = await window.fbDb.collection('classes').where('code', '==', code).get();
+            if (!classQ.empty) classDoc = classQ.docs[0];
+        }
+
+        if (!classDoc || (classDoc.exists === false && !classDoc.id)) throw new Error("Classe non trovata");
         const realClassId = classDoc.id;
+        const realClassName = classDoc.data()?.name || name;
+        const realClassCode = classDoc.data()?.code || code;
 
         // 2. Trova SOLO gli studenti di questa specifica classe (esclude docenti e admin)
         const usersSnapshot = await window.fbDb.collection('users')
             .where('classId', '==', realClassId)
-            .where('role', '==', 'studente')
             .get();
         
         const classStudents = [];
         usersSnapshot.forEach(doc => {
-            classStudents.push({ id: doc.id, ...doc.data() });
+            const u = doc.data();
+            // Filtro manuale per ruolo (più flessibile)
+            if (u.role === 'studente' || (!u.role && u.classId === realClassId)) {
+                classStudents.push({ id: doc.id, ...u });
+            }
         });
 
         if (classStudents.length === 0) {
@@ -1353,8 +1377,8 @@ window.viewClassStudents = async function(code, name) {
                             <option value="">Sposta in classe...</option>
                             ${otherClasses.map(c => `<option value="${c.id}">${c.name} (${c.code})</option>`).join('')}
                         </select>
-                        <button onclick="window.moveSelectedStudents('${code}', '${name.replace(/'/g, "\\'")}')" style="background: #e67e22; color: white; border: none; padding: 0.5rem 1rem; border-radius: 10px; font-weight: 700; cursor: pointer; font-size: 0.8rem;">SPOSTA</button>
-                        <button onclick="window.deleteSelectedStudents('${code}', '${name.replace(/'/g, "\\'")}')" style="background: #e74c3c; color: white; border: none; padding: 0.5rem 1rem; border-radius: 10px; font-weight: 700; cursor: pointer; font-size: 0.8rem;">ELIMINA</button>
+                        <button onclick="window.moveSelectedStudents('${realClassCode}', '${realClassName.replace(/'/g, "\\'")}', '${realClassId}')" style="background: #e67e22; color: white; border: none; padding: 0.5rem 1rem; border-radius: 10px; font-weight: 700; cursor: pointer; font-size: 0.8rem;">SPOSTA</button>
+                        <button onclick="window.deleteSelectedStudents('${realClassCode}', '${realClassName.replace(/'/g, "\\'")}', '${realClassId}')" style="background: #e74c3c; color: white; border: none; padding: 0.5rem 1rem; border-radius: 10px; font-weight: 700; cursor: pointer; font-size: 0.8rem;">ELIMINA</button>
                     </div>
                     <div style="font-size: 0.75rem; color: #888;">
                         Seleziona gli studenti per spostarli in un'altra classe o rimuoverli da questa.
@@ -1434,7 +1458,7 @@ window.toggleSelectAllStudents = function(master) {
     checkboxes.forEach(cb => cb.checked = master.checked);
 };
 
-window.moveSelectedStudents = async function(currentCode, currentName) {
+window.moveSelectedStudents = async function(currentCode, currentName, currentId) {
     const selectedCbs = document.querySelectorAll('.student-checkbox:checked');
     const destClassId = document.getElementById('move-destination-class').value;
     
@@ -1472,7 +1496,7 @@ window.moveSelectedStudents = async function(currentCode, currentName) {
         alert(`✅ Successo! ${selectedCbs.length} studenti spostati in classe ${destClass.name}.`);
         
         // Ricarichiamo il registro corrente
-        window.viewClassStudents(currentCode, currentName);
+        window.viewClassStudents(currentCode, currentName, currentId);
         
     } catch (e) {
         console.error("Errore spostamento:", e);
@@ -1480,7 +1504,7 @@ window.moveSelectedStudents = async function(currentCode, currentName) {
     }
 };
 
-window.deleteSelectedStudents = async function(currentCode, currentName) {
+window.deleteSelectedStudents = async function(currentCode, currentName, currentId) {
     const selectedCbs = document.querySelectorAll('.student-checkbox:checked');
     
     if (selectedCbs.length === 0) {
@@ -1508,7 +1532,7 @@ window.deleteSelectedStudents = async function(currentCode, currentName) {
         alert(`✅ Successo! ${selectedCbs.length} studenti rimossi dalla classe.`);
         
         // Ricarichiamo il registro corrente
-        window.viewClassStudents(currentCode, currentName);
+        window.viewClassStudents(currentCode, currentName, currentId);
         
     } catch (e) {
         console.error("Errore rimozione studenti:", e);
@@ -3677,7 +3701,7 @@ window.editTeacherClass = function(id, name, school, city) {
             </div>
             <div style="margin-top: 1.5rem; display: flex; gap: 1rem;">
                 <button onclick="window.saveTeacherClass('${id}')" class="btn btn-primary" style="flex: 2; padding: 1rem; font-weight: 800;">SALVA MODIFICHE</button>
-                <button onclick="UI.hideModal()" class="btn btn-secondary" style="flex: 1; padding: 1rem;">ANNULLA</button>
+                <button onclick="window.UI.hideModal()" class="btn btn-secondary" style="flex: 1; padding: 1rem;">ANNULLA</button>
             </div>
         </div>
     `;
@@ -3708,12 +3732,16 @@ window.saveTeacherClass = async function(id) {
             localStorage.setItem('palestra_classes', JSON.stringify(classes));
         }
 
-        UI.hideModal();
+        window.UI.hideModal();
         renderProfiloPage();
         alert("✅ Classe aggiornata con successo!");
     } catch (e) {
         console.error("Errore aggiornamento classe:", e);
-        alert("Errore durante il salvataggio: " + e.message);
+        let msg = "Errore durante il salvataggio: " + e.message;
+        if (e.code === 'permission-denied') {
+            msg = "Permessi insufficienti. Assicurati di essere il proprietario di questa classe e che le regole di Firebase siano aggiornate.";
+        }
+        alert(msg);
     }
 };
 
@@ -3749,7 +3777,7 @@ window.showTeacherGuide = function() {
                 </div>
             </div>
             <div style="margin-top: 2rem; text-align: center;">
-                <button onclick="UI.hideModal()" class="btn btn-primary" style="padding: 0.8rem 2.5rem; border-radius: 50px; font-weight: 800;">HO CAPITO, GRAZIE!</button>
+                <button onclick="window.UI.hideModal()" class="btn btn-primary" style="padding: 0.8rem 2.5rem; border-radius: 50px; font-weight: 800;">HO CAPITO, GRAZIE!</button>
             </div>
         </div>
     `;

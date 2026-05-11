@@ -10,21 +10,28 @@ const Auth = {
         // Inizializza la promise di ready
         Auth._readyPromise = new Promise((resolve) => {
             Auth._resolveReady = () => {
-                Auth._isReady = true;
-                resolve();
+                if (!Auth._isReady) {
+                    Auth._isReady = true;
+                    resolve();
+                }
             };
         });
 
         // Fallback locale per utenti già esistenti (caricamento sincrono iniziale)
         const savedUser = localStorage.getItem('palestra_user');
         if (savedUser) {
-            Auth._user = JSON.parse(savedUser);
+            try {
+                Auth._user = JSON.parse(savedUser);
+            } catch(e) {
+                Auth._user = null;
+                localStorage.removeItem('palestra_user');
+            }
         }
 
         // Inizializza listener Firebase
         if (window.fbAuth) {
             // Gestisci il risultato del redirect (per mobile)
-            // DEVE essere avviato prima di onAuthStateChanged
+            // Fondamentale: su mobile getRedirectResult DEVE essere risolto prima di onAuthStateChanged
             const redirectPromise = window.fbAuth.getRedirectResult().then(async (result) => {
                 if (result && result.user) {
                     Auth._handledByRedirect = true;
@@ -32,36 +39,30 @@ const Auth = {
                 }
             }).catch(e => {
                 console.error("Errore redirect:", e);
-                if (e.code === 'auth/unauthorized-domain') {
-                    alert("Errore: Questo dominio non è autorizzato nelle impostazioni di Firebase.");
-                }
+                Auth._resolveReady();
             });
 
-            let firstAuthCheck = true;
             window.fbAuth.onAuthStateChanged(async (user) => {
                 if (user) {
                     Auth._fbUser = user;
-                    // Se il redirect ha già processato questo stesso utente, evitiamo
-                    // la doppia chiamata a _handleFirebaseUser (e doppia scrittura Firestore)
-                    if (Auth._handledByRedirect) {
-                        // Auth è già pronto, assicuriamoci solo che la promise sia risolta
-                        Auth._resolveReady();
-                    } else {
+                    // Se il redirect ha già processato questo stesso utente, evitiamo la doppia chiamata
+                    if (!Auth._handledByRedirect) {
                         await Auth._handleFirebaseUser(user);
                     }
+                    Auth._resolveReady();
                 } else {
-                    Auth._fbUser = null;
-                    // Aspetta che anche il redirect sia processato prima di dichiarare
-                    // "pronto" un utente nullo (il redirect potrebbe ancora essere in corso)
+                    // Aspettiamo che il redirect sia processato prima di dire che l'utente è nullo
+                    // (potrebbe essere in corso un login via redirect)
                     await redirectPromise;
-                    if (firstAuthCheck) {
+                    if (!Auth._handledByRedirect) {
+                        Auth._fbUser = null;
+                        Auth._user = null;
+                        localStorage.removeItem('palestra_user');
                         Auth._resolveReady();
                     }
                 }
-                firstAuthCheck = false;
             });
         } else {
-            // Se Firebase non è presente, siamo pronti subito
             Auth._resolveReady();
         }
     },
@@ -110,16 +111,19 @@ const Auth = {
 
             localStorage.setItem('palestra_user', JSON.stringify(Auth._user));
             
-            // Nascondi l'overlay di login (fondamentale per il redirect su mobile)
+            // 1. Risolviamo la promise di ready PRIMA di dispatchare l'evento
+            Auth._resolveReady();
+            
+            // 2. Nascondi l'overlay
             if (typeof hideLoginOverlay === 'function') hideLoginOverlay();
             
-            // Carica progressi dal cloud se esistono
+            // 3. Carica progressi
             if (window.Progress && typeof window.Progress.load === 'function') {
                 await window.Progress.load();
             }
 
+            // 4. Notifica il cambio di stato
             window.dispatchEvent(new CustomEvent('authChange'));
-            Auth._resolveReady(); // Auth è definitivamente pronto dopo l'handling
         } catch (e) {
             console.error("Errore recupero/creazione dati cloud:", e);
             Auth._resolveReady(); // Risolviamo comunque per non bloccare l'app
