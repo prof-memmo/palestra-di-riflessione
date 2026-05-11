@@ -21,11 +21,10 @@ function hideLoginOverlay() {
 }
 
 // UI Helpers
-window.UI = {
-    hideModal: function() {
-        const modal = document.getElementById('feedback-modal');
-        if (modal) modal.classList.add('hidden');
-    }
+if (!window.UI) window.UI = {};
+window.UI.hideModal = function() {
+    const modal = document.getElementById('feedback-modal');
+    if (modal) modal.classList.add('hidden');
 };
 
 // Role selection logic
@@ -786,46 +785,58 @@ async function loadAdminUsersInProfile() {
     const container = document.getElementById('admin-users-list');
     if (!container) return;
 
-    try {
-        const [usersSnapshot, progressSnapshot, classesSnapshot] = await Promise.all([
-            window.fbDb.collection('users').get(),
-            window.fbDb.collection('progress').get(),
-            window.fbDb.collection('classes').get()
-        ]);
-        
-        const progressMap = {};
-        progressSnapshot.forEach(doc => { progressMap[doc.id] = doc.data(); });
-
-        // Conteggi e Set per filtri
-        const schools = new Set();
-        const cities = new Set();
+    try        // Liste e Conteggi
+        const schoolsMap = {}; // { name: { classCount: 0, studentCount: 0 } }
+        const citiesMap = {};  // { name: { userCount: 0 } }
         const allClasses = [];
         
         classesSnapshot.forEach(doc => { 
             const d = doc.data();
-            allClasses.push({ id: doc.id, ...d });
-            if (d.school) schools.add(d.school);
-            if (d.city) cities.add(d.city);
+            const classId = doc.id;
+            allClasses.push({ id: classId, ...d });
+            
+            if (d.school) {
+                if (!schoolsMap[d.school]) schoolsMap[d.school] = { classCount: 0, studentCount: 0 };
+                schoolsMap[d.school].classCount++;
+            }
+            if (d.city) {
+                if (!citiesMap[d.city]) citiesMap[d.city] = { userCount: 0 };
+            }
         });
         window.allClassesForAdmin = allClasses;
 
         const allUsers = [];
         usersSnapshot.forEach(doc => {
             const u = doc.data();
-            allUsers.push({ id: doc.id, ...u, _progress: progressMap[doc.id] || {} });
-            if (u.school) schools.add(u.school);
-            if (u.city) cities.add(u.city);
+            const userData = { id: doc.id, ...u, _progress: progressMap[doc.id] || {} };
+            allUsers.push(userData);
+            
+            if (u.school) {
+                if (!schoolsMap[u.school]) schoolsMap[u.school] = { classCount: 0, studentCount: 0 };
+                schoolsMap[u.school].studentCount++;
+            }
+            if (u.city) {
+                if (!citiesMap[u.city]) citiesMap[u.city] = { userCount: 0 };
+                citiesMap[u.city].userCount++;
+            }
         });
-
-        if (allUsers.length === 0) {
-            container.innerHTML = '<p style="text-align: center; color: #999; padding: 2rem;">Nessun utente registrato ancora.</p>';
-            return;
-        }
 
         const counts = { 
             tutti: allUsers.length, 
             docente: allUsers.filter(u => u.role === 'docente').length, 
             studente: allUsers.filter(u => u.role === 'studente' || (!u.role && u.classId)).length, 
+            amico: allUsers.filter(u => u.role === 'amico' || u.role === 'guest' || (!u.role && !u.classId)).length,
+            classi: allClasses.length,
+            scuole: Object.keys(schoolsMap).length,
+            citta: Object.keys(citiesMap).length
+        };
+
+        window.adminData = {
+            users: allUsers,
+            classes: allClasses,
+            schools: Object.keys(schoolsMap).map(name => ({ name, ...schoolsMap[name] })),
+            cities: Object.keys(citiesMap).map(name => ({ name, ...citiesMap[name] }))
+        }; || (!u.role && u.classId)).length, 
             amico: allUsers.filter(u => u.role === 'amico' || u.role === 'guest' || (!u.role && !u.classId)).length,
             classi: allClasses.length,
             scuole: schools.size,
@@ -889,45 +900,45 @@ async function loadAdminUsersInProfile() {
         const usersHtml = allUsers.map(u => renderUserRow(u)).join('');
 
         container.innerHTML = `
-            <!-- Clickable Stats Bar (Filters) -->
+            <!-- Clickable Stats Bar -->
             <div id="admin-stats-filters" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap: 1rem; margin-bottom: 2.5rem;">
                 <div class="admin-stat-card active" onclick="window.setActiveAdminFilter('tutti')" data-filter="tutti" style="background: white; padding: 1.2rem; border-radius: 20px; text-align: center; border: 2px solid var(--primary-color); cursor: pointer; transition: all 0.2s; box-shadow: 0 10px 20px rgba(0,0,0,0.02);">
                     <div style="font-size: 1.6rem; font-weight: 900; color: var(--primary-color);">${counts.tutti}</div>
-                    <div style="font-size: 0.75rem; color: #888; font-weight: 800; text-transform: uppercase; margin-top: 0.2rem;">Tutti</div>
+                    <div style="font-size: 0.75rem; color: #888; font-weight: 800; text-transform: uppercase;">Tutti</div>
                 </div>
                 <div class="admin-stat-card" onclick="window.setActiveAdminFilter('docente')" data-filter="docente" style="background: white; padding: 1.2rem; border-radius: 20px; text-align: center; border: 2px solid transparent; cursor: pointer; transition: all 0.2s; box-shadow: 0 4px 10px rgba(0,0,0,0.02);">
                     <div style="font-size: 1.6rem; font-weight: 900; color: #2980b9;">${counts.docente}</div>
-                    <div style="font-size: 0.75rem; color: #888; font-weight: 800; text-transform: uppercase; margin-top: 0.2rem;">Docenti</div>
+                    <div style="font-size: 0.75rem; color: #888; font-weight: 800; text-transform: uppercase;">Docenti</div>
                 </div>
                 <div class="admin-stat-card" onclick="window.setActiveAdminFilter('studente')" data-filter="studente" style="background: white; padding: 1.2rem; border-radius: 20px; text-align: center; border: 2px solid transparent; cursor: pointer; transition: all 0.2s; box-shadow: 0 4px 10px rgba(0,0,0,0.02);">
                     <div style="font-size: 1.6rem; font-weight: 900; color: #27ae60;">${counts.studente}</div>
-                    <div style="font-size: 0.75rem; color: #888; font-weight: 800; text-transform: uppercase; margin-top: 0.2rem;">Studenti</div>
+                    <div style="font-size: 0.75rem; color: #888; font-weight: 800; text-transform: uppercase;">Studenti</div>
                 </div>
                 <div class="admin-stat-card" onclick="window.setActiveAdminFilter('amico')" data-filter="amico" style="background: white; padding: 1.2rem; border-radius: 20px; text-align: center; border: 2px solid transparent; cursor: pointer; transition: all 0.2s; box-shadow: 0 4px 10px rgba(0,0,0,0.02);">
                     <div style="font-size: 1.6rem; font-weight: 900; color: #8e44ad;">${counts.amico}</div>
-                    <div style="font-size: 0.75rem; color: #888; font-weight: 800; text-transform: uppercase; margin-top: 0.2rem;">Amici</div>
+                    <div style="font-size: 0.75rem; color: #888; font-weight: 800; text-transform: uppercase;">Amici</div>
                 </div>
                 <div class="admin-stat-card" onclick="window.setActiveAdminFilter('classi')" data-filter="classi" style="background: white; padding: 1.2rem; border-radius: 20px; text-align: center; border: 2px solid transparent; cursor: pointer; transition: all 0.2s; box-shadow: 0 4px 10px rgba(0,0,0,0.02);">
                     <div style="font-size: 1.6rem; font-weight: 900; color: #e67e22;">${counts.classi}</div>
-                    <div style="font-size: 0.75rem; color: #888; font-weight: 800; text-transform: uppercase; margin-top: 0.2rem;">Classi</div>
+                    <div style="font-size: 0.75rem; color: #888; font-weight: 800; text-transform: uppercase;">Classi</div>
                 </div>
                 <div class="admin-stat-card" onclick="window.setActiveAdminFilter('scuole')" data-filter="scuole" style="background: white; padding: 1.2rem; border-radius: 20px; text-align: center; border: 2px solid transparent; cursor: pointer; transition: all 0.2s; box-shadow: 0 4px 10px rgba(0,0,0,0.02);">
                     <div style="font-size: 1.6rem; font-weight: 900; color: #2c3e50;">${counts.scuole}</div>
-                    <div style="font-size: 0.75rem; color: #888; font-weight: 800; text-transform: uppercase; margin-top: 0.2rem;">Scuole</div>
+                    <div style="font-size: 0.75rem; color: #888; font-weight: 800; text-transform: uppercase;">Scuole</div>
                 </div>
                 <div class="admin-stat-card" onclick="window.setActiveAdminFilter('citta')" data-filter="citta" style="background: white; padding: 1.2rem; border-radius: 20px; text-align: center; border: 2px solid transparent; cursor: pointer; transition: all 0.2s; box-shadow: 0 4px 10px rgba(0,0,0,0.02);">
                     <div style="font-size: 1.6rem; font-weight: 900; color: #7f8c8d;">${counts.citta}</div>
-                    <div style="font-size: 0.75rem; color: #888; font-weight: 800; text-transform: uppercase; margin-top: 0.2rem;">Città</div>
+                    <div style="font-size: 0.75rem; color: #888; font-weight: 800; text-transform: uppercase;">Città</div>
                 </div>
             </div>
 
             <!-- Search Bar -->
             <div style="background: #f8f9fa; padding: 1.5rem; border-radius: 25px; margin-bottom: 2rem;">
                 <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
-                    <input type="text" id="admin-search-input" oninput="window.filterAdminUsers()" placeholder="Cerca per nome, email, scuola o classe..." style="flex: 1; min-width: 250px; padding: 1.1rem 1.5rem; border-radius: 50px; border: 2px solid #eee; outline: none; font-size: 1rem; transition: border-color 0.3s; box-shadow: 0 4px 15px rgba(0,0,0,0.02);">
+                    <input type="text" id="admin-search-input" oninput="window.filterAdminEntities()" placeholder="Cerca in questo elenco..." style="flex: 1; min-width: 250px; padding: 1.1rem 1.5rem; border-radius: 50px; border: 2px solid #eee; outline: none; font-size: 1rem; transition: all 0.3s;">
                 </div>
 
-                <!-- Admin Management Bar (Hidden by default) -->
+                <!-- Admin Management Bar -->
                 <div id="admin-management-bar" style="margin-top: 1rem; background: #fff9f0; padding: 1rem; border-radius: 20px; border: 1px solid #ffeaa7; display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; display: none;">
                     <span style="font-weight: 800; font-size: 0.8rem; color: #d35400;">GESTIONE SELEZIONATI:</span>
                     <select id="admin-move-destination" style="padding: 0.6rem; border-radius: 12px; border: 1px solid #ddd; font-size: 0.9rem; outline: none;">
@@ -938,6 +949,14 @@ async function loadAdminUsersInProfile() {
                     <button onclick="window.adminActionOnSelected('delete')" style="background: #e74c3c; color: white; border: none; padding: 0.6rem 1.5rem; border-radius: 12px; font-weight: 800; cursor: pointer; transition: all 0.2s;">ELIMINA DALLA CLASSE</button>
                 </div>
             </div>
+
+            <div id="admin-entities-list" style="display: flex; flex-direction: column; gap: 1rem;">
+                <!-- Content injected by filterAdminEntities -->
+            </div>
+        `;
+        
+        window.currentAdminFilter = 'tutti';
+        window.filterAdminEntities();
 
             <div id="admin-users-rows" style="display: flex; flex-direction: column; gap: 1rem;">
                 ${usersHtml}
@@ -966,37 +985,172 @@ window.setActiveAdminFilter = function(filter) {
         card.style.boxShadow = isActive ? '0 10px 25px rgba(0,0,0,0.08)' : '0 4px 10px rgba(0,0,0,0.02)';
     });
     window.currentAdminFilter = filter;
-    window.filterAdminUsers();
+    window.filterAdminEntities();
 };
 
-window.filterAdminUsers = function() {
+window.filterAdminEntities = function() {
     const search = (document.getElementById('admin-search-input')?.value || '').toLowerCase();
     const filter = window.currentAdminFilter || 'tutti';
+    const container = document.getElementById('admin-entities-list');
+    if (!container || !window.adminData) return;
+
+    let html = '';
     
-    document.querySelectorAll('#admin-users-rows .admin-user-row').forEach(row => {
-        const role = row.dataset.role || 'studente';
-        const name = row.dataset.name || '';
-        const email = row.dataset.email || '';
-        const school = row.dataset.school || '';
-        const className = row.dataset.class || '';
-        const city = (row.dataset.city || '').toLowerCase(); // Assicurati di aver aggiunto data-city nella riga
+    // VIEW SWITCHING LOGIC
+    if (['tutti', 'docente', 'studente', 'amico'].includes(filter)) {
+        // Mostra UTENTI
+        const filtered = window.adminData.users.filter(u => {
+            const matchesSearch = !search || (u.name || '').toLowerCase().includes(search) || (u.email || '').toLowerCase().includes(search) || (u.school || '').toLowerCase().includes(search) || (u.className || '').toLowerCase().includes(search);
+            let matchesFilter = filter === 'tutti';
+            if (filter === 'docente' && u.role === 'docente') matchesFilter = true;
+            if (filter === 'studente' && (u.role === 'studente' || u.role === 'admin')) matchesFilter = true;
+            if (filter === 'amico' && (u.role === 'amico' || u.role === 'guest')) matchesFilter = true;
+            return matchesSearch && matchesFilter;
+        });
+        html = filtered.map(u => renderAdminUserRow(u)).join('');
+    } 
+    else if (filter === 'classi') {
+        const filtered = window.adminData.classes.filter(c => !search || (c.name || '').toLowerCase().includes(search) || (c.code || '').toLowerCase().includes(search) || (c.school || '').toLowerCase().includes(search));
+        html = filtered.map(c => `
+            <div class="admin-user-row" style="display: flex; align-items: center; gap: 1.5rem; padding: 1.5rem; background: white; border-radius: 20px; border: 1px solid #eee;">
+                <div style="font-size: 2rem;">📁</div>
+                <div style="flex: 1;">
+                    <h4 style="margin: 0; font-weight: 800;">${c.name} <span style="color: #999; font-weight: 400; font-size: 0.8rem;">(${c.code})</span></h4>
+                    <p style="margin: 0; font-size: 0.85rem; color: #666;">${c.school ? `🏫 ${c.school}` : 'Nessuna scuola'} • ${c.city ? `📍 ${c.city}` : 'Nessuna città'}</p>
+                </div>
+                <div style="display: flex; gap: 0.5rem;">
+                    <button class="btn" onclick="window.editTeacherClass('${c.id}', '${c.name}', '${c.school || ''}', '${c.city || ''}')" style="background: #f0f7ff; color: #3498db; border: none; padding: 0.6rem 1rem; border-radius: 12px; font-weight: 700;">MODIFICA</button>
+                    <button class="btn" onclick="window.adminDeleteEntity('classes', '${c.id}', '${c.name}')" style="background: #fff0f0; color: #e74c3c; border: none; padding: 0.6rem 1rem; border-radius: 12px; font-weight: 700;">ELIMINA</button>
+                </div>
+            </div>
+        `).join('');
+    }
+    else if (filter === 'scuole') {
+        const filtered = window.adminData.schools.filter(s => !search || s.name.toLowerCase().includes(search));
+        html = filtered.map(s => `
+            <div class="admin-user-row" style="display: flex; align-items: center; gap: 1.5rem; padding: 1.5rem; background: white; border-radius: 20px; border: 1px solid #eee;">
+                <div style="font-size: 2rem;">🏫</div>
+                <div style="flex: 1;">
+                    <h4 style="margin: 0; font-weight: 800;">${s.name}</h4>
+                    <p style="margin: 0; font-size: 0.85rem; color: #666;">${s.classCount} Classi • ${s.studentCount} Studenti</p>
+                </div>
+                <div style="display: flex; gap: 0.5rem;">
+                    <button class="btn" onclick="window.adminEditAttribute('school', '${s.name.replace(/'/g, "\\'")}')" style="background: #f0f7ff; color: #3498db; border: none; padding: 0.6rem 1rem; border-radius: 12px; font-weight: 700;">RINOMINA</button>
+                    <button class="btn" onclick="window.adminDeleteAttribute('school', '${s.name.replace(/'/g, "\\'")}')" style="background: #fff0f0; color: #e74c3c; border: none; padding: 0.6rem 1rem; border-radius: 12px; font-weight: 700;">PULISCI TUTTI</button>
+                </div>
+            </div>
+        `).join('');
+    }
+    else if (filter === 'citta') {
+        const filtered = window.adminData.cities.filter(c => !search || c.name.toLowerCase().includes(search));
+        html = filtered.map(c => `
+            <div class="admin-user-row" style="display: flex; align-items: center; gap: 1.5rem; padding: 1.5rem; background: white; border-radius: 20px; border: 1px solid #eee;">
+                <div style="font-size: 2rem;">📍</div>
+                <div style="flex: 1;">
+                    <h4 style="margin: 0; font-weight: 800;">${c.name}</h4>
+                    <p style="margin: 0; font-size: 0.85rem; color: #666;">Presente in ${c.userCount} profili/classi</p>
+                </div>
+                <div style="display: flex; gap: 0.5rem;">
+                    <button class="btn" onclick="window.adminEditAttribute('city', '${c.name.replace(/'/g, "\\'")}')" style="background: #f0f7ff; color: #3498db; border: none; padding: 0.6rem 1rem; border-radius: 12px; font-weight: 700;">RINOMINA</button>
+                    <button class="btn" onclick="window.adminDeleteAttribute('city', '${c.name.replace(/'/g, "\\'")}')" style="background: #fff0f0; color: #e74c3c; border: none; padding: 0.6rem 1rem; border-radius: 12px; font-weight: 700;">PULISCI TUTTI</button>
+                </div>
+            </div>
+        `).join('');
+    }
 
-        let showFilter = filter === 'tutti';
-        if (filter === 'docente' && role === 'docente') showFilter = true;
-        if (filter === 'studente' && (role === 'studente' || role === 'admin')) showFilter = true;
-        if (filter === 'amico' && (role === 'amico' || role === 'guest')) showFilter = true;
-        if (filter === 'scuole' && school) showFilter = true;
-        if (filter === 'classi' && className) showFilter = true;
-        if (filter === 'citta' && city) showFilter = true;
+    container.innerHTML = html || '<p style="text-align: center; color: #999; padding: 3rem;">Nessun risultato trovato per questa selezione.</p>';
 
-        const showSearch = !search || 
-                           name.includes(search) || 
-                           email.includes(search) || 
-                           school.includes(search) || 
-                           className.includes(search);
+    // Riapplica i listener se siamo nella vista utenti
+    if (['tutti', 'docente', 'studente', 'amico'].includes(filter)) {
+        document.querySelectorAll('.admin-student-checkbox').forEach(cb => {
+            cb.addEventListener('change', () => {
+                const selected = document.querySelectorAll('.admin-student-checkbox:checked').length;
+                const mbar = document.getElementById('admin-management-bar');
+                if (mbar) mbar.style.display = selected > 0 ? 'flex' : 'none';
+            });
+        });
+    }
+};
 
-        row.style.display = (showFilter && showSearch) ? 'flex' : 'none';
-    });
+// Funzione interna per renderizzare la riga utente (estratta per riuso)
+function renderAdminUserRow(userData) {
+    const allClasses = window.adminData.classes || [];
+    const userProgress = userData._progress || {};
+    const isImage = userData.avatar && (userData.avatar.includes('/') || userData.avatar.includes('.'));
+    const avatarHtml = isImage ? `<img src="${userData.avatar}" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;">` : `<span style="font-size: 1.5rem;">${userData.avatar || '👤'}</span>`;
+    const role = (userData.role || 'studente').toLowerCase();
+    const roleColors = { docente: '#2980b9', amico: '#8e44ad', guest: '#8e44ad', studente: '#27ae60', admin: '#e74c3c' };
+    const roleColor = roleColors[role] || '#27ae60';
+
+    let classLabel = '';
+    if (userData.classId) {
+        const c = allClasses.find(cl => cl.id === userData.classId);
+        classLabel = c ? `${c.name} (${c.code})` : userData.className || 'Classe N/D';
+    }
+
+    return `<div class="admin-user-row" style="display: flex; flex-wrap: wrap; align-items: center; gap: 1rem; padding: 1.2rem; background: white; border-radius: 20px; border: 1px solid #eee;">
+        <div style="width: 40px; text-align: center;">
+            ${role === 'studente' ? `<input type="checkbox" class="admin-student-checkbox" data-uid="${userData.id}" data-name="${userData.name}">` : ''}
+        </div>
+        <div style="width: 50px; height: 50px; background: #f8f9fa; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 2px solid #eee; overflow: hidden; flex-shrink: 0;">
+            ${avatarHtml}
+        </div>
+        <div style="flex: 1; min-width: 200px;">
+            <h4 style="margin: 0; font-weight: 800;">${userData.name || 'Anonimo'}</h4>
+            <p style="margin: 0; font-size: 0.85rem; color: #666;">${userData.email || 'No email'} • <span style="color: ${roleColor}; font-weight: 700;">${userData.roleLabel || userData.role || 'Studente'}</span></p>
+            <p style="margin: 0; font-size: 0.75rem; color: #999;">${userData.school ? `🏫 ${userData.school} • ` : ''} ${classLabel ? `📁 ${classLabel} • ` : ''} Iscritto il: ${userData.joinedAt ? new Date(userData.joinedAt).toLocaleDateString() : 'N/D'}</p>
+        </div>
+        <div style="text-align: right; margin-right: 1rem;">
+            <div style="font-weight: 800; color: var(--primary-color);">${userProgress.points || 0} XP</div>
+        </div>
+        <button onclick="adminDeleteUserInProfile('${userData.id}', '${(userData.name || 'Anonimo').replace(/'/g, "\\'")}')" style="background: #fff0f0; border: none; padding: 0.8rem; border-radius: 15px; cursor: pointer; color: #e74c3c;">🗑️</button>
+    </div>`;
+}
+
+// AZIONI ADMIN PER ENTITÀ
+window.adminDeleteEntity = async function(collection, id, name) {
+    if (!confirm(`Sei sicuro di voler eliminare definitivamente ${name}?`)) return;
+    try {
+        await window.fbDb.collection(collection).doc(id).delete();
+        alert("Eliminato con successo.");
+        loadAdminUsersInProfile();
+    } catch (e) { alert("Errore: " + e.message); }
+};
+
+window.adminEditAttribute = async function(type, oldValue) {
+    const newValue = prompt(`Inserisci il nuovo nome per ${type === 'school' ? 'la scuola' : 'la città'} "${oldValue}":`, oldValue);
+    if (!newValue || newValue === oldValue) return;
+
+    try {
+        const batch = window.fbDb.batch();
+        const collection = type === 'school' ? 'classes' : 'users'; // Semplificazione per esempio
+        
+        // Cerca in classi
+        const classQ = await window.fbDb.collection('classes').where(type, '==', oldValue).get();
+        classQ.forEach(doc => batch.update(doc.ref, { [type]: newValue }));
+        
+        // Cerca in utenti
+        const userQ = await window.fbDb.collection('users').where(type, '==', oldValue).get();
+        userQ.forEach(doc => batch.update(doc.ref, { [type]: newValue }));
+
+        await batch.commit();
+        alert("Aggiornamento completato su tutti i record.");
+        loadAdminUsersInProfile();
+    } catch (e) { alert("Errore durante l'aggiornamento massivo: " + e.message); }
+};
+
+window.adminDeleteAttribute = async function(type, value) {
+    if (!confirm(`Vuoi rimuovere il valore "${value}" da tutti gli utenti e le classi? (Il campo diventerà vuoto)`)) return;
+    try {
+        const batch = window.fbDb.batch();
+        const classQ = await window.fbDb.collection('classes').where(type, '==', value).get();
+        classQ.forEach(doc => batch.update(doc.ref, { [type]: window.firebase.firestore.FieldValue.delete() }));
+        const userQ = await window.fbDb.collection('users').where(type, '==', value).get();
+        userQ.forEach(doc => batch.update(doc.ref, { [type]: window.firebase.firestore.FieldValue.delete() }));
+        await batch.commit();
+        alert("Campo ripulito con successo.");
+        loadAdminUsersInProfile();
+    } catch (e) { alert("Errore: " + e.message); }
 };
 
 window.adminActionOnSelected = async function(action) {

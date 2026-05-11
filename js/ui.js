@@ -1809,3 +1809,5 @@ window.UI.wrapWordsForVocabulary = (text) => {
 };
 
 
+
+window.UI = UI;
