@@ -1416,3 +1416,51 @@ td .completion-input {
     .onboarding-container { padding: 2rem 1rem; }
     .role-opt-large { padding: 1.5rem; }
 }
+
+/* 📱 OTTIMIZZAZIONE MOBILE: Rimozione Card per massimizzare lo spazio di lettura */
+@media (max-width: 768px) {
+    /* Trasformiamo la card in un contenitore trasparente a tutta larghezza */
+    .exercise-container {
+        background: transparent !important;
+        padding: 1.5rem 0.2rem !important;
+        border-radius: 0 !important;
+        box-shadow: none !important;
+        border: none !important;
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+    
+    /* I testi di lettura non devono più avere bordi o sfondi bianchi */
+    .reading-text {
+        padding: 1.5rem 0.5rem !important;
+        background: transparent !important;
+        border: none !important;
+        font-size: 1.3rem !important;
+        line-height: 1.7 !important;
+    }
+    
+    .exercise-title {
+        font-size: 1.6rem !important;
+        margin-bottom: 1.5rem !important;
+        padding: 0 0.5rem 0.5rem 0.5rem !important;
+    }
+
+    /* Riduciamo il padding globale del corpo pagina per dare più respiro */
+    main {
+        padding-left: 0.8rem !important;
+        padding-right: 0.8rem !important;
+    }
+
+    /* Anche la teoria e gli schemi diventano meno ingombranti */
+    .theory-schema, .map-container, .example-box {
+        padding: 1.2rem !important;
+        border-radius: 15px !important;
+        margin: 1rem 0 !important;
+    }
+
+    /* Le griglie di opzioni usano meglio lo spazio */
+    .options-grid {
+        grid-template-columns: 1fr !important; /* Una sola colonna su mobile molto piccolo */
+        gap: 0.8rem !important;
+    }
+}
