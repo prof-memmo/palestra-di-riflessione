@@ -1464,3 +1464,46 @@ td .completion-input {
         gap: 0.8rem !important;
     }
 }
+
+/* 📱 OTTIMIZZAZIONE MOBILE: Rimozione Card per massimizzare lo spazio di lettura */
+@media (max-width: 768px) {
+    .exercise-container {
+        background: transparent !important;
+        padding: 1.5rem 0.2rem !important;
+        border-radius: 0 !important;
+        box-shadow: none !important;
+        border: none !important;
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+    
+    .reading-text {
+        padding: 1.5rem 0.5rem !important;
+        background: transparent !important;
+        border: none !important;
+        font-size: 1.3rem !important;
+        line-height: 1.7 !important;
+    }
+    
+    .exercise-title {
+        font-size: 1.6rem !important;
+        margin-bottom: 1.5rem !important;
+        padding: 0 0.5rem 0.5rem 0.5rem !important;
+    }
+
+    main {
+        padding-left: 0.8rem !important;
+        padding-right: 0.8rem !important;
+    }
+
+    .theory-schema, .map-container, .example-box {
+        padding: 1.2rem !important;
+        border-radius: 15px !important;
+        margin: 1rem 0 !important;
+    }
+
+    .options-grid {
+        grid-template-columns: 1fr !important;
+        gap: 0.8rem !important;
+    }
+}
