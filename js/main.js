@@ -820,13 +820,25 @@ async function loadAdminUsersInProfile() {
             const userData = { id: doc.id, ...u, _progress: progressMap[doc.id] || {} };
             allUsers.push(userData);
             
-            if (u.school) {
-                if (!schoolsMap[u.school]) schoolsMap[u.school] = { classCount: 0, studentCount: 0 };
-                schoolsMap[u.school].studentCount++;
+            // Determiniamo scuola e città (dal profilo o, se mancano, dalla classe)
+            let effectiveSchool = u.school;
+            let effectiveCity = u.city;
+            
+            if ((!effectiveSchool || !effectiveCity) && u.classId) {
+                const userClass = allClasses.find(c => c.id === u.classId);
+                if (userClass) {
+                    if (!effectiveSchool) effectiveSchool = userClass.school;
+                    if (!effectiveCity) effectiveCity = userClass.city;
+                }
             }
-            if (u.city) {
-                if (!citiesMap[u.city]) citiesMap[u.city] = { userCount: 0 };
-                citiesMap[u.city].userCount++;
+
+            if (effectiveSchool) {
+                if (!schoolsMap[effectiveSchool]) schoolsMap[effectiveSchool] = { classCount: 0, studentCount: 0 };
+                schoolsMap[effectiveSchool].studentCount++;
+            }
+            if (effectiveCity) {
+                if (!citiesMap[effectiveCity]) citiesMap[effectiveCity] = { userCount: 0 };
+                citiesMap[effectiveCity].userCount++;
             }
         });
 
