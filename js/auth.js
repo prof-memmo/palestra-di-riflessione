@@ -78,6 +78,11 @@ const Auth = {
 
             if (doc.exists) {
                 Auth._user = doc.data();
+                // Ensure email is always present and updated from Firebase Auth
+                if (!Auth._user.email && fbUser.email) {
+                    Auth._user.email = fbUser.email;
+                    await window.fbDb.collection('users').doc(fbUser.uid).update({ email: fbUser.email });
+                }
                 // Se l'utente ha selezionato un ruolo diverso (e non è admin), aggiorniamo il profilo esistente
                 if (pendingRole && Auth._user.role !== pendingRole && Auth._user.role !== 'admin') {
                     Auth._user.role = pendingRole;
