@@ -614,11 +614,7 @@ async function renderProfiloPage() {
                 <div class="teacher-area" style="margin-bottom: 3rem; padding: 2rem; background: #f0f7ff; border-radius: 30px; border: 2px dashed #3498db;">
                     <h3 style="color: #2980b9; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.8rem;">👨‍🏫 AREA CLASSI</h3>
                     
-                    <div style="margin-bottom: 2rem; display: flex; justify-content: center;">
-                        <button class="btn" onclick="window.migrate3Dto2D()" style="background: #e67e22; color: white; padding: 0.8rem 1.5rem; border-radius: 50px; font-weight: 800; border: none; cursor: pointer; box-shadow: 0 4px 15px rgba(230, 126, 34, 0.2); display: flex; align-items: center; gap: 0.5rem;">
-                            🔄 SPOSTA STUDENTI DA 3D A 2D
-                        </button>
-                    </div>
+
                     
                     <div style="display: grid; grid-template-columns: 1fr; gap: 2rem; max-width: 600px; margin: 0 auto;">
                         <!-- Gestione Classi -->
@@ -1168,6 +1164,9 @@ window.viewClassStudents = async function(code, name) {
             
             return `
                 <tr style="border-bottom: 1px solid #eee;">
+                    <td style="padding: 12px; text-align: center;">
+                        <input type="checkbox" class="student-checkbox" data-uid="${s.id}" data-name="${s.name}">
+                    </td>
                     <td style="padding: 12px; display: flex; align-items: center; gap: 0.5rem;">
                         <span style="font-size: 1.2rem;">${s.avatar || '👤'}</span>
                         <span style="font-weight: 700;">${s.name}</span>
@@ -1179,16 +1178,38 @@ window.viewClassStudents = async function(code, name) {
             `;
         }).join('');
 
+        const teacherClasses = JSON.parse(localStorage.getItem('palestra_classes') || '[]');
+        const otherClasses = teacherClasses.filter(c => c.code !== code);
+
         content.innerHTML = `
             <div style="font-family: inherit; animation: fadeIn 0.5s ease-out;">
                 <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem; background: #f0f7ff; padding: 1rem; border-radius: 15px;">
                     <h3 style="color: var(--primary-color); margin: 0; font-size: 1.1rem;">Registro Progressi: Classe ${name}</h3>
                     <span style="color: #3498db; font-size: 0.8rem; font-weight: 800;">CODICE: ${code}</span>
                 </div>
+
+                <!-- Gestione Multipla -->
+                <div id="student-management-bar" style="background: #fff9f0; padding: 1rem; border-radius: 15px; margin-bottom: 1rem; border: 1px solid #ffeaa7; display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap;">
+                    <div style="display: flex; align-items: center; gap: 0.5rem;">
+                        <span style="font-weight: 700; font-size: 0.85rem; color: #d35400;">GESTIONE SELEZIONATI:</span>
+                        <select id="move-destination-class" style="padding: 0.5rem; border-radius: 10px; border: 1px solid #ddd; font-size: 0.8rem;">
+                            <option value="">Sposta in classe...</option>
+                            ${otherClasses.map(c => `<option value="${c.id}">${c.name} (${c.code})</option>`).join('')}
+                        </select>
+                        <button onclick="window.moveSelectedStudents()" style="background: #e67e22; color: white; border: none; padding: 0.5rem 1rem; border-radius: 10px; font-weight: 700; cursor: pointer; font-size: 0.8rem;">SPOSTA</button>
+                    </div>
+                    <div style="font-size: 0.75rem; color: #888;">
+                        Seleziona gli studenti per spostarli in un'altra delle tue classi.
+                    </div>
+                </div>
+
                 <div style="overflow-x: auto;">
                     <table style="width: 100%; border-collapse: collapse; font-size: 0.85rem;">
                         <thead>
                             <tr style="text-align: left; color: #95a5a6; border-bottom: 2px solid #eee;">
+                                <th style="padding: 12px; text-align: center; width: 40px;">
+                                    <input type="checkbox" id="select-all-students" onclick="window.toggleSelectAllStudents(this)">
+                                </th>
                                 <th style="padding: 12px;">STUDENTE</th>
                                 <th style="padding: 12px;">PUNTI</th>
                                 <th style="padding: 12px;">ATTIVITÀ</th>
@@ -1250,68 +1271,56 @@ window.copyCurrentLink = function() {
     });
 };
 
-window.migrate3Dto2D = async function() {
-    const user = Auth.getUser();
-    if (user.role !== 'docente') return;
+window.toggleSelectAllStudents = function(master) {
+    const checkboxes = document.querySelectorAll('.student-checkbox');
+    checkboxes.forEach(cb => cb.checked = master.checked);
+};
+
+window.moveSelectedStudents = async function() {
+    const selectedCbs = document.querySelectorAll('.student-checkbox:checked');
+    const destClassId = document.getElementById('move-destination-class').value;
     
-    if (!confirm("Vuoi spostare tutti gli studenti attualmente registrati nella classe '3D' nella classe '2D'? \n\nQuesta operazione è utile per correggere l'errore di iscrizione di oggi.")) return;
-    
-    const btn = document.querySelector('button[onclick="window.migrate3Dto2D()"]');
-    if (btn) {
-        btn.disabled = true;
-        btn.innerText = "SPOSTAMENTO IN CORSO...";
+    if (selectedCbs.length === 0) {
+        alert("Seleziona almeno uno studente da spostare.");
+        return;
     }
+    
+    if (!destClassId) {
+        alert("Seleziona una classe di destinazione.");
+        return;
+    }
+
+    // Trova i dati della classe di destinazione
+    const teacherClasses = JSON.parse(localStorage.getItem('palestra_classes') || '[]');
+    const destClass = teacherClasses.find(c => c.id === destClassId);
+    if (!destClass) return;
+
+    if (!confirm(`Vuoi spostare ${selectedCbs.length} studenti nella classe ${destClass.name}?`)) return;
 
     try {
         const db = window.fbDb;
-        // 1. Trova la classe 2D del docente
-        const classesQ = await db.collection('classes')
-            .where('teacherId', '==', user.uid)
-            .where('name', '==', '2D')
-            .get();
-            
-        if (classesQ.empty) {
-            alert("❌ Classe 2D non trovata nel cloud. Assicurati di averla creata (e che non sia solo locale). Se l'hai appena creata, attendi qualche secondo.");
-            if (btn) { btn.disabled = false; btn.innerText = "🔄 SPOSTA STUDENTI DA 3D A 2D"; }
-            return;
-        }
-        
-        const class2D = classesQ.docs[0];
-        const data2D = class2D.data();
-        
-        // 2. Trova studenti in 3D (di questo docente)
-        // Nota: non filtriamo per data perché l'utente ha specificato "iscritti oggi" e 3D è usata come parcheggio
-        const studentsQ = await db.collection('users')
-            .where('teacherId', '==', user.uid)
-            .where('className', '==', '3D')
-            .get();
-            
-        let count = 0;
         const batch = db.batch();
         
-        studentsQ.forEach(doc => {
-            batch.update(doc.ref, {
-                classId: class2D.id,
-                className: '2D'
+        selectedCbs.forEach(cb => {
+            const uid = cb.dataset.uid;
+            const userRef = db.collection('users').doc(uid);
+            batch.update(userRef, {
+                classId: destClassId,
+                className: destClass.name
             });
-            count++;
         });
+
+        await batch.commit();
+        alert(`✅ Successo! ${selectedCbs.length} studenti spostati in classe ${destClass.name}.`);
         
-        if (count > 0) {
-            await batch.commit();
-            alert(`✅ Successo! ${count} studenti sono stati spostati dalla classe 3D alla classe 2D.`);
-            renderProfiloPage();
-        } else {
-            alert("Non ho trovato studenti nella classe 3D collegati al tuo profilo.");
-        }
+        // Ricarichiamo il registro corrente (che ora sarà vuoto o con meno studenti)
+        const currentCode = document.querySelector('[style*="CODICE:"]').innerText.replace('CODICE: ', '');
+        const currentName = document.querySelector('h3').innerText.replace('Registro Progressi: Classe ', '');
+        window.viewClassStudents(currentCode, currentName);
+        
     } catch (e) {
-        console.error("Errore migrazione:", e);
+        console.error("Errore spostamento:", e);
         alert("Errore durante lo spostamento: " + e.message);
-    } finally {
-        if (btn) {
-            btn.disabled = false;
-            btn.innerText = "🔄 SPOSTA STUDENTI DA 3D A 2D";
-        }
     }
 };
 
