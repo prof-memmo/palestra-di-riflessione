@@ -537,10 +537,20 @@ async function renderProfiloPage() {
     // Se docente, sincronizziamo le classi dal database
     if (user.role === 'docente' && !user.isGuest && window.fbDb) {
         try {
-            const classesSnapshot = await window.fbDb.collection('classes').where('teacherId', '==', user.uid).get();
+            // Recupera sia le classi con il vecchio formato (teacherId string) 
+            // che quelle nuove (teacherIds array)
+            const classesSnapshot = await window.fbDb.collection('classes').where('teacherIds', 'array-contains', user.uid).get();
+            const legacySnapshot = await window.fbDb.collection('classes').where('teacherId', '==', user.uid).get();
+            
             const firestoreClasses = [];
             classesSnapshot.forEach(doc => {
                 firestoreClasses.push({ id: doc.id, ...doc.data() });
+            });
+            
+            legacySnapshot.forEach(doc => {
+                if (!firestoreClasses.find(c => c.id === doc.id)) {
+                    firestoreClasses.push({ id: doc.id, ...doc.data() });
+                }
             });
             
             // Merge: aggiungi le classi locali che non sono già in Firestore
@@ -557,6 +567,26 @@ async function renderProfiloPage() {
             );
             
             localStorage.setItem('palestra_classes', JSON.stringify(classes));
+
+            // Recupero nomi dei docenti per la visualizzazione
+            const allTeacherIds = new Set();
+            classes.forEach(c => {
+                if (c.teacherIds) c.teacherIds.forEach(tid => allTeacherIds.add(tid));
+                if (c.teacherId) allTeacherIds.add(c.teacherId);
+            });
+
+            if (allTeacherIds.size > 0) {
+                const teacherIdsArr = Array.from(allTeacherIds);
+                const teacherMap = {};
+                // Recuperiamo i profili dei docenti (limitato ai primi 10 per query 'in')
+                const teacherDocs = await window.fbDb.collection('users')
+                    .where(firebase.firestore.FieldPath.documentId(), 'in', teacherIdsArr.slice(0, 10))
+                    .get();
+                teacherDocs.forEach(tdoc => {
+                    teacherMap[tdoc.id] = tdoc.data().name || 'Docente';
+                });
+                window._teacherNames = teacherMap;
+            }
         } catch (e) {
             console.error("Errore sincronizzazione classi:", e);
         }
@@ -632,12 +662,40 @@ async function renderProfiloPage() {
                         <!-- Gestione Classi -->
                         <div class="profile-card">
                             <h4 class="profile-card-title">📁 LE MIE CLASSI</h4>
+                            
+                            <div style="margin-bottom: 1rem; position: relative;">
+                                <input type="text" id="teacher-class-filter" placeholder="🔍 Filtra per docente o classe..." 
+                                    oninput="window.filterTeacherClasses(this.value)"
+                                    style="width: 100%; padding: 0.8rem 1rem 0.8rem 2.5rem; border-radius: 12px; border: 1px solid #ddd; font-size: 0.85rem; border-color: #3498db44;">
+                                <i style="position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: #3498db; font-style: normal; font-size: 0.9rem;">🔍</i>
+                            </div>
+
                             <div id="classes-list" style="margin-bottom: 1rem;">
-                                ${classes.length > 0 ? classes.map((c, idx) => `
-                                    <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.8rem; background: white; border-radius: 12px; margin-bottom: 0.5rem; border: 1px solid #e0e0e0;">
+                                ${classes.length > 0 ? classes.map((c, idx) => {
+                                    const teacherNames = [];
+                                    const rawTeacherNames = []; // Per il filtro
+                                    if (c.teacherIds) {
+                                        c.teacherIds.forEach(tid => {
+                                            const name = window._teacherNames && window._teacherNames[tid] ? window._teacherNames[tid] : 'Docente';
+                                            rawTeacherNames.push(name);
+                                            if (tid === user.uid) teacherNames.push('<b>Tu</b>');
+                                            else teacherNames.push(name);
+                                        });
+                                    } else if (c.teacherId) {
+                                        const name = window._teacherNames && window._teacherNames[c.teacherId] ? window._teacherNames[c.teacherId] : 'Docente';
+                                        rawTeacherNames.push(name);
+                                        if (c.teacherId === user.uid) teacherNames.push('<b>Tu</b>');
+                                        else teacherNames.push(name);
+                                    }
+                                    
+                                    const teachersHtml = teacherNames.length > 0 ? `<div style="font-size: 0.7rem; color: #7f8c8d; margin-top: 0.3rem; display: flex; align-items: center; gap: 0.3rem;"><span>👨‍🏫</span> ${teacherNames.join(', ')}</div>` : '';
+
+                                    return `
+                                    <div class="teacher-class-item" data-teachers="${rawTeacherNames.join(' ').toLowerCase()}" data-classname="${c.name.toLowerCase()}" style="display: flex; justify-content: space-between; align-items: center; padding: 0.8rem; background: white; border-radius: 12px; margin-bottom: 0.5rem; border: 1px solid #e0e0e0;">
                                         <div>
                                             <span style="font-weight: 800;">Classe ${c.name}</span>
                                             ${c.school ? `<span style="color: #7f8c8d; font-size: 0.75rem; margin-left: 0.5rem;">${c.school}${c.city ? ', ' + c.city : ''}</span>` : ''}
+                                            ${teachersHtml}
                                             <div style="font-size: 0.7rem; color: var(--primary-color); font-weight: 800; cursor: pointer; margin-top: 0.2rem;" onclick="navigator.clipboard.writeText('${c.code}'); alert('Codice copiato!')">
                                                 CODICE: ${c.code} 📋 <span style="color: #7f8c8d; font-weight: 400; margin-left: 0.5rem; font-style: italic;">(condividi il codice con la classe)</span>
                                             </div>
@@ -648,7 +706,7 @@ async function renderProfiloPage() {
                                             </div>
                                         </div>
                                     </div>
-                                `).join('') : '<p style="color: #888; font-size: 0.9rem;">Non hai ancora creato nessuna classe.</p>'}
+                                `;}).join('') : '<p style="color: #888; font-size: 0.9rem;">Non hai ancora creato nessuna classe.</p>'}
                             </div>
                             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; margin-bottom: 0.5rem;">
                                 <input type="text" id="new-class-school" placeholder="Istituto (es: I.C. Manzoni)" style="padding: 0.7rem; border-radius: 10px; border: 1px solid #ddd; font-size: 0.85rem;">
@@ -1229,6 +1287,19 @@ window.adminDeleteUser = async function(uid, name) {
 };
 
 // --- TEACHER FUNCTIONS ---
+window.filterTeacherClasses = function(val) {
+    const q = val.toLowerCase();
+    document.querySelectorAll('.teacher-class-item').forEach(item => {
+        const teachers = item.dataset.teachers || '';
+        const name = item.dataset.classname || '';
+        if (teachers.includes(q) || name.includes(q)) {
+            item.style.display = 'flex';
+        } else {
+            item.style.display = 'none';
+        }
+    });
+};
+
 window.addTeacherClass = async function() {
     const input = document.getElementById('new-class-name');
     const name = input.value.trim().toUpperCase();
@@ -1248,7 +1319,7 @@ window.addTeacherClass = async function() {
         const classData = {
             name: name,
             code: code,
-            teacherId: user.uid,
+            teacherIds: [user.uid], // Nuovo formato array per multi-docente
             school: school || null,
             city: city || null,
             createdAt: new Date().toISOString()
@@ -1295,19 +1366,35 @@ window.recoverTeacherClass = async function() {
         const classData = classDoc.data();
         console.log("✅ Classe trovata:", classData);
 
-        // Invece di modificare Firestore (che richiede permessi extra),
-        // aggiungiamo la classe direttamente al localStorage del docente.
+        // Se l'utente è un docente, lo aggiungiamo formalmente alla classe su Firestore
+        if (user.role === 'docente' && !user.isGuest) {
+            const updateData = {};
+            
+            // Gestione array dei docenti
+            if (classData.teacherIds) {
+                updateData.teacherIds = firebase.firestore.FieldValue.arrayUnion(user.uid);
+            } else if (classData.teacherId) {
+                // Migrazione da vecchio formato stringa a nuovo formato array
+                const currentTeachers = [classData.teacherId];
+                if (!currentTeachers.includes(user.uid)) currentTeachers.push(user.uid);
+                updateData.teacherIds = currentTeachers;
+            } else {
+                updateData.teacherIds = [user.uid];
+            }
+            
+            await window.fbDb.collection('classes').doc(classDoc.id).update(updateData);
+            console.log("✅ Docente aggiunto alla classe su Firestore");
+        }
+
         let classes = JSON.parse(localStorage.getItem('palestra_classes') || '[]');
         const alreadyExists = classes.find(c => c.code === code || c.id === classDoc.id);
         
-        if (alreadyExists) {
-            alert(`ℹ️ La classe "${classData.name}" (${code}) è già nel tuo profilo!`);
-            input.value = '';
-            return;
+        if (!alreadyExists) {
+            classes.push({ id: classDoc.id, ...classData });
+            localStorage.setItem('palestra_classes', JSON.stringify(classes));
+        } else {
+            console.log("ℹ️ Classe già presente nel profilo locale");
         }
-
-        classes.push({ id: classDoc.id, ...classData });
-        localStorage.setItem('palestra_classes', JSON.stringify(classes));
         
         alert(`✅ Classe "${classData.name}" (${code}) aggiunta al tuo profilo!`);
         input.value = '';

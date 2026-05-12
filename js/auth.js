@@ -4,8 +4,6 @@ const Auth = {
     _isReady: false,
     _readyPromise: null,
     _resolveReady: null,
-    _handledByRedirect: false, // Flag: redirect ha già gestito l'auth, salta onAuthStateChanged
-
     init: () => {
         // Inizializza la promise di ready
         Auth._readyPromise = new Promise((resolve) => {
@@ -30,37 +28,16 @@ const Auth = {
 
         // Inizializza listener Firebase
         if (window.fbAuth) {
-            // Gestisci il risultato del redirect (per mobile)
-            // Fondamentale: su mobile getRedirectResult DEVE essere risolto prima di onAuthStateChanged
-            const redirectPromise = window.fbAuth.getRedirectResult().then(async (result) => {
-                if (result && result.user) {
-                    Auth._handledByRedirect = true;
-                    await Auth._handleFirebaseUser(result.user);
-                }
-            }).catch(e => {
-                console.error("Errore redirect:", e);
-                Auth._resolveReady();
-            });
-
             window.fbAuth.onAuthStateChanged(async (user) => {
                 if (user) {
                     Auth._fbUser = user;
-                    // Se il redirect ha già processato questo stesso utente, evitiamo la doppia chiamata
-                    if (!Auth._handledByRedirect) {
-                        await Auth._handleFirebaseUser(user);
-                    }
-                    Auth._resolveReady();
+                    await Auth._handleFirebaseUser(user);
                 } else {
-                    // Aspettiamo che il redirect sia processato prima di dire che l'utente è nullo
-                    // (potrebbe essere in corso un login via redirect)
-                    await redirectPromise;
-                    if (!Auth._handledByRedirect) {
-                        Auth._fbUser = null;
-                        Auth._user = null;
-                        localStorage.removeItem('palestra_user');
-                        Auth._resolveReady();
-                    }
+                    Auth._fbUser = null;
+                    Auth._user = null;
+                    localStorage.removeItem('palestra_user');
                 }
+                Auth._resolveReady();
             });
         } else {
             Auth._resolveReady();
@@ -234,21 +211,15 @@ const Auth = {
         const provider = new firebase.auth.GoogleAuthProvider();
         provider.setCustomParameters({ prompt: 'select_account' });
         
-        const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-        
         try {
-            if (isMobile) {
-                await window.fbAuth.signInWithRedirect(provider);
-            } else {
-                const result = await window.fbAuth.signInWithPopup(provider);
-                if (result && result.user) {
-                    await Auth._handleFirebaseUser(result.user);
-                    if (typeof hideLoginOverlay === 'function') hideLoginOverlay();
-                }
+            const result = await window.fbAuth.signInWithPopup(provider);
+            if (result && result.user) {
+                await Auth._handleFirebaseUser(result.user);
+                if (typeof hideLoginOverlay === 'function') hideLoginOverlay();
             }
         } catch (e) {
             console.error("Errore Google Login:", e);
-            try { await window.fbAuth.signInWithRedirect(provider); } catch(e2) {}
+            alert("Si è verificato un errore durante l'accesso con Google. Se stai usando un browser in-app (es. Instagram/Facebook), prova ad aprire il sito nel browser di sistema (Safari/Chrome).");
         }
     },
 
