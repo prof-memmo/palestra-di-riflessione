@@ -552,6 +552,7 @@ async function renderProfiloPage() {
                     firestoreClasses.push({ id: doc.id, ...doc.data() });
                 }
             });
+            console.log("DEBUG CLASSI - Classi trovate su Firestore:", firestoreClasses.map(c => ({nome: c.name, docenti: c.teacherIds || [c.teacherId]})));
             
             // Merge e Aggiornamento: aggiorna le classi locali con i dati freschi di Firestore
             firestoreClasses.forEach(fc => {
@@ -583,6 +584,7 @@ async function renderProfiloPage() {
 
             if (allTeacherIds.size > 0) {
                 const teacherIdsArr = Array.from(allTeacherIds);
+                console.log("DEBUG CLASSI - Tutti gli ID docenti da cercare:", teacherIdsArr);
                 const teacherMap = window._teacherNames || {};
                 
                 // Assicuriamoci che il nome dell'utente corrente sia nella mappa
@@ -594,8 +596,11 @@ async function renderProfiloPage() {
                         .where(window.firebase.firestore.FieldPath.documentId(), 'in', teacherIdsArr.slice(0, 10))
                         .get();
                     
+                    console.log(`DEBUG CLASSI - Trovati ${teacherDocs.size} profili docenti su Firestore`);
                     teacherDocs.forEach(tdoc => {
-                        teacherMap[tdoc.id] = tdoc.data().name || 'Docente';
+                        const tData = tdoc.data();
+                        console.log(`DEBUG CLASSI - Caricato docente: ${tdoc.id} -> ${tData.name}`);
+                        teacherMap[tdoc.id] = tData.name || 'Docente';
                     });
                     window._teacherNames = teacherMap;
                 } catch (err) {
