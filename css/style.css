@@ -124,7 +124,7 @@ main {
     z-index: 1;
 }
 
-main.full-width { margin-left: 0; padding: 3rem 2rem; transition: all 0.5s ease; }
+main.full-width { margin-left: 0 !important; padding: 3rem 2rem !important; transition: all 0.5s ease; }
 
 @media (max-width: 1024px) {
     main { margin-left: 0; padding: 6rem 1.5rem 3rem 1.5rem; }
@@ -204,8 +204,9 @@ main.full-width { margin-left: 0; padding: 3rem 2rem; transition: all 0.5s ease;
 .full-width .exercise-container,
 .full-width .onboarding-container,
 .full-width .contact-card-wrapper {
-    max-width: 98%;
-    padding: 4rem 2rem;
+    max-width: 98% !important;
+    width: 98% !important;
+    padding: 4rem 2rem !important;
 }
 
 .full-width .home-description {
@@ -288,7 +289,7 @@ main.full-width { margin-left: 0; padding: 3rem 2rem; transition: all 0.5s ease;
 
 /* Footer */
 .footer { padding: 4rem; text-align: center; background: white; border-top: 1px solid #eee; margin-top: 4rem; margin-left: var(--sidebar-width); transition: margin-left var(--transition-speed) cubic-bezier(0.4, 0, 0.2, 1); }
-.footer.full-width { margin-left: 0; }
+.footer.full-width { margin-left: 0 !important; }
 .footer-btn { background: #f8f9fa; border: none; padding: 0.5rem 1.2rem; border-radius: 30px; font-weight: 700; cursor: pointer; margin: 0 0.5rem; transition: 0.3s; font-size: 0.85rem; }
 .footer-btn:hover { background: var(--primary-color); color: white; }
 
