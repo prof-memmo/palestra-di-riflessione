@@ -553,15 +553,19 @@ async function renderProfiloPage() {
                 }
             });
             
-            // Merge: aggiungi le classi locali che non sono già in Firestore
-            // (es. classi recuperate manualmente con il codice)
+            // Merge e Aggiornamento: aggiorna le classi locali con i dati freschi di Firestore
             firestoreClasses.forEach(fc => {
-                const alreadyInLocal = classes.find(lc => lc.id === fc.id || lc.code === fc.code);
-                if (!alreadyInLocal) classes.push(fc);
+                const localIdx = classes.findIndex(lc => lc.id === fc.id || lc.code === fc.code);
+                if (localIdx !== -1) {
+                    // Aggiorna la classe esistente (importante per nuovi teacherIds)
+                    classes[localIdx] = { ...classes[localIdx], ...fc };
+                } else {
+                    // Aggiunge la nuova classe
+                    classes.push(fc);
+                }
             });
             
-            // Aggiungi anche classi Firestore non ancora in locale
-            // (De-duplica per sicurezza)
+            // De-duplica e pulisci
             classes = classes.filter((c, index, self) =>
                 index === self.findIndex(t => t.code === c.code)
             );
@@ -571,21 +575,29 @@ async function renderProfiloPage() {
             // Recupero nomi dei docenti per la visualizzazione
             const allTeacherIds = new Set();
             classes.forEach(c => {
-                if (c.teacherIds) c.teacherIds.forEach(tid => allTeacherIds.add(tid));
+                if (c.teacherIds && Array.isArray(c.teacherIds)) {
+                    c.teacherIds.forEach(tid => allTeacherIds.add(tid));
+                }
                 if (c.teacherId) allTeacherIds.add(c.teacherId);
             });
 
             if (allTeacherIds.size > 0) {
                 const teacherIdsArr = Array.from(allTeacherIds);
-                const teacherMap = {};
-                // Recuperiamo i profili dei docenti (limitato ai primi 10 per query 'in')
-                const teacherDocs = await window.fbDb.collection('users')
-                    .where(firebase.firestore.FieldPath.documentId(), 'in', teacherIdsArr.slice(0, 10))
-                    .get();
-                teacherDocs.forEach(tdoc => {
-                    teacherMap[tdoc.id] = tdoc.data().name || 'Docente';
-                });
-                window._teacherNames = teacherMap;
+                const teacherMap = window._teacherNames || {};
+                
+                // Firestore limit di 10 per query 'in'
+                try {
+                    const teacherDocs = await window.fbDb.collection('users')
+                        .where(window.firebase.firestore.FieldPath.documentId(), 'in', teacherIdsArr.slice(0, 10))
+                        .get();
+                    
+                    teacherDocs.forEach(tdoc => {
+                        teacherMap[tdoc.id] = tdoc.data().name || 'Docente';
+                    });
+                    window._teacherNames = teacherMap;
+                } catch (err) {
+                    console.warn("Errore recupero nomi docenti:", err);
+                }
             }
         } catch (e) {
             console.error("Errore sincronizzazione classi:", e);
