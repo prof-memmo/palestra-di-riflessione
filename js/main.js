@@ -585,7 +585,10 @@ async function renderProfiloPage() {
                 const teacherIdsArr = Array.from(allTeacherIds);
                 const teacherMap = window._teacherNames || {};
                 
-                // Firestore limit di 10 per query 'in'
+                // Assicuriamoci che il nome dell'utente corrente sia nella mappa
+                teacherMap[user.uid] = user.name;
+                
+                // Recuperiamo i profili dei docenti (limitato ai primi 10 per query 'in')
                 try {
                     const teacherDocs = await window.fbDb.collection('users')
                         .where(window.firebase.firestore.FieldPath.documentId(), 'in', teacherIdsArr.slice(0, 10))
@@ -690,14 +693,12 @@ async function renderProfiloPage() {
                                         c.teacherIds.forEach(tid => {
                                             const name = window._teacherNames && window._teacherNames[tid] ? window._teacherNames[tid] : 'Docente';
                                             rawTeacherNames.push(name);
-                                            if (tid === user.uid) teacherNames.push('<b>Tu</b>');
-                                            else teacherNames.push(name);
+                                            teacherNames.push(name);
                                         });
                                     } else if (c.teacherId) {
                                         const name = window._teacherNames && window._teacherNames[c.teacherId] ? window._teacherNames[c.teacherId] : 'Docente';
                                         rawTeacherNames.push(name);
-                                        if (c.teacherId === user.uid) teacherNames.push('<b>Tu</b>');
-                                        else teacherNames.push(name);
+                                        teacherNames.push(name);
                                     }
                                     
                                     const teachersHtml = teacherNames.length > 0 ? `<div style="font-size: 0.7rem; color: #7f8c8d; margin-top: 0.3rem; display: flex; align-items: center; gap: 0.3rem;"><span>👨‍🏫</span> ${teacherNames.join(', ')}</div>` : '';
