@@ -124,7 +124,7 @@ main {
     z-index: 1;
 }
 
-main.full-width { margin-left: 0 !important; padding: 3rem 2rem !important; transition: all 0.5s ease; }
+main.full-width { margin-left: 0 !important; padding: 1rem !important; transition: all 0.5s ease; }
 
 @media (max-width: 1024px) {
     main { margin-left: 0; padding: 6rem 1.5rem 3rem 1.5rem; }
@@ -204,9 +204,9 @@ main.full-width { margin-left: 0 !important; padding: 3rem 2rem !important; tran
 .full-width .exercise-container,
 .full-width .onboarding-container,
 .full-width .contact-card-wrapper {
-    max-width: 98% !important;
-    width: 98% !important;
-    padding: 3rem 1.5rem !important; /* Ridotto per PC */
+    max-width: 99% !important;
+    width: 99% !important;
+    padding: 2rem 1.5rem !important;
 }
 
 .full-width .reading-text,
