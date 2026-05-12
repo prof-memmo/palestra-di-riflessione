@@ -590,8 +590,13 @@ async function renderProfiloPage() {
                 // Assicuriamoci che il nome dell'utente corrente sia nella mappa
                 teacherMap[user.uid] = user.name;
                 
-                // Recuperiamo i profili dei docenti (limitato ai primi 10 per query 'in')
+                // Recuperiamo i profili dei docenti (chunk di 10 per query 'in')
                 try {
+                    // Puliamo i nomi "Docente" vecchi per forzare il ricaricamento
+                    Object.keys(teacherMap).forEach(k => {
+                        if (teacherMap[k] === 'Docente') delete teacherMap[k];
+                    });
+
                     const teacherDocs = await window.fbDb.collection('users')
                         .where(window.firebase.firestore.FieldPath.documentId(), 'in', teacherIdsArr.slice(0, 10))
                         .get();
@@ -600,8 +605,22 @@ async function renderProfiloPage() {
                     teacherDocs.forEach(tdoc => {
                         const tData = tdoc.data();
                         console.log(`DEBUG CLASSI - Caricato docente: ${tdoc.id} -> ${tData.name}`);
-                        teacherMap[tdoc.id] = tData.name || 'Docente';
+                        if (tData.name) teacherMap[tdoc.id] = tData.name;
                     });
+                    
+                    // Fallback: se dopo la query mancano ancora dei nomi, cerchiamoli uno per uno
+                    for (const tid of teacherIdsArr) {
+                        if (!teacherMap[tid]) {
+                            console.log(`DEBUG CLASSI - Nome mancante per ${tid}, provo ricerca singola...`);
+                            const tDoc = await window.fbDb.collection('users').doc(tid).get();
+                            if (tDoc.exists) {
+                                teacherMap[tid] = tDoc.data().name || 'Docente (senza nome)';
+                            } else {
+                                teacherMap[tid] = 'Docente (non trovato)';
+                            }
+                        }
+                    }
+
                     window._teacherNames = teacherMap;
                 } catch (err) {
                     console.warn("Errore recupero nomi docenti:", err);
