@@ -206,7 +206,19 @@ main.full-width { margin-left: 0 !important; padding: 3rem 2rem !important; tran
 .full-width .contact-card-wrapper {
     max-width: 98% !important;
     width: 98% !important;
-    padding: 4rem 2rem !important;
+    padding: 3rem 1.5rem !important; /* Ridotto per PC */
+}
+
+.full-width .reading-text,
+.full-width .interactive-container {
+    max-width: 100% !important;
+    width: 100% !important;
+    padding: 3rem !important; /* Ripristinato padding per PC */
+    font-size: 1.5rem !important;
+}
+
+.full-width .reading-text p {
+    font-size: 1.5rem !important;
 }
 
 .full-width .home-description {

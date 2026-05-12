@@ -394,7 +394,7 @@ renderLessico: (exercise, isUda, path, total) => {
         if (type === 'completion') {
             const parts = exercise.text.split('___');
             interactionHtml = `
-                <div style="font-size: 1.3rem; line-height: 2.2; text-align: left; background: white; padding: 2.5rem; border-radius: 30px; border: 1px solid #eee; box-shadow: 0 10px 30px rgba(0,0,0,0.02);">
+                <div class="interactive-container" style="font-size: 1.3rem; line-height: 2.2; text-align: left; background: white; padding: 2.5rem; border-radius: 30px; border: 1px solid #eee; box-shadow: 0 10px 30px rgba(0,0,0,0.02);">
                     ${parts.map((p, i) => {
                         if (i < parts.length - 1) {
                             const answers = exercise.answer.split('|');
@@ -438,7 +438,7 @@ renderLessico: (exercise, isUda, path, total) => {
                         color: #a04000;
                     }
                 </style>
-                <div style="font-size: 1.5rem; line-height: 2.8; text-align: left; background: white; padding: 2.5rem; border-radius: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); border: 1px solid #f0f0f0; margin-bottom: 2rem;" id="highlight-container">
+                <div class="interactive-container" style="font-size: 1.5rem; line-height: 2.8; text-align: left; background: white; padding: 2.5rem; border-radius: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); border: 1px solid #f0f0f0; margin-bottom: 2rem;" id="highlight-container">
                     ${words.map((w, i) => `<span class="word-tag" onclick="window.cycleWordState(this, ${i})">${w}</span>`).join(' ')}
                 </div>
                 
@@ -529,7 +529,7 @@ renderLessico: (exercise, isUda, path, total) => {
             const words = textToSplit.split(/(\s+)/);
             
             interactionHtml = `
-                <div style="font-size: 1.4rem; line-height: 2.2; text-align: left; background: white; padding: 2.5rem; border-radius: 30px; border: 1px solid #eee; box-shadow: 0 10px 30px rgba(0,0,0,0.02);" id="word-selector-container">
+                <div class="interactive-container" style="font-size: 1.4rem; line-height: 2.2; text-align: left; background: white; padding: 2.5rem; border-radius: 30px; border: 1px solid #eee; box-shadow: 0 10px 30px rgba(0,0,0,0.02);" id="word-selector-container">
                     ${words.map((w, i) => {
                         if (w.trim() === "") return w;
                         if (/^[.,\/#!$%\^&\*;:{}=\-_`~()]+$/.test(w)) return w;
