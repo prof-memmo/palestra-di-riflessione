@@ -703,7 +703,7 @@ async function renderProfiloPage() {
                             <h4 class="profile-card-title">📁 LE MIE CLASSI</h4>
                             
                             <div style="margin-bottom: 1rem; position: relative;">
-                                <input type="text" id="teacher-class-filter" placeholder="🔍 Filtra per docente o classe..." 
+                                <input type="text" id="teacher-class-filter" placeholder="Filtra per docente o classe..." 
                                     oninput="window.filterTeacherClasses(this.value)"
                                     style="width: 100%; padding: 0.8rem 1rem 0.8rem 2.5rem; border-radius: 12px; border: 1px solid #ddd; font-size: 0.85rem; border-color: #3498db44;">
                                 <i style="position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: #3498db; font-style: normal; font-size: 0.9rem;">🔍</i>
