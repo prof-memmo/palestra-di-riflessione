@@ -711,8 +711,9 @@ async function renderProfiloPage() {
                                             <div style="font-size: 0.7rem; color: var(--primary-color); font-weight: 800; cursor: pointer; margin-top: 0.2rem;" onclick="navigator.clipboard.writeText('${c.code}'); alert('Codice copiato!')">
                                                 CODICE: ${c.code} 📋 <span style="color: #7f8c8d; font-weight: 400; margin-left: 0.5rem; font-style: italic;">(condividi il codice con la classe)</span>
                                             </div>
-                                            <div style="margin-top: 0.5rem; display: flex; gap: 0.5rem;">
+                                            <div style="margin-top: 0.5rem; display: flex; gap: 0.5rem; flex-wrap: wrap;">
                                                 <button onclick="window.viewClassStudents('${c.code}', '${c.name.replace(/'/g, "\\'")}', '${c.id}')" style="background: #eef2f7; border: none; color: #57606f; padding: 0.3rem 0.6rem; border-radius: 8px; font-size: 0.7rem; font-weight: 700; cursor: pointer;">👥 STUDENTI</button>
+                                                <button onclick="window.viewClassTeachers('${c.id}', '${c.name.replace(/'/g, "\\'")}', '${c.code}')" style="background: #eef2f7; border: none; color: #3498db; padding: 0.3rem 0.6rem; border-radius: 8px; font-size: 0.7rem; font-weight: 700; cursor: pointer;">👨‍🏫 DOCENTI</button>
                                                 <button onclick="window.editTeacherClass('${c.id}', '${c.name.replace(/'/g, "\\'")}', '${(c.school || '').replace(/'/g, "\\'")}', '${(c.city || '').replace(/'/g, "\\'")}')" style="background: #eef2f7; border: none; color: #2980b9; padding: 0.3rem 0.6rem; border-radius: 8px; font-size: 0.7rem; font-weight: 700; cursor: pointer;">✏️ MODIFICA</button>
                                                 <button onclick="window.removeTeacherClass(${idx})" style="background: #fceaea; border: none; color: #e74c3c; padding: 0.3rem 0.6rem; border-radius: 8px; font-size: 0.7rem; font-weight: 700; cursor: pointer;">🗑️ ELIMINA</button>
                                             </div>
@@ -1593,6 +1594,72 @@ window.viewClassStudents = async function(code, name, classId = null) {
     } catch (e) {
         console.error("Errore recupero studenti:", e);
         content.innerHTML = `<p style="color: #e74c3c; padding: 1rem;">Errore nel caricamento dei dati: ${e.message}</p>`;
+    }
+};
+
+window.viewClassTeachers = async function(classId, className, classCode) {
+    const content = document.getElementById('class-register-content');
+    if (!content) return;
+
+    content.innerHTML = `
+        <div style="text-align: center; padding: 2rem;">
+            <div class="spinner"></div>
+            <p>Recupero elenco docenti...</p>
+        </div>
+    `;
+    
+    // Scroll immediato per feedback
+    content.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+    try {
+        let classData;
+        const doc = await window.fbDb.collection('classes').doc(classId).get();
+        if (doc.exists) {
+            classData = doc.data();
+        } else {
+            // Fallback per codice
+            const q = await window.fbDb.collection('classes').where('code', '==', classCode).get();
+            if (!q.empty) classData = q.docs[0].data();
+        }
+
+        if (!classData) throw new Error("Dati classe non trovati.");
+
+        const teacherIds = classData.teacherIds || (classData.teacherId ? [classData.teacherId] : []);
+        
+        const teachers = [];
+        for (const tid of teacherIds) {
+            const tDoc = await window.fbDb.collection('users').doc(tid).get();
+            if (tDoc.exists) {
+                teachers.push({ id: tDoc.id, ...tDoc.data() });
+            }
+        }
+
+        content.innerHTML = `
+            <div style="background: white; padding: 2rem; border-radius: 30px; border: 1px solid #e0e0e0; box-shadow: 0 10px 30px rgba(0,0,0,0.05);">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                    <h4 style="color: #2980b9; margin: 0; font-size: 1.4rem; font-weight: 800;">👨‍🏫 Docenti della Classe ${className}</h4>
+                    <span style="background: #3498db; color: white; padding: 0.3rem 1rem; border-radius: 20px; font-size: 0.8rem; font-weight: 700;">${teachers.length} Docenti</span>
+                </div>
+                
+                <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 1rem;">
+                    ${teachers.map(t => `
+                        <div style="display: flex; align-items: center; gap: 1rem; padding: 1rem; background: #f8f9fa; border-radius: 20px; border: 1px solid #eee; transition: all 0.2s;">
+                            <div style="font-size: 2rem; background: white; width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; border-radius: 50%; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
+                                ${t.avatar?.includes('/') ? `<img src="${t.avatar}" style="width:100%; height:100%; border-radius:50%; object-fit:cover;">` : (t.avatar || '👤')}
+                            </div>
+                            <div>
+                                <div style="font-weight: 800; color: #2c3e50;">${t.name}</div>
+                                <div style="font-size: 0.75rem; color: #7f8c8d; word-break: break-all;">${t.email || 'Email non pubblica'}</div>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+                <button onclick="window.renderProfiloPage()" style="margin-top: 2rem; width: 100%; padding: 1rem; background: #f1f2f6; border: none; border-radius: 15px; color: #57606f; font-weight: 700; cursor: pointer;">Chiudi Elenco</button>
+            </div>
+        `;
+    } catch (e) {
+        console.error("Errore viewClassTeachers:", e);
+        content.innerHTML = `<p style="color: red; text-align: center; padding: 2rem;">Errore durante il caricamento docenti: ${e.message}</p>`;
     }
 };
 
