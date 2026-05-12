@@ -3709,7 +3709,7 @@ window.renderOnboardingPage = function() {
     const user = Auth.getUser();
     
     appContainer.innerHTML = `
-        <div id="onboarding-root" class="onboarding-container" style="max-width: 1000px; margin: 0 auto; padding: 4rem 2rem;">
+        <div id="onboarding-root" class="onboarding-container">
             <!-- STEP 1: ROLE SELECTION -->
             <div id="onboarding-step-1">
                 <div class="onboarding-header" style="text-align: center; margin-bottom: 4rem;">
