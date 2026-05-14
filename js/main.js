@@ -1514,8 +1514,9 @@ window.viewClassStudents = async function(code, name, classId = null) {
 
         if (!classDoc || (classDoc.exists === false && !classDoc.id)) throw new Error("Classe non trovata");
         const realClassId = classDoc.id;
-        const realClassName = classDoc.data()?.name || name;
-        const realClassCode = classDoc.data()?.code || code;
+        const classData = classDoc.data() || {};
+        const realClassName = classData.name || name;
+        const realClassCode = classData.code || code;
 
         // 2. Trova gli utenti di questa specifica classe
         const usersSnapshot = await window.fbDb.collection('users')
