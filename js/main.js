@@ -1619,11 +1619,10 @@ window.viewClassStudents = async function(code, name, classId = null) {
                             </tr>
                         </thead>
                         <tbody>
-                            ${tableRows}
+                            ${tableRows || '<tr><td colspan="5" style="text-align:center; padding:2rem; color:#888;">Nessuno studente iscritto.</td></tr>'}
                         </tbody>
                     </table>
                 </div>
-                ` : `<p style="text-align: center; color: #888; padding: 2rem;">Nessuno studente iscritto a questa classe.</p>`}
             </div>
         `;
         content.scrollIntoView({ behavior: 'smooth', block: 'center' });
