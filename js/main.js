@@ -1524,36 +1524,16 @@ window.viewClassStudents = async function(code, name, classId = null) {
             .get();
         
         const classStudents = [];
-        const extraTeachers = [];
-        const teacherIdsInDoc = classData.teacherIds || (classData.teacherId ? [classData.teacherId] : []);
         
         usersSnapshot.forEach(doc => {
             const u = doc.data();
-            // Filtro studenti
+            // Filtro studenti (escludiamo esplicitamente i docenti da questa vista)
             if (u.role === 'studente' || (!u.role && u.classId === realClassId)) {
                 classStudents.push({ id: doc.id, ...u });
-            } 
-            // Filtro docenti/collaboratori extra (quelli associati via classId)
-            else if (u.role !== 'studente' && u.role !== 'admin') {
-                extraTeachers.push({ id: doc.id, ...u });
             }
         });
 
-        // Aggiungiamo anche i docenti elencati formalmente nel documento classe se non già trovati
-        for (const tid of teacherIdsInDoc) {
-            if (!extraTeachers.find(t => t.id === tid)) {
-                try {
-                    const tDoc = await window.fbDb.collection('users').doc(tid).get();
-                    if (tDoc.exists) {
-                        extraTeachers.push({ id: tDoc.id, ...tDoc.data() });
-                    }
-                } catch (err) {
-                    console.warn("Errore recupero docente per registro:", err);
-                }
-            }
-        }
-
-        if (classStudents.length === 0 && extraTeachers.length === 0) {
+        if (classStudents.length === 0) {
             content.innerHTML = `
                 <div style="text-align: center; padding: 2rem; background: #f8f9fa; border-radius: 20px;">
                     <p style="color: #888;">Nessun utente si è ancora unito alla classe <b>${name}</b>.</p>
@@ -1609,24 +1589,6 @@ window.viewClassStudents = async function(code, name, classId = null) {
                     <span style="color: #3498db; font-size: 0.8rem; font-weight: 800;">CODICE: ${code}</span>
                 </div>
 
-                ${extraTeachers.length > 0 ? `
-                <!-- Sezione Docenti Collaboratori -->
-                <div style="background: #f0f7ff; padding: 1rem; border-radius: 15px; margin-bottom: 1rem; border: 1px solid #3498db44;">
-                    <div style="font-weight: 800; font-size: 0.8rem; color: #2980b9; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
-                        <span>👨‍🏫</span> DOCENTI COLLABORATORI
-                    </div>
-                    <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
-                        ${extraTeachers.map(t => `
-                            <div style="display: flex; align-items: center; gap: 0.5rem; background: white; padding: 0.4rem 0.8rem; border-radius: 10px; border: 1px solid #eee;">
-                                <span style="font-size: 1rem;">${t.avatar || '👤'}</span>
-                                <span style="font-size: 0.8rem; font-weight: 700;">${t.name}</span>
-                            </div>
-                        `).join('')}
-                    </div>
-                </div>
-                ` : ''}
-
-                ${classStudents.length > 0 ? `
                 <!-- Gestione Multipla -->
                 <div id="student-management-bar" style="background: #fff9f0; padding: 1rem; border-radius: 15px; margin-bottom: 1rem; border: 1px solid #ffeaa7; display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap;">
                     <div style="display: flex; align-items: center; gap: 0.5rem;">
@@ -1705,18 +1667,23 @@ window.viewClassTeachers = async function(classId, className, classCode) {
         // 1. Cerchiamo anche altri docenti associati via profilo utente (retroattivo)
         const missingFromDoc = [];
         try {
-            const usersSnapshot = await window.fbDb.collection('users')
-                .where('classId', '==', classId)
-                .get();
+            // Cerchiamo sia per classId che per classCode (più robusto per vecchie versioni)
+            const queries = [
+                window.fbDb.collection('users').where('classId', '==', classId).get(),
+                window.fbDb.collection('users').where('classId', '==', classCode).get()
+            ];
+            const snapshots = await Promise.all(queries);
             
-            usersSnapshot.forEach(doc => {
-                const u = doc.data();
-                if (u.role === 'docente' || u.role === 'amico') { // Includiamo anche 'amico' se in classe?
-                    if (!teacherIdsSet.has(doc.id)) {
-                        teacherIdsSet.add(doc.id);
-                        missingFromDoc.push(doc.id);
+            snapshots.forEach(qs => {
+                qs.forEach(doc => {
+                    const u = doc.data();
+                    if (u.role === 'docente' || u.role === 'amico') {
+                        if (!teacherIdsSet.has(doc.id)) {
+                            teacherIdsSet.add(doc.id);
+                            missingFromDoc.push(doc.id);
+                        }
                     }
-                }
+                });
             });
         } catch (err) {
             console.warn("Errore ricerca docenti extra:", err);
@@ -1734,9 +1701,17 @@ window.viewClassTeachers = async function(classId, className, classCode) {
 
         const teachers = [];
         for (const tid of teacherIdsSet) {
-            const tDoc = await window.fbDb.collection('users').doc(tid).get();
-            if (tDoc.exists) {
-                teachers.push({ id: tDoc.id, ...tDoc.data() });
+            try {
+                const tDoc = await window.fbDb.collection('users').doc(tid).get();
+                if (tDoc.exists) {
+                    teachers.push({ id: tDoc.id, ...tDoc.data() });
+                } else {
+                    // Fallback se il profilo non è caricabile (magari regole di sicurezza o documento mancante)
+                    teachers.push({ id: tid, name: "Docente Collaboratore", avatar: "👤", email: "Profilo privato" });
+                }
+            } catch (err) {
+                console.warn(`Errore fetch docente ${tid}:`, err);
+                teachers.push({ id: tid, name: "Docente Collaboratore", avatar: "👤", email: "Accesso limitato" });
             }
         }
 
