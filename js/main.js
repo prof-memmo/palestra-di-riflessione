@@ -1826,20 +1826,18 @@ window.moveSelectedStudents = async function(currentCode, currentName, currentId
             const uid = cb.dataset.uid;
             const userRef = db.collection('users').doc(uid);
             
+            // Ripristiniamo il payload al minimo indispensabile che funzionava in precedenza
             const updatePayload = {
                 classId: destClassId,
                 className: destClass.name
             };
             
-            // Fondamentale: manteniamo o aggiorniamo il teacherId per le Security Rules
+            // Se la classe di destinazione ha un teacherId (singolo), aggiorniamolo per coerenza
             if (destClass.teacherId) {
                 updatePayload.teacherId = destClass.teacherId;
-            } else if (destClass.teacherIds && destClass.teacherIds.length > 0) {
-                updatePayload.teacherId = destClass.teacherIds[0];
-            } else {
-                updatePayload.teacherId = Auth.getUser().uid;
             }
             
+            console.log(`📦 Spostamento studente ${uid} verso ${destClassId}`, updatePayload);
             batch.update(userRef, updatePayload);
         });
 
