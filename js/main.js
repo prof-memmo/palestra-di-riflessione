@@ -1367,6 +1367,7 @@ window.addTeacherClass = async function() {
         const classData = {
             name: name,
             code: code,
+            teacherId: user.uid, // Mantieni per compatibilità con Security Rules
             teacherIds: [user.uid], // Nuovo formato array per multi-docente
             school: school || null,
             city: city || null,
@@ -1689,13 +1690,20 @@ window.viewClassTeachers = async function(classId, className, classCode) {
         }
 
         // 2. Guarigione Dati (opzionale/silenziosa): aggiunge i docenti mancanti al documento classe
-        if (missingFromDoc.length > 0 && !Auth.getUser().isGuest) {
+        if ((missingFromDoc.length > 0 || !classData.teacherId) && !Auth.getUser().isGuest) {
             try {
-                await window.fbDb.collection('classes').doc(classId).update({
-                    teacherIds: window.firebase.firestore.FieldValue.arrayUnion(...missingFromDoc)
-                });
-                console.log("🩹 Data Healing: aggiunti docenti mancanti a teacherIds");
-            } catch (err) { console.warn("Impossibile auto-aggiornare teacherIds:", err); }
+                const updateData = {};
+                if (missingFromDoc.length > 0) {
+                    updateData.teacherIds = window.firebase.firestore.FieldValue.arrayUnion(...missingFromDoc);
+                }
+                // Se manca teacherId (necessario per Security Rules), impostiamo il primo disponibile
+                if (!classData.teacherId) {
+                    updateData.teacherId = Array.from(teacherIdsSet)[0];
+                }
+                
+                await window.fbDb.collection('classes').doc(classId).update(updateData);
+                console.log("🩹 Data Healing: aggiornato documento classe");
+            } catch (err) { console.warn("Impossibile auto-aggiornare classe:", err); }
         }
 
         const teachers = [];
@@ -3979,6 +3987,7 @@ window.saveOnboardingData = async function() {
                 const classData = {
                     name: newClassName,
                     code: code,
+                    teacherId: user.uid, // Mantieni per compatibilità con Security Rules
                     teacherIds: [user.uid], // Usiamo sempre il formato array
                     createdAt: new Date().toISOString()
                 };
