@@ -552,6 +552,16 @@ async function renderProfiloPage() {
                     firestoreClasses.push({ id: doc.id, ...doc.data() });
                 }
             });
+
+            // RETROATTIVITÀ: Se il docente ha un classId (unito via codice), recuperiamo anche quella classe
+            if (user.classId && !firestoreClasses.find(c => c.id === user.classId)) {
+                try {
+                    const joinedClassDoc = await window.fbDb.collection('classes').doc(user.classId).get();
+                    if (joinedClassDoc.exists) {
+                        firestoreClasses.push({ id: joinedClassDoc.id, ...joinedClassDoc.data() });
+                    }
+                } catch (err) { console.warn("Errore recupero classe unita via codice:", err); }
+            }
             console.log("DEBUG CLASSI - Classi trovate su Firestore:", firestoreClasses.map(c => ({nome: c.name, docenti: c.teacherIds || [c.teacherId]})));
             
             // Merge e Aggiornamento: aggiorna le classi locali con i dati freschi di Firestore
@@ -1522,8 +1532,8 @@ window.viewClassStudents = async function(code, name, classId = null) {
             if (u.role === 'studente' || (!u.role && u.classId === realClassId)) {
                 classStudents.push({ id: doc.id, ...u });
             } 
-            // Filtro docenti extra (quelli associati via classId)
-            else if (u.role === 'docente') {
+            // Filtro docenti/collaboratori extra (quelli associati via classId)
+            else if (u.role !== 'studente' && u.role !== 'admin') {
                 extraTeachers.push({ id: doc.id, ...u });
             }
         });
@@ -1691,15 +1701,34 @@ window.viewClassTeachers = async function(classId, className, classCode) {
 
         const teacherIdsSet = new Set(classData.teacherIds || (classData.teacherId ? [classData.teacherId] : []));
         
-        // 1. Cerchiamo anche altri docenti associati via profilo utente
+        // 1. Cerchiamo anche altri docenti associati via profilo utente (retroattivo)
+        const missingFromDoc = [];
         try {
             const usersSnapshot = await window.fbDb.collection('users')
                 .where('classId', '==', classId)
-                .where('role', '==', 'docente')
                 .get();
-            usersSnapshot.forEach(doc => teacherIdsSet.add(doc.id));
+            
+            usersSnapshot.forEach(doc => {
+                const u = doc.data();
+                if (u.role === 'docente' || u.role === 'amico') { // Includiamo anche 'amico' se in classe?
+                    if (!teacherIdsSet.has(doc.id)) {
+                        teacherIdsSet.add(doc.id);
+                        missingFromDoc.push(doc.id);
+                    }
+                }
+            });
         } catch (err) {
             console.warn("Errore ricerca docenti extra:", err);
+        }
+
+        // 2. Guarigione Dati (opzionale/silenziosa): aggiunge i docenti mancanti al documento classe
+        if (missingFromDoc.length > 0 && !Auth.getUser().isGuest) {
+            try {
+                await window.fbDb.collection('classes').doc(classId).update({
+                    teacherIds: window.firebase.firestore.FieldValue.arrayUnion(...missingFromDoc)
+                });
+                console.log("🩹 Data Healing: aggiunti docenti mancanti a teacherIds");
+            } catch (err) { console.warn("Impossibile auto-aggiornare teacherIds:", err); }
         }
 
         const teachers = [];
