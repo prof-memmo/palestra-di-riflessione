@@ -1825,10 +1825,22 @@ window.moveSelectedStudents = async function(currentCode, currentName, currentId
         selectedCbs.forEach(cb => {
             const uid = cb.dataset.uid;
             const userRef = db.collection('users').doc(uid);
-            batch.update(userRef, {
+            
+            const updatePayload = {
                 classId: destClassId,
                 className: destClass.name
-            });
+            };
+            
+            // Fondamentale: manteniamo o aggiorniamo il teacherId per le Security Rules
+            if (destClass.teacherId) {
+                updatePayload.teacherId = destClass.teacherId;
+            } else if (destClass.teacherIds && destClass.teacherIds.length > 0) {
+                updatePayload.teacherId = destClass.teacherIds[0];
+            } else {
+                updatePayload.teacherId = Auth.getUser().uid;
+            }
+            
+            batch.update(userRef, updatePayload);
         });
 
         await batch.commit();
@@ -1924,7 +1936,12 @@ window.joinClass = async function() {
         
         user.classId = classDoc.id;
         user.className = classData.name;
-        user.teacherId = classData.teacherId || (classData.teacherIds ? classData.teacherIds[0] : null);
+        
+        // Determiniamo il teacherId primario per le Security Rules (retrocompatibilità)
+        const primaryTeacherId = classData.teacherId || (classData.teacherIds ? classData.teacherIds[0] : null);
+        if (primaryTeacherId) {
+            user.teacherId = primaryTeacherId;
+        }
         
         // Se l'utente è un docente, lo aggiungiamo formalmente ai docenti della classe
         if (user.role === 'docente' && !user.isGuest) {
