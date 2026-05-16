@@ -3413,9 +3413,12 @@ function updateSidebarMenu() {
         { id: 'contatti', title: 'Contatti', icon: '📧' }
     ];
 
+    // Admin link removed - already integrated in Profile page
+    /*
     if (user.role === 'admin') {
         mainSections.push({ id: 'admin', title: 'Dashboard Admin', icon: '🛡️' });
     }
+    */
 
     let activeMainSection = window.currentSection;
     let activeSubSection = null;
