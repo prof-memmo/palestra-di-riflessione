@@ -19978,6 +19978,152 @@ window.exercisesData = {
                 ]
             }
         ],
+        "accoglienza": [
+            {
+                "id": 10001,
+                "title": "IL PRONTUARIO E LE REGOLE 📜",
+                "type": "multiple-choice",
+                "instruction": "LEGGI le regole della classe e rispondi alle domande per dimostrare di aver compreso come comportarti.",
+                "text": "1. NON USARE PENNE <span style='color: #e74c3c; font-weight: bold;'>CANCELLABILI</span> O IL <span style='color: #e74c3c; font-weight: bold;'>CANCELLINO</span>.<br>2. USARE SOLO PENNA <span style='color: #2980b9; font-weight: bold;'>NERA</span> O <span style='color: #2980b9; font-weight: bold;'>BLU</span>.<br>3. SI POSSONO USARE GLI <span style='color: #27ae60; font-weight: bold;'>EVIDENZIATORI</span> MA CON METODO.<br>4. POGGIARE GLI ASTUCCI SOTTO IL BANCO E LIBERARLO DAGLI OGGETTI SUPERFLUI.<br>5. CONTROLLARE DI AVERE SEMPRE I <span style='color: #8e44ad; font-weight: bold;'>FOGLI PROTOCOLLO</span>.<br>6. <span style='color: #d35400; font-weight: bold;'>ALZARE LA MANO</span> PER PRENOTARSI E ATTENDERE IL PROPRIO TURNO.<br>7. MANTENERE IL <span style='color: #16a085; font-weight: bold;'>SILENZIO</span> DURANTE LA LEZIONE E <span style='color: #2980b9; font-weight: bold;'>ASCOLTARE</span> GLI ALTRI.<br>8. NON USARE IL <span style='color: #c0392b; font-weight: bold;'>TELEFONO CELLULARE</span>.",
+                "questions": [
+                    {
+                        "question": "1. Quale tipo di penna è vietato usare in classe?",
+                        "options": ["PENNA CANCELLABILE", "PENNA NERA O BLU"],
+                        "answer": "PENNA CANCELLABILE"
+                    },
+                    {
+                        "question": "2. Come ci si prenota per parlare durante la lezione?",
+                        "options": ["ALZANDO LA MANO E ATTENDENDO IL TURNO", "PARLANDO AD ALTA VOCE DAL POSTO"],
+                        "answer": "ALZANDO LA MANO E ATTENDENDO IL TURNO"
+                    },
+                    {
+                        "question": "3. Cosa bisogna avere sempre con sé per le eventuali prove o attività?",
+                        "options": ["I FOGLI PROTOCOLLO", "IL TELEFONO CELLULARE"],
+                        "answer": "I FOGLI PROTOCOLLO"
+                    }
+                ]
+            },
+            {
+                "id": 10002,
+                "title": "ORGANIZZAZIONE E QUADERNI 📚",
+                "type": "multiple-choice",
+                "instruction": "SCOPRI come organizzare il tuo materiale e le tue ore di studio.",
+                "text": "RIPARTIZIONE ORARIA (TOTALE 9 ORE):<br>6 ORE DI <span style='color: #2980b9; font-weight: bold;'>ITALIANO</span>, 2 ORE DI <span style='color: #d35400; font-weight: bold;'>STORIA</span>, 1 ORA DI <span style='color: #27ae60; font-weight: bold;'>GEOGRAFIA</span>.<br><br>QUADERNI NECESSARI:<br>1) <span style='color: #8e44ad; font-weight: bold;'>ANTOLOGIA E LABORATORIO</span><br>2) STORIA E GEOGRAFIA<br>3) <span style='color: #16a085; font-weight: bold;'>GRAMMATICA</span><br>4) LEGGENDA, MITOLOGIA ED EPICA<br><br>L'INTESTAZIONE deve sempre avere la <span style='color: #c0392b; font-weight: bold;'>DATA</span> in alto a destra, mentre al centro si scrivono il numero della <span style='color: #2980b9; font-weight: bold;'>LEZIONE</span> e l'<span style='color: #e74c3c; font-weight: bold;'>ARGOMENTO</span>.",
+                "questions": [
+                    {
+                        "question": "1. Quante ore settimanali sono dedicate alla materia di Italiano?",
+                        "options": ["6 ORE", "9 ORE"],
+                        "answer": "6 ORE"
+                    },
+                    {
+                        "question": "2. Quali materie condividono lo stesso quaderno?",
+                        "options": ["STORIA E GEOGRAFIA", "GRAMMATICA E ANTOLOGIA"],
+                        "answer": "STORIA E GEOGRAFIA"
+                    },
+                    {
+                        "question": "3. Quale informazione va scritta in alto a destra nell'intestazione di ogni pagina?",
+                        "options": ["LA DATA", "L'ARGOMENTO DELLA LEZIONE"],
+                        "answer": "LA DATA"
+                    }
+                ]
+            },
+            {
+                "id": 10003,
+                "title": "PRESENTAZIONE PERSONALE 🤝",
+                "type": "multiple-choice",
+                "instruction": "PREPARATI a conoscerti meglio e a farti conoscere dai tuoi nuovi compagni.",
+                "text": "COMPILA I SEGUENTI CAMPI PER PRESENTARTI AL MEGLIO:<br>• <span style='color: #2980b9; font-weight: bold;'>DATI ANAGRAFICI</span>: NOME, COGNOME, LUOGO E DATA DI NASCITA.<br>• <span style='color: #27ae60; font-weight: bold;'>ASPETTO FISICO E CARATTERE</span>: DESCRIVI I TUOI TRATTI PRINCIPALI E IL TUO TEMPERAMENTO.<br>• <span style='color: #d35400; font-weight: bold;'>HOBBY E TEMPO LIBERO</span>: COSA AMI FARE QUANDO NON SEI A SCUOLA?<br>• ABITUDINI: QUANTO TEMPO DEDICHI ALLA TV? PREFERISCI TRASCORRERE IL TEMPO DA SOLO O IN COMPAGNIA?<br><br>IN CLASSE, OGNUNO <span style='color: #8e44ad; font-weight: bold;'>PRESENTERA SE STESSO ORALMENTE</span> SEGUENDO QUESTA SCALETTA.",
+                "questions": [
+                    {
+                        "question": "1. Quali informazioni rientrano nella categoria dei 'Dati Anagrafici'?",
+                        "options": ["NOME, COGNOME, LUOGO E DATA DI NASCITA", "COLORE DEGLI OCCHI, ALTEZZA E CARATTERE"],
+                        "answer": "NOME, COGNOME, LUOGO E DATA DI NASCITA"
+                    },
+                    {
+                        "question": "2. In che modo è previsto che tu presenti queste informazioni al resto della classe?",
+                        "options": ["ORALMENTE SEGUENDO LA SCALETTA", "TRAMITE UNA VERIFICA SCRITTA"],
+                        "answer": "ORALMENTE SEGUENDO LA SCALETTA"
+                    },
+                    {
+                        "question": "3. Perché è importante riflettere sulle proprie abitudini e hobby?",
+                        "options": ["PER FARSI CONOSCERE MEGLIO DAI COMPAGNI E TROVARE PUNTI IN COMUNE", "PERCHÉ INCIDONO SUL VOTO FINALE IN PAGELLA"],
+                        "answer": "PER FARSI CONOSCERE MEGLIO DAI COMPAGNI E TROVARE PUNTI IN COMUNE"
+                    }
+                ]
+            },
+            {
+                "id": 10004,
+                "title": "LA MIA NUOVA SCUOLA 🏫",
+                "type": "multiple-choice",
+                "instruction": "RIFLETTI sul passaggio alla scuola secondaria e sulle tue emozioni.",
+                "text": "IL PASSAGGIO ALLA SCUOLA SECONDARIA È UN MOMENTO IMPORTANTE.<br><br>QUALI SONO I TUOI <span style='color: #2980b9; font-weight: bold;'>RICORDI</span> PIÙ BELLI DELLA SCUOLA PRIMARIA?<br>PENSANDO ALLA <span style='color: #27ae60; font-weight: bold;'>NUOVA SCUOLA</span>, QUALI EMOZIONI PROVI? CONFRONTATI CON I COMPAGNI: È NORMALE AVERE <span style='color: #d35400; font-weight: bold;'>ASPETTATIVE E TIMORI</span>.<br><br>IMPARIAMO A CONOSCERE IL NUOVO AMBIENTE: COME SI CHIAMA IL <span style='color: #8e44ad; font-weight: bold;'>DIRIGENTE SCOLASTICO</span>? COME È ORGANIZZATO L'<span style='color: #16a085; font-weight: bold;'>ORARIO</span> DELLA SETTIMANA E DOVE SI TROVANO GLI SPAZI COMUNI?",
+                "questions": [
+                    {
+                        "question": "1. Qual è lo scopo di riflettere sulle proprie emozioni all'inizio dell'anno?",
+                        "options": ["CONDIVIDERE ASPETTATIVE E TIMORI CON I COMPAGNI PER NON SENTIRSI SOLI", "DIMENTICARE COMPLETAMENTE LA SCUOLA PRIMARIA"],
+                        "answer": "CONDIVIDERE ASPETTATIVE E TIMORI CON I COMPAGNI PER NON SENTIRSI SOLI"
+                    },
+                    {
+                        "question": "2. Quale figura professionale ha il compito di dirigere l'intero istituto scolastico?",
+                        "options": ["IL DIRIGENTE SCOLASTICO", "IL DOCENTE DI ITALIANO"],
+                        "answer": "IL DIRIGENTE SCOLASTICO"
+                    },
+                    {
+                        "question": "3. Che cosa è utile esplorare nei primissimi giorni di scuola?",
+                        "options": ["GLI SPAZI COMUNI E L'ORGANIZZAZIONE DELL'ORARIO", "SOLO ED ESCLUSIVAMENTE IL PROPRIO BANCO"],
+                        "answer": "GLI SPAZI COMUNI E L'ORGANIZZAZIONE DELL'ORARIO"
+                    }
+                ]
+            },
+            {
+                "id": 10005,
+                "title": "ASPETTATIVE E METODO DI STUDIO 🎯",
+                "type": "multiple-choice",
+                "instruction": "ANALIZZA il tuo metodo di studio e cosa ti aspetti dai tuoi docenti.",
+                "text": "COSA TI ASPETTI DA QUESTO NUOVO PERCORSO? RIFLETTI SULLE <span style='color: #2980b9; font-weight: bold;'>CARATTERISTICHE</span> DEL TUO INSEGNANTE IDEALE: DEVE SAPER <span style='color: #27ae60; font-weight: bold;'>ASCOLTARE E COMPRENDERE</span> LE TUE DIFFICOLTÀ? DEVE ESSERE SEVERO MA <span style='color: #d35400; font-weight: bold;'>GIUSTO E IMPARZIALE</span>?<br><br>VALUTA ANCHE IL TUO ATTUALE <span style='color: #16a085; font-weight: bold;'>METODO DI STUDIO</span>: FAI I COMPITI CON REGOLARITÀ? PARTECIPI ATTIVAMENTE IN CLASSE? RIESCI A CONCENTRARTI SENZA DISTRAZIONI? UN BUON METODO È FONDAMENTALE PER AFFRONTARE LA SCUOLA CON SERENITÀ.",
+                "questions": [
+                    {
+                        "question": "1. Tra queste, quale è considerata una caratteristica importante per un insegnante ideale?",
+                        "options": ["ESSERE GIUSTO, IMPARZIALE E SAPER ASCOLTARE", "NON ASSEGNARE MAI NESSUN COMPITO A CASA"],
+                        "answer": "ESSERE GIUSTO, IMPARZIALE E SAPER ASCOLTARE"
+                    },
+                    {
+                        "question": "2. Perché è fondamentale valutare il proprio metodo di studio all'inizio dell'anno?",
+                        "options": ["PER MIGLIORARSI E AFFRONTARE L'ANNO CON MAGGIORE SERENITÀ", "PER FINIRE I COMPITI NEL MINOR TEMPO POSSIBILE E SENZA IMPEGNO"],
+                        "answer": "PER MIGLIORARSI E AFFRONTARE L'ANNO CON MAGGIORE SERENITÀ"
+                    },
+                    {
+                        "question": "3. Che cosa significa partecipare attivamente alle lezioni?",
+                        "options": ["INTERVENIRE NELLE DISCUSSIONI, FARE DOMANDE E ASCOLTARE", "RIMANERE IN SILENZIO DAL PRIMO ALL'ULTIMO MINUTO"],
+                        "answer": "INTERVENIRE NELLE DISCUSSIONI, FARE DOMANDE E ASCOLTARE"
+                    }
+                ]
+            },
+            {
+                "id": 10006,
+                "title": "LA PASSIONE PER LA LETTURA 📖",
+                "type": "multiple-choice",
+                "instruction": "CONFRONTATI sulle tue abitudini di lettura e condividile con la classe.",
+                "text": "LA LETTURA È UN VIAGGIO STRAORDINARIO. <span style='color: #2980b9; font-weight: bold;'>LET'S TALK!</span> PARLIAMONE INSIEME:<br><br>TI PIACE <span style='color: #e74c3c; font-weight: bold;'>LEGGERE</span>? NELL'ARCO DI UN ANNO QUANTI LIBRI LEGGI IN MEDIA?<br>COSA FAI QUANDO LEGGI UN LIBRO? (ES. IMMAGINI I PERSONAGGI, SOTTOLINEI LE FRASI BELLE).<br>DOVE TI PIACE LEGGERE E QUALI <span style='color: #27ae60; font-weight: bold;'>GENERI PREFERISCI</span>? (ES. AVVENTURA, FANTASY, GIALLO).<br><br>CONDIVIDI LE TUE PASSIONI LITERARIE E PREPARATI A <span style='color: #d35400; font-weight: bold;'>CONSIGLIARE UN LIBRO</span> AI TUOI COMPAGNI.",
+                "questions": [
+                    {
+                        "question": "1. Qual è lo scopo principale del momento 'Let's Talk' dedicato alla lettura?",
+                        "options": ["DISCUTERE DELLE PROPRIE ABITUDINI E PREFERENZE DI LETTURA CON LA CLASSE", "IMPARARE A MEMORIA IL REGOLAMENTO DELLA BIBLIOTECA SCOLASTICA"],
+                        "answer": "DISCUTERE DELLE PROPRIE ABITUDINI E PREFERENZE DI LETTURA CON LA CLASSE"
+                    },
+                    {
+                        "question": "2. Quale azione conclusiva ti viene proposta alla fine di questa riflessione?",
+                        "options": ["CONSIGLIARE UN LIBRO CHE TI È PIACIUTO AI TUOI COMPAGNI", "SCRIVERE UN RIASSUNTO OBBLIGATORIO DI MILLE PAROLE"],
+                        "answer": "CONSIGLIARE UN LIBRO CHE TI È PIACIUTO AI TUOI COMPAGNI"
+                    },
+                    {
+                        "question": "3. Perché condividere le proprie letture può rivelarsi un'attività molto arricchente?",
+                        "options": ["PERCHÉ PERMETTE DI SCOPRIRE NUOVI GENERI, STORIE E AUTORI", "PERCHÉ SERVE ESCLUSIVAMENTE PER PRENDERE UN VOTO IN ORALE"],
+                        "answer": "PERCHÉ PERMETTE DI SCOPRIRE NUOVI GENERI, STORIE E AUTORI"
+                    }
+                ]
+            }
+        ],
         "stesura": [
             {
                 "id": 9001,

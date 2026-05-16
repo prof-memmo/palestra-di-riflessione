@@ -2271,6 +2271,7 @@ window.MATERIE_HIERARCHY = {
     },
     'produzione': {
         title: 'Produzione', parent: 'materie', type: 'submenu', items: [
+            { id: 'accoglienza', title: 'Accoglienza', icon: '👋', type: 'exercises' },
             { id: 'descrizione', title: 'Descrizione', icon: '🖼️', type: 'submenu' },
             { id: 'riassunto', title: 'Il Riassunto', icon: '📝', type: 'submenu' },
             { id: 'stesura', title: 'Stesura di un testo', icon: '✍️', type: 'exercises' },
@@ -2413,6 +2414,7 @@ window.MATERIE_HIERARCHY = {
     'tecnica1': { type: 'uda', parent: 'riassunto' },
     'tecnica2': { type: 'uda', parent: 'riassunto' },
     'tecnica3': { type: 'uda', parent: 'riassunto' },
+    'accoglienza': { type: 'exercises', parent: 'produzione' },
     'stesura': { type: 'exercises', parent: 'produzione' },
     'riformulazione': { type: 'exercises', parent: 'produzione' },
     // Leaf mapping per Analisi Logica
