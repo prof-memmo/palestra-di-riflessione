@@ -1645,6 +1645,63 @@ td .completion-input {
         text-align: left !important;
     }
 
+    /* TRASFORMAZIONE GRID IN LISTE SLIM PER MOBILE */
+    .materie-grid, .all-levels-container, .levels-list, [style*="display: grid"] {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 0.8rem !important;
+    }
+
+    .materia-card, .menu-card, .level-row, .list-item {
+        padding: 1.2rem 1.5rem !important;
+        display: flex !important;
+        flex-direction: row !important;
+        align-items: center !important;
+        justify-content: flex-start !important;
+        text-align: left !important;
+        border-radius: 20px !important;
+        min-height: auto !important;
+        gap: 1.2rem !important;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.03) !important;
+        background: #fdfdfd !important;
+        border: 1px solid #eee !important;
+        margin: 0 !important;
+        width: 100% !important;
+        position: relative !important;
+    }
+
+    .materia-icon, .menu-card .icon, .list-item span:first-child, .level-row span:first-child {
+        font-size: 1.8rem !important;
+        margin-bottom: 0 !important;
+        min-width: 45px !important;
+        text-align: center !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+    }
+
+    .materia-label, .materia-card h3, .menu-card h3, .list-item-content, .level-row span:nth-child(2) {
+        font-size: 1.15rem !important;
+        font-weight: 700 !important;
+        margin: 0 !important;
+        color: var(--text-color) !important;
+        flex-grow: 1 !important;
+    }
+
+    /* Rimuoviamo descrizioni lunghe e frecce duplicate */
+    .menu-card p, .materia-card p, .list-item span:last-child, .level-row span:last-child {
+        display: none !important;
+    }
+
+    /* Aggiungiamo una freccia uniforme a destra */
+    .materia-card::after, .menu-card::after, .list-item::after, .level-row::after {
+        content: '➜';
+        font-weight: 800;
+        color: var(--primary-color);
+        font-size: 1.2rem;
+        margin-left: auto;
+    }
+
     .options-grid {
         grid-template-columns: 1fr !important;
         gap: 0.8rem !important;
