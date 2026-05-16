@@ -19693,55 +19693,6 @@ window.exercisesData = {
                             ],
                             "answer": "RENDERE LA DESCRIZIONE PI\u00d9 VIVIDA"
                         }
-                    ]
-                }
-            ]
-        },
-        "riformulazione": {
-            "facile": [
-                {
-                    "id": 7301,
-                    "title": "L'ARTE DI RIFORMULARE \ud83d\udd04",
-                    "instruction": "Esercitati con sinonimi e cambi di struttura della frase.",
-                    "questions": [
-                        {
-                            "question": "Trova un sinonimo formale di 'CASA':",
-                            "options": [
-                                "ABITAZIONE",
-                                "STRADA",
-                                "PARCO"
-                            ],
-                            "answer": "ABITAZIONE"
-                        },
-                        {
-                            "question": "Riformula in modo passivo: 'IO MANGIO LA MELA'",
-                            "options": [
-                                "LA MELA \u00c8 MANGIATA DA ME",
-                                "IO MANGIO",
-                                "MELA MANGIATA"
-                            ],
-                            "answer": "LA MELA \u00c8 MANGIATA DA ME"
-                        },
-                        {
-                            "question": "Scegli un'espressione di REGISTRO FORMALE:",
-                            "options": [
-                                "LA PREGO",
-                                "CIAO",
-                                "EHI"
-                            ],
-                            "answer": "LA PREGO"
-                        },
-                        {
-                            "question": "Spiegare il significato di una poesia si chiama:",
-                            "options": [
-                                "PARAFRASI",
-                                "RIASSUNTO",
-                                "COMMENTO"
-                            ],
-                            "answer": "PARAFRASI"
-                        }
-                    ]
-                }
             ]
         },
         "esposizione": [

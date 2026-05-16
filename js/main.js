@@ -2273,7 +2273,6 @@ window.MATERIE_HIERARCHY = {
         title: 'Produzione', parent: 'materie', type: 'submenu', items: [
             { id: 'descrizione', title: 'Descrizione', icon: '🖼️', type: 'submenu' },
             { id: 'riassunto', title: 'Il Riassunto', icon: '📝', type: 'submenu' },
-            { id: 'riformulazione', title: 'Riformulazione', icon: '🔄', type: 'exercises' },
             { id: 'esposizione', title: 'Esposizione Orale', icon: '🗣️', type: 'exercises' },
             { id: 'dizionario', title: 'Il Dizionario', icon: '📖', type: 'exercises' }
         ]
@@ -2413,7 +2412,6 @@ window.MATERIE_HIERARCHY = {
     'tecnica1': { type: 'uda', parent: 'riassunto' },
     'tecnica2': { type: 'uda', parent: 'riassunto' },
     'tecnica3': { type: 'uda', parent: 'riassunto' },
-    'riformulazione': { type: 'exercises', parent: 'produzione' },
     // Leaf mapping per Analisi Logica
 };
 
