@@ -236,7 +236,7 @@ const UI = {
                 ` : ''}
 
                 ${exercise.text || exercise.word ? `
-                    <div style="background: #fff; padding: 2.5rem; border-radius: 30px; border: 1px solid #eee; margin-bottom: 2.5rem; text-align: center; box-shadow: 0 10px 20px rgba(0,0,0,0.02);">
+                    <div class="interactive-container">
                         <div style="font-size: 1.8rem; line-height: 1.8; font-weight: 700; text-align: justify;">
                             ${(exercise.text || exercise.word).replace(/\\n/g, '<br>')}
                         </div>
@@ -299,7 +299,7 @@ renderLessico: (exercise, isUda, path, total) => {
                 ` : ''}
 
                 ${exercise.text || exercise.word ? `
-                    <div style="background: #fff; padding: 2.5rem; border-radius: 30px; border: 1px solid #eee; margin-bottom: 2.5rem; text-align: center; box-shadow: 0 10px 20px rgba(0,0,0,0.02);">
+                    <div class="interactive-container">
                         <div style="font-size: 1.8rem; line-height: 1.8; font-weight: 700; text-align: justify;">
                             ${(exercise.text || exercise.word).replace(/\\n/g, '<br>')}
                         </div>
@@ -322,13 +322,13 @@ renderLessico: (exercise, isUda, path, total) => {
                 <span>🧩 ANALISI LOGICA</span>
                 <span style="font-size: 1.5rem; font-weight: 700; color: #888; background: #eee; padding: 0.3rem 0.8rem; border-radius: 12px;">${window.currentExerciseIndex + 1}/${total}</span>
             </h2>
-            <div style="background: white; border: 2px solid #eee; padding: 2rem; border-radius: 25px; margin-bottom: 2rem; font-size: 1.5rem; line-height: 1.8; text-align: center;">
-                ${exercise.word ? `<div style="font-weight: 800; font-size: 2.2rem; margin-bottom: 1rem; color: var(--primary-color); text-align: center;">${exercise.word}</div>` : ''}
+            <div class="reading-text">
+                ${exercise.word ? `<div style="font-weight: 800; font-size: 2.2rem; margin-bottom: 1rem; color: var(--primary-color);">${exercise.word}</div>` : ''}
                 <div style="text-align: justify;">
                     ${exercise.target && exercise.text ? exercise.text.replace(exercise.target, `<span style="color: var(--primary-color); font-weight: 800; border-bottom: 4px solid var(--accent-color);">${exercise.target}</span>`) : (exercise.text || '')}
                 </div>
             </div>
-            <p style="font-weight: 700; margin-bottom: 2rem; text-align: center;">CHE FUNZIONE HA LA PAROLA IN EVIDENZA?</p>
+            <p style="font-weight: 700; margin-bottom: 2rem;">CHE FUNZIONE HA LA PAROLA IN EVIDENZA?</p>
             <div class="options-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
                 ${(exercise.options || []).map(opt => `
                     <button class="btn btn-secondary" style="padding: 1.5rem; text-align: center;" onclick="checkAnswer('${opt.replace(/'/g, "\\'")}', '${exercise.answer.replace(/'/g, "\\'")}', 'logica', ${exercise.id})">${opt}</button>
@@ -357,7 +357,7 @@ renderLessico: (exercise, isUda, path, total) => {
             }).join('');
         } else {
             questionsHtml = `
-                <div style="background: white; border: 2px solid #eee; padding: 2rem; border-radius: 25px; margin-bottom: 2rem; font-size: 1.5rem; line-height: 1.8; text-align: center;">
+                <div class="reading-text">
                     ${exercise.word ? `<div style="font-weight: 800; font-size: 1.8rem; margin-bottom: 1rem; color: var(--primary-color); text-align: center;">${exercise.word}</div>` : ''}
                     <div style="font-style: italic; color: #666; text-align: justify;">${exercise.text || ''}</div>
                 </div>
@@ -394,7 +394,7 @@ renderLessico: (exercise, isUda, path, total) => {
         if (type === 'completion') {
             const parts = exercise.text.split('___');
             interactionHtml = `
-                <div class="interactive-container" style="font-size: 1.3rem; line-height: 2.2; text-align: left; background: white; padding: 2.5rem; border-radius: 30px; border: 1px solid #eee; box-shadow: 0 10px 30px rgba(0,0,0,0.02); overflow-x: auto; -webkit-overflow-scrolling: touch;">
+                <div class="interactive-container" id="completion-container">
                     ${parts.map((p, i) => {
                         if (i < parts.length - 1) {
                             const answers = exercise.answer.split('|');
@@ -438,7 +438,7 @@ renderLessico: (exercise, isUda, path, total) => {
                         color: #a04000;
                     }
                 </style>
-                <div class="interactive-container" style="font-size: 1.5rem; line-height: 2.8; text-align: left; background: white; padding: 2.5rem; border-radius: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); border: 1px solid #f0f0f0; margin-bottom: 2rem;" id="highlight-container">
+                <div class="interactive-container" id="highlight-container">
                     ${words.map((w, i) => `<span class="word-tag" onclick="window.cycleWordState(this, ${i})">${w}</span>`).join(' ')}
                 </div>
                 
@@ -529,7 +529,7 @@ renderLessico: (exercise, isUda, path, total) => {
             const words = textToSplit.split(/(\s+)/);
             
             interactionHtml = `
-                <div class="interactive-container" style="font-size: 1.4rem; line-height: 2.2; text-align: left; background: white; padding: 2.5rem; border-radius: 30px; border: 1px solid #eee; box-shadow: 0 10px 30px rgba(0,0,0,0.02); overflow-x: auto; -webkit-overflow-scrolling: touch;" id="word-selector-container">
+                <div class="interactive-container" id="word-selector-container">
                     ${words.map((w, i) => {
                         if (w.trim() === "") return w;
                         if (/^[.,\/#!$%\^&\*;:{}=\-_`~()]+$/.test(w)) return w;
@@ -633,7 +633,7 @@ renderLessico: (exercise, isUda, path, total) => {
         } else {
             // Domanda singola: selezione + tasto VERIFICA
             questionsHtml = `
-                <div style="background: #fdfdfd; padding: 2.5rem; border-radius: 20px; border: 2px solid #eee; margin-bottom: 2rem;">
+                <div class="question-block">
                     <p style="font-size: 1.2rem; font-weight: 800; margin-bottom: 1.5rem; color: var(--text-color);">🤔 ${exercise.question}</p>
                     <div class="options-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;" id="single-lettura-container">
                         ${(exercise.options || []).map(opt => `
