@@ -222,8 +222,7 @@ const UI = {
 
         return `
             <div class="exercise-container">
-                <h2 class="exercise-title" style="display: flex; align-items: center; justify-content: space-between;">
-                    <span>📝 LABORATORIO DI PRODUZIONE</span>
+                <h2 class="exercise-title" style="display: flex; align-items: center; justify-content: flex-end;">
                     <span style="font-size: 1.5rem; font-weight: 700; color: #888; background: #eee; padding: 0.3rem 0.8rem; border-radius: 12px;">${window.currentExerciseIndex + 1}/${total}</span>
                 </h2>
                 
