@@ -659,7 +659,10 @@ async function renderProfiloPage() {
                     ${avatarHtml}
                 </div>
                 <div class="profile-info">
-                    <h3 class="profile-name">${user.name}</h3>
+                    <h3 class="profile-name">
+                        ${user.name}
+                        ${user.role === 'docente' ? `<span onclick="window.showTeacherGuide()" title="Guida Docente" style="background: white; color: #3498db; width: 20px; height: 20px; display: inline-flex; align-items: center; justify-content: center; border-radius: 50%; font-size: 0.7rem; cursor: pointer; border: 1.5px solid #3498db; font-weight: 900; font-family: serif; font-style: italic; margin-left: 0.5rem; vertical-align: middle;">i</span>` : ''}
+                    </h3>
                     <div class="profile-badges">
                         <span class="badge rank">${rank}</span>
                         <span class="badge role">${(user.roleLabel || user.role || 'studente').toUpperCase()}</span>
@@ -688,10 +691,7 @@ async function renderProfiloPage() {
 
             ${user.role === 'docente' ? `
                 <div class="teacher-area">
-                    <h3 style="color: #2980b9; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.8rem;">
-                        👨‍🏫 AREA CLASSI
-                        <span onclick="window.showTeacherGuide()" title="Clicca per la Guida Docente" style="background: white; color: #3498db; width: 22px; height: 22px; display: inline-flex; align-items: center; justify-content: center; border-radius: 50%; font-size: 0.75rem; cursor: pointer; border: 2px solid #3498db; font-weight: 900; font-family: serif; font-style: italic; transition: all 0.2s; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">i</span>
-                    </h3>
+                    <!-- Titolo rimosso come richiesto -->
                     
 
                     

@@ -1601,7 +1601,7 @@ td .completion-input {
 /* 📱 OTTIMIZZAZIONE RADICALE MOBILE: Eliminazione "Effetto Card" */
 @media (max-width: 992px) {
     main {
-        padding: 3.5rem 0.5rem 1rem 0.5rem !important; 
+        padding: 5rem 0.5rem 1rem 0.5rem !important; 
         background-color: white !important; 
     }
 
@@ -1659,8 +1659,10 @@ td .completion-input {
 
     /* Sistemazione Header Profilo su Mobile */
     .profile-header {
+        flex-direction: column !important;
         text-align: center !important;
-        padding-top: 2rem !important;
+        padding-top: 1rem !important;
+        gap: 1.5rem !important;
     }
     
     .profile-avatar-large {
