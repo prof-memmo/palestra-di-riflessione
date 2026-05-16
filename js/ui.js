@@ -189,6 +189,10 @@ const UI = {
     },
 
     renderProduzione: (exercise, isUda, path, total) => {
+        if (exercise.type === 'personality-test') {
+            return UI.renderPersonalityTest(exercise, isUda, path, total);
+        }
+
         const isMulti = exercise.questions && exercise.questions.length > 0;
         
         let questionsHtml = '';
@@ -246,6 +250,54 @@ const UI = {
                     ${questionsHtml}
                 </div>
                 
+                ${path ? window.UI.renderNav(path, total) : ''}
+            </div>
+        `;
+    },
+
+    renderPersonalityTest: (exercise, isUda, path, total) => {
+        window.personalitySelections = {}; // reset selections
+        let questionsHtml = (exercise.questions || []).map((q, qIdx) => {
+            return `
+                <div class="question-block" style="background: #fdfdfd; padding: 2rem; border-radius: 20px; border: 2px solid #eee; margin-bottom: 2rem;">
+                    <p style="font-size: 1.2rem; font-weight: 800; margin-bottom: 1.5rem; color: var(--text-color);">🤔 ${q.question}</p>
+                    <div class="options-grid" style="display: grid; grid-template-columns: 1fr; gap: 1rem;" id="p-container-${qIdx}">
+                        ${q.options.map((opt, oIdx) => `
+                            <button class="btn btn-secondary opt-btn-${qIdx}" style="padding: 1.2rem; font-size: 1.05rem; font-weight: 600; text-align: left; border-radius: 12px; border: 2px solid #eee; background: white;" onclick="UI.selectPersonalityOption(this, ${qIdx}, ${oIdx})">${opt}</button>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+        }).join('');
+
+        return `
+            <div class="exercise-container">
+                <h2 class="exercise-title" style="display: flex; align-items: center; justify-content: flex-end;">
+                    <span style="font-size: 1.5rem; font-weight: 700; color: #888; background: #eee; padding: 0.3rem 0.8rem; border-radius: 12px;">${window.currentExerciseIndex + 1}/${total}</span>
+                </h2>
+                
+                ${exercise.title ? `<h3 style="color: var(--primary-color); font-weight: 800; text-align: center; margin-bottom: 1.5rem; font-size: 1.6rem;">${exercise.title}</h3>` : ''}
+                
+                ${exercise.instruction ? `
+                    <div style="background: #f0f7ff; padding: 1.2rem; border-radius: 15px; border-left: 5px solid var(--primary-color); margin-bottom: 2rem; font-weight: 700; color: #2c3e50; text-align: justify;">
+                        ${exercise.instruction}
+                    </div>
+                ` : ''}
+
+                ${exercise.text ? `
+                    <div class="interactive-container">
+                        <div style="font-size: 1.4rem; line-height: 1.8; font-weight: 700; text-align: justify;">
+                            ${exercise.text.replace(/\\n/g, '<br>')}
+                        </div>
+                    </div>
+                ` : ''}
+
+                <div class="questions-stack">
+                    ${questionsHtml}
+                </div>
+                
+                <button class="btn btn-primary btn-verify" style="width: 100%; padding: 1.5rem; font-size: 1.25rem; font-weight: 800; margin-top: 1rem; border-radius: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.05);" onclick="UI.verifyPersonalityTest(${exercise.id}, ${exercise.questions.length})">SCOPRI IL TUO PROFILO</button>
+
                 ${path ? window.UI.renderNav(path, total) : ''}
             </div>
         `;
@@ -1427,6 +1479,81 @@ window.UI.selectMultiLetturaOption = (btn, qIdx, selectedOpt) => {
     btn.style.borderColor = 'var(--primary-color)';
 };
 
+window.UI.selectPersonalityOption = (btn, qIdx, oIdx) => {
+    if (!window.personalitySelections) window.personalitySelections = {};
+    window.personalitySelections[qIdx] = oIdx;
+    
+    const btns = document.querySelectorAll(`.opt-btn-${qIdx}`);
+    btns.forEach(b => {
+        b.style.background = 'white';
+        b.style.color = 'var(--text-color)';
+        b.style.borderColor = '#eee';
+    });
+    
+    btn.style.background = 'var(--primary-color)';
+    btn.style.color = 'white';
+    btn.style.borderColor = 'var(--primary-color)';
+};
+
+window.UI.verifyPersonalityTest = (exerciseId, totalQuestions) => {
+    if (!window.personalitySelections || Object.keys(window.personalitySelections).length < totalQuestions) {
+        alert("Rispondi a tutte le domande per scoprire il tuo profilo!");
+        return;
+    }
+    
+    let path = window.location.hash.substring(1).split('/').filter(p => p && p !== 'null');
+    let section = path[0];
+    if (path.length > 0 && !isNaN(path[path.length - 1])) {
+        path = path.slice(0, -1);
+    }
+    
+    let exData;
+    if (section === 'produzione') {
+        const cat = path[1];
+        if (window.exercisesData.produzione[cat]) {
+            exData = window.exercisesData.produzione[cat].find(e => e.id === exerciseId);
+        }
+    } else if (section === 'accoglienza') {
+        exData = window.exercisesData.accoglienza.find(e => e.id === exerciseId);
+    }
+    
+    if (!exData) {
+        exData = { profiles: { A: "Hai completato il test con successo!" } };
+    }
+    
+    let counts = {0: 0, 1: 0, 2: 0, 3: 0};
+    for (const qIdx in window.personalitySelections) {
+        counts[window.personalitySelections[qIdx]]++;
+    }
+    
+    let maxIdx = 0;
+    let maxCount = -1;
+    for (const k in counts) {
+        if (counts[k] > maxCount) {
+            maxCount = counts[k];
+            maxIdx = parseInt(k);
+        }
+    }
+    
+    const letters = ['A', 'B', 'C', 'D'];
+    const profileLetter = letters[maxIdx] || 'A';
+    
+    let profileText = exData.profiles ? exData.profiles[profileLetter] : "Hai completato il test! Ricorda che ogni caratteristica ha il suo valore.";
+    if (!profileText && exData.profiles) {
+        profileText = Object.values(exData.profiles)[0] || "Test completato.";
+    }
+    
+    window.Progress.addPoints(50); 
+    
+    UI.showFeedback(true, {
+        map: `<strong>IL TUO PROFILO:</strong><br><br>${profileText}`
+    }, () => {
+        const pathStr = path.join(',');
+        if (typeof window.navigateExercise === 'function') {
+            window.navigateExercise(1, pathStr, true);
+        }
+    }, path);
+};
 
 window.UI.verifySingleCard = (btn, exerciseId, qIdx, correctAnswer, totalQuestions) => {
     const selected = window.multiLetturaSelections && window.multiLetturaSelections[qIdx];
