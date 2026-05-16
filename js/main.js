@@ -2452,6 +2452,11 @@ function initNavigation() {
             e.preventDefault();
             const section = navItem.getAttribute('data-section');
             if (section) navigateTo(section);
+            
+            // Chiudi sidebar dopo il click su mobile
+            if (window.innerWidth <= 1024) {
+                toggleSidebar(false);
+            }
             return;
         }
 
@@ -2464,7 +2469,11 @@ function initNavigation() {
         }
     });
 
-    if (window.innerWidth > 1024) toggleSidebar(true);
+    if (window.innerWidth > 1024) {
+        toggleSidebar(true);
+    } else {
+        toggleSidebar(false);
+    }
 }
 
 function navigateTo(section, subType = null, level = null, updateHash = true, extra = null) {
@@ -3419,6 +3428,11 @@ function updateSidebarMenu() {
             if (sidebar) sidebar.classList.remove('hidden');
             const mainContent = document.querySelector('main');
             if (mainContent) mainContent.style.marginLeft = 'var(--sidebar-width)';
+        } else {
+            const sidebar = document.querySelector('.navbar');
+            if (sidebar) sidebar.classList.add('hidden');
+            const mainContent = document.querySelector('main');
+            if (mainContent) mainContent.style.marginLeft = '0';
         }
     }
 
