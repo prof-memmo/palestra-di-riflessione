@@ -954,10 +954,7 @@ async function loadAdminUsersInProfile() {
             tutti: allUsers.length, 
             docente: allUsers.filter(u => u.role === 'docente').length, 
             studente: allUsers.filter(u => u.role === 'studente' || u.role === 'admin').length, 
-            amico: allUsers.filter(u => u.role === 'amico' || u.role === 'guest').length,
-            classi: allClasses.length,
-            scuole: Object.keys(schoolsMap).length,
-            citta: Object.keys(citiesMap).length
+            amico: allUsers.filter(u => u.role === 'amico' || u.role === 'guest').length
         };
 
         window.adminData = {
@@ -984,19 +981,7 @@ async function loadAdminUsersInProfile() {
                 </div>
                 <div class="admin-stat-card" onclick="window.setActiveAdminFilter('amico')" data-filter="amico" style="background: white; padding: 1.2rem; border-radius: 20px; text-align: center; border: 2px solid transparent; cursor: pointer; transition: all 0.2s; box-shadow: 0 4px 10px rgba(0,0,0,0.02);">
                     <div style="font-size: 1.6rem; font-weight: 900; color: #8e44ad;">${counts.amico}</div>
-                    <div style="font-size: 0.75rem; color: #888; font-weight: 800; text-transform: uppercase;">Amici</div>
-                </div>
-                <div class="admin-stat-card" onclick="window.setActiveAdminFilter('classi')" data-filter="classi" style="background: white; padding: 1.2rem; border-radius: 20px; text-align: center; border: 2px solid transparent; cursor: pointer; transition: all 0.2s; box-shadow: 0 4px 10px rgba(0,0,0,0.02);">
-                    <div style="font-size: 1.6rem; font-weight: 900; color: #e67e22;">${counts.classi}</div>
-                    <div style="font-size: 0.75rem; color: #888; font-weight: 800; text-transform: uppercase;">Classi</div>
-                </div>
-                <div class="admin-stat-card" onclick="window.setActiveAdminFilter('scuole')" data-filter="scuole" style="background: white; padding: 1.2rem; border-radius: 20px; text-align: center; border: 2px solid transparent; cursor: pointer; transition: all 0.2s; box-shadow: 0 4px 10px rgba(0,0,0,0.02);">
-                    <div style="font-size: 1.6rem; font-weight: 900; color: #2c3e50;">${counts.scuole}</div>
-                    <div style="font-size: 0.75rem; color: #888; font-weight: 800; text-transform: uppercase;">Scuole</div>
-                </div>
-                <div class="admin-stat-card" onclick="window.setActiveAdminFilter('citta')" data-filter="citta" style="background: white; padding: 1.2rem; border-radius: 20px; text-align: center; border: 2px solid transparent; cursor: pointer; transition: all 0.2s; box-shadow: 0 4px 10px rgba(0,0,0,0.02);">
-                    <div style="font-size: 1.6rem; font-weight: 900; color: #7f8c8d;">${counts.citta}</div>
-                    <div style="font-size: 0.75rem; color: #888; font-weight: 800; text-transform: uppercase;">Città</div>
+                    <div style="font-size: 0.75rem; color: #888; font-weight: 800; text-transform: uppercase;">Amici della palestra</div>
                 </div>
             </div>
 
@@ -1060,52 +1045,6 @@ window.filterAdminEntities = function() {
             return matchesSearch && matchesFilter;
         });
         html = filtered.map(u => renderAdminUserRow(u)).join('');
-    } 
-    else if (filter === 'classi') {
-        const filtered = window.adminData.classes.filter(c => !search || (c.name || '').toLowerCase().includes(search) || (c.code || '').toLowerCase().includes(search) || (c.school || '').toLowerCase().includes(search));
-        html = filtered.map(c => `
-            <div class="admin-user-row" style="display: flex; align-items: center; gap: 1.5rem; padding: 1.5rem; background: white; border-radius: 20px; border: 1px solid #eee;">
-                <div style="font-size: 2rem;">📁</div>
-                <div style="flex: 1;">
-                    <h4 style="margin: 0; font-weight: 800;">${c.name} <span style="color: #999; font-weight: 400; font-size: 0.8rem;">(${c.code})</span></h4>
-                    <p style="margin: 0; font-size: 0.85rem; color: #666;">${c.school ? `🏫 ${c.school}` : 'Nessuna scuola'} • ${c.city ? `📍 ${c.city}` : 'Nessuna città'}</p>
-                </div>
-                <div style="display: flex; gap: 0.5rem;">
-                    <button class="btn" onclick="window.editTeacherClass('${c.id}', '${c.name}', '${c.school || ''}', '${c.city || ''}')" style="background: #f0f7ff; color: #3498db; border: none; padding: 0.6rem 1rem; border-radius: 12px; font-weight: 700;">MODIFICA</button>
-                    <button class="btn" onclick="window.adminDeleteEntity('classes', '${c.id}', '${c.name}')" style="background: #fff0f0; color: #e74c3c; border: none; padding: 0.6rem 1rem; border-radius: 12px; font-weight: 700;">ELIMINA</button>
-                </div>
-            </div>
-        `).join('');
-    }
-    else if (filter === 'scuole') {
-        const filtered = window.adminData.schools.filter(s => !search || s.name.toLowerCase().includes(search));
-        html = filtered.map(s => `
-            <div class="admin-user-row" style="display: flex; align-items: center; gap: 1.5rem; padding: 1.5rem; background: white; border-radius: 20px; border: 1px solid #eee;">
-                <div style="font-size: 2rem;">🏫</div>
-                <div style="flex: 1;">
-                    <h4 style="margin: 0; font-weight: 800;">${s.name}</h4>
-                    <p style="margin: 0; font-size: 0.85rem; color: #666;">${s.classCount} Classi • ${s.studentCount} Utenti con questa scuola</p>
-                </div>
-                <div style="display: flex; gap: 0.5rem;">
-                    <button class="btn" onclick="window.adminEditAttribute('school', '${s.name.replace(/'/g, "\\'")}')" style="background: #f0f7ff; color: #3498db; border: none; padding: 0.6rem 1rem; border-radius: 12px; font-weight: 700;">RINOMINA</button>
-                </div>
-            </div>
-        `).join('');
-    }
-    else if (filter === 'citta') {
-        const filtered = window.adminData.cities.filter(c => !search || c.name.toLowerCase().includes(search));
-        html = filtered.map(c => `
-            <div class="admin-user-row" style="display: flex; align-items: center; gap: 1.5rem; padding: 1.5rem; background: white; border-radius: 20px; border: 1px solid #eee;">
-                <div style="font-size: 2rem;">📍</div>
-                <div style="flex: 1;">
-                    <h4 style="margin: 0; font-weight: 800;">${c.name}</h4>
-                    <p style="margin: 0; font-size: 0.85rem; color: #666;">Presente in ${c.userCount} tra classi e profili</p>
-                </div>
-                <div style="display: flex; gap: 0.5rem;">
-                    <button class="btn" onclick="window.adminEditAttribute('city', '${c.name.replace(/'/g, "\\'")}')" style="background: #f0f7ff; color: #3498db; border: none; padding: 0.6rem 1rem; border-radius: 12px; font-weight: 700;">RINOMINA</button>
-                </div>
-            </div>
-        `).join('');
     }
 
     container.innerHTML = html || '<p style="text-align: center; color: #999; padding: 3rem;">Nessun risultato trovato per questa selezione.</p>';
