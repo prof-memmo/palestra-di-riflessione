@@ -1675,7 +1675,7 @@ td .completion-input {
 
     .exercise-title {
         font-size: 1.4rem !important;
-        padding: 0 0.5rem !important;
+        padding: 1.2rem 0.5rem 0.5rem 0.5rem !important; /* Spazio per hamburger */
         margin-bottom: 1.2rem !important;
         border-bottom: 2px solid #f0f0f0 !important;
         text-align: left !important;
@@ -1716,16 +1716,17 @@ td .completion-input {
         justify-content: center !important;
     }
 
-    .materia-label, .materia-card h3, .menu-card h3, .list-item-content, .level-row span:nth-child(2) {
+    .materia-label, .materia-card h3, .menu-card h3, .list-item-content, .level-row span:not(:first-child):not(:last-child), .level-row span:nth-child(2) {
         font-size: 1.15rem !important;
         font-weight: 700 !important;
         margin: 0 !important;
         color: var(--text-color) !important;
         flex-grow: 1 !important;
+        display: block !important;
     }
 
-    /* Rimuoviamo descrizioni lunghe e frecce duplicate */
-    .menu-card p, .materia-card p, .list-item span:last-child, .level-row span:last-child {
+    /* Rimuoviamo descrizioni lunghe e frecce duplicate in modo mirato */
+    .menu-card p, .materia-card p, .level-row span[style*="color: var(--primary-color)"] {
         display: none !important;
     }
 
