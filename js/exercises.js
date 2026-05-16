@@ -19977,6 +19977,106 @@ window.exercisesData = {
                     }
                 ]
             }
+        ],
+        "stesura": [
+            {
+                "id": 9001,
+                "title": "CONSIGLI PER LA STESURA DI UN TESTO ✍️",
+                "type": "multiple-choice",
+                "instruction": "LEGGI i consigli per scrivere correttamente un testo letterario o non letterario.",
+                "text": "UN BUON MODO PER SCRIVERE BENE È RICORDARE DI ORDINARE LA FRASE INSERENDO PRIMA IL <span style='color: #2980b9; font-weight: bold;'>SOGGETTO</span>, POI IL <span style='color: #e74c3c; font-weight: bold;'>VERBO</span> E POI I <span style='color: #27ae60; font-weight: bold;'>COMPLEMENTI</span>.<br><br>SI INDICHI IL <span style='color: #8e44ad; font-weight: bold;'>TEMPO VERBALE</span> PREVALENTE PER RISPETTARE I RAPPORTI DI CONTEMPORANEITÀ (PRESENTE), ANTERIORITÀ (PASSATO) E POSTERIORITÀ (FUTURO).<br><br>SI PRESTI ATTENZIONE ALLE <span style='color: #d35400; font-weight: bold;'>MAIUSCOLE</span>, ALLE MINUSCOLE E ALLE DOPPIE.",
+                "questions": [
+                    {
+                        "question": "1. Qual è l'ordine consigliato per gli elementi della frase?",
+                        "options": ["SOGGETTO, VERBO, COMPLEMENTI", "COMPLEMENTI, VERBO, SOGGETTO"],
+                        "answer": "SOGGETTO, VERBO, COMPLEMENTI"
+                    }
+                ]
+            },
+            {
+                "id": 9002,
+                "title": "LA FASE DI REVISIONE 🔍",
+                "type": "multiple-choice",
+                "instruction": "SCOPRI come rileggere e correggere il tuo testo.",
+                "text": "NELLA FASE DI REVISIONE SI CONTROLLI OGNI PAROLA PER INDIVIDUARE GLI EVENTUALI <span style='color: #c0392b; font-weight: bold;'>ERRORI GRAMMATICALI</span>, PER ESEMPIO SI VERIFICHI LA PRESENZA CORRETTA DELL'<span style='color: #16a085; font-weight: bold;'>H</span> O DELL'ACCENTO SULLA <span style='color: #2980b9; font-weight: bold;'>'È'</span> IN CASO SIA VERBO.",
+                "questions": [
+                    {
+                        "question": "1. Cosa si deve controllare durante la revisione?",
+                        "options": ["ERRORI GRAMMATICALI, ACCENTI E H", "SOLO LA LUNGHEZZA DEL TESTO"],
+                        "answer": "ERRORI GRAMMATICALI, ACCENTI E H"
+                    }
+                ]
+            },
+            {
+                "id": 9003,
+                "title": "LA PUNTEGGIATURA 📍",
+                "type": "multiple-choice",
+                "instruction": "IMPARA l'uso corretto dei segni di punteggiatura.",
+                "text": "SI CONTROLLINO I SEGNI DI <span style='color: #2c3e50; font-weight: bold;'>PUNTEGGIATURA</span>.<br><br>LE <span style='color: #d35400; font-weight: bold;'>VIRGOLE</span> SONO DELLE PAUSE BREVI CHE DIVIDONO LE FRASI TRA LORO. LA FRASE PER ESSERE CHIARA DEVE AVERE ALMENO UN <span style='color: #e74c3c; font-weight: bold;'>VERBO</span>.<br><br>IL <span style='color: #2980b9; font-weight: bold;'>PUNTO</span> SI INSERISCE ALLA FINE DELLA FRASE O DI UN GRUPPO DI PAROLE.",
+                "questions": [
+                    {
+                        "question": "1. Qual è la funzione principale delle virgole?",
+                        "options": ["CREARE PAUSE BREVI E DIVIDERE LE FRASI", "CHIUDERE DEFINITIVAMENTE IL DISCORSO"],
+                        "answer": "CREARE PAUSE BREVI E DIVIDERE LE FRASI"
+                    }
+                ]
+            },
+            {
+                "id": 9004,
+                "title": "RIPETIZIONI E ACCENTI 🔄",
+                "type": "multiple-choice",
+                "instruction": "FAI ATTENZIONE allo stile e alle parole che traggono in inganno.",
+                "text": "SI CONTROLLINO EVENTUALI <span style='color: #8e44ad; font-weight: bold;'>RIPETIZIONI</span> E SI CERCHINO <span style='color: #27ae60; font-weight: bold;'>SINONIMI</span> PER SOSTITUIRLE.<br><br>LA PAROLA <span style='color: #d35400; font-weight: bold;'>'SÌ'</span> DEVE ESSERE ACCENTATA IN CASO INDICHI UN PRONOME. SE È SEGUITA DALLA PAROLA 'STESSO' NON DEVE ESSERLO.<br><br>IL 'SÌ' CON VALORE DI <span style='color: #2980b9; font-weight: bold;'>CONGIUNZIONE</span> NON DEVE ESSERE ACCENTATA.",
+                "questions": [
+                    {
+                        "question": "1. Cosa si dovrebbe usare per evitare le ripetizioni?",
+                        "options": ["SINONIMI", "LA STESSA PAROLA"],
+                        "answer": "SINONIMI"
+                    }
+                ]
+            },
+            {
+                "id": 9005,
+                "title": "I NUMERI NEL TESTO 🔢",
+                "type": "multiple-choice",
+                "instruction": "SCOPRI quando usare le cifre e quando le lettere.",
+                "text": "NON SCRIVERE I <span style='color: #c0392b; font-weight: bold;'>NUMERI IN CIFRE</span> A MENO CHE NON SIANO PREZZI O DATE.<br><br>IN UN TESTO <span style='color: #16a085; font-weight: bold;'>LETTERARIO</span> I NUMERI VANNO RIPORTATI IN <span style='color: #d35400; font-weight: bold;'>LETTERE</span> PER UNA QUESTIONE DI STILE (ES. CI SONO DUE COMODINI).<br><br>IN UNA <span style='color: #2980b9; font-weight: bold;'>LISTA DELLA SPESA</span> O IN UN INVENTARIO SI POSSONO USARE LE <span style='color: #e74c3c; font-weight: bold;'>CIFRE</span>.",
+                "questions": [
+                    {
+                        "question": "1. Come vanno scritti i numeri in un testo letterario per stile?",
+                        "options": ["IN LETTERE", "IN CIFRE"],
+                        "answer": "IN LETTERE"
+                    }
+                ]
+            },
+            {
+                "id": 9006,
+                "title": "SECOLI E DATE STORICHE 🏛️",
+                "type": "multiple-choice",
+                "instruction": "REGOLE per indicare periodi storici e anni.",
+                "text": "SI POSSONO TROVARE LE INDICAZIONI DEI <span style='color: #2980b9; font-weight: bold;'>SECOLI</span> CON I <span style='color: #e74c3c; font-weight: bold;'>NUMERI ROMANI</span> (ES. XX SECOLO) O IN <span style='color: #27ae60; font-weight: bold;'>LETTERE</span> (ES. IL NOVECENTO).<br><br>SPESSO SI INDIVIDUANO LE DATE CON DUE CIFRE PRECEDUTE DA UN <span style='color: #8e44ad; font-weight: bold;'>APOSTROFO</span>: 'GLI ANNI '20', 'GLI ANNI '90' O CON LA LETTERA MAIUSCOLA: 'GLI ANNI TRENTA'.",
+                "questions": [
+                    {
+                        "question": "1. Come si indicano solitamente i secoli nei testi storici?",
+                        "options": ["CON I NUMERI ROMANI", "CON I NUMERI ARABI"],
+                        "answer": "CON I NUMERI ROMANI"
+                    }
+                ]
+            },
+            {
+                "id": 9007,
+                "title": "ANALISI DELLA TRACCIA 🎯",
+                "type": "multiple-choice",
+                "instruction": "CONSIGLI pratici per non andare fuori tema.",
+                "text": "ANALIZZA LA TRACCIA, IL TITOLO ED INDIVIDUA LE <span style='color: #e74c3c; font-weight: bold;'>PAROLE CHIAVE</span>.<br><br>NON PERDERE DI VISTA LO SCOPO DELLA TRACCIA: <span style='color: #2980b9; font-weight: bold;'>RILEGGILA</span> PRIMA, DURANTE E DOPO LA STESURA PER VERIFICARE DI AVER RISPOSTO A TUTTE LE RICHIESTE.",
+                "questions": [
+                    {
+                        "question": "1. Cosa bisogna fare prima, durante e dopo la stesura?",
+                        "options": ["RILEGGERE LA TRACCIA", "SCRIVERE IL PIÙ POSSIBILE"],
+                        "answer": "RILEGGERE LA TRACCIA"
+                    }
+                ]
+            }
         ]
     }
 };
