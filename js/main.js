@@ -2795,7 +2795,8 @@ function loadExercise(path) {
         return;
     }
 
-    if (exercise.type && exercise.type !== 'multiple-choice') mount.innerHTML = window.UI.renderInteractive(exercise, false, path, exercises.length);
+    if (exercise.type === 'personality-test') mount.innerHTML = window.UI.renderProduzione(exercise, false, path, exercises.length);
+    else if (exercise.type && exercise.type !== 'multiple-choice') mount.innerHTML = window.UI.renderInteractive(exercise, false, path, exercises.length);
     else if (exercise.target) mount.innerHTML = path.includes('analisiLogica') ? window.UI.renderLogica(exercise, false, path, exercises.length) : window.UI.renderPeriodo(exercise, false, path, exercises.length);
     else if (path.includes('punteggiatura')) mount.innerHTML = window.UI.renderPunteggiatura(exercise, false, path, exercises.length);
     else if (path.includes('lettura')) mount.innerHTML = window.UI.renderLettura(exercise, false, path, exercises.length);
