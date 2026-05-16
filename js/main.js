@@ -2412,6 +2412,7 @@ window.MATERIE_HIERARCHY = {
     'tecnica1': { type: 'uda', parent: 'riassunto' },
     'tecnica2': { type: 'uda', parent: 'riassunto' },
     'tecnica3': { type: 'uda', parent: 'riassunto' },
+    'riformulazione': { type: 'exercises', parent: 'produzione' },
     // Leaf mapping per Analisi Logica
 };
 
