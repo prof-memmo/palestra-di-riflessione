@@ -23,7 +23,7 @@ def main():
         print("JSON parse error:", e)
         return
         
-    acc_array = data.get("accoglienza", [])
+    acc_array = data.get("produzione", {}).get("accoglienza", [])
     
     for ex in acc_array:
         if ex["id"] == 10007:

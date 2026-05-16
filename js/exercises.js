@@ -20180,167 +20180,192 @@ window.exercisesData = {
             {
                 "id": 10007,
                 "title": "INTERESSI, HOBBY E TEMPO LIBERO ⚽",
-                "type": "multiple-choice",
-                "instruction": "TEST DELLA PERSONALITÀ: Scopri cosa dicono di te le tue abitudini fuori dalla scuola.",
+                "type": "personality-test",
+                "instruction": "Rispondi sinceramente a queste domande per scoprire il tuo rapporto con il tempo libero.",
                 "text": "Quali sono le tue <span style='color: #e74c3c; font-weight: bold;'>PREFERENZE</span>? (Sport, cibo, colore, hobby preferito).<br>Come trascorri il tuo <span style='color: #2980b9; font-weight: bold;'>TEMPO LIBERO</span>? Lo dedichi ad attività all'aperto, a leggere, giocare ai videogiochi, fare acquisti o praticare uno sport?<br>Passi questo tempo più spesso <span style='color: #16a085; font-weight: bold;'>DA SOLO</span> o in <span style='color: #8e44ad; font-weight: bold;'>COMPAGNIA</span> di amici e familiari? E quante ore dedichi alla <span style='color: #c0392b; font-weight: bold;'>TELEVISIONE</span> o ai dispositivi elettronici al giorno?",
                 "questions": [
                     {
-                        "question": "1. Quale aspetto del tempo libero indica una maggiore propensione alla socialità?",
+                        "question": "Come preferisci trascorrere il tuo tempo libero?",
                         "options": [
-                            "TRASCORRERLO IN COMPAGNIA DI AMICI O FAMILIARI",
-                            "TRASCORRERLO SEMPRE E SOLO IN CAMERA PROPRIA"
-                        ],
-                        "answer": "TRASCORRERLO IN COMPAGNIA DI AMICI O FAMILIARI"
+                            "Praticando sport o attività all'aperto",
+                            "Leggendo, guardando film o giocando ai videogiochi",
+                            "Uscendo con gli amici"
+                        ]
                     },
                     {
-                        "question": "2. Qual è un indicatore importante per capire come gestisci le tue giornate?",
+                        "question": "Quando hai un momento libero inaspettato, qual è la tua prima reazione?",
                         "options": [
-                            "IL NUMERO DI ORE DEDICATE ALLA TELEVISIONE O AI DISPOSITIVI",
-                            "IL COLORE DEL TUO QUADERNO PREFERITO"
-                        ],
-                        "answer": "IL NUMERO DI ORE DEDICATE ALLA TELEVISIONE O AI DISPOSITIVI"
+                            "Cerco subito qualcosa di attivo da fare",
+                            "Ne approfitto per rilassarmi e non fare nulla",
+                            "Chiamo qualcuno per chiacchierare"
+                        ]
                     },
                     {
-                        "question": "3. Riflettere sulle proprie preferenze (hobby, sport) è utile principalmente per:",
+                        "question": "Quale tra queste attività ti dà più soddisfazione?",
                         "options": [
-                            "IMPARARE A CONOSCERSI MEGLIO E INDIVIDUARE LE PROPRIE PASSIONI",
-                            "OTTENERE DEI CREDITI FORMATIVI IN PIÙ A FINE ANNO"
-                        ],
-                        "answer": "IMPARARE A CONOSCERSI MEGLIO E INDIVIDUARE LE PROPRIE PASSIONI"
+                            "Vincere una competizione o superare un limite fisico",
+                            "Imparare qualcosa di nuovo da un libro o documentario",
+                            "Organizzare una festa o un'uscita di gruppo"
+                        ]
                     }
-                ]
+                ],
+                "profiles": {
+                    "A": "Sei una persona DINAMICA! Il tuo tempo libero è sempre in movimento. Questo ti dà grande energia, cerca di portarla anche nello studio!",
+                    "B": "Sei una persona RIFLESSIVA! Ami nutrire la tua mente anche quando ti rilassi. Hai un'ottima predisposizione per le materie di studio teoriche.",
+                    "C": "Sei una persona SOCIEVOLE! Per te il tempo libero significa stare insieme agli altri. Il lavoro di gruppo sarà il tuo punto forte a scuola."
+                }
             },
             {
                 "id": 10008,
                 "title": "PREGI E DIFETTI: TEST DELLA PERSONALITÀ 🎭",
-                "type": "multiple-choice",
-                "instruction": "TEST DELLA PERSONALITÀ: Scegli gli aggettivi che ti descrivono meglio e valuta il tuo carattere.",
+                "type": "personality-test",
+                "instruction": "Non ci sono risposte giuste o sbagliate, scegli l'opzione che ti descrive meglio!",
                 "text": "Nessuno è perfetto, tutti abbiamo <span style='color: #27ae60; font-weight: bold;'>PREGI</span> e <span style='color: #e74c3c; font-weight: bold;'>DIFETTI</span>. Riconoscerli è il primo passo per crescere.<br>Quale di questi aggettivi pensi ti descriva di più?<br>Sei <span style='color: #2980b9; font-weight: bold;'>ALLEGRO</span>, TIMIDO, CHIACCHIERONE, TRANQUILLO, <span style='color: #d35400; font-weight: bold;'>TESTARDO</span>, AFFETTUOSO o AGGRESSIVO?<br>Pensa a cosa provi più spesso, alle reazioni che hai quando ti arrabbi o quando sei felice, e preparati a presentarti alla classe spiegando chi sei veramente.",
                 "questions": [
                     {
-                        "question": "1. Se ti definisci 'testardo', quale di questi comportamenti potresti avere?",
+                        "question": "Di fronte a un ostacolo imprevisto, come reagisci solitamente?",
                         "options": [
-                            "FAI FATICA A CAMBIARE IDEA ANCHE QUANDO SBAGLI",
-                            "SEI MOLTO SILENZIOSO E FATICA A FARE AMICIZIA"
-                        ],
-                        "answer": "FAI FATICA A CAMBIARE IDEA ANCHE QUANDO SBAGLI"
+                            "Mi scoraggio facilmente e cerco aiuto",
+                            "Provo ad affrontarlo subito con determinazione",
+                            "Mi prendo del tempo per analizzare la situazione"
+                        ]
                     },
                     {
-                        "question": "2. Seleziona l'aggettivo che indica una persona con una forte propensione alla comunicazione:",
+                        "question": "Quale ritieni sia il tuo pregio principale in ambito scolastico?",
                         "options": [
-                            "CHIACCHIERONE",
-                            "TIMIDO"
-                        ],
-                        "answer": "CHIACCHIERONE"
+                            "L'impegno e la costanza",
+                            "La creatività e le idee originali",
+                            "La capacità di ascoltare e collaborare"
+                        ]
                     },
                     {
-                        "question": "3. Perché è fondamentale riconoscere anche i propri difetti?",
+                        "question": "E quale invece consideri il tuo difetto più grande?",
                         "options": [
-                            "È IL PRIMO PASSO NECESSARIO PER POTER CRESCERE E MIGLIORARSI",
-                            "PER GIUSTIFICARE SEMPRE I PROPRI ERRORI DI FRONTE AGLI ALTRI"
-                        ],
-                        "answer": "È IL PRIMO PASSO NECESSARIO PER POTER CRESCERE E MIGLIORARSI"
+                            "Essere troppo testardo/a",
+                            "Essere spesso disordinato/a o distratto/a",
+                            "Essere troppo timido/a o insicuro/a"
+                        ]
                     }
-                ]
+                ],
+                "profiles": {
+                    "A": "Sei un tipo TENACE ma a volte un po' insicuro. La costanza è la tua arma segreta: credi di più in te stesso/a!",
+                    "B": "Sei uno spirito CREATIVO! L'energia non ti manca, ma cerca di organizzare meglio il tuo disordine per dare il massimo.",
+                    "C": "Sei una persona PACATA e RIFLESSIVA. Collabori bene con gli altri, ricorda solo di far sentire anche la tua voce!"
+                }
             },
             {
                 "id": 10009,
                 "title": "I RICORDI DELLA SCUOLA PRIMARIA 🎒",
-                "type": "multiple-choice",
-                "instruction": "RIFLETTI sul percorso appena concluso e fai un bilancio delle tue esperienze passate.",
+                "type": "personality-test",
+                "instruction": "Rifletti sulle tue esperienze passate alla scuola primaria.",
                 "text": "La Scuola Primaria è giunta al termine. LET'S TALK!<br>Quali <span style='color: #2980b9; font-weight: bold;'>RICORDI</span> hai di quegli anni? Quali sono state le esperienze più significative che porterai sempre nella tua memoria?<br>Prova a ricordare: che tipo di alunno eri? Com'erano i tuoi rapporti con i <span style='color: #16a085; font-weight: bold;'>COMPAGNI</span> e con gli <span style='color: #8e44ad; font-weight: bold;'>INSEGNANTI</span>? Questo bilancio ti aiuterà ad affrontare meglio il nuovo ciclo di studi.",
                 "questions": [
                     {
-                        "question": "1. Qual è l'utilità di ricordare le esperienze della scuola primaria all'inizio di un nuovo ciclo?",
+                        "question": "Qual è il ricordo più bello che porti dalla scuola primaria?",
                         "options": [
-                            "FARE UN BILANCIO CHE AIUTI AD AFFRONTARE MEGLIO LA NUOVA SCUOLA",
-                            "DIMENTICARE COMPLETAMENTE QUELLO CHE SI È IMPARATO PRIMA"
-                        ],
-                        "answer": "FARE UN BILANCIO CHE AIUTI AD AFFRONTARE MEGLIO LA NUOVA SCUOLA"
+                            "Le ricreazioni e le gite con i compagni",
+                            "I momenti in cui ho preso un bel voto in una materia difficile",
+                            "L'affetto per i miei vecchi maestri"
+                        ]
                     },
                     {
-                        "question": "2. Oltre allo studio, cosa è importante valutare del proprio passato scolastico?",
+                        "question": "Rispetto agli anni passati, come ti senti ora in questa nuova scuola?",
                         "options": [
-                            "I RAPPORTI UMANI CON I COMPAGNI E GLI INSEGNANTI",
-                            "SOLO IL NUMERO DI MATITE CONSUMATE IN CINQUE ANNI"
-                        ],
-                        "answer": "I RAPPORTI UMANI CON I COMPAGNI E GLI INSEGNANTI"
+                            "Molto più grande e responsabile",
+                            "Un po' nostalgico/a ma curioso/a",
+                            "Un po' spaventato/a dalle novità"
+                        ]
                     },
                     {
-                        "question": "3. Cosa si intende per 'esperienza significativa'?",
+                        "question": "Quale abitudine della scuola primaria vorresti mantenere?",
                         "options": [
-                            "UN EVENTO O UN INSEGNAMENTO CHE RIMARRÀ IMPRESSO NELLA MEMORIA",
-                            "QUALCOSA CHE SUCCEDE TUTTI I GIORNI ALLO STESSO MODO"
-                        ],
-                        "answer": "UN EVENTO O UN INSEGNAMENTO CHE RIMARRÀ IMPRESSO NELLA MEMORIA"
+                            "Il gioco e il divertimento durante le pause",
+                            "L'ordine e la precisione nel fare i compiti",
+                            "L'aiuto reciproco tra compagni di classe"
+                        ]
                     }
-                ]
+                ],
+                "profiles": {
+                    "A": "Sei legato/a all'aspetto SOCIALE della scuola. I ricordi con i compagni ti danno forza per affrontare le nuove sfide con entusiasmo!",
+                    "B": "Sei orientato/a all'IMPEGNO personale. Ti piace crescere e affrontare cose nuove, mantenendo un forte senso di responsabilità.",
+                    "C": "Hai un cuore NOSTALGICO ma sei pronto/a ad aprirti. Continua a coltivare l'empatia che hai imparato negli anni passati."
+                }
             },
             {
                 "id": 10010,
                 "title": "DIFFICOLTÀ E SUCCESSI NEL PASSATO 🏆",
-                "type": "multiple-choice",
-                "instruction": "TEST DI AUTOVALUTAZIONE: Analizza onestamente i tuoi trionfi e i tuoi ostacoli.",
+                "type": "personality-test",
+                "instruction": "Valuta come hai affrontato i momenti difficili e quelli felici.",
                 "text": "Durante la scuola primaria hai sicuramente incontrato delle <span style='color: #e74c3c; font-weight: bold;'>DIFFICOLTÀ</span> (ad esempio in materie specifiche o nelle relazioni), ma hai anche conseguito dei <span style='color: #27ae60; font-weight: bold;'>SUCCESSI</span>.<br>Pensa agli argomenti che 'Ti piacevano un sacco', a quelli in cui te la cavavi bene e alle cose che proprio non ti andavano giù.<br>Essere consapevoli dei propri punti di debolezza permette di chiedere aiuto quando serve, mentre conoscere i propri talenti aiuta a sviluppare fiducia in se stessi.",
                 "questions": [
                     {
-                        "question": "1. Perché è utile riconoscere le materie o le attività in cui si fa più fatica?",
+                        "question": "Quando in passato non sei riuscito/a in un compito, cosa hai fatto?",
                         "options": [
-                            "PER ESSERE CONSAPEVOLI DEI PUNTI DEBOLI E CHIEDERE AIUTO SE NECESSARIO",
-                            "PER AVERE UNA SCUSA PRONTA QUANDO NON SI VOGLIONO FARE I COMPITI"
-                        ],
-                        "answer": "PER ESSERE CONSAPEVOLI DEI PUNTI DEBOLI E CHIEDERE AIUTO SE NECESSARIO"
+                            "Mi sono arreso/a pensando di non essere capace",
+                            "Ho chiesto aiuto per capire i miei errori",
+                            "Ho provato e riprovato da solo/a finché non ce l'ho fatta"
+                        ]
                     },
                     {
-                        "question": "2. Cosa si ottiene concentrandosi e conoscendo i propri successi e talenti?",
+                        "question": "Come celebri di solito un successo scolastico?",
                         "options": [
-                            "SI SVILUPPA UNA MAGGIORE FIDUCIA IN SE STESSI E NELLE PROPRIE CAPACITÀ",
-                            "SI DIVENTA PRESUNTUOSI E SI SMETTE DI STUDIARE"
-                        ],
-                        "answer": "SI SVILUPPA UNA MAGGIORE FIDUCIA IN SE STESSI E NELLE PROPRIE CAPACITÀ"
+                            "Lo racconto subito a tutti con entusiasmo",
+                            "Ne sono felice ma lo tengo per me o per la mia famiglia",
+                            "Inizio subito a pensare al prossimo obiettivo"
+                        ]
                     },
                     {
-                        "question": "3. Le 'cose che non ti andavano giù' del passato:",
+                        "question": "Quale materia in passato ti ha messo più in difficoltà?",
                         "options": [
-                            "SONO OSTACOLI DA ANALIZZARE PER CAPIRE COME AFFRONTARLI MEGLIO ORA",
-                            "SONO ERRORI DEGLI INSEGNANTI CHE NON DIPENDONO DALL'ALUNNO"
-                        ],
-                        "answer": "SONO OSTACOLI DA ANALIZZARE PER CAPIRE COME AFFRONTARLI MEGLIO ORA"
+                            "Le materie logico-matematiche",
+                            "Le materie umanistiche e di scrittura",
+                            "Le attività pratiche o motorie"
+                        ]
                     }
-                ]
+                ],
+                "profiles": {
+                    "A": "Il tuo profilo: EMOTIVO. Vivi successi e difficoltà in modo intenso. Impara a non arrenderti e a chiedere aiuto quando serve!",
+                    "B": "Il tuo profilo: EQUILIBRATO. Sai gioire dei successi ma rimani con i piedi per terra. Continua ad analizzare i tuoi errori per migliorare.",
+                    "C": "Il tuo profilo: INDIPENDENTE. Hai una forte motivazione interna. Sei tenace e determinato/a, un'ottima base per il futuro."
+                }
             },
             {
                 "id": 10011,
                 "title": "EMOZIONI PER LA NUOVA SCUOLA 🏢",
-                "type": "multiple-choice",
-                "instruction": "TEST DELLA PERSONALITÀ: Indaga i tuoi sentimenti verso questo grande cambiamento.",
+                "type": "personality-test",
+                "instruction": "Identifica le emozioni che provi di fronte a questo nuovo inizio.",
                 "text": "La tua nuova aula sarà il luogo principale del tuo processo di crescita e formazione.<br>Guardati intorno: c'è un po' di nostalgia per il passato o prevale la <span style='color: #2980b9; font-weight: bold;'>CURIOSITÀ</span>?<br>Scegli l'aggettivo che meglio descrive come definiresti l'ambiente in cui ti trovi ora: lo trovi SPAZIOSO, LUMINOSO, ALLEGRO, ACCOGLIENTE, oppure ti sembra PICCOLO, BUIO o POCO CURATO?<br>Confronta queste tue impressioni con quelle dei compagni: noterai che le <span style='color: #d35400; font-weight: bold;'>EMOZIONI</span> possono essere molto diverse tra loro.",
                 "questions": [
                     {
-                        "question": "1. Se percepisci la tua nuova aula come 'Spaziosa' e 'Luminosa', probabilmente provi:",
+                        "question": "Come ti senti pensando all'inizio di questo nuovo anno scolastico?",
                         "options": [
-                            "EMOZIONI POSITIVE E ACCOGLIENTI VERSO IL NUOVO AMBIENTE",
-                            "UN FORTE SENSO DI OPPRESSIONE E TRISTEZZA"
-                        ],
-                        "answer": "EMOZIONI POSITIVE E ACCOGLIENTI VERSO IL NUOVO AMBIENTE"
+                            "Molto emozionato/a e non vedo l'ora di iniziare",
+                            "Abbastanza tranquillo/a, prenderò le cose come vengono",
+                            "Un po' in ansia per il carico di studio e i professori nuovi"
+                        ]
                     },
                     {
-                        "question": "2. Qual è il vantaggio di confrontare le proprie impressioni con i compagni?",
+                        "question": "Cosa ti preoccupa di più della nuova scuola?",
                         "options": [
-                            "SCOPRIRE CHE OGNUNO VIVE LE STESSE SITUAZIONI CON EMOZIONI DIVERSE",
-                            "CONVINCERLI CHE LA PROPRIA OPINIONE SULL'AULA È L'UNICA CORRETTA"
-                        ],
-                        "answer": "SCOPRIRE CHE OGNUNO VIVE LE STESSE SITUAZIONI CON EMOZIONI DIVERSE"
+                            "Non riuscire a fare amicizia",
+                            "Prendere brutti voti o non capire le spiegazioni",
+                            "Le regole più severe e l'organizzazione"
+                        ]
                     },
                     {
-                        "question": "3. L'aula viene definita nel testo come:",
+                        "question": "Cosa ti aspetti dai tuoi nuovi compagni di classe?",
                         "options": [
-                            "IL LUOGO PRINCIPALE DEL PROPRIO PROCESSO DI CRESCITA E FORMAZIONE",
-                            "UN LUOGO DI PASSAGGIO DOVE STARE IL MINOR TEMPO POSSIBILE"
-                        ],
-                        "answer": "IL LUOGO PRINCIPALE DEL PROPRIO PROCESSO DI CRESCITA E FORMAZIONE"
+                            "Di trovare amici con cui divertirmi",
+                            "Di trovare persone con cui collaborare nello studio",
+                            "Spero solo che siano simpatici e tranquilli"
+                        ]
                     }
-                ]
+                ],
+                "profiles": {
+                    "A": "Il tuo approccio è ENTUSIASTA! Questa tua energia positiva ti aiuterà moltissimo a fare nuove amicizie e superare i primi ostacoli.",
+                    "B": "Il tuo approccio è PRAGMATICO. Prendi le cose con calma e punti alla collaborazione: un'ottima strategia per non stressarsi troppo.",
+                    "C": "Il tuo approccio è CAUTO. È normale avere un po' di ansia per le novità, ma non preoccuparti: col tempo tutto diventerà familiare!"
+                }
             },
             {
                 "id": 10012,
@@ -20378,101 +20403,116 @@ window.exercisesData = {
             {
                 "id": 10013,
                 "title": "ASPETTATIVE SUL FUTURO E SUL METODO DI STUDIO 🧭",
-                "type": "multiple-choice",
-                "instruction": "TEST DI AUTOVALUTAZIONE: Indaga il tuo modo di studiare e i tuoi obiettivi.",
+                "type": "personality-test",
+                "instruction": "Scopri che tipo di studente sei e cosa ti aspetti dal tuo metodo di studio.",
                 "text": "COSA TI ASPETTI DALLA SCUOLA? E cosa vorresti diventare da grande?<br><br>Rifletti sul tuo <span style='color: #8e44ad; font-weight: bold;'>METODO DI STUDIO</span>:<br>- Fai i compiti finendo tutto per tempo?<br>- Esprimi le tue idee senza esitazioni?<br>- Intervieni spesso, ma cerchi di ascoltare anche gli altri?<br>- Sei distratto e tendi a perdere molto tempo prima di cominciare?<br><br>Il modo in cui affronti lo studio oggi, costruisce le fondamenta per raggiungere i tuoi sogni di domani.",
                 "questions": [
                     {
-                        "question": "1. Se ti riconosci nell'affermazione 'Tendo a perdere molto tempo prima di cominciare', tu sei:",
+                        "question": "Come organizzi di solito il tuo studio pomeridiano?",
                         "options": [
-                            "UN ALUNNO CHE DOVREBBE MIGLIORARE LA PROPRIA GESTIONE DEL TEMPO",
-                            "UN ALUNNO CHE HA GIA TROVATO IL METODO DI STUDIO PERFETTO"
-                        ],
-                        "answer": "UN ALUNNO CHE DOVREBBE MIGLIORARE LA PROPRIA GESTIONE DEL TEMPO"
+                            "Faccio tutto all'ultimo minuto",
+                            "Seguo una scaletta precisa e cerco di portarmi avanti",
+                            "Studio un po', poi faccio pause frequenti"
+                        ]
                     },
                     {
-                        "question": "2. Intervenire spesso ma ascoltare anche gli altri significa:",
+                        "question": "Quale strumento trovi più utile per memorizzare?",
                         "options": [
-                            "PARTECIPARE ATTIVAMENTE IN CLASSE MOSTRANDO RISPETTO PER I COMPAGNI",
-                            "INTERROMPERE CONTINUAMENTE LA LEZIONE PER METTERSI IN MOSTRA"
-                        ],
-                        "answer": "PARTECIPARE ATTIVAMENTE IN CLASSE MOSTRANDO RISPETTO PER I COMPAGNI"
+                            "Ripetere ad alta voce",
+                            "Fare schemi, mappe e riassunti scritti",
+                            "Ascoltare le spiegazioni o studiare con qualcuno"
+                        ]
                     },
                     {
-                        "question": "3. Perché il testo collega il metodo di studio ai 'sogni di domani'?",
+                        "question": "Cosa speri di migliorare in futuro nel tuo metodo?",
                         "options": [
-                            "PERCHÉ L'IMPEGNO DI OGGI COSTRUISCE LE BASI PER REALIZZARE I PROPRI OBIETTIVI FUTURI",
-                            "PERCHÉ GLI INSEGNANTI DECIDERANNO IL LAVORO CHE FARAI DA GRANDE"
-                        ],
-                        "answer": "PERCHÉ L'IMPEGNO DI OGGI COSTRUISCE LE BASI PER REALIZZARE I PROPRI OBIETTIVI FUTURI"
+                            "Voglio diventare più veloce a leggere e studiare",
+                            "Voglio imparare a concentrarmi senza distrazioni",
+                            "Voglio capire come prendere appunti in modo efficace"
+                        ]
                     }
-                ]
+                ],
+                "profiles": {
+                    "A": "Il tuo metodo è ISTINTIVO e uditivo. Cerca di non ridurti sempre all'ultimo minuto e sfrutta la tua capacità di memorizzare ripetendo!",
+                    "B": "Il tuo metodo è VISIVO E ORGANIZZATO. Gli schemi sono i tuoi migliori alleati. Continua così e otterrai ottimi risultati.",
+                    "C": "Il tuo metodo è COLLABORATIVO. Impari meglio con gli altri. Impara a gestire le pause per non perdere la concentrazione."
+                }
             },
             {
                 "id": 10014,
                 "title": "LE ASPETTATIVE SUGLI INSEGNANTI 🧑‍🏫",
-                "type": "multiple-choice",
-                "instruction": "TEST DELLA PERSONALITÀ: Scopri quali caratteristiche apprezzi di più in un docente.",
+                "type": "personality-test",
+                "instruction": "Definisci il profilo del tuo 'insegnante ideale'.",
                 "text": "Quali caratteristiche dovrebbe avere il tuo insegnante ideale?<br><br>Scegli il profilo che ritieni migliore e comprendi perché ogni approccio ha il suo valore:<br>1) <span style='color: #2980b9; font-weight: bold;'>L'INSEGNANTE SEVERO</span>: Mantiene ordine, fissa regole rigide ed esige precisione.<br>2) <span style='color: #27ae60; font-weight: bold;'>L'INSEGNANTE COMPRENSIVO</span>: Sa ascoltare e mette l'alunno a suo agio nei momenti di difficoltà.<br>3) <span style='color: #d35400; font-weight: bold;'>L'INSEGNANTE COINVOLGENTE</span>: Anima la lezione con spiegazioni accattivanti e non annoia mai.<br><br>Spesso, il docente ideale è un equilibrio perfetto di queste tre anime.",
                 "questions": [
                     {
-                        "question": "1. Se il tuo insegnante ideale fissa regole rigide e mantiene un ordine assoluto, tu apprezzi particolarmente:",
+                        "question": "Qual è la qualità più importante per un professore?",
                         "options": [
-                            "L'INSEGNANTE SEVERO",
-                            "L'INSEGNANTE COMPRENSIVO"
-                        ],
-                        "answer": "L'INSEGNANTE SEVERO"
+                            "Essere simpatico e fare battute",
+                            "Spiegare in modo chiaro e comprensibile",
+                            "Essere giusto e non fare favoritismi"
+                        ]
                     },
                     {
-                        "question": "2. Quale caratteristica descrive l'insegnante 'Coinvolgente'?",
+                        "question": "Come preferisci che il professore reagisca se sbagli una risposta?",
                         "options": [
-                            "ANIMA LA LEZIONE RENDENDOLA ACCATTIVANTE E MENO NOIOSA",
-                            "METTE A PROPRIO AGIO L'ALUNNO SOLO QUANDO È IN DIFFICOLTÀ"
-                        ],
-                        "answer": "ANIMA LA LEZIONE RENDENDOLA ACCATTIVANTE E MENO NOIOSA"
+                            "Che mi incoraggi e mi aiuti a correggermi dolcemente",
+                            "Che mi spieghi subito l'errore in modo diretto",
+                            "Che passi la domanda a qualcun altro per non mettermi in imbarazzo"
+                        ]
                     },
                     {
-                        "question": "3. Secondo il testo, come si comporta l'insegnante ideale nella realtà?",
+                        "question": "Cosa apprezzi di più in una lezione?",
                         "options": [
-                            "TROVA UN EQUILIBRIO UNENDO DIVERSE CARATTERISTICHE E APPROCCI",
-                            "ADOTTA ESCLUSIVAMENTE UNO E UN SOLO METODO PER TUTTO L'ANNO"
-                        ],
-                        "answer": "TROVA UN EQUILIBRIO UNENDO DIVERSE CARATTERISTICHE E APPROCCI"
+                            "I lavori di gruppo e i giochi didattici",
+                            "Gli esempi pratici e collegati alla realtà",
+                            "Il silenzio e l'ordine per poter prendere appunti bene"
+                        ]
                     }
-                ]
+                ],
+                "profiles": {
+                    "A": "Cerchi un prof EMPATICO. Per te l'ambiente sereno e il rapporto umano sono fondamentali per imparare bene.",
+                    "B": "Cerchi un prof CHIARO E PRAGMATICO. Vuoi capire bene le cose e apprezzi la logica e gli esempi concreti.",
+                    "C": "Cerchi un prof AUTOREVOLE E GIUSTO. L'ordine e l'imparzialità ti danno sicurezza per poter dare il meglio."
+                }
             },
             {
                 "id": 10015,
                 "title": "LA PASSIONE PER LA LETTURA E IL LIBRO PREFERITO 📖",
-                "type": "multiple-choice",
-                "instruction": "CONFRONTATI sulle tue abitudini di lettura e condividile con la classe.",
+                "type": "personality-test",
+                "instruction": "Che tipo di lettore sei?",
                 "text": "LA LETTURA È UN VIAGGIO STRAORDINARIO. <span style='color: #2980b9; font-weight: bold;'>LET'S TALK!</span><br><br>Ti piace <span style='color: #e74c3c; font-weight: bold;'>LEGGERE</span>? Nell'arco di un anno, quanti libri riesci a leggere in media?<br>Cosa succede nella tua mente quando leggi? (Es. immagini i volti dei personaggi o sottolinei le frasi che ti colpiscono di più?).<br>Inoltre, quali <span style='color: #27ae60; font-weight: bold;'>GENERI PREFERISCI</span>? Sei un appassionato di avventura, fantasy, gialli, o forse di fumetti e manga?<br><br>Raccogli le tue idee e preparati a <span style='color: #d35400; font-weight: bold;'>CONSIGLIARE UN LIBRO</span> a un tuo compagno spiegandone il motivo.",
                 "questions": [
                     {
-                        "question": "1. Qual è lo scopo principale dell'attività 'Let's Talk' sulla lettura?",
+                        "question": "Se devi scegliere un libro da leggere, cosa guardi per prima cosa?",
                         "options": [
-                            "DISCUTERE CON I COMPAGNI DELLE PROPRIE ABITUDINI E PREFERENZE DI LETTURA",
-                            "IMPARARE A MEMORIA L'INTERO REGOLAMENTO DELLA BIBLIOTECA"
-                        ],
-                        "answer": "DISCUTERE CON I COMPAGNI DELLE PROPRIE ABITUDINI E PREFERENZE DI LETTURA"
+                            "La copertina e il titolo",
+                            "La trama scritta sul retro",
+                            "Se è un genere che conosco (es. fantasy, avventura)"
+                        ]
                     },
                     {
-                        "question": "2. Seleziona l'azione che richiede uno sforzo di immaginazione durante la lettura:",
+                        "question": "Dove preferisci leggere?",
                         "options": [
-                            "FIGURARSI NELLA MENTE I VOLTI DEI PERSONAGGI E I LUOGHI DESCRITTI",
-                            "CONTARE IL NUMERO DI PAGINE CHE MANCANO ALLA FINE DEL CAPITOLO"
-                        ],
-                        "answer": "FIGURARSI NELLA MENTE I VOLTI DEI PERSONAGGI E I LUOGHI DESCRITTI"
+                            "A letto, prima di dormire",
+                            "Sul divano o all'aperto durante il giorno",
+                            "A scuola o sui mezzi di trasporto"
+                        ]
                     },
                     {
-                        "question": "3. Quale azione conclusiva ti viene suggerita per condividere la tua passione?",
+                        "question": "Cosa fai se un libro non ti piace dopo le prime pagine?",
                         "options": [
-                            "CONSIGLIARE UN LIBRO CHE TI È PIACIUTO SPIEGANDONE I MOTIVI AGLI ALTRI",
-                            "CHIUDERE IL LIBRO E NON PARLARNE MAI PIÙ CON NESSUNO"
-                        ],
-                        "answer": "CONSIGLIARE UN LIBRO CHE TI È PIACIUTO SPIEGANDONE I MOTIVI AGLI ALTRI"
+                            "Lo abbandono e ne cerco un altro",
+                            "Mi sforzo di arrivare almeno a metà per dargli un'opportunità",
+                            "Lo leggo comunque fino alla fine perché non mi piace lasciare le cose a metà"
+                        ]
                     }
-                ]
+                ],
+                "profiles": {
+                    "A": "Sei un lettore ISTINTIVO. Ti lasci catturare dalle emozioni e dalle atmosfere. Se un libro ti prende, lo divori in poche ore!",
+                    "B": "Sei un lettore RIFLESSIVO E COSTANTE. Dai sempre una possibilità alle storie e ti piace analizzare le trame in profondità.",
+                    "C": "Sei un lettore METODICO. Preferisci andare sul sicuro con i tuoi generi preferiti e porti sempre a termine ciò che inizi."
+                }
             }
         ],
         "stesura": [
