@@ -551,18 +551,61 @@ renderLessico: (exercise, isUda, path, total) => {
         }
 
 
+        // Handle discovery elements (theory, schema, examples) if they exist
+        const parseMarkdown = (text) => {
+            if (!text) return '';
+            return text.replace(/\*\*(.*?)\*\*/g, `<span style="color: var(--primary-color); font-weight: bold;">$1</span>`);
+        };
+
+        let schemaHtml = '';
+        if (exercise.schema) {
+            schemaHtml = `
+                <div class="theory-schema" style="margin-top: 1.5rem; background: #fff; padding: 1.5rem; border-radius: 15px; border: 1px solid #eee;">
+                    ${exercise.schema.map(s => `
+                        <div class="schema-row" style="display: flex; justify-content: space-between; padding: 0.5rem 0; border-bottom: 1px solid #f9f9f9;">
+                            <span class="schema-label" style="color: var(--primary-color); font-weight: 800;">${s.label}</span>
+                            <span style="font-weight: 700;">${s.value}</span>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        }
+
+        let examplesHtml = '';
+        if (exercise.examples) {
+            examplesHtml = `
+                <div style="display: grid; grid-template-columns: 1fr; gap: 1rem; margin-top: 1.5rem;">
+                    ${exercise.examples.map(ex => `
+                        <div style="background: #fff9f0; padding: 1rem; border-radius: 15px; border: 1px dashed #ffa502; font-size: 0.95rem;">
+                            <strong style="color: #ffa502;">ESEMPIO:</strong><br>${parseMarkdown(ex)}
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        }
+
+        const theorySection = exercise.theory ? `
+            <div style="background: #f8f9fa; padding: 2rem; border-radius: 25px; margin-bottom: 2rem; border: 1px solid #eee;">
+                <div style="font-size: 1.1rem; line-height: 1.8; color: #444;">${parseMarkdown(exercise.theory)}</div>
+                ${schemaHtml}
+                ${examplesHtml}
+            </div>
+        ` : '';
+
         return `
             <div class="exercise-container" style="position: relative;">
                 <h2 class="exercise-title" style="font-size: 1.8rem; border-bottom: 3px solid var(--accent-color); padding-bottom: 5px; margin-bottom: 2rem; display: flex; align-items: center; justify-content: space-between;">
                     <span>${exercise.title || 'ESERCIZIO'}</span>
                     <span style="font-size: 1.3rem; font-weight: 700; color: #888; background: #eee; padding: 0.2rem 0.6rem; border-radius: 12px;">${window.currentExerciseIndex + 1}/${total}</span>
                 </h2>
+                ${theorySection}
                 ${exercise.text && !['highlight', 'completion', 'classification-grid', 'word-selector', 'sentence-analysis'].includes(type) ? `<p style="font-size: 1.4rem; font-weight: 700; margin-bottom: 1.5rem; text-align: left; color: var(--primary-color);">${exercise.text}</p>` : ''}
                 ${exercise.instruction ? `<p style="font-weight: 700; margin-bottom: 2rem; color: #555; background: #f0f7ff; padding: 1rem; border-radius: 10px; border-left: 4px solid var(--primary-color); text-align: justify;">${exercise.instruction}</p>` : ''}
                 ${interactionHtml}
                 ${path ? window.UI.renderNav(path, total) : ''}
             </div>
         `;
+
     },
 
     renderPunteggiatura: (exercise, isUda, path, total) => UI.renderInteractive(exercise, isUda, path, total),

@@ -2820,26 +2820,25 @@ function loadUdaPhase(path) {
         return;
     }
 
-    if (phase === 'scopri') {
+    // Se l'esercizio ha un tipo interattivo specifico (es. completion, highlight, drag-drop, classification-grid, word-selector, sentence-analysis)
+    if (exercise && exercise.type && exercise.type !== 'multiple-choice') {
+        mount.innerHTML = window.UI.renderInteractive(exercise, true, path, exercises.length);
+    } else if (phase === 'scopri') {
         mount.innerHTML = window.UI.renderScopri(exercise, path, exercises.length);
     } else if (phase === 'recupera') {
         mount.innerHTML = window.UI.renderRecupera(data, path);
+    } else if (path.includes('analisiLogica')) {
+        mount.innerHTML = window.UI.renderLogica(exercise, true, path, exercises.length);
+    } else if (path.includes('analisiPeriodo')) {
+        mount.innerHTML = window.UI.renderPeriodo(exercise, true, path, exercises.length);
     } else {
-        // Se l'esercizio ha un tipo interattivo specifico (es. completion, highlight, drag-drop, classification-grid)
-        if (exercise.type && exercise.type !== 'multiple-choice') {
-            mount.innerHTML = window.UI.renderInteractive(exercise, true, path, exercises.length);
-        } else if (path.includes('analisiLogica')) {
-            mount.innerHTML = window.UI.renderLogica(exercise, true, path, exercises.length);
-        } else if (path.includes('analisiPeriodo')) {
-            mount.innerHTML = window.UI.renderPeriodo(exercise, true, path, exercises.length);
-        } else {
-            if (phase === 'allenati') {
-                mount.innerHTML = window.UI.renderAllenati(exercise, path, exercises.length);
-            } else if (phase === 'verifica') {
-                mount.innerHTML = window.UI.renderVerifica(exercise, path, exercises.length);
-            }
+        if (phase === 'allenati') {
+            mount.innerHTML = window.UI.renderAllenati(exercise, path, exercises.length);
+        } else if (phase === 'verifica') {
+            mount.innerHTML = window.UI.renderVerifica(exercise, path, exercises.length);
         }
     }
+
 
     // Prepend teacher share button if role is docente
     const user = Auth.getUser();
