@@ -1993,12 +1993,12 @@ function getTeacherShareButton() {
     const classes = JSON.parse(localStorage.getItem('palestra_classes') || '[]');
     
     return `
-        <div class="teacher-share-container" style="margin-bottom: 1.5rem; display: flex; justify-content: flex-end;">
-            <button class="btn btn-secondary" onclick="window.toggleShareMenu()" style="font-size: 0.8rem; border-radius: 50px; background: #f0f7ff; border: 1px solid #3498db; color: #2980b9; font-weight: 700; padding: 0.6rem 1.2rem; display: flex; align-items: center; gap: 0.5rem; box-shadow: 0 4px 10px rgba(52, 152, 219, 0.1);">
-                📤 CONDIVIDI
+        <div class="teacher-share-container" style="position: relative; display: inline-block; margin-left: 10px;">
+            <button class="btn btn-secondary" title="Condividi con le tue classi o su Classroom" onclick="window.toggleShareMenu()" style="font-size: 1.2rem; border-radius: 50%; background: #f0f7ff; border: 1px solid #3498db; color: #2980b9; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 5px rgba(52, 152, 219, 0.1); cursor: pointer; padding: 0;">
+                📤
             </button>
             
-            <div id="share-dropdown" class="share-dropdown hidden">
+            <div id="share-dropdown" class="share-dropdown hidden" style="position: absolute; right: 0; top: 45px; z-index: 1000; min-width: 250px; text-align: left;">
                 <div class="share-section-title">Assegna alle tue classi</div>
                 <div class="share-btn-list">
                     ${classes.length > 0 ? classes.map(c => `
@@ -2020,6 +2020,38 @@ function getTeacherShareButton() {
             </div>
         </div>
     `;
+}
+
+function injectTeacherShareButton(mount) {
+    const user = Auth.getUser();
+    if (user.role !== 'docente') return;
+    
+    const titleEl = mount.querySelector('.exercise-title') || mount.querySelector('h2');
+    if (titleEl && titleEl.style.display !== 'none') {
+        const rightContainer = document.createElement('div');
+        rightContainer.style.display = 'flex';
+        rightContainer.style.alignItems = 'center';
+        rightContainer.style.gap = '0.5rem';
+        
+        const counterSpan = Array.from(titleEl.children).find(el => el.tagName.toLowerCase() === 'span' && el.textContent.includes('/'));
+        
+        if (counterSpan) {
+            titleEl.insertBefore(rightContainer, counterSpan);
+            rightContainer.appendChild(counterSpan);
+            rightContainer.insertAdjacentHTML('beforeend', getTeacherShareButton());
+        } else {
+            titleEl.style.display = 'flex';
+            titleEl.style.justifyContent = 'space-between';
+            titleEl.style.alignItems = 'center';
+            titleEl.insertAdjacentHTML('beforeend', getTeacherShareButton());
+        }
+    } else {
+        const shareDiv = document.createElement('div');
+        shareDiv.style.display = 'flex';
+        shareDiv.style.justifyContent = 'flex-end';
+        shareDiv.innerHTML = getTeacherShareButton();
+        mount.prepend(shareDiv);
+    }
 }
 
 function renderVocabularyPage(sortType = 'az') {
@@ -2771,13 +2803,8 @@ function loadExercise(path) {
     else if (path.includes('lessico')) mount.innerHTML = window.UI.renderLessico(exercise, false, path, exercises.length);
     else mount.innerHTML = window.UI.renderGrammatica(exercise, false, path, exercises.length);
 
-    // Prepend teacher share button if role is docente
-    const user = Auth.getUser();
-    if (user.role === 'docente') {
-        const shareDiv = document.createElement('div');
-        shareDiv.innerHTML = getTeacherShareButton();
-        mount.prepend(shareDiv);
-    }
+    // Inject teacher share button if role is docente
+    injectTeacherShareButton(mount);
 }
 
 function loadUdaPhase(path) {
@@ -2840,13 +2867,8 @@ function loadUdaPhase(path) {
     }
 
 
-    // Prepend teacher share button if role is docente
-    const user = Auth.getUser();
-    if (user.role === 'docente') {
-        const shareDiv = document.createElement('div');
-        shareDiv.innerHTML = getTeacherShareButton();
-        mount.prepend(shareDiv);
-    }
+    // Inject teacher share button if role is docente
+    injectTeacherShareButton(mount);
 }
 
 function checkSubAnswer(selected, correct, id) {
@@ -3309,13 +3331,8 @@ function renderUdaMenu(id, fullPath) {
     const mount = document.getElementById('exercise-mount');
     mount.innerHTML = window.UI.renderUdaMenu(id, fullPath);
     
-    // Prepend teacher share button if role is docente
-    const user = Auth.getUser();
-    if (user.role === 'docente') {
-        const shareDiv = document.createElement('div');
-        shareDiv.innerHTML = getTeacherShareButton();
-        mount.prepend(shareDiv);
-    }
+    // Inject teacher share button if role is docente
+    injectTeacherShareButton(mount);
 }
 
 function groupExercises(rawExercises) {
