@@ -1730,8 +1730,8 @@ td .completion-input {
         display: none !important;
     }
 
-    /* Aggiungiamo una freccia uniforme a destra */
-    .materia-card::after, .menu-card::after, .list-item::after, .level-row::after {
+    /* Aggiungiamo una freccia uniforme a destra solo dove serve */
+    .materia-card::after, .menu-card::after {
         content: '➜';
         font-weight: 800;
         color: var(--primary-color);
