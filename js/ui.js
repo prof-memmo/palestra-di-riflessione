@@ -294,9 +294,12 @@ const UI = {
                     ${questionsHtml}
                 </div>
                 
-                <button class="btn btn-primary btn-verify" style="width: 100%; padding: 1.5rem; font-size: 1.25rem; font-weight: 800; margin-top: 1rem; border-radius: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.05);" onclick="UI.verifyPersonalityTest(${exercise.id}, ${exercise.questions.length})">SCOPRI IL TUO PROFILO</button>
+                <button class="btn btn-primary btn-verify" style="width: 100%; padding: 1.5rem; font-size: 1.25rem; font-weight: 800; margin-top: 1rem; margin-bottom: 5rem; border-radius: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.05);" onclick="UI.verifyPersonalityTest(${exercise.id}, ${(exercise.questions || []).length})">SCOPRI IL TUO PROFILO 🔍</button>
 
-                ${path ? window.UI.renderNav(path, total) : ''}
+                <div style="display:flex; justify-content:center; gap:1rem; margin-bottom:2rem;">
+                    <button class="nav-arrow-btn left" onclick="window.navigateExercise(-1, '${Array.isArray(path) ? path.join(',') : ''}')" style="background: white; border: 2px solid #eee; width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; cursor: pointer; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">⬅️</button>
+                    <button class="nav-arrow-btn right" onclick="window.navigateExercise(1, '${Array.isArray(path) ? path.join(',') : ''}')" style="background: white; border: 2px solid #eee; width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; cursor: pointer; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">➡️</button>
+                </div>
             </div>
         `;
     },
