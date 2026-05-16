@@ -135,10 +135,10 @@ const Auth = {
             alert("Inserisci email e password per continuare.");
             return;
         }
-        if (!name) {
+        /* if (!name) {
             alert("Inserisci il tuo nome.");
             return;
-        }
+        } */
 
         try {
             let fbUser;
@@ -151,14 +151,15 @@ const Auth = {
                     // Utente non trovato: registrazione
                     const result = await window.fbAuth.createUserWithEmailAndPassword(email, password);
                     fbUser = result.user;
-                    await fbUser.updateProfile({ displayName: name });
+                    const finalName = name || email.split('@')[0];
+                    await fbUser.updateProfile({ displayName: finalName });
                 } else {
                     throw signInError;
                 }
             }
 
             // Salva il nome scelto come pending per _handleFirebaseUser
-            localStorage.setItem('pending_display_name', name);
+            localStorage.setItem('pending_display_name', name || email.split('@')[0]);
             Auth._handleFirebaseUser(fbUser);
             hideLoginOverlay();
         } catch (e) {
