@@ -2422,7 +2422,7 @@ function initNavigation() {
     const closeBtn = document.getElementById('sidebar-close-btn');
     const sidebar = document.querySelector('.navbar');
 
-    function toggleSidebar(show) {
+    window.toggleSidebar = function(show) {
         if (show) {
             sidebar.classList.remove('hidden');
             if (openBtn) {
@@ -3415,24 +3415,15 @@ function updateSidebarMenu() {
     
     // Forza la chiusura della sidebar in onboarding
     if (window.location.hash.includes('onboarding')) {
-        const sidebar = document.querySelector('.navbar');
-        if (sidebar) sidebar.classList.add('hidden');
-        const mainContent = document.querySelector('main');
-        if (mainContent) mainContent.style.marginLeft = '0';
+        if (window.toggleSidebar) window.toggleSidebar(false);
         return;
     } else {
         // Ripristina sidebar se non siamo in mobile
         const isMobile = window.innerWidth <= 1024;
         if (!isMobile) {
-            const sidebar = document.querySelector('.navbar');
-            if (sidebar) sidebar.classList.remove('hidden');
-            const mainContent = document.querySelector('main');
-            if (mainContent) mainContent.style.marginLeft = 'var(--sidebar-width)';
+            if (window.toggleSidebar) window.toggleSidebar(true);
         } else {
-            const sidebar = document.querySelector('.navbar');
-            if (sidebar) sidebar.classList.add('hidden');
-            const mainContent = document.querySelector('main');
-            if (mainContent) mainContent.style.marginLeft = '0';
+            if (window.toggleSidebar) window.toggleSidebar(false);
         }
     }
 
