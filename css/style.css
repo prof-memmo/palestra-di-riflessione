@@ -1364,18 +1364,32 @@ td .completion-input {
     background: #1538a1;
 }
 
-@media (max-width: 900px) {
+@media (max-width: 992px) {
     .contact-card-wrapper {
-        flex-direction: column;
+        flex-direction: column !important;
+        border-radius: 0 !important;
+        box-shadow: none !important;
+        width: 100% !important;
+        margin: 0 !important;
+        max-width: 100% !important;
     }
     .contact-info-side {
-        padding: 3rem 2rem;
+        padding: 5rem 1.5rem 3rem !important;
     }
     .contact-form-side {
-        padding: 3rem 2rem;
+        padding: 3rem 1.5rem !important;
     }
     .contact-info-side h2 {
-        font-size: 2.5rem;
+        font-size: 2.5rem !important;
+    }
+    .contact-method {
+        font-size: 1rem !important;
+        word-break: break-all !important;
+    }
+    .info-card-box {
+        flex-direction: column !important;
+        gap: 1rem !important;
+        padding: 1.5rem !important;
     }
 }
 
