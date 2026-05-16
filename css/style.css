@@ -1375,21 +1375,43 @@ td .completion-input {
     }
     .contact-info-side {
         padding: 5rem 1.5rem 3rem !important;
-    }
-    .contact-form-side {
-        padding: 3rem 1.5rem !important;
+        background: white !important;
+        color: var(--text-color) !important;
+        border-bottom: 1px solid #eee !important;
     }
     .contact-info-side h2 {
-        font-size: 2.5rem !important;
+        font-size: 2.2rem !important;
+        color: var(--primary-color) !important;
+    }
+    .contact-info-side p {
+        color: #666 !important;
     }
     .contact-method {
-        font-size: 1rem !important;
+        font-size: 1.1rem !important;
         word-break: break-all !important;
+        color: var(--primary-color) !important;
+    }
+    .contact-method-icon {
+        background: #f0f4ff !important;
+        color: var(--primary-color) !important;
     }
     .info-card-box {
         flex-direction: column !important;
         gap: 1rem !important;
         padding: 1.5rem !important;
+        background: #f8faff !important;
+        border-color: #e0e7ff !important;
+    }
+    .info-card-icon {
+        background: white !important;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.05) !important;
+    }
+    .info-card-text h4 {
+        color: var(--primary-color) !important;
+    }
+    .contact-form-side {
+        padding: 3rem 1.5rem !important;
+        background: white !important;
     }
 }
 
