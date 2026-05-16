@@ -27,10 +27,17 @@
                 <p>Accedi per iniziare il tuo allenamento personalizzato.</p>
             </div>
             <div class="login-form">
-                <div class="legal-notice" style="font-size: 0.8rem; color: #999; margin-bottom: 1.5rem; line-height: 1.4; text-align: center;">
-                    Accedendo alla Palestra, confermi di avere almeno 16 anni e accetti la nostra 
-                    <a href="javascript:void(0)" onclick="showLegal('privacy')" style="color: var(--primary-color); font-weight: 600;">Privacy Policy</a> e i 
-                    <a href="javascript:void(0)" onclick="showLegal('terms')" style="color: var(--primary-color); font-weight: 600;">Termini</a>.
+                <div class="legal-notice" style="margin-bottom: 1.5rem; text-align: left;">
+                    <div style="display: flex; flex-direction: column; gap: 8px;">
+                        <label style="display: flex; align-items: flex-start; gap: 8px; font-size: 0.8rem; color: #777; cursor: pointer; line-height: 1.2;">
+                            <input type="checkbox" id="login-check-age" style="margin-top: 2px;">
+                            <span>Ho almeno 16 anni o sono sotto la supervisione di un adulto</span>
+                        </label>
+                        <label style="display: flex; align-items: flex-start; gap: 8px; font-size: 0.8rem; color: #777; cursor: pointer; line-height: 1.2;">
+                            <input type="checkbox" id="login-check-privacy" style="margin-top: 2px;">
+                            <span>Accetto la <a href="javascript:void(0)" onclick="showLegal('privacy')" style="color: var(--primary-color); font-weight: 600;">Privacy Policy</a> e i <a href="javascript:void(0)" onclick="showLegal('terms')" style="color: var(--primary-color); font-weight: 600;">Termini</a></span>
+                        </label>
+                    </div>
                 </div>
 
                 <!-- Autenticazione Centrale -->

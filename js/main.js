@@ -121,6 +121,14 @@ window.confirmLegal = function() {
 };
 
 window.handleEmailLogin = async function() {
+    const checkAge = document.getElementById('login-check-age')?.checked;
+    const checkPrivacy = document.getElementById('login-check-privacy')?.checked;
+    
+    if (!checkAge || !checkPrivacy) {
+        alert("Devi confermare l'età e accettare Privacy Policy e Termini per continuare.");
+        return;
+    }
+
     const email = (document.getElementById('login-email')?.value || '').trim();
     const password = (document.getElementById('login-password')?.value || '').trim();
 
@@ -133,6 +141,14 @@ window.handleEmailLogin = async function() {
 };
 
 window.handleGoogleLogin = function() {
+    const checkAge = document.getElementById('login-check-age')?.checked;
+    const checkPrivacy = document.getElementById('login-check-privacy')?.checked;
+    
+    if (!checkAge || !checkPrivacy) {
+        alert("Devi confermare l'età e accettare Privacy Policy e Termini per continuare.");
+        return;
+    }
+
     Auth.loginWithGoogle();
 };
 
