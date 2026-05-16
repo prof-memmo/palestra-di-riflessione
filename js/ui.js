@@ -179,7 +179,7 @@ const UI = {
             <div class="exercise-container">
                 <h2 class="exercise-title" style="display: flex; align-items: center; justify-content: space-between;">
                     <span>🔍 ANALISI GRAMMATICALE</span>
-                    <span style="font-size: 1.5rem; font-weight: 700; color: #888; background: #eee; padding: 0.3rem 0.8rem; border-radius: 12px;">${window.currentExerciseIndex + 1}/${total}</span>
+                    <span style="font-size: 0.9rem; font-weight: 700; color: #888; background: #eee; padding: 0.2rem 0.5rem; border-radius: 8px;">${window.currentExerciseIndex + 1}/${total}</span>
                 </h2>
                 ${exercise.instruction ? `<div style="background: #f8f9fa; padding: 1rem 1.5rem; border-radius: 12px; border-left: 5px solid var(--primary-color); margin-bottom: 2rem; font-weight: 600;">${exercise.instruction}</div>` : ''}
                 ${contentHtml}
@@ -226,11 +226,10 @@ const UI = {
 
         return `
             <div class="exercise-container">
-                <h2 class="exercise-title" style="display: flex; align-items: center; justify-content: flex-end;">
-                    <span style="font-size: 1.5rem; font-weight: 700; color: #888; background: #eee; padding: 0.3rem 0.8rem; border-radius: 12px;">${window.currentExerciseIndex + 1}/${total}</span>
+                <h2 class="exercise-title" style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem;">
+                    ${exercise.title ? `<span style="color: var(--primary-color); font-weight: 800; font-size: 1.6rem;">${exercise.title}</span>` : '<span></span>'}
+                    <span style="font-size: 0.9rem; font-weight: 700; color: #888; background: #eee; padding: 0.2rem 0.5rem; border-radius: 8px;">${window.currentExerciseIndex + 1}/${total}</span>
                 </h2>
-                
-                ${exercise.title ? `<h3 style="color: var(--primary-color); font-weight: 800; text-align: center; margin-bottom: 1.5rem; font-size: 1.6rem;">${exercise.title}</h3>` : ''}
                 
                 ${exercise.instruction ? `
                     <div style="background: #f0f7ff; padding: 1.2rem; border-radius: 15px; border-left: 5px solid var(--primary-color); margin-bottom: 2rem; font-weight: 700; color: #2c3e50; text-align: justify;">
@@ -272,11 +271,10 @@ const UI = {
 
         return `
             <div class="exercise-container">
-                <h2 class="exercise-title" style="display: flex; align-items: center; justify-content: flex-end;">
-                    <span style="font-size: 1.5rem; font-weight: 700; color: #888; background: #eee; padding: 0.3rem 0.8rem; border-radius: 12px;">${window.currentExerciseIndex + 1}/${total}</span>
+                <h2 class="exercise-title" style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem;">
+                    ${exercise.title ? `<span style="color: var(--primary-color); font-weight: 800; font-size: 1.6rem;">${exercise.title}</span>` : '<span></span>'}
+                    <span style="font-size: 0.9rem; font-weight: 700; color: #888; background: #eee; padding: 0.2rem 0.5rem; border-radius: 8px;">${window.currentExerciseIndex + 1}/${total}</span>
                 </h2>
-                
-                ${exercise.title ? `<h3 style="color: var(--primary-color); font-weight: 800; text-align: center; margin-bottom: 1.5rem; font-size: 1.6rem;">${exercise.title}</h3>` : ''}
                 
                 ${exercise.instruction ? `
                     <div style="background: #f0f7ff; padding: 1.2rem; border-radius: 15px; border-left: 5px solid var(--primary-color); margin-bottom: 2rem; font-weight: 700; color: #2c3e50; text-align: justify;">
@@ -338,7 +336,7 @@ renderLessico: (exercise, isUda, path, total) => {
             <div class="exercise-container">
                 <h2 class="exercise-title" style="display: flex; align-items: center; justify-content: space-between;">
                     <span>📚 LESSICO E SIGNIFICATI</span>
-                    <span style="font-size: 1.5rem; font-weight: 700; color: #888; background: #eee; padding: 0.3rem 0.8rem; border-radius: 12px;">${window.currentExerciseIndex + 1}/${total}</span>
+                    <span style="font-size: 0.9rem; font-weight: 700; color: #888; background: #eee; padding: 0.2rem 0.5rem; border-radius: 8px;">${window.currentExerciseIndex + 1}/${total}</span>
                 </h2>
                 
                 ${exercise.title ? `<h3 style="color: var(--primary-color); font-weight: 800; text-align: center; margin-bottom: 1.5rem; font-size: 1.6rem;">${exercise.title}</h3>` : ''}
@@ -371,7 +369,7 @@ renderLessico: (exercise, isUda, path, total) => {
         <div class="exercise-container" style="position: relative;">
             <h2 class="exercise-title" style="display: flex; align-items: center; justify-content: space-between;">
                 <span>🧩 ANALISI LOGICA</span>
-                <span style="font-size: 1.5rem; font-weight: 700; color: #888; background: #eee; padding: 0.3rem 0.8rem; border-radius: 12px;">${window.currentExerciseIndex + 1}/${total}</span>
+                <span style="font-size: 0.9rem; font-weight: 700; color: #888; background: #eee; padding: 0.2rem 0.5rem; border-radius: 8px;">${window.currentExerciseIndex + 1}/${total}</span>
             </h2>
             <div class="reading-text">
                 ${exercise.word ? `<div style="font-weight: 800; font-size: 2.2rem; margin-bottom: 1rem; color: var(--primary-color);">${exercise.word}</div>` : ''}
@@ -424,7 +422,7 @@ renderLessico: (exercise, isUda, path, total) => {
             <div class="exercise-container" style="position: relative;">
                 <h2 class="exercise-title" style="display: flex; align-items: center; justify-content: space-between;">
                     <span>⏳ ANALISI DEL PERIODO</span>
-                    <span style="font-size: 1.5rem; font-weight: 700; color: #888; background: #eee; padding: 0.3rem 0.8rem; border-radius: 12px;">${window.currentExerciseIndex + 1}/${total}</span>
+                    <span style="font-size: 0.9rem; font-weight: 700; color: #888; background: #eee; padding: 0.2rem 0.5rem; border-radius: 8px;">${window.currentExerciseIndex + 1}/${total}</span>
                 </h2>
                 ${exercise.title ? `<h3 style="color: var(--primary-color); font-weight: 800; text-align: center; margin-bottom: 1.5rem; font-size: 1.6rem;">${exercise.title}</h3>` : ''}
                 ${exercise.instruction ? `<div style="background: #f0f7ff; padding: 1.2rem; border-radius: 15px; border-left: 5px solid var(--primary-color); margin-bottom: 2rem; font-weight: 700; color: #2c3e50; text-align: justify;">${exercise.instruction}</div>` : ''}
@@ -647,7 +645,7 @@ renderLessico: (exercise, isUda, path, total) => {
             <div class="exercise-container" style="position: relative;">
                 <h2 class="exercise-title" style="font-size: 1.8rem; border-bottom: 3px solid var(--accent-color); padding-bottom: 5px; margin-bottom: 2rem; display: flex; align-items: center; justify-content: space-between;">
                     <span>${exercise.title || 'ESERCIZIO'}</span>
-                    <span style="font-size: 1.3rem; font-weight: 700; color: #888; background: #eee; padding: 0.2rem 0.6rem; border-radius: 12px;">${window.currentExerciseIndex + 1}/${total}</span>
+                    <span style="font-size: 0.9rem; font-weight: 700; color: #888; background: #eee; padding: 0.2rem 0.5rem; border-radius: 8px;">${window.currentExerciseIndex + 1}/${total}</span>
                 </h2>
                 ${theorySection}
                 ${exercise.text && !['highlight', 'completion', 'classification-grid', 'word-selector', 'sentence-analysis'].includes(type) ? `<p style="font-size: 1.4rem; font-weight: 700; margin-bottom: 1.5rem; text-align: left; color: var(--primary-color);">${exercise.text}</p>` : ''}
@@ -1261,7 +1259,7 @@ renderLessico: (exercise, isUda, path, total) => {
             <div class="exercise-container" style="position: relative;">
                 <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 2rem;">
                     <span style="font-weight: 800; color: var(--primary-color);">🧭 SCOPRI</span>
-                    <span style="font-size: 1.2rem; font-weight: 800; color: #888; background: #eee; padding: 0.3rem 0.8rem; border-radius: 12px;">${window.currentExerciseIndex + 1}/${total}</span>
+                    <span style="font-size: 0.9rem; font-weight: 700; color: #888; background: #eee; padding: 0.2rem 0.5rem; border-radius: 8px;">${window.currentExerciseIndex + 1}/${total}</span>
                 </div>
                 ${exercise.theory ? `
                     <div style="background: #f8f9fa; padding: 2.5rem; border-radius: 30px; margin-bottom: 2rem; border: 1px solid #eee;">
@@ -1281,7 +1279,7 @@ renderLessico: (exercise, isUda, path, total) => {
             <div class="exercise-container" style="position: relative;">
                 <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 2rem;">
                     <span style="font-weight: 800; color: #f39c12;">🏋️ ALLENATI</span>
-                    <span style="font-size: 1.2rem; font-weight: 800; color: #888; background: #eee; padding: 0.3rem 0.8rem; border-radius: 12px;">${window.currentExerciseIndex + 1}/${total}</span>
+                    <span style="font-size: 0.9rem; font-weight: 700; color: #888; background: #eee; padding: 0.2rem 0.5rem; border-radius: 8px;">${window.currentExerciseIndex + 1}/${total}</span>
                 </div>
                 <div style="background: white; padding: 3rem; border-radius: 30px; margin-bottom: 2rem; text-align: center; border: 2px dashed #f39c12;">
                     <span style="font-size: 2rem; font-weight: 800;">${exercise.word || exercise.text}</span>
@@ -1301,7 +1299,7 @@ renderLessico: (exercise, isUda, path, total) => {
             <div class="exercise-container" style="position: relative;">
                 <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 2rem;">
                     <span style="font-weight: 800; color: #3f51b5;">🧪 VERIFICA</span>
-                    <span style="font-size: 1.2rem; font-weight: 800; color: #888; background: #eee; padding: 0.3rem 0.8rem; border-radius: 12px;">${window.currentExerciseIndex + 1}/${total}</span>
+                    <span style="font-size: 0.9rem; font-weight: 700; color: #888; background: #eee; padding: 0.2rem 0.5rem; border-radius: 8px;">${window.currentExerciseIndex + 1}/${total}</span>
                 </div>
                 <h3 style="font-weight: 800; margin-bottom: 2rem; text-align: center; font-size: 1.6rem;">${exercise.text}</h3>
                 <div class="options-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
