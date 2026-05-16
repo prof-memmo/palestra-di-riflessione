@@ -1598,125 +1598,133 @@ td .completion-input {
     }
 }
 
-/* 🚀 OTTIMIZZAZIONE SPAZI: Eliminazione totale dell'effetto "scatola" su mobile */
+/* 📱 OTTIMIZZAZIONE RADICALE MOBILE: Eliminazione "Effetto Card" */
 @media (max-width: 992px) {
-    /* Rimuoviamo ogni traccia di card e bordi esterni */
     main {
-        padding: 4rem 0.5rem 1rem 0.5rem !important; /* Meno spazio ai lati */
-        background-color: white !important; /* Uniformiamo lo sfondo per non avere stacchi grigi */
+        padding: 3.5rem 0.5rem 1rem 0.5rem !important; 
+        background-color: white !important; 
     }
 
-    .exercise-container {
+    /* Rimuoviamo bordi, ombre e padding eccessivi da TUTTI i contenitori card-like */
+    .exercise-container, .interactive-container, .reading-text, .theory-schema, 
+    .map-container, .example-box, .question-block, .profile-card, .stat-card,
+    .theory-section, .instruction-box, .profile-header, .teacher-area {
         background: white !important;
-        padding: 1rem 0 !important; /* Azzeriamo padding laterale della card */
+        padding-left: 0.2rem !important;
+        padding-right: 0.2rem !important;
+        padding-top: 1rem !important;
+        padding-bottom: 1rem !important;
         margin: 0 !important;
         width: 100% !important;
         max-width: 100% !important;
         border-radius: 0 !important;
         box-shadow: none !important;
         border: none !important;
+        display: block !important;
     }
 
-    /* Il testo della teoria deve usare tutto lo spazio */
-    .reading-text, .theory-schema, .map-container, .example-box {
-        margin: 1rem 0 !important;
-        padding: 1.5rem 1rem !important;
-        border-radius: 15px !important;
-        width: 100% !important;
-        box-shadow: none !important;
-        border: 1px solid #f0f0f0 !important;
+    /* Forza allineamento a sinistra e font-size leggibile per la lettura */
+    .reading-text, .reading-text p, .reading-text li, 
+    .interactive-container, .interactive-container p,
+    .theory-section, .theory-section p, .instruction-box {
+        font-size: 1.3rem !important;
+        line-height: 1.7 !important;
+        text-align: left !important;
+        margin-bottom: 1.2rem !important;
     }
 
     .exercise-title {
-        font-size: 1.5rem !important;
-        padding: 0 1rem !important;
-        margin-bottom: 1.5rem !important;
+        font-size: 1.4rem !important;
+        padding: 0 0.5rem !important;
+        margin-bottom: 1.2rem !important;
+        border-bottom: 2px solid #f0f0f0 !important;
+        text-align: left !important;
     }
 
-    /* Avviciniamo il pulsante menu al bordo */
-    .floating-toggle {
-        top: 1rem !important;
-        left: 1rem !important;
-        width: 45px !important;
-        height: 45px !important;
-        border-radius: 12px !important;
+    .options-grid {
+        grid-template-columns: 1fr !important;
+        gap: 0.8rem !important;
+        padding: 0 0.5rem !important;
     }
-    
-    /* Spostiamo un po' giù il contenuto per non sovrapporsi al toggle */
-    #app {
-        margin-top: 1rem !important;
-    }
-}
 
-@media (max-width: 480px) {
-    main {
-        padding: 3.5rem 0.2rem 1rem 0.2rem !important;
+    .btn-secondary {
+        padding: 1.2rem !important;
+        font-size: 1rem !important;
+        text-align: left !important;
     }
-    
-    .reading-text {
-        font-size: 1.25rem !important;
-        line-height: 1.6 !important;
-    }
-}
 
-/* 📱 OTTIMIZZAZIONE PROFILO MOBILE */
-@media (max-width: 768px) {
+    /* Sistemazione Header Profilo su Mobile */
     .profile-header {
-        flex-direction: column !important;
-        padding: 2rem 1.5rem !important;
-        gap: 1.5rem !important;
-        border-radius: 20px !important;
         text-align: center !important;
-        box-shadow: 0 5px 15px rgba(0,0,0,0.05) !important;
-        margin-bottom: 1.5rem !important;
+        padding-top: 2rem !important;
     }
     
     .profile-avatar-large {
         width: 100px !important;
         height: 100px !important;
-        font-size: 3rem !important;
+        margin: 0 auto 1rem !important;
     }
     
     .profile-name {
-        font-size: 1.5rem !important;
-        margin-bottom: 0.8rem !important;
+        font-size: 1.6rem !important;
+        text-align: center !important;
     }
     
     .profile-badges {
         justify-content: center !important;
+        margin-bottom: 1rem !important;
     }
     
     .profile-actions {
         flex-direction: row !important;
-        width: 100% !important;
-        justify-content: center !important;
         gap: 0.5rem !important;
-        margin-top: 0.5rem;
-    }
-    
-    .profile-actions .btn {
-        flex: 1 !important;
-        padding: 0.7rem 0.5rem !important;
-        font-size: 0.8rem !important;
-        min-width: 0 !important;
+        margin-top: 1rem !important;
     }
 
-    .profile-card {
-        padding: 1.5rem 1rem !important;
-        border-radius: 20px !important;
+    /* Avviciniamo il pulsante menu al bordo */
+    .floating-toggle {
+        top: 0.8rem !important;
+        left: 0.8rem !important;
+        width: 42px !important;
+        height: 42px !important;
+        border-radius: 10px !important;
+    }
+    
+    #app {
+        margin-top: 0.5rem !important;
+    }
+}
+
+@media (max-width: 480px) {
+    main {
+        padding: 3.2rem 0.2rem 1rem 0.2rem !important;
+    }
+    
+    .reading-text, .reading-text p {
+        font-size: 1.25rem !important;
+    }
+}
+
+/* --- READING HEADER --- */
+.reading-header {
+    background: var(--primary-color);
+    color: white;
+    padding: 1rem;
+    border-radius: 15px;
+    margin-bottom: 2rem;
+    font-weight: 800;
+    text-align: center;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+@media (max-width: 992px) {
+    .reading-header {
+        padding: 0.8rem !important;
+        font-size: 0.85rem !important;
+        border-radius: 10px !important;
+        margin-bottom: 1.2rem !important;
+        letter-spacing: 1px !important;
         width: 100% !important;
-        box-shadow: 0 4px 10px rgba(0,0,0,0.02) !important;
-    }
-    
-    .teacher-area {
-        padding: 0 !important;
-        margin-bottom: 2rem !important;
-    }
-    
-    .teacher-class-item {
-        flex-direction: column !important;
-        align-items: flex-start !important;
-        gap: 1rem !important;
-        padding: 1rem !important;
     }
 }

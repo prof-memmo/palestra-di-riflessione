@@ -647,7 +647,7 @@ renderLessico: (exercise, isUda, path, total) => {
 
         return `
             <div class="exercise-container">
-                <div style="background: var(--primary-color); color: white; padding: 1rem; border-radius: 15px; margin-bottom: 2rem; font-weight: 800; text-align: center; letter-spacing: 2px;">📖 COMPRENSIONE DEL TESTO</div>
+                <div class="reading-header">📖 COMPRENSIONE DEL TESTO</div>
                 <h2 class="exercise-title" style="margin-bottom: 2rem;">${exercise.title}</h2>
                 ${headerImg}
                 <div class="reading-text" style="margin-bottom: 3.5rem;">
@@ -693,7 +693,7 @@ renderLessico: (exercise, isUda, path, total) => {
                             else {
                                 if (inList) { html += '</ul>'; inList = false; }
                                 const wrappedLine = UI.wrapWordsForVocabulary(line);
-                                html += `<p style="text-align: justify; font-size: 1.25rem; line-height: 1.8; color: #2c3e50; font-weight: 500; margin-bottom: 1.5rem;">${wrappedLine}</p>`;
+                                html += `<p>${wrappedLine}</p>`;
                             }
                         });
                         
