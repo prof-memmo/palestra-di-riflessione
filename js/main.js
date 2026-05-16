@@ -121,29 +121,18 @@ window.confirmLegal = function() {
 };
 
 window.handleEmailLogin = async function() {
-    const checkAge = document.getElementById('check-age');
-    const checkPrivacy = document.getElementById('check-privacy');
-
-    if (!checkAge.checked || !checkPrivacy.checked) {
-        alert("Per procedere devi accettare i termini e confermare l'età.");
-        return;
-    }
-
     const email = (document.getElementById('login-email')?.value || '').trim();
     const password = (document.getElementById('login-password')?.value || '').trim();
+
+    if (!email || !password) {
+        alert("Inserisci email e password per continuare.");
+        return;
+    }
 
     await Auth.loginWithEmail('', email, password);
 };
 
 window.handleGoogleLogin = function() {
-    const checkAge = document.getElementById('check-age');
-    const checkPrivacy = document.getElementById('check-privacy');
-
-    if (!checkAge.checked || !checkPrivacy.checked) {
-        alert("Per procedere devi accettare i termini e confermare l'età.");
-        return;
-    }
-    
     Auth.loginWithGoogle();
 };
 
@@ -178,7 +167,7 @@ function updateHistory(title, icon, hash) {
 }
 
 // Router Initialization
-window.addEventListener('load', async () => {
+document.addEventListener('DOMContentLoaded', async () => {
     // Aspetta che l'autenticazione sia risolta (fondamentale per i redirect Google su mobile)
     if (window.Auth && typeof window.Auth.whenReady === 'function') {
         await window.Auth.whenReady();
@@ -220,8 +209,7 @@ function handleRoute() {
         }
 
         // LOGIN LOGIC
-        if (!Auth.isLoggedIn() && !window.hasShownInitialLogin) {
-            window.hasShownInitialLogin = true;
+        if (!Auth.isLoggedIn()) {
             showLoginOverlay(hash);
             return;
         }
@@ -670,17 +658,17 @@ async function renderProfiloPage() {
                 <div class="profile-avatar-large">
                     ${avatarHtml}
                 </div>
-                <div>
-                    <h3 style="font-size: 1.8rem; font-weight: 800;">${user.name}</h3>
-                    <div style="display: flex; gap: 0.5rem; margin-top: 0.5rem;">
-                        <p style="background: var(--primary-color); color: white; padding: 0.3rem 1rem; border-radius: 20px; font-size: 0.9rem; font-weight: 700;">${rank}</p>
-                        <p style="background: #f1f2f6; color: #57606f; padding: 0.3rem 1rem; border-radius: 20px; font-size: 0.9rem; font-weight: 700;">${(user.roleLabel || user.role || 'studente').toUpperCase()}</p>
+                <div class="profile-info">
+                    <h3 class="profile-name">${user.name}</h3>
+                    <div class="profile-badges">
+                        <span class="badge rank">${rank}</span>
+                        <span class="badge role">${(user.roleLabel || user.role || 'studente').toUpperCase()}</span>
                     </div>
-                    ${user.isGuest ? `<p style="color: #ffa502; font-size: 0.8rem; margin-top: 0.5rem; font-weight: 700;">📍 PROFILO LOCALE (I dati sono salvati solo su questo dispositivo)</p>` : ''}
+                    ${user.isGuest ? `<p class="guest-notice">📍 PROFILO LOCALE</p>` : ''}
                 </div>
-                <div style="margin-left: auto; display: flex; flex-direction: column; gap: 0.5rem;">
-                    <button class="btn" onclick="showEditProfileModal()" style="background: rgba(52, 152, 219, 0.1); color: #3498db; border: 1px solid #3498db; padding: 0.5rem 1rem; border-radius: 50px; font-weight: 700; cursor: pointer;">✏️ Modifica</button>
-                    <button class="btn btn-secondary" onclick="Auth.logout()" style="color: #e74c3c; border-color: #fceaea; padding: 0.5rem 1rem;">Esci</button>
+                <div class="profile-actions">
+                    <button class="btn btn-edit" onclick="showEditProfileModal()">✏️ Modifica</button>
+                    <button class="btn btn-logout" onclick="Auth.logout()">Esci</button>
                 </div>
             </div>
 
@@ -699,7 +687,7 @@ async function renderProfiloPage() {
             ` : ''}
 
             ${user.role === 'docente' ? `
-                <div class="teacher-area" style="margin-bottom: 3rem; padding: 2rem; background: #f0f7ff; border-radius: 30px; border: 2px dashed #3498db;">
+                <div class="teacher-area">
                     <h3 style="color: #2980b9; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.8rem;">
                         👨‍🏫 AREA CLASSI
                         <span onclick="window.showTeacherGuide()" title="Clicca per la Guida Docente" style="background: white; color: #3498db; width: 22px; height: 22px; display: inline-flex; align-items: center; justify-content: center; border-radius: 50%; font-size: 0.75rem; cursor: pointer; border: 2px solid #3498db; font-weight: 900; font-family: serif; font-style: italic; transition: all 0.2s; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">i</span>

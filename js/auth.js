@@ -36,8 +36,8 @@ const Auth = {
                     Auth._fbUser = null;
                     Auth._user = null;
                     localStorage.removeItem('palestra_user');
+                    Auth._resolveReady();
                 }
-                Auth._resolveReady();
             });
         } else {
             Auth._resolveReady();
@@ -244,10 +244,7 @@ const Auth = {
         Auth._user = null;
         localStorage.removeItem('palestra_user');
         window.dispatchEvent(new CustomEvent('authChange'));
-        
-        // Invece di reload() che può causare loop, resettiamo lo stato e mostriamo l'overlay
         window.location.hash = 'home';
-        window.hasShownInitialLogin = false;
         setTimeout(() => {
             window.location.reload();
         }, 100);
