@@ -1426,10 +1426,7 @@ td .completion-input {
     filter: drop-shadow(0 8px 20px rgba(93, 95, 239, 0.2));
 }
 
-/* Hide verification buttons as they are now mapped to the forward arrow */
-.btn-verify {
-    display: none !important;
-}
+/* Note: .btn-verify buttons are managed individually by JS logic */
 
 /* --- LOGIN PATH STYLES --- */
 .login-path-card {
