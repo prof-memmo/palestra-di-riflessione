@@ -1079,7 +1079,7 @@ function renderAdminUserRow(userData) {
 
     return `<div class="admin-user-row" style="display: flex; flex-wrap: wrap; align-items: center; gap: 1rem; padding: 1.2rem; background: white; border-radius: 20px; border: 1px solid #eee;">
         <div style="width: 40px; text-align: center;">
-            ${(role === 'studente' && !isAmico) ? `<input type="checkbox" class="admin-student-checkbox" data-uid="${userData.id}" data-name="${userData.name}">` : ''}
+            ${(role !== 'admin') ? `<input type="checkbox" class="admin-student-checkbox" data-uid="${userData.id}" data-name="${userData.name}">` : ''}
         </div>
         <div style="width: 50px; height: 50px; background: #f8f9fa; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 2px solid #eee; overflow: hidden; flex-shrink: 0;">
             ${avatarHtml}
@@ -1141,7 +1141,7 @@ window.adminActionOnSelected = async function(action) {
         const destClass = window.allClassesForAdmin.find(c => c.id === destClassId);
         if (!destClass) return;
 
-        if (!confirm(`Vuoi spostare ${selectedCbs.length} studenti nella classe ${destClass.name}?`)) return;
+        if (!confirm(`Vuoi spostare ${selectedCbs.length} utenti nella classe ${destClass.name}?`)) return;
 
         try {
             const batch = window.fbDb.batch();
@@ -1154,11 +1154,11 @@ window.adminActionOnSelected = async function(action) {
                 });
             });
             await batch.commit();
-            alert("✅ Studenti spostati con successo!");
+            alert("✅ Utenti spostati con successo!");
             loadAdminUsersInProfile();
         } catch (e) { alert("Errore: " + e.message); }
     } else if (action === 'delete') {
-        if (!confirm(`Vuoi rimuovere ${selectedCbs.length} studenti dalle loro classi attuali?`)) return;
+        if (!confirm(`Vuoi rimuovere ${selectedCbs.length} utenti dalle loro classi attuali?`)) return;
 
         try {
             const batch = window.fbDb.batch();
@@ -1171,7 +1171,7 @@ window.adminActionOnSelected = async function(action) {
                 });
             });
             await batch.commit();
-            alert("✅ Studenti rimossi dalle classi!");
+            alert("✅ Utenti rimossi dalle classi!");
             loadAdminUsersInProfile();
         } catch (e) { alert("Errore: " + e.message); }
     }
