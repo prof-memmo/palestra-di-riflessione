@@ -953,8 +953,8 @@ async function loadAdminUsersInProfile() {
         const counts = { 
             tutti: allUsers.length, 
             docente: allUsers.filter(u => u.role === 'docente').length, 
-            studente: allUsers.filter(u => u.role === 'studente' || u.role === 'admin').length, 
-            amico: allUsers.filter(u => u.role === 'amico' || u.role === 'guest').length
+            studente: allUsers.filter(u => (u.role === 'studente' || u.role === 'admin') && u.roleLabel !== 'Amico della Palestra').length, 
+            amico: allUsers.filter(u => u.role === 'amico' || u.role === 'guest' || u.roleLabel === 'Amico della Palestra').length
         };
 
         window.adminData = {
@@ -1039,9 +1039,10 @@ window.filterAdminEntities = function() {
         const filtered = window.adminData.users.filter(u => {
             const matchesSearch = !search || (u.name || '').toLowerCase().includes(search) || (u.email || '').toLowerCase().includes(search) || (u.school || '').toLowerCase().includes(search) || (u.className || '').toLowerCase().includes(search);
             let matchesFilter = filter === 'tutti';
+            const isAmico = u.role === 'amico' || u.role === 'guest' || u.roleLabel === 'Amico della Palestra';
             if (filter === 'docente' && u.role === 'docente') matchesFilter = true;
-            if (filter === 'studente' && (u.role === 'studente' || u.role === 'admin')) matchesFilter = true;
-            if (filter === 'amico' && (u.role === 'amico' || u.role === 'guest')) matchesFilter = true;
+            if (filter === 'studente' && (u.role === 'studente' || u.role === 'admin') && !isAmico) matchesFilter = true;
+            if (filter === 'amico' && isAmico) matchesFilter = true;
             return matchesSearch && matchesFilter;
         });
         html = filtered.map(u => renderAdminUserRow(u)).join('');
@@ -1066,8 +1067,9 @@ function renderAdminUserRow(userData) {
     const isImage = userData.avatar && (userData.avatar.includes('/') || userData.avatar.includes('.'));
     const avatarHtml = isImage ? `<img src="${userData.avatar}" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;">` : `<span style="font-size: 1.5rem;">${userData.avatar || '👤'}</span>`;
     const role = (userData.role || 'studente').toLowerCase();
+    const isAmico = role === 'amico' || role === 'guest' || userData.roleLabel === 'Amico della Palestra';
     const roleColors = { docente: '#2980b9', amico: '#8e44ad', guest: '#8e44ad', studente: '#27ae60', admin: '#e74c3c' };
-    const roleColor = roleColors[role] || '#27ae60';
+    const roleColor = isAmico ? '#8e44ad' : (roleColors[role] || '#27ae60');
 
     let classLabel = '';
     if (userData.classId) {
@@ -1077,7 +1079,7 @@ function renderAdminUserRow(userData) {
 
     return `<div class="admin-user-row" style="display: flex; flex-wrap: wrap; align-items: center; gap: 1rem; padding: 1.2rem; background: white; border-radius: 20px; border: 1px solid #eee;">
         <div style="width: 40px; text-align: center;">
-            ${role === 'studente' ? `<input type="checkbox" class="admin-student-checkbox" data-uid="${userData.id}" data-name="${userData.name}">` : ''}
+            ${(role === 'studente' && !isAmico) ? `<input type="checkbox" class="admin-student-checkbox" data-uid="${userData.id}" data-name="${userData.name}">` : ''}
         </div>
         <div style="width: 50px; height: 50px; background: #f8f9fa; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 2px solid #eee; overflow: hidden; flex-shrink: 0;">
             ${avatarHtml}
