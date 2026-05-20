@@ -2139,8 +2139,12 @@ window.MATERIE_HIERARCHY = {
             { id: 'riflessione', title: 'Grammatica', icon: '🧠', type: 'submenu' },
             { id: 'lettura', title: 'Lettura e Comprensione', icon: '📚', type: 'submenu' },
             { id: 'lessico', title: 'Lessico', icon: '📖', type: 'submenu' },
-            { id: 'produzione', title: 'Produzione Scritta', icon: '✍️', type: 'submenu' }
+            { id: 'produzione', title: 'Produzione Scritta', icon: '✍️', type: 'submenu' },
+            { id: 'culturagenerale', title: 'Test di Cultura Generale', icon: '🌍', type: 'submenu' }
         ]
+    },
+    'culturagenerale': {
+        title: 'Test di Cultura Generale', parent: 'materie', type: 'submenu', items: []
     },
     'riflessione': {
         title: 'Grammatica', parent: 'materie', type: 'submenu', items: [
@@ -2568,6 +2572,20 @@ function navigateTo(section, subType = null, level = null, updateHash = true, ex
         if (section === 'ripassa') {
             renderRipassaPage();
             document.querySelector('.nav-item[data-section="ripassa"]')?.classList.add('active');
+            if (typeof updateSidebarMenu === 'function') updateSidebarMenu();
+            return;
+        }
+        if (section === 'culturagenerale') {
+            document.querySelector('.nav-item[data-section="culturagenerale"]')?.classList.add('active');
+            const appContainer = document.getElementById('app');
+            appContainer.innerHTML = '<div id="exercise-mount"></div>';
+            const mount = document.getElementById('exercise-mount');
+            const user = Auth.getUser();
+            if (user.role === 'docente' || user.role === 'admin') {
+                CulturaGenerale.renderTeacherDashboard(mount);
+            } else {
+                CulturaGenerale.renderStudentDashboard(mount);
+            }
             if (typeof updateSidebarMenu === 'function') updateSidebarMenu();
             return;
         }
@@ -3412,6 +3430,7 @@ function updateSidebarMenu() {
         { id: 'lettura', title: 'Lettura', icon: '📚' },
         { id: 'lessico', title: 'Lessico', icon: '📖' },
         { id: 'produzione', title: 'Produzione', icon: '✍️' },
+        { id: 'culturagenerale', title: 'Cultura Generale', icon: '🌍' },
         { id: 'contatti', title: 'Contatti', icon: '📧' }
     ];
 
