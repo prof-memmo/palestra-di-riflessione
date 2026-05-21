@@ -212,17 +212,37 @@ window.CulturaGenerale = (() => {
         document.body.appendChild(modal);
     }
 
-    function openCustomizer(level, testId) {
+    async function openCustomizer(level, testId) {
         const test = window.CulturaGeneraleData[level].find(t => t.id === testId);
         const user = Auth.getUser();
         const today = new Date().toLocaleDateString('it-IT');
         
-        const classes = JSON.parse(localStorage.getItem('palestra_classes') || '[]');
+        let classes = [];
+        try {
+            if (window.fbAuth && window.fbAuth.currentUser && window.fbDb) {
+                const uid = window.fbAuth.currentUser.uid;
+                const snap1 = await window.fbDb.collection('classes').where('teacherIds', 'array-contains', uid).get();
+                snap1.forEach(doc => classes.push({id: doc.id, ...doc.data()}));
+                const snap2 = await window.fbDb.collection('classes').where('teacherId', '==', uid).get();
+                snap2.forEach(doc => {
+                    if (!classes.find(c => c.id === doc.id)) classes.push({id: doc.id, ...doc.data()});
+                });
+                
+                // Aggiorniamo anche la cache locale
+                localStorage.setItem('palestra_classes', JSON.stringify(classes));
+            } else {
+                classes = JSON.parse(localStorage.getItem('palestra_classes') || '[]');
+            }
+        } catch (e) {
+            console.error("Errore recupero classi:", e);
+            classes = JSON.parse(localStorage.getItem('palestra_classes') || '[]');
+        }
+        
         let classOptionsHtml = '<option value="">-- Seleziona una classe --</option>';
         if (classes.length > 0) {
             classOptionsHtml += classes.map(c => `<option value="${c.id}">${c.name} ${c.code ? '(' + c.code + ')' : ''}</option>`).join('');
         } else {
-            classOptionsHtml = '<option value="">Nessuna classe trovata</option>';
+            classOptionsHtml = '<option value="">Nessuna classe trovata (creala dal tuo profilo)</option>';
         }
 
         const modal = document.createElement('div');
