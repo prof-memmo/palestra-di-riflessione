@@ -93,7 +93,7 @@ window.CulturaGenerale = (() => {
                             ${window.CulturaGeneraleData[level].map(test => `
                                 <div class="cg-card">
                                     <h4>${test.title}</h4>
-                                    <p>10 domande a risposta multipla.</p>
+                                    <p>20 domande a risposta multipla.</p>
                                     <div style="display: flex; gap: 0.5rem; margin-top: 1rem;">
                                         <button class="btn btn-secondary btn-sm cg-btn" onclick="CulturaGenerale.previewTest('${level}', '${test.id}')" style="flex:1;">Anteprima</button>
                                         <button class="btn btn-primary btn-sm cg-btn" onclick="CulturaGenerale.openCustomizer('${level}', '${test.id}')" style="flex:1;">Assegna</button>

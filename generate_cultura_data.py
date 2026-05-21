@@ -17,7 +17,16 @@ topics = [
     {"q": "Qual è il pianeta più grande del Sistema Solare?", "o": ["Giove", "Saturno", "Terra", "Marte"], "a": "Giove"},
     {"q": "Quale figura retorica consiste nell'accostare due parole di significato opposto?", "o": ["Ossimoro", "Metonimia", "Sineddoche", "Litote"], "a": "Ossimoro"},
     {"q": "Completa la serie logica: 2, 4, 8, 16, ...", "o": ["32", "24", "20", "64"], "a": "32"},
-    {"q": "Qual è il continente più esteso?", "o": ["Asia", "Africa", "America", "Europa"], "a": "Asia"}
+    {"q": "Qual è il continente più esteso?", "o": ["Asia", "Africa", "America", "Europa"], "a": "Asia"},
+    {"q": "Chi ha formulato la teoria della relatività?", "o": ["Albert Einstein", "Isaac Newton", "Galileo Galilei", "Nikola Tesla"], "a": "Albert Einstein"},
+    {"q": "Qual è la montagna più alta della Terra?", "o": ["Monte Everest", "K2", "Monte Bianco", "Kilimangiaro"], "a": "Monte Everest"},
+    {"q": "Qual è l'oceano più vasto?", "o": ["Oceano Pacifico", "Oceano Atlantico", "Oceano Indiano", "Oceano Artico"], "a": "Oceano Pacifico"},
+    {"q": "Quale elemento chimico ha simbolo O?", "o": ["Ossigeno", "Oro", "Osmio", "Oganesson"], "a": "Ossigeno"},
+    {"q": "Chi ha scritto 'L'Odissea'?", "o": ["Omero", "Virgilio", "Dante", "Esiodo"], "a": "Omero"},
+    {"q": "Qual è il risultato di 8 x 7?", "o": ["56", "54", "64", "48"], "a": "56"},
+    {"q": "In che anno è iniziata la Seconda Guerra Mondiale?", "o": ["1939", "1914", "1945", "1936"], "a": "1939"},
+    {"q": "Che cosa si misura in Volt?", "o": ["La tensione elettrica", "L'intensità di corrente", "La resistenza", "La potenza"], "a": "La tensione elettrica"},
+    {"q": "Qual è il mammifero più grande del mondo?", "o": ["La balenottera azzurra", "L'elefante africano", "L'orca", "Il rinoceronte"], "a": "La balenottera azzurra"}
 ]
 
 # We need 120 unique questions. We'll generate them programmatically by expanding the dataset
@@ -44,7 +53,7 @@ for level in levels:
     for test_idx in range(1, 4):
         test_id = f"{level}_test_{test_idx}"
         questions = []
-        for _ in range(10):
+        for _ in range(20):
             questions.append(generate_question(level, q_index))
             q_index += 1
         data[level].append({
