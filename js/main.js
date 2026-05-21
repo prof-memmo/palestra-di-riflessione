@@ -2552,6 +2552,10 @@ function navigateTo(section, subType = null, level = null, updateHash = true, ex
         }
 
         if (section === 'contatti') {
+            window.currentSection = 'contatti';
+            window.currentSubType = null;
+            window.currentLevel = null;
+            window.currentExtra = null;
             renderContattiPage();
             document.querySelector('.nav-item[data-section="contatti"]')?.classList.add('active');
             if (typeof updateSidebarMenu === 'function') updateSidebarMenu();
@@ -2580,6 +2584,10 @@ function navigateTo(section, subType = null, level = null, updateHash = true, ex
             return;
         }
         if (section === 'culturagenerale') {
+            window.currentSection = 'culturagenerale';
+            window.currentSubType = null;
+            window.currentLevel = null;
+            window.currentExtra = null;
             document.querySelector('.nav-item[data-section="culturagenerale"]')?.classList.add('active');
             const appContainer = document.getElementById('app');
             appContainer.innerHTML = '<div id="exercise-mount"></div>';
