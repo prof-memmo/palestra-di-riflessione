@@ -191,6 +191,14 @@ window.CulturaGenerale = (() => {
         const test = window.CulturaGeneraleData[level].find(t => t.id === testId);
         const user = Auth.getUser();
         const today = new Date().toLocaleDateString('it-IT');
+        
+        const classes = JSON.parse(localStorage.getItem('palestra_classes') || '[]');
+        let classOptionsHtml = '<option value="">-- Seleziona una classe --</option>';
+        if (classes.length > 0) {
+            classOptionsHtml += classes.map(c => `<option value="${c.id}">${c.name} ${c.code ? '(' + c.code + ')' : ''}</option>`).join('');
+        } else {
+            classOptionsHtml = '<option value="">Nessuna classe trovata</option>';
+        }
 
         const modal = document.createElement('div');
         modal.className = 'cg-modal-overlay';
@@ -212,8 +220,10 @@ window.CulturaGenerale = (() => {
                     </div>
                     <div class="cg-form-row">
                         <div class="cg-form-group">
-                            <label>ID Classe (es. 1A, 3B, ALFA)</label>
-                            <input type="text" id="cg-form-class" placeholder="ID Classe" />
+                            <label>Classe Destinataria</label>
+                            <select id="cg-form-class" style="width:100%; padding: 0.8rem; border-radius: 8px; border: 1px solid #ddd; font-family: inherit; font-size: 1rem;">
+                                ${classOptionsHtml}
+                            </select>
                         </div>
                         <div class="cg-form-group">
                             <label>Data</label>
@@ -243,7 +253,7 @@ window.CulturaGenerale = (() => {
         const intro = document.getElementById('cg-form-intro').value;
 
         if (!classId) {
-            alert("Inserisci l'ID della classe a cui assegnare il test.");
+            alert("Seleziona una classe a cui assegnare il test.");
             return;
         }
 
