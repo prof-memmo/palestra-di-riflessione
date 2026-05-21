@@ -128,46 +128,68 @@ window.CulturaGenerale = (() => {
         listDiv.innerHTML = 'Caricamento...';
         try {
             const uid = window.fbAuth.currentUser.uid;
-            let allAssignments = [];
+            let classesMap = new Map();
             
             // Get classes using new and old format
             const classesSnapshot = await window.fbDb.collection('classes').where('teacherIds', 'array-contains', uid).get();
             classesSnapshot.forEach(doc => {
                 const c = doc.data();
                 const assigns = c.cg_assignments || [];
-                assigns.forEach(a => allAssignments.push({...a, classId: doc.id, className: c.name || doc.id}));
+                if (assigns.length > 0) {
+                    classesMap.set(doc.id, { classId: doc.id, className: c.name || doc.id, assignments: assigns });
+                }
             });
 
             const legacySnapshot = await window.fbDb.collection('classes').where('teacherId', '==', uid).get();
             legacySnapshot.forEach(doc => {
-                if (!allAssignments.find(a => a.classId === doc.id)) {
+                if (!classesMap.has(doc.id)) {
                     const c = doc.data();
                     const assigns = c.cg_assignments || [];
-                    assigns.forEach(a => allAssignments.push({...a, classId: doc.id, className: c.name || doc.id}));
+                    if (assigns.length > 0) {
+                        classesMap.set(doc.id, { classId: doc.id, className: c.name || doc.id, assignments: assigns });
+                    }
                 }
             });
 
-            if (allAssignments.length === 0) {
+            const classesWithAssignments = Array.from(classesMap.values());
+
+            if (classesWithAssignments.length === 0) {
                 listDiv.innerHTML = '<div class="empty-state">Non hai ancora assegnato nessun test.</div>';
                 return;
             }
             
-            // Sort by date descending (rough approximation using ID which is timestamp)
-            allAssignments.sort((a, b) => b.id - a.id);
+            // Sort classes alphabetically
+            classesWithAssignments.sort((a, b) => a.className.localeCompare(b.className));
 
-            let html = '<table class="cg-table"><thead><tr><th>Data</th><th>Test</th><th>Classe</th><th>Azioni</th></tr></thead><tbody>';
-            allAssignments.forEach(a => {
-                html += `<tr>
-                    <td>${a.date}</td>
-                    <td>${a.testTitle}</td>
-                    <td>${a.className}</td>
-                    <td>
-                        <button class="btn btn-primary btn-sm" onclick="CulturaGenerale.viewResults('${a.id}', '${a.classId}')">Vedi Risultati</button>
-                        <button class="btn btn-secondary btn-sm" onclick="CulturaGenerale.deleteAssignment('${a.id}', '${a.classId}')" style="background:#ff4757; color:white; border:none; margin-left:0.5rem;">Elimina</button>
-                    </td>
-                </tr>`;
+            let html = '<div style="display:flex; flex-direction:column; gap:2rem;">';
+            
+            classesWithAssignments.forEach(cls => {
+                html += `
+                    <div class="cg-card" style="padding:1.5rem; background:white;">
+                        <h3 style="margin-top:0; margin-bottom:1rem; border-bottom:2px solid #f0f0f0; padding-bottom:0.8rem; color:var(--primary-color);">Classe: ${cls.className}</h3>
+                        <div style="overflow-x:auto;">
+                            <table class="cg-table" style="margin:0;">
+                                <thead><tr><th>Data</th><th>Test</th><th style="text-align:right;">Azioni</th></tr></thead>
+                                <tbody>
+                `;
+                
+                // Sort assignments by date descending (rough approximation using ID which is timestamp)
+                const sortedAssigns = cls.assignments.sort((a, b) => b.id - a.id);
+                
+                sortedAssigns.forEach(a => {
+                    html += `<tr>
+                        <td>${a.date}</td>
+                        <td>${a.testTitle}</td>
+                        <td style="text-align:right; white-space:nowrap;">
+                            <button class="btn btn-primary btn-sm" onclick="CulturaGenerale.viewResults('${a.id}', '${cls.classId}')">Vedi Risultati</button>
+                            <button class="btn btn-secondary btn-sm" onclick="CulturaGenerale.deleteAssignment('${a.id}', '${cls.classId}')" style="background:#ff4757; color:white; border:none; margin-left:0.5rem;">Elimina</button>
+                        </td>
+                    </tr>`;
+                });
+                
+                html += '</tbody></table></div></div>';
             });
-            html += '</tbody></table>';
+            html += '</div>';
             listDiv.innerHTML = html;
         } catch (e) {
             console.error(e);
