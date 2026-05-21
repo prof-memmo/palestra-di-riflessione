@@ -323,12 +323,12 @@ window.CulturaGenerale = (() => {
         let allAnswered = true;
 
         test.questions.forEach((q, index) => {
-            const selected = document.querySelector(\`input[name="q_\${index}"]:checked\`);
+            const selected = document.querySelector(`input[name="q_${index}"]:checked`);
             if (!selected) {
                 allAnswered = false;
-                document.getElementById(\`qb_\${index}\`).classList.add('cg-unanswered');
+                document.getElementById(`qb_${index}`).classList.add('cg-unanswered');
             } else {
-                document.getElementById(\`qb_\${index}\`).classList.remove('cg-unanswered');
+                document.getElementById(`qb_${index}`).classList.remove('cg-unanswered');
                 const isCorrect = selected.value === q.correct;
                 if (isCorrect) score++;
                 answers.push({
