@@ -302,14 +302,14 @@ function renderHomePage() {
                         <span class="materia-icon">📚</span>
                         <div class="materia-label">Lettura</div>
                     </div>
-                    <div class="materia-card-home" onclick="navigateTo('culturagenerale')">
-                        <span class="materia-icon">🌍</span>
-                        <div class="materia-label">Cultura G.</div>
-                    </div>
                 </div>
                 
                 <div class="home-center">
                     <img src="assets/hero.png" alt="Studente che impara" class="hero-image-new">
+                    <div class="materia-card-home" onclick="navigateTo('culturagenerale')" style="margin-top: 1.5rem; width: 80%; max-width: 300px; padding: 1rem;">
+                        <span class="materia-icon">🌍</span>
+                        <div class="materia-label">Cultura Generale</div>
+                    </div>
                 </div>
                 
                 <div class="home-side right-side">
