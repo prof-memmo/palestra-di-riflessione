@@ -255,7 +255,7 @@ function handleRoute() {
             return;
         }
 
-        if (!MATERIE_HIERARCHY[section] && !['home', 'contatti', 'profilo', 'ripassa', 'intro', 'admin'].includes(section)) {
+        if (!MATERIE_HIERARCHY[section] && !['home', 'contatti', 'profilo', 'ripassa', 'intro', 'admin', 'culturagenerale'].includes(section)) {
             appContainer.innerHTML = `<div style="padding: 2rem; text-align: center;"><h2>Ops! Pagina non trovata</h2><p>La sezione <b>${section}</b> non esiste.</p><button class="btn" onclick="window.location.hash='home'">Torna alla Home</button></div>`;
             return;
         }
@@ -301,6 +301,10 @@ function renderHomePage() {
                     <div class="materia-card-home" onclick="navigateTo('lettura')">
                         <span class="materia-icon">📚</span>
                         <div class="materia-label">Lettura</div>
+                    </div>
+                    <div class="materia-card-home" onclick="navigateTo('culturagenerale')">
+                        <span class="materia-icon">🌍</span>
+                        <div class="materia-label">Cultura G.</div>
                     </div>
                 </div>
                 
