@@ -163,6 +163,7 @@ window.CulturaGenerale = (() => {
                     <td>${a.className}</td>
                     <td>
                         <button class="btn btn-primary btn-sm" onclick="CulturaGenerale.viewResults('${a.id}', '${a.classId}')">Vedi Risultati</button>
+                        <button class="btn btn-secondary btn-sm" onclick="CulturaGenerale.deleteAssignment('${a.id}', '${a.classId}')" style="background:#ff4757; color:white; border:none; margin-left:0.5rem;">Elimina</button>
                     </td>
                 </tr>`;
             });
@@ -339,6 +340,29 @@ window.CulturaGenerale = (() => {
                 btn.innerText = "Conferma e Assegna";
                 btn.disabled = false;
             }
+        }
+    }
+
+    async function deleteAssignment(assignmentId, classId) {
+        if (!confirm("Sei sicuro di voler eliminare questa assegnazione?\nIl test non sarà più visibile e gli studenti non potranno più svolgerlo.")) return;
+
+        try {
+            const classDoc = await window.fbDb.collection('classes').doc(classId).get();
+            if (!classDoc.exists) throw new Error("Classe non trovata");
+
+            const assignments = classDoc.data().cg_assignments || [];
+            const assignmentToDelete = assignments.find(a => a.id === assignmentId);
+            
+            if (assignmentToDelete) {
+                await window.fbDb.collection('classes').doc(classId).update({
+                    cg_assignments: window.firebase.firestore.FieldValue.arrayRemove(assignmentToDelete)
+                });
+                alert("Assegnazione eliminata con successo!");
+                loadTeacherAssignments();
+            }
+        } catch (e) {
+            console.error(e);
+            alert("Errore durante l'eliminazione: " + e.message);
         }
     }
 
@@ -612,6 +636,7 @@ window.CulturaGenerale = (() => {
         previewTest,
         openCustomizer,
         assignTest,
+        deleteAssignment,
         startTest,
         renderTestUI,
         submitTest,
