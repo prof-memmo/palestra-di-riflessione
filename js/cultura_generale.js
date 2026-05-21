@@ -90,7 +90,10 @@ window.CulturaGenerale = (() => {
                                 <div class="cg-card">
                                     <h4>${test.title}</h4>
                                     <p>10 domande a risposta multipla.</p>
-                                    <button class="btn btn-primary btn-sm cg-btn" onclick="CulturaGenerale.openCustomizer('${level}', '${test.id}')">Assegna</button>
+                                    <div style="display: flex; gap: 0.5rem; margin-top: 1rem;">
+                                        <button class="btn btn-secondary btn-sm cg-btn" onclick="CulturaGenerale.previewTest('${level}', '${test.id}')" style="flex:1;">Anteprima</button>
+                                        <button class="btn btn-primary btn-sm cg-btn" onclick="CulturaGenerale.openCustomizer('${level}', '${test.id}')" style="flex:1;">Assegna</button>
+                                    </div>
                                 </div>
                             `).join('')}
                         </div>
@@ -144,6 +147,44 @@ window.CulturaGenerale = (() => {
             console.error(e);
             listDiv.innerHTML = 'Errore nel caricamento dei dati.';
         }
+    }
+
+    function previewTest(level, testId) {
+        const test = window.CulturaGeneraleData[level].find(t => t.id === testId);
+        
+        const modal = document.createElement('div');
+        modal.className = 'cg-modal-overlay';
+        modal.id = 'cg-preview-modal';
+        
+        let questionsHtml = test.questions.map((q, index) => `
+            <div style="margin-bottom: 1.5rem; padding: 1rem; background: #f8f9fa; border-radius: 10px;">
+                <p style="font-weight: 600; margin-bottom: 0.5rem;">${index + 1}. ${q.question}</p>
+                <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+                    ${q.options.map(opt => `
+                        <div style="padding: 0.5rem; border-radius: 5px; ${opt === q.correct ? 'background: #d4edda; border: 1px solid #c3e6cb; font-weight: bold;' : 'background: white; border: 1px solid #dee2e6;'}">
+                            ${opt} ${opt === q.correct ? '✅' : ''}
+                        </div>
+                    `).join('')}
+                </div>
+            </div>
+        `).join('');
+
+        modal.innerHTML = `
+            <div class="cg-modal" style="max-width: 800px; width: 90%; max-height: 90vh; display: flex; flex-direction: column;">
+                <div class="cg-modal-header" style="flex-shrink: 0;">
+                    <h3>Anteprima: ${test.title}</h3>
+                    <button class="cg-modal-close" onclick="document.getElementById('cg-preview-modal').remove()">&times;</button>
+                </div>
+                <div class="cg-modal-body" style="overflow-y: auto; padding-right: 1rem;">
+                    ${questionsHtml}
+                </div>
+                <div class="cg-modal-footer" style="flex-shrink: 0;">
+                    <button class="btn btn-secondary" onclick="document.getElementById('cg-preview-modal').remove()">Chiudi</button>
+                    <button class="btn btn-primary" onclick="document.getElementById('cg-preview-modal').remove(); CulturaGenerale.openCustomizer('${level}', '${testId}')">Assegna Questo Test</button>
+                </div>
+            </div>
+        `;
+        document.body.appendChild(modal);
     }
 
     function openCustomizer(level, testId) {
@@ -472,6 +513,7 @@ window.CulturaGenerale = (() => {
         renderStudentDashboard,
         renderTeacherDashboard,
         switchTeacherTab,
+        previewTest,
         openCustomizer,
         assignTest,
         startTest,
