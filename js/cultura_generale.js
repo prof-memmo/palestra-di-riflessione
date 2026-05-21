@@ -302,9 +302,11 @@ window.CulturaGenerale = (() => {
             return;
         }
 
-        const btn = event.target;
-        btn.innerText = "Assegnazione in corso...";
-        btn.disabled = true;
+        const btn = document.querySelector('#cg-customizer-modal .btn-primary');
+        if (btn) {
+            btn.innerText = "Assegnazione in corso...";
+            btn.disabled = true;
+        }
 
         try {
             const assignmentId = Date.now().toString();
@@ -332,8 +334,11 @@ window.CulturaGenerale = (() => {
         } catch (e) {
             console.error(e);
             alert("Errore durante l'assegnazione: " + e.message);
-            btn.innerText = "Conferma e Assegna";
-            btn.disabled = false;
+            const btn = document.querySelector('#cg-customizer-modal .btn-primary');
+            if (btn) {
+                btn.innerText = "Conferma e Assegna";
+                btn.disabled = false;
+            }
         }
     }
 
