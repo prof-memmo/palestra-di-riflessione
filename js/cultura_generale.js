@@ -23,45 +23,49 @@ window.CulturaGenerale = (() => {
             const assignmentsRef = window.fbDb.collection('test_assignments');
             const q = classId ? assignmentsRef.where('classId', '==', classId) : assignmentsRef;
             const snapshot = await q.get();
-            
+            // Find assignments for this class from the class document
+            let assignments = [];
+            if (classId) {
+                const classDoc = await window.fbDb.collection('classes').doc(classId).get();
+                if (classDoc.exists) {
+                    assignments = classDoc.data().cg_assignments || [];
+                }
+            }
+
+            // Get user's results from their progress document
+            let completedTestIds = [];
+            const progressDoc = await window.fbDb.collection('progress').doc(window.fbAuth.currentUser.uid).get();
+            if (progressDoc.exists) {
+                const cgResults = progressDoc.data().cg_results || [];
+                completedTestIds = cgResults.map(r => r.assignmentId);
+            }
+
             const grid = document.getElementById('cg-student-tests');
             
-            if (snapshot.empty) {
+            if (assignments.length === 0) {
                 grid.innerHTML = `<div class="empty-state">Non ci sono test assegnati alla tua classe in questo momento.</div>`;
                 return;
             }
 
-            // Get user's results to see which tests are already completed
-            const resultsSnap = await window.fbDb.collection('test_results')
-                .where('userId', '==', window.fbAuth.currentUser.uid)
-                .get();
-            const completedAssignments = resultsSnap.docs.map(d => d.data().assignmentId);
-            const resultsMap = {};
-            resultsSnap.docs.forEach(d => resultsMap[d.data().assignmentId] = d.data());
-
-            let html = '';
-            snapshot.forEach(doc => {
-                const a = doc.data();
-                const isCompleted = completedAssignments.includes(doc.id);
-                
+            let html = '<div style="display:flex; flex-direction:column; gap:1rem;">';
+            assignments.forEach(a => {
+                const isCompleted = completedTestIds.includes(a.id);
                 html += `
-                    <div class="cg-card ${isCompleted ? 'cg-card-completed' : ''}">
-                        <div class="cg-card-header">
-                            <span class="cg-level-badge level-${a.testLevel}">${a.testLevel.toUpperCase()}</span>
-                            <h3>${a.testTitle}</h3>
+                    <div class="cg-card" style="display:flex; justify-content:space-between; align-items:center;">
+                        <div>
+                            <h4 style="margin:0 0 0.5rem 0;">${a.testTitle}</h4>
+                            <span class="cg-badge" style="background:#e9ecef; color:#495057;">Assegnato il: ${a.date}</span>
                         </div>
-                        <div class="cg-card-body">
-                            <p><strong>Assegnato da:</strong> ${a.teacherName}</p>
-                            <p><strong>Data:</strong> ${a.date}</p>
+                        <div>
                             ${isCompleted 
-                                ? `<div class="cg-score-badge">Punteggio: ${resultsMap[doc.id].score}/10</div>
-                                   <button class="btn btn-secondary cg-btn" disabled>Test Completato ✅</button>`
-                                : `<button class="btn btn-primary cg-btn" onclick="CulturaGenerale.startTest('${doc.id}')">Inizia Test 🚀</button>`
+                                ? '<span class="cg-badge" style="background:#d4edda; color:#155724; padding:0.5rem 1rem;">Completato ✅</span>' 
+                                : `<button class="btn btn-primary" onclick="CulturaGenerale.startTest('${a.id}', '${classId}')">Svolgi Test</button>`
                             }
                         </div>
                     </div>
                 `;
             });
+            html += '</div>';
             grid.innerHTML = html;
         } catch (e) {
             console.error(e);
@@ -124,20 +128,41 @@ window.CulturaGenerale = (() => {
         listDiv.innerHTML = 'Caricamento...';
         try {
             const uid = window.fbAuth.currentUser.uid;
-            const snap = await window.fbDb.collection('test_assignments').where('teacherUid', '==', uid).get();
-            if (snap.empty) {
+            let allAssignments = [];
+            
+            // Get classes using new and old format
+            const classesSnapshot = await window.fbDb.collection('classes').where('teacherIds', 'array-contains', uid).get();
+            classesSnapshot.forEach(doc => {
+                const c = doc.data();
+                const assigns = c.cg_assignments || [];
+                assigns.forEach(a => allAssignments.push({...a, classId: doc.id, className: c.name || doc.id}));
+            });
+
+            const legacySnapshot = await window.fbDb.collection('classes').where('teacherId', '==', uid).get();
+            legacySnapshot.forEach(doc => {
+                if (!allAssignments.find(a => a.classId === doc.id)) {
+                    const c = doc.data();
+                    const assigns = c.cg_assignments || [];
+                    assigns.forEach(a => allAssignments.push({...a, classId: doc.id, className: c.name || doc.id}));
+                }
+            });
+
+            if (allAssignments.length === 0) {
                 listDiv.innerHTML = '<div class="empty-state">Non hai ancora assegnato nessun test.</div>';
                 return;
             }
+            
+            // Sort by date descending (rough approximation using ID which is timestamp)
+            allAssignments.sort((a, b) => b.id - a.id);
+
             let html = '<table class="cg-table"><thead><tr><th>Data</th><th>Test</th><th>Classe</th><th>Azioni</th></tr></thead><tbody>';
-            snap.forEach(doc => {
-                const a = doc.data();
+            allAssignments.forEach(a => {
                 html += `<tr>
                     <td>${a.date}</td>
                     <td>${a.testTitle}</td>
-                    <td>Classe ${a.classId}</td>
+                    <td>${a.className}</td>
                     <td>
-                        <button class="btn btn-primary btn-sm" onclick="CulturaGenerale.viewResults('${doc.id}')">Vedi Risultati</button>
+                        <button class="btn btn-primary btn-sm" onclick="CulturaGenerale.viewResults('${a.id}', '${a.classId}')">Vedi Risultati</button>
                     </td>
                 </tr>`;
             });
@@ -145,7 +170,7 @@ window.CulturaGenerale = (() => {
             listDiv.innerHTML = html;
         } catch (e) {
             console.error(e);
-            listDiv.innerHTML = 'Errore nel caricamento dei dati.';
+            listDiv.innerHTML = '<div style="color:red;">Errore nel caricamento.</div>';
         }
     }
 
@@ -262,7 +287,9 @@ window.CulturaGenerale = (() => {
         btn.disabled = true;
 
         try {
-            const assignmentRef = await window.fbDb.collection('test_assignments').add({
+            const assignmentId = Date.now().toString();
+            const newAssignment = {
+                id: assignmentId,
                 testId: testId,
                 testLevel: level,
                 testTitle: test.title,
@@ -273,9 +300,14 @@ window.CulturaGenerale = (() => {
                 date: date,
                 introText: intro,
                 createdAt: new Date().toISOString()
+            };
+
+            await window.fbDb.collection('classes').doc(classId).update({
+                cg_assignments: window.firebase.firestore.FieldValue.arrayUnion(newAssignment)
             });
+
             document.getElementById('cg-customizer-modal').remove();
-            alert("Test assegnato con successo alla classe " + classId);
+            alert("Test assegnato con successo alla classe!");
             switchTeacherTab('results');
         } catch (e) {
             console.error(e);
@@ -285,17 +317,24 @@ window.CulturaGenerale = (() => {
         }
     }
 
-    async function startTest(assignmentId) {
+    async function startTest(assignmentId, classId) {
         document.getElementById('exercise-mount').innerHTML = '<div style="padding:4rem;text-align:center;">Preparazione test in corso...</div>';
         
         try {
-            const doc = await window.fbDb.collection('test_assignments').doc(assignmentId).get();
-            if (!doc.exists) {
+            const classDoc = await window.fbDb.collection('classes').doc(classId).get();
+            if (!classDoc.exists) {
+                alert("Classe non trovata.");
+                return;
+            }
+            
+            const assignments = classDoc.data().cg_assignments || [];
+            const assignmentData = assignments.find(a => a.id === assignmentId);
+            
+            if (!assignmentData) {
                 alert("Assegnazione non trovata.");
                 return;
             }
-            const a = doc.data();
-            const test = window.CulturaGeneraleData[a.testLevel].find(t => t.id === a.testId);
+            const test = window.CulturaGeneraleData[assignmentData.testLevel].find(t => t.id === assignmentData.testId);
 
             // Show motivational intro modal
             const introModal = document.createElement('div');
@@ -303,8 +342,8 @@ window.CulturaGenerale = (() => {
             introModal.innerHTML = `
                 <div class="cg-modal cg-intro-modal">
                     <h2>Preparati al Test</h2>
-                    <div class="cg-intro-text">${a.introText.replace(/\\n/g, '<br>')}</div>
-                    <button class="btn btn-primary cg-btn-large" onclick="this.parentElement.parentElement.remove(); CulturaGenerale.renderTestUI('${assignmentId}', ${JSON.stringify(test).replace(/"/g, '&quot;')}, ${JSON.stringify(a).replace(/"/g, '&quot;')})">HO CAPITO, INIZIA IL TEST</button>
+                    <div class="cg-intro-text">${assignmentData.introText.replace(/\\n/g, '<br>')}</div>
+                    <button class="btn btn-primary cg-btn-large" onclick="this.parentElement.parentElement.remove(); CulturaGenerale.renderTestUI('${assignmentId}', ${JSON.stringify(test).replace(/"/g, '&quot;')}, ${JSON.stringify(assignmentData).replace(/"/g, '&quot;')})">HO CAPITO, INIZIA IL TEST</button>
                 </div>
             `;
             document.body.appendChild(introModal);
@@ -357,7 +396,7 @@ window.CulturaGenerale = (() => {
                     </div>
                     
                     <div class="cg-submit-area">
-                        <button class="btn btn-primary btn-large cg-btn-submit" onclick="CulturaGenerale.submitTest('${assignmentId}', ${JSON.stringify(test).replace(/"/g, '&quot;')})">Consegna Verifica</button>
+                        <button id="cg-submit-btn" class="btn btn-primary btn-large cg-btn-submit" onclick="CulturaGenerale.submitTest('${assignmentId}', ${JSON.stringify(test).replace(/"/g, '&quot;')}, ${JSON.stringify(assignmentData).replace(/"/g, '&quot;')})">Consegna Verifica</button>
                     </div>
                 </div>
             </div>
@@ -367,10 +406,10 @@ window.CulturaGenerale = (() => {
         window.scrollTo(0, 0);
     }
 
-    async function submitTest(assignmentId, test) {
+    async function submitTest(assignmentId, test, assignmentData) {
         // Collect answers
         let score = 0;
-        const answers = [];
+        let correctCount = 0;
         let allAnswered = true;
 
         test.questions.forEach((q, index) => {
@@ -380,13 +419,9 @@ window.CulturaGenerale = (() => {
                 document.getElementById(`qb_${index}`).classList.add('cg-unanswered');
             } else {
                 document.getElementById(`qb_${index}`).classList.remove('cg-unanswered');
-                const isCorrect = selected.value === q.correct;
-                if (isCorrect) score++;
-                answers.push({
-                    questionId: q.id,
-                    selected: selected.value,
-                    isCorrect: isCorrect
-                });
+                if (selected.value === q.correct) {
+                    correctCount++;
+                }
             }
         });
 
@@ -397,49 +432,75 @@ window.CulturaGenerale = (() => {
 
         if (!confirm("Sei sicuro di voler consegnare la verifica? Non potrai più modificarla.")) return;
 
-        const submitBtn = document.querySelector('.cg-btn-submit');
-        submitBtn.innerText = "Consegna in corso...";
-        submitBtn.disabled = true;
+        score = Math.round((correctCount / test.questions.length) * 100);
+
+        const btn = document.getElementById('cg-submit-btn');
+        btn.innerText = "Invio in corso...";
+        btn.disabled = true;
 
         try {
-            await window.fbDb.collection('test_results').add({
-                assignmentId: assignmentId,
-                userId: window.fbAuth.currentUser.uid,
-                userName: Auth.getUser().name,
-                score: score,
-                total: test.questions.length,
-                answers: answers,
-                submittedAt: new Date().toISOString()
-            });
+            await window.fbDb.collection('progress').doc(window.fbAuth.currentUser.uid).set({
+                cg_results: window.firebase.firestore.FieldValue.arrayUnion({
+                    assignmentId: assignmentId,
+                    userId: window.fbAuth.currentUser.uid,
+                    userName: Auth.getUser().name,
+                    testId: assignmentData.testId,
+                    testLevel: assignmentData.testLevel,
+                    testTitle: assignmentData.testTitle,
+                    score: score,
+                    correctCount: correctCount,
+                    totalQuestions: test.questions.length,
+                    completedAt: new Date().toISOString(),
+                    classId: assignmentData.classId
+                })
+            }, { merge: true });
 
-            // Show results to student
-            document.getElementById('cg-test-page').innerHTML = `
-                <div class="cg-result-screen">
-                    <h2>Verifica Consegnata!</h2>
-                    <div class="cg-final-score">${score} / ${test.questions.length}</div>
-                    <p>Ottimo lavoro, il tuo test è stato inviato al docente.</p>
-                    <button class="btn btn-primary" onclick="navigateTo('culturagenerale')">Torna ai Test</button>
+            let feedbackHtml = `
+                <div style="text-align:center; padding: 2rem;">
+                    <h2>Test Completato!</h2>
+                    <p style="font-size:1.2rem;">Il tuo punteggio: <strong>${score}/100</strong> (${correctCount}/${test.questions.length} corrette)</p>
+                    <button class="btn btn-primary" onclick="CulturaGenerale.renderStudentDashboard(document.getElementById('exercise-mount'))" style="margin-top:2rem;">Torna alla Dashboard</button>
                 </div>
             `;
-            window.scrollTo(0, 0);
+            document.getElementById('exercise-mount').innerHTML = feedbackHtml;
         } catch (e) {
             console.error(e);
             alert("Errore durante la consegna: " + e.message);
-            submitBtn.innerText = "Consegna Verifica";
-            submitBtn.disabled = false;
+            btn.innerText = "Consegna Verifica";
+            btn.disabled = false;
         }
     }
 
-    async function viewResults(assignmentId) {
-        document.getElementById('exercise-mount').innerHTML = '<div style="padding:4rem;text-align:center;">Caricamento risultati...</div>';
+    async function viewResults(assignmentId, classId) {
+        document.getElementById('cg-teacher-results-tab').innerHTML = '<div style="padding:2rem;">Caricamento risultati...</div>';
+        
         try {
-            // Ottieni info test
-            const assignDoc = await window.fbDb.collection('test_assignments').doc(assignmentId).get();
-            const a = assignDoc.data();
+            // Ottieni info test dalla classe
+            const classDoc = await window.fbDb.collection('classes').doc(classId).get();
+            const classData = classDoc.data();
+            const assignments = classData.cg_assignments || [];
+            const a = assignments.find(ass => ass.id === assignmentId);
+            
+            if (!a) throw new Error("Assegnazione non trovata");
 
-            // Ottieni risultati
-            const resultsSnap = await window.fbDb.collection('test_results').where('assignmentId', '==', assignmentId).get();
-            const results = resultsSnap.docs.map(d => d.data());
+            // Ottieni risultati iterando su tutti i progressi degli studenti della classe
+            const usersSnap = await window.fbDb.collection('users').where('classId', '==', classId).get();
+            const studentUids = usersSnap.docs.map(d => d.id);
+            
+            let results = [];
+            for (const uid of studentUids) {
+                const pDoc = await window.fbDb.collection('progress').doc(uid).get();
+                if (pDoc.exists) {
+                    const cgResults = pDoc.data().cg_results || [];
+                    const res = cgResults.find(r => r.assignmentId === assignmentId);
+                    if (res) {
+                        results.push(res);
+                    }
+                }
+            }
+
+            window.currentViewAssignment = a;
+            window.currentViewResults = results;
 
             let html = `
                 <div class="cg-container" id="cg-printable-area">
