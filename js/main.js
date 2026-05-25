@@ -2976,27 +2976,53 @@ function checkAnswer(selected, correct, type, id, feedbackOverride = null) {
         }
     };
 
-    if (selected === correct) {
-        window.Progress.addPoints(10);
-        window.Progress.completeExercise(id);
-        if (window.Progress.currentLessonCorrectCount !== undefined) window.Progress.currentLessonCorrectCount++;
+    let isCorrect = selected === correct;
+    let errorsHtml = '';
+    let successHtml = feedback.success || "Corretto! Ottimo lavoro.";
 
-        const successFeedback = {
-            map: feedback.success || "Corretto! Ottimo lavoro.",
-            reasoning: feedback.reasoning || "Hai dimostrato di padroneggiare questo concetto.",
-            example: feedback.example || "Continua così per completare la sfida!"
-        };
+    if (type === 'sentence-analysis') {
+        if (exercise && exercise.answer) {
+            const userSegments = selected.segments;
+            const userLabels = selected.labels;
+            const correctAnswers = exercise.answer;
+            
+            isCorrect = true;
+            errorsHtml = '<ul style="font-size: 1.15rem; line-height: 1.8; padding-left: 1.5rem; margin: 0; color: #742a2a;">';
+            
+            if (userSegments.length !== correctAnswers.length) {
+                isCorrect = false;
+                errorsHtml += `<li style="margin-bottom: 0.5rem; list-style: none;"><span style="color: #e74c3c;">❌</span> Hai diviso la frase in ${userSegments.length} segmenti, ma in realtà sono ${correctAnswers.length}.</li>`;
+            } else {
+                for (let i = 0; i < correctAnswers.length; i++) {
+                    const expectedSeg = correctAnswers[i].segment.toLowerCase().trim();
+                    const userSeg = userSegments[i].toLowerCase().trim();
+                    const expectedLabel = correctAnswers[i].label.toLowerCase().trim();
+                    const userLabel = (userLabels[i] || '').toLowerCase().trim();
+                    
+                    if (expectedSeg !== userSeg || expectedLabel !== userLabel) {
+                        isCorrect = false;
+                        let errStr = `Voce ${i + 1}: "<strong>${userSegments[i]}</strong>" &rarr; ${userLabels[i] || '<em>non etichettato</em>'}`;
+                        errStr += ` <br><span style="color: #27ae60; font-weight: bold;">(Corretto: "${correctAnswers[i].segment}" &rarr; ${correctAnswers[i].label})</span>`;
+                        errorsHtml += `<li style="margin-bottom: 1rem; list-style: none;"><span style="color: #e74c3c;">❌</span> ${errStr}</li>`;
+                    }
+                }
+            }
+            errorsHtml += '</ul>';
 
-        if (phase === 'scopri') {
-            onConfirm();
+            if (isCorrect) {
+                successHtml = `
+                    <div style="background:#e8f5e9;border:2px solid #27ae60;border-radius:12px;padding:1rem;margin-top:0;">
+                        <b style="color:#27ae60;">✅ La tua analisi è perfetta:</b><br>
+                        ${userSegments.map((s, i) => `<span style="display:block;margin-top:4px;"><b>${s}</b> → ${userLabels[i] || '<em>non etichettato</em>'}</span>`).join('')}
+                    </div>`;
+            }
         } else {
-            window.UI.showFeedback(true, successFeedback, onConfirm, path);
+            // Fallback if no answer provided
+            isCorrect = true;
+            successHtml = feedbackOverride ? feedbackOverride.success : '';
         }
     } else {
-        if (window.Progress.addMistake) window.Progress.addMistake(id);
-
-        let errorsHtml = '';
-        if (selected.includes('|') || correct.includes('|')) {
+        if (!isCorrect && (selected.includes('|') || correct.includes('|'))) {
             const selParts = selected.split('|');
             const corrParts = correct.split('|');
             errorsHtml = '<ul style="font-size: 1.15rem; line-height: 1.8; padding-left: 1.5rem; margin: 0; color: #742a2a;">';
@@ -3009,9 +3035,29 @@ function checkAnswer(selected, correct, type, id, feedbackOverride = null) {
             }
             errorsHtml += '</ul>';
         }
+    }
+
+    if (isCorrect) {
+        window.Progress.addPoints(10);
+        window.Progress.completeExercise(id);
+        if (window.Progress.currentLessonCorrectCount !== undefined) window.Progress.currentLessonCorrectCount++;
+
+        const successFeedback = {
+            map: successHtml,
+            reasoning: feedback.reasoning || "Hai dimostrato di padroneggiare questo concetto.",
+            example: feedback.example || "Continua così per completare la sfida!"
+        };
+
+        if (phase === 'scopri') {
+            onConfirm();
+        } else {
+            window.UI.showFeedback(true, successFeedback, onConfirm, path);
+        }
+    } else {
+        if (window.Progress.addMistake) window.Progress.addMistake(id);
 
         const advancedFeedback = {
-            map: feedback.map || feedback.error || `La risposta non è corretta. <br><span style="color: #27ae60; font-weight: bold;">La risposta corretta era: ${correct}</span>`,
+            map: feedback.map || feedback.error || (type === 'sentence-analysis' ? "L'analisi contiene degli errori." : `La risposta non è corretta. <br><span style="color: #27ae60; font-weight: bold;">La risposta corretta era: ${correct}</span>`),
             errorsHtml: errorsHtml
         };
 
@@ -3666,6 +3712,121 @@ window.checkDragDropAnswer = checkDragDropAnswer;
 window.onDropItem = onDropItem;
 
 // ─── sentence-analysis helpers ────────────────────────────────────
+
+window.SA_TAXONOMY = {
+    "analisiPeriodo": {
+        "Principale": null,
+        "Incidentale": null,
+        "Coordinata": {
+            "Tipo": ["Copulativa", "Avversativa", "Disgiuntiva", "Conclusiva", "Dichiarativa o Esplicativa", "Correlativa"]
+        },
+        "Subordinata": {
+            "Grado": ["1° grado", "2° grado", "3° grado", "4° grado"],
+            "Forma": ["Esplicita", "Implicita"],
+            "Tipo": ["Soggettiva", "Oggettiva", "Dichiarativa", "Interrogativa Indiretta", "Relativa", "Causale", "Finale", "Temporale", "Locale", "Modale", "Strumentale", "Concessiva", "Condizionale", "Consecutiva", "Comparativa", "Avversativa", "Esclusiva", "Eccettuativa", "Limitativa"]
+        }
+    },
+    "analisiLogica": {
+        "Soggetto": null,
+        "Predicato": {
+            "Tipo": ["Verbale", "Nominale"]
+        },
+        "Attributo": null,
+        "Apposizione": null,
+        "Complemento Diretto": {
+            "Tipo": ["Oggetto", "Dell'oggetto interno", "Predicativo del soggetto", "Predicativo dell'oggetto"]
+        },
+        "Complemento Indiretto": {
+            "Tipo": ["Specificazione", "Termine", "Stato in luogo", "Moto a luogo", "Moto da luogo", "Moto per luogo", "Tempo determinato", "Tempo continuato", "Causa", "Fine o Scopo", "Modo", "Mezzo o Strumento", "Compagnia", "Unione", "D'agente", "Causa efficiente", "Denominazione", "Partitivo", "Origine o Provenienza", "Allontanamento o Separazione", "Materia", "Argomento", "Limitazione", "Paragone", "Età", "Pena", "Colpa", "Abbondanza", "Privazione", "Qualità", "Vantaggio", "Svantaggio", "Concessivo", "Esclusione", "Sostituzione o Scambio"]
+        }
+    },
+    "grammaticale": {
+        "Articolo": {
+            "Tipo": ["Determinativo", "Indeterminativo", "Partitivo"],
+            "Genere": ["Maschile", "Femminile"],
+            "Numero": ["Singolare", "Plurale"]
+        },
+        "Nome": {
+            "Tipo": ["Comune", "Proprio"],
+            "Genere": ["Maschile", "Femminile", "Promiscuo", "Indipendente"],
+            "Numero": ["Singolare", "Plurale", "Invariabile", "Difettivo", "Sovrabbondante"],
+            "Struttura": ["Primitivo", "Derivato", "Alterato", "Composto"],
+            "Significato": ["Concreto", "Astratto", "Individuale", "Collettivo"]
+        },
+        "Aggettivo": {
+            "Categoria": ["Qualificativo", "Possessivo", "Dimostrativo", "Indefinito", "Interrogativo", "Esclamativo", "Numerale"],
+            "Genere": ["Maschile", "Femminile", "Invariabile"],
+            "Numero": ["Singolare", "Plurale", "Invariabile"],
+            "Grado (solo Qualif.)": ["Positivo", "Comparativo di maggioranza", "Comparativo di minoranza", "Comparativo di uguaglianza", "Superlativo assoluto", "Superlativo relativo", "N/A"]
+        },
+        "Pronome": {
+            "Categoria": ["Personale", "Possessivo", "Dimostrativo", "Indefinito", "Interrogativo", "Esclamativo", "Relativo", "Numerale"]
+        },
+        "Verbo": {
+            "Coniugazione": ["Prima", "Seconda", "Terza", "Propria (essere/avere)"],
+            "Modo": ["Indicativo", "Congiuntivo", "Condizionale", "Imperativo", "Infinito", "Participio", "Gerundio"],
+            "Tempo": ["Presente", "Imperfetto", "Passato remoto", "Futuro semplice", "Passato prossimo", "Trapassato prossimo", "Trapassato remoto", "Futuro anteriore"],
+            "Persona": ["1a singolare", "2a singolare", "3a singolare", "1a plurale", "2a plurale", "3a plurale", "N/A"]
+        },
+        "Preposizione": {
+            "Tipo": ["Semplice", "Articolata", "Impropria"]
+        },
+        "Congiunzione": {
+            "Tipo": ["Coordinante", "Subordinante"]
+        },
+        "Avverbio": {
+            "Tipo": ["Di modo", "Di tempo", "Di luogo", "Di quantità", "Di affermazione", "Di negazione", "Di dubbio", "Interrogativo", "Esclamativo"]
+        },
+        "Interiezione": {
+            "Tipo": ["Propria", "Impropria", "Locuzione esclamativa"]
+        }
+    }
+};
+
+window.renderSaCascading = (container, seg, existingValue) => {
+    const path = window.currentPath || [];
+    let context = 'grammaticale';
+    if (path.includes('analisiLogica')) context = 'analisiLogica';
+    if (path.includes('analisiPeriodo')) context = 'analisiPeriodo';
+
+    const taxonomy = window.SA_TAXONOMY[context];
+    const existingParts = existingValue ? existingValue.split(' - ') : [];
+    
+    let mainSelectHtml = `<select class="sa-select-main" style="padding:8px; border-radius:8px; border:1px solid #dfe6e9; background:#f8f9fa;">`;
+    mainSelectHtml += `<option value="">Scegli...</option>`;
+    for (const key in taxonomy) {
+        const isSelected = existingParts[0] === key ? 'selected' : '';
+        mainSelectHtml += `<option value="${key}" ${isSelected}>${key}</option>`;
+    }
+    mainSelectHtml += `</select>`;
+    
+    let subSelectsHtml = `<div class="sa-select-subs" style="display:flex; flex-wrap:wrap; gap:8px; margin-top:8px;">`;
+    if (existingParts[0] && taxonomy[existingParts[0]]) {
+        const subTax = taxonomy[existingParts[0]];
+        let i = 1;
+        for (const subKey in subTax) {
+            const options = subTax[subKey];
+            const selVal = existingParts[i] || '';
+            subSelectsHtml += `<select class="sa-select-sub" data-subkey="${subKey}" style="padding:6px; border-radius:8px; border:1px solid #dfe6e9; background:#f8f9fa;">`;
+            subSelectsHtml += `<option value="">${subKey}...</option>`;
+            options.forEach(opt => {
+                const isSel = selVal === opt ? 'selected' : '';
+                subSelectsHtml += `<option value="${opt}" ${isSel}>${opt}</option>`;
+            });
+            subSelectsHtml += `</select>`;
+            i++;
+        }
+    }
+    subSelectsHtml += `</div>`;
+    
+    container.innerHTML = mainSelectHtml + subSelectsHtml;
+    
+    const mainSelect = container.querySelector('.sa-select-main');
+    mainSelect.addEventListener('change', (e) => {
+        window.renderSaCascading(container, seg, e.target.value);
+    });
+};
+
 window.toggleSaGap = (el) => {
     el.classList.toggle('active');
     window.buildSaLabels();
@@ -3676,7 +3837,7 @@ window.buildSaLabels = () => {
     if (!container) return;
     const words = [...container.querySelectorAll('.sa-word')].map(s => s.textContent);
     const gaps = [...container.querySelectorAll('.sa-gap')];
-    // Build segments by splitting at active gaps
+    
     let segments = [];
     let current = [words[0]];
     gaps.forEach((g, i) => {
@@ -3691,18 +3852,25 @@ window.buildSaLabels = () => {
 
     const labelsDiv = document.getElementById('sa-labels');
     if (!labelsDiv) return;
-    // Preserve existing input values
+    
     const existing = {};
-    labelsDiv.querySelectorAll('.sa-label-input').forEach(inp => {
-        existing[inp.dataset.seg] = inp.value;
+    labelsDiv.querySelectorAll('.sa-cascading-container').forEach(c => {
+        const seg = c.dataset.seg;
+        const selects = [...c.querySelectorAll('select')];
+        const values = selects.map(s => s.value).filter(v => v !== '');
+        existing[seg] = values.join(' - ');
     });
+
     labelsDiv.innerHTML = segments.map((seg, i) => `
-        <div class="sa-label-row">
-            <span class="sa-label-num">${i + 1}.</span>
-            <span class="sa-label-segment">${seg}</span>
-            <input class="sa-label-input" data-seg="${seg}" placeholder="Funzione / parte del discorso..." value="${existing[seg] || ''}">
+        <div class="sa-label-row" style="background:#fff;padding:12px;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,0.05); border-left: 4px solid var(--primary-color); margin-bottom: 12px; display: flex; flex-direction: column;">
+            <div style="font-weight:700;font-size:1.1rem;color:#2c3e50;margin-bottom:8px;">${i + 1}. ${seg}</div>
+            <div class="sa-cascading-container" data-seg="${seg}"></div>
         </div>
     `).join('');
+
+    labelsDiv.querySelectorAll('.sa-cascading-container').forEach(c => {
+        window.renderSaCascading(c, c.dataset.seg, existing[c.dataset.seg] || '');
+    });
 };
 
 window.checkSentenceAnalysis = (id) => {
@@ -3717,22 +3885,28 @@ window.checkSentenceAnalysis = (id) => {
         else { current.push(words[i + 1]); }
     });
     userSegments.push(current.join(' '));
-    const userLabels = [...document.querySelectorAll('.sa-label-input')].map(i => i.value.trim());
+    const userLabels = [...document.querySelectorAll('.sa-cascading-container')].map(container => {
+        const selects = [...container.querySelectorAll('select')];
+        const values = selects.map(s => s.value).filter(v => v !== '');
+        return values.join(' - ');
+    });
 
-    // Show result as feedback (non-blocking)
-    const feedbackDiv = document.getElementById('sa-feedback') || (() => {
-        const d = document.createElement('div');
-        d.id = 'sa-feedback';
-        d.style = 'margin-top:1.2rem;padding:1rem;border-radius:12px;font-weight:700;font-size:1rem;';
-        document.querySelector('.sa-labels').after(d);
-        return d;
-    })();
-    feedbackDiv.innerHTML = `
-        <div style="background:#e8f5e9;border:2px solid #27ae60;border-radius:12px;padding:1rem;margin-top:1rem;">
+    // Rimuoviamo eventuale feedback precedente dalla pagina
+    const existingFeedback = document.getElementById('sa-feedback');
+    if (existingFeedback) existingFeedback.remove();
+
+    const selected = {
+        segments: userSegments,
+        labels: userLabels
+    };
+
+    const htmlContent = `
+        <div style="background:#e8f5e9;border:2px solid #27ae60;border-radius:12px;padding:1rem;margin-top:0;">
             <b style="color:#27ae60;">✅ La tua analisi:</b><br>
             ${userSegments.map((s, i) => `<span style="display:block;margin-top:4px;"><b>${s}</b> → ${userLabels[i] || '<em>non etichettato</em>'}</span>`).join('')}
         </div>`;
-    checkAnswer('done', 'done', 'sentence-analysis', id);
+
+    checkAnswer(selected, null, 'sentence-analysis', id, { success: htmlContent });
 };
 window.showEditProfileModal = () => {
     const user = Auth.getUser();

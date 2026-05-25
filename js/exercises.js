@@ -5101,14 +5101,74 @@ window.exercisesData = {
                         "type": "sentence-analysis",
                         "title": "Allenamento Finale",
                         "instruction": "Clicca tra le parole per inserire una barretta (/), poi clicca ETICHETTA per indicare la categoria grammaticale di ciascuna parola.",
-                        "sentence": "La mamma ha preparato una torta deliziosa."
+                        "sentence": "La mamma ha preparato una torta deliziosa.",
+                        "answer": [
+                            {
+                                "segment": "La",
+                                "label": "articolo determinativo femminile singolare"
+                            },
+                            {
+                                "segment": "mamma",
+                                "label": "nome comune di persona femminile singolare"
+                            },
+                            {
+                                "segment": "ha preparato",
+                                "label": "voce del verbo preparare prima coniugazione modo indicativo tempo passato prossimo terza persona singolare"
+                            },
+                            {
+                                "segment": "una",
+                                "label": "articolo indeterminativo femminile singolare"
+                            },
+                            {
+                                "segment": "torta",
+                                "label": "nome comune di cosa femminile singolare"
+                            },
+                            {
+                                "segment": "deliziosa.",
+                                "label": "aggettivo qualificativo femminile singolare"
+                            }
+                        ]
                     },
                     {
                         "id": 1603,
                         "type": "sentence-analysis",
                         "title": "Allenamento Finale",
                         "instruction": "Clicca tra le parole per inserire una barretta (/), poi clicca ETICHETTA per indicare la categoria grammaticale di ciascuna parola.",
-                        "sentence": "Noi andremo al mare domani con gli amici."
+                        "sentence": "Noi andremo al mare domani con gli amici.",
+                        "answer": [
+                            {
+                                "segment": "Noi",
+                                "label": "pronome personale prima persona plurale"
+                            },
+                            {
+                                "segment": "andremo",
+                                "label": "voce del verbo andare prima coniugazione modo indicativo tempo futuro semplice prima persona plurale"
+                            },
+                            {
+                                "segment": "al",
+                                "label": "preposizione articolata"
+                            },
+                            {
+                                "segment": "mare",
+                                "label": "nome comune di cosa maschile singolare"
+                            },
+                            {
+                                "segment": "domani",
+                                "label": "avverbio di tempo"
+                            },
+                            {
+                                "segment": "con",
+                                "label": "preposizione semplice"
+                            },
+                            {
+                                "segment": "gli",
+                                "label": "articolo determinativo maschile plurale"
+                            },
+                            {
+                                "segment": "amici.",
+                                "label": "nome comune di persona maschile plurale"
+                            }
+                        ]
                     },
                     {
                         "id": 1604,
@@ -10015,7 +10075,33 @@ window.exercisesData = {
                         "type": "sentence-analysis",
                         "title": "Allenamento Combinato 2",
                         "instruction": "Clicca tra le parole per inserire una barretta (/), poi clicca ETICHETTA per indicare il nome della proposizione.",
-                        "sentence": "Occorre proprio che porti il cane dal veterinario per fargli fare un controllo generale."
+                        "sentence": "Occorre proprio che porti il cane dal veterinario per fargli fare un controllo generale.",
+                        "answer": [
+                            {
+                                "segment": "La",
+                                "label": "articolo determinativo femminile singolare"
+                            },
+                            {
+                                "segment": "mamma",
+                                "label": "nome comune di persona femminile singolare"
+                            },
+                            {
+                                "segment": "ha preparato",
+                                "label": "voce del verbo preparare prima coniugazione modo indicativo tempo passato prossimo terza persona singolare"
+                            },
+                            {
+                                "segment": "una",
+                                "label": "articolo indeterminativo femminile singolare"
+                            },
+                            {
+                                "segment": "torta",
+                                "label": "nome comune di cosa femminile singolare"
+                            },
+                            {
+                                "segment": "deliziosa.",
+                                "label": "aggettivo qualificativo femminile singolare"
+                            }
+                        ]
                     }
                 ],
                 "verifica": [],
