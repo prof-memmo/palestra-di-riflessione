@@ -933,6 +933,7 @@ async function loadAdminUsersInProfile() {
         const allUsers = [];
         usersSnapshot.forEach(doc => {
             const u = doc.data();
+            if (u.status === 'archived') return; // Skip archived users
             const userData = { id: doc.id, ...u, _progress: progressMap[doc.id] || {} };
             allUsers.push(userData);
 
@@ -1330,10 +1331,15 @@ window.archiviaAnnoCorrente = async function() {
                     joinedAt: userData.joinedAt || null
                 });
                 
-                // Elimina l'utente
-                batch.delete(doc.ref);
+                // Archivia l'utente invece di eliminarlo
+                batch.update(doc.ref, { status: 'archived', archivedYear: year, classId: null, className: null, teacherId: null });
                 if (progressMap[doc.id]) {
-                    batch.delete(window.fbDb.collection('progress').doc(doc.id));
+                    // Resetta i progressi ma mantieni il documento
+                    batch.update(window.fbDb.collection('progress').doc(doc.id), {
+                        points: 0,
+                        completedModules: [],
+                        completedLessons: []
+                    });
                 }
                 operationCount += 2;
             }

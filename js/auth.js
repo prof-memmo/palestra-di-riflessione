@@ -60,6 +60,36 @@ const Auth = {
                     Auth._user.email = fbUser.email;
                     await window.fbDb.collection('users').doc(fbUser.uid).update({ email: fbUser.email });
                 }
+
+                if (Auth._user.status === 'archived' && Auth._user.role === 'studente') {
+                    const newClassCode = prompt("Il tuo account è archiviato. Inserisci il nuovo Codice Classe per riattivarti:");
+                    if (newClassCode) {
+                        const q = await window.fbDb.collection('classes').where('code', '==', newClassCode.toUpperCase()).get();
+                        if (!q.empty) {
+                            const classData = q.docs[0].data();
+                            const classId = q.docs[0].id;
+                            Auth._user.status = 'active';
+                            Auth._user.classId = classId;
+                            Auth._user.className = classData.name;
+                            Auth._user.teacherId = classData.teacherId;
+                            await window.fbDb.collection('users').doc(fbUser.uid).update({
+                                status: 'active',
+                                classId: classId,
+                                className: classData.name,
+                                teacherId: classData.teacherId
+                            });
+                            alert("Bentornato! Sei stato riattivato nella classe " + classData.name);
+                        } else {
+                            alert("Codice classe non valido.");
+                            Auth.logout();
+                            return;
+                        }
+                    } else {
+                        alert("Codice necessario per riattivare l'account.");
+                        Auth.logout();
+                        return;
+                    }
+                }
                 // Se l'utente ha selezionato un ruolo diverso (e non è admin), aggiorniamo il profilo esistente
                 if (pendingRole && Auth._user.role !== pendingRole && Auth._user.role !== 'admin') {
                     Auth._user.role = pendingRole;
