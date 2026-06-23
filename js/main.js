@@ -3603,9 +3603,6 @@ function updateSidebarMenu() {
         ? `<img src="${user.avatar}" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">` 
         : `<span>${user.avatar}</span>`;
 
-    const isPlaying = (window.MusicPlayer && window.MusicPlayer.isPlaying) ? '⏸️' : '▶️';
-    const currentTrackTitle = (window.MusicPlayer && window.MusicPlayer.tracks) ? window.MusicPlayer.tracks[window.MusicPlayer.currentTrackIndex].replace(" (freetouse.com).mp3", "") : 'Pronto...';
-
     let html = `
         <style>
             .sidebar-user-block:hover {
@@ -3620,22 +3617,6 @@ function updateSidebarMenu() {
             <div style="overflow: hidden;">
                 <p style="font-weight: 800; font-size: 0.95rem; margin: 0; white-space: nowrap; text-overflow: ellipsis;">${user.name}</p>
                 <p style="font-size: 0.75rem; color: var(--primary-color); font-weight: 700; margin: 0;">${window.Progress.getPoints()} XP</p>
-            </div>
-        </div>
-        
-        <!-- Music Widget -->
-        <div style="padding: 10px 12px; background: #1a1a2e; border-radius: 15px; margin-bottom: 1.5rem; border: 1px solid rgba(0,0,0,0.1); box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-                <span style="font-size: 0.65rem; color: #ccc; font-weight: bold;">🎵 SOTTOFONDO</span>
-                <a href="https://freetouse.com/music" target="_blank" style="font-size: 0.5rem; color: #f1c40f; text-decoration: none;">freetouse.com</a>
-            </div>
-            <div style="display: flex; align-items: center; justify-content: space-between; background: rgba(255,255,255,0.1); padding: 5px 8px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.05);">
-                <div id="music-track-title" style="font-size: 0.65rem; color: white; white-space: nowrap; max-width: 90px; overflow: hidden; text-overflow: ellipsis;">${currentTrackTitle}</div>
-                <div style="display: flex; align-items: center; gap: 6px;">
-                    <button onclick="event.stopPropagation(); if(window.MusicPlayer) window.MusicPlayer.prevTrack()" style="background: transparent; border: none; color: white; cursor: pointer; font-size: 0.7rem;">⏮️</button>
-                    <button id="music-play-btn" onclick="event.stopPropagation(); if(window.MusicPlayer) window.MusicPlayer.togglePlay()" style="background: #f1c40f; border: none; color: #1a1a2e; cursor: pointer; font-size: 0.7rem; width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center;">${isPlaying}</button>
-                    <button onclick="event.stopPropagation(); if(window.MusicPlayer) window.MusicPlayer.nextTrack()" style="background: transparent; border: none; color: white; cursor: pointer; font-size: 0.7rem;">⏭️</button>
-                </div>
             </div>
         </div>
     `;
