@@ -460,8 +460,8 @@ function renderContattiPage() {
                 <div class="info-card-box">
                     <div class="info-card-icon">📦</div>
                     <div class="info-card-text">
-                        <h4>Vuoi un gioco o un materiale?</h4>
-                        <p>Puoi richiedere giochi specifici o materiali didattici direttamente tramite questo modulo. Descrivimi cosa stai cercando e ti risponderò al più presto!</p>
+                        <h4>Scopri il mondo Prof. Memmo</h4>
+                        <p><a href="https://prof-memmo.github.io/games/" target="_blank" style="color: var(--primary-color); font-weight: bold; text-decoration: underline;">Visita il sito</a> per scoprire i materiali, i giochi e la filosofia, oppure <a href="https://prof-memmo.github.io/games/condividi-esperienza.html" target="_blank" style="color: var(--primary-color); font-weight: bold; text-decoration: underline;">condividi la tua esperienza</a> lasciando commenti e feedback tramite il modulo!</p>
                     </div>
                 </div>
             </div>
