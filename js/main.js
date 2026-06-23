@@ -542,8 +542,8 @@ async function renderProfiloPage() {
     const history = JSON.parse(localStorage.getItem('palestra_history') || '[]');
     let classes = JSON.parse(localStorage.getItem('palestra_classes') || '[]');
     
-    // Se docente, sincronizziamo le classi dal database
-    if (user.role === 'docente' && !user.isGuest && window.fbDb) {
+    // Se docente o admin, sincronizziamo le classi dal database
+    if ((user.role === 'docente' || user.role === 'admin' || user.email === 'prof.memmo@gmail.com') && !user.isGuest && window.fbDb) {
         try {
             // Recupera sia le classi con il vecchio formato (teacherId string) 
             // che quelle nuove (teacherIds array)
