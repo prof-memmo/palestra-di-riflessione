@@ -3621,6 +3621,32 @@ function updateSidebarMenu() {
         </div>
     `;
 
+    const isPlaying = (window.MusicPlayer && window.MusicPlayer.isPlaying) ? '⏸️' : '▶️';
+    const currentTrackTitle = (window.MusicPlayer && window.MusicPlayer.tracks && window.MusicPlayer.tracks[window.MusicPlayer.currentTrackIndex]) ? window.MusicPlayer.tracks[window.MusicPlayer.currentTrackIndex].replace(" (freetouse.com).mp3", "") : 'Pronto...';
+
+    html += `
+        <div style="margin-bottom: 1.5rem; display: flex; flex-direction: column; gap: 0.5rem;">
+            <!-- Music Widget -->
+            <div id="music-player-widget" style="background: white; padding: 10px 15px; border-radius: 30px; display: flex; align-items: center; gap: 10px; border: 2px solid #f0f0f0; width: 100%; box-sizing: border-box; box-shadow: 0 2px 10px rgba(0,0,0,0.05);">
+                <button id="music-play-btn" onclick="if(window.MusicPlayer) window.MusicPlayer.togglePlay()" style="background: var(--primary-color); color: white; border: none; width: 35px; height: 35px; border-radius: 50%; font-size: 1rem; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; box-shadow: 0 2px 5px rgba(93, 95, 239, 0.3);">${isPlaying}</button>
+                <div style="display: flex; flex-direction: column; overflow: hidden; flex-grow: 1;">
+                    <span style="font-size: 0.6rem; color: #888; font-weight: 800; text-transform: uppercase; letter-spacing: 1px;">In Riproduzione</span>
+                    <span id="music-track-title" style="font-size: 0.75rem; font-weight: 700; color: #333; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${currentTrackTitle}</span>
+                </div>
+                <button onclick="if(window.MusicPlayer) window.MusicPlayer.nextTrack()" style="background: #f8f9fa; color: #555; border: 1px solid #ddd; width: 30px; height: 30px; border-radius: 50%; cursor: pointer; font-size: 0.8rem; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">⏭️</button>
+            </div>
+
+            <!-- Timer Widget (Visibile solo per studenti tramite timer.js) -->
+            <div id="dropdown-timer-container" style="display: none; background: #fff8e1; padding: 10px 15px; border-radius: 30px; border: 2px solid #ffb74d; width: 100%; box-sizing: border-box; align-items: center; justify-content: center; gap: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+                <span style="font-size: 1.5rem;">🐈</span>
+                <div style="display: flex; flex-direction: column; align-items: flex-start; overflow: hidden;">
+                    <span style="font-size: 0.6rem; font-weight: 800; color: #ff9800; text-transform: uppercase;">Tempo Studio</span>
+                    <span id="dropdown-session-timer" style="font-size: 1.1rem; font-weight: 900; color: #e65100; font-variant-numeric: tabular-nums;">--:--</span>
+                </div>
+            </div>
+        </div>
+    `;
+
     for (const sec of mainSections) {
         const isActive = activeMainSection === sec.id;
         const activeClass = isActive ? 'active' : '';
