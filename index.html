@@ -104,6 +104,15 @@
                         <button onclick="if(window.MusicPlayer) window.MusicPlayer.nextTrack()" style="background: #f8f9fa; color: #555; border: 1px solid #ddd; width: 30px; height: 30px; border-radius: 50%; cursor: pointer; font-size: 0.8rem; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">⏭️</button>
                     </div>
                 </li>
+                <li style="margin-top: 0.5rem; margin-bottom: 1.5rem; display: flex; justify-content: center; padding: 0 1rem;">
+                    <div id="dropdown-timer-container" style="display: none; background: #fff8e1; padding: 10px 15px; border-radius: 30px; border: 2px solid #ffb74d; width: 100%; box-sizing: border-box; display: flex; align-items: center; justify-content: center; gap: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+                        <span style="font-size: 1.5rem;">🐈</span>
+                        <div style="display: flex; flex-direction: column; align-items: flex-start; overflow: hidden;">
+                            <span style="font-size: 0.6rem; font-weight: 800; color: #ff9800; text-transform: uppercase;">Tempo Studio</span>
+                            <span id="dropdown-session-timer" style="font-size: 1.1rem; font-weight: 900; color: #e65100; font-variant-numeric: tabular-nums;">--:--</span>
+                        </div>
+                    </div>
+                </li>
             </ul>
         </div>
     </nav>
@@ -194,13 +203,6 @@
 
     <!-- MUSIC PLAYER MOVED TO SIDEBAR -->
 
-    <!-- FLOATING TIMER & CAT WIDGET -->
-    <div id="dropdown-timer-container" style="display: none; position: fixed; top: 20px; right: 20px; z-index: 10000; background: white; padding: 10px 20px; border-radius: 20px; box-shadow: 0 5px 20px rgba(0,0,0,0.15); border: 2px solid #ffb74d; display: flex; align-items: center; gap: 10px;">
-        <span style="font-size: 1.5rem;">🐈</span>
-        <div style="display: flex; flex-direction: column;">
-            <span style="font-size: 0.6rem; font-weight: 800; color: #ff9800; text-transform: uppercase;">Tempo Studio</span>
-            <span id="dropdown-session-timer" style="font-size: 1.2rem; font-weight: 900; color: #e65100; font-variant-numeric: tabular-nums;">--:--</span>
-        </div>
-    </div>
+
 </body>
 </html>

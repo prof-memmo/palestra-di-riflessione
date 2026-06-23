@@ -138,7 +138,7 @@ const SessionTimer = {
             if (dropdownContainer) dropdownContainer.style.display = 'none';
         } else {
             if (dropdownContainer && dropdownTimer) {
-                dropdownContainer.style.display = 'block';
+                dropdownContainer.style.display = 'flex';
                 dropdownTimer.textContent = timeStr;
             }
         }
