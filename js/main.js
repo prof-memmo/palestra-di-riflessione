@@ -710,7 +710,7 @@ async function renderProfiloPage() {
                 </div>
             ` : ''}
 
-            ${user.role === 'docente' ? `
+            ${(user.role === 'docente' || user.role === 'admin' || user.email === 'prof.memmo@gmail.com') ? `
                 <div class="teacher-area">
                     <!-- Titolo rimosso come richiesto -->
                     
