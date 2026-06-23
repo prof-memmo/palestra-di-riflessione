@@ -5175,91 +5175,505 @@ window.exercisesData = {
                         "type": "sentence-analysis",
                         "title": "Allenamento Finale",
                         "instruction": "Clicca tra le parole per inserire una barretta (/), poi clicca ETICHETTA per indicare la categoria grammaticale di ciascuna parola.",
-                        "sentence": "Quella ragazza bionda legge un libro interessante."
+                        "sentence": "Quella ragazza bionda legge un libro interessante.",
+                        "answer": [
+                            {
+                                "segment": "Quella",
+                                "label": "aggettivo dimostrativo femminile singolare"
+                            },
+                            {
+                                "segment": "ragazza",
+                                "label": "nome comune di persona femminile singolare"
+                            },
+                            {
+                                "segment": "bionda",
+                                "label": "aggettivo qualificativo femminile singolare"
+                            },
+                            {
+                                "segment": "legge",
+                                "label": "voce del verbo leggere seconda coniugazione modo indicativo tempo presente terza persona singolare"
+                            },
+                            {
+                                "segment": "un",
+                                "label": "articolo indeterminativo maschile singolare"
+                            },
+                            {
+                                "segment": "libro",
+                                "label": "nome comune di cosa maschile singolare"
+                            },
+                            {
+                                "segment": "interessante.",
+                                "label": "aggettivo qualificativo maschile singolare"
+                            }
+                        ]
                     },
                     {
                         "id": 1605,
                         "type": "sentence-analysis",
                         "title": "Allenamento Finale",
                         "instruction": "Clicca tra le parole per inserire una barretta (/), poi clicca ETICHETTA per indicare la categoria grammaticale di ciascuna parola.",
-                        "sentence": "Il vento forte soffiava tra gli alberi del parco."
+                        "sentence": "Il vento forte soffiava tra gli alberi del parco.",
+                        "answer": [
+                            {
+                                "segment": "Il",
+                                "label": "articolo determinativo maschile singolare"
+                            },
+                            {
+                                "segment": "vento",
+                                "label": "nome comune di cosa maschile singolare"
+                            },
+                            {
+                                "segment": "forte",
+                                "label": "aggettivo qualificativo maschile singolare"
+                            },
+                            {
+                                "segment": "soffiava",
+                                "label": "voce del verbo soffiare prima coniugazione modo indicativo tempo imperfetto terza persona singolare"
+                            },
+                            {
+                                "segment": "tra",
+                                "label": "preposizione semplice"
+                            },
+                            {
+                                "segment": "gli",
+                                "label": "articolo determinativo maschile plurale"
+                            },
+                            {
+                                "segment": "alberi",
+                                "label": "nome comune di cosa maschile plurale"
+                            },
+                            {
+                                "segment": "del",
+                                "label": "preposizione articolata"
+                            },
+                            {
+                                "segment": "parco.",
+                                "label": "nome comune di cosa maschile singolare"
+                            }
+                        ]
                     },
                     {
                         "id": 1606,
                         "type": "sentence-analysis",
                         "title": "Allenamento Finale",
                         "instruction": "Clicca tra le parole per inserire una barretta (/), poi clicca ETICHETTA per indicare la categoria grammaticale di ciascuna parola.",
-                        "sentence": "Voi avete studiato molto per l'esame."
+                        "sentence": "Voi avete studiato molto per l'esame.",
+                        "answer": [
+                            {
+                                "segment": "Voi",
+                                "label": "pronome personale seconda persona plurale"
+                            },
+                            {
+                                "segment": "avete studiato",
+                                "label": "voce del verbo studiare prima coniugazione modo indicativo tempo passato prossimo seconda persona plurale"
+                            },
+                            {
+                                "segment": "molto",
+                                "label": "avverbio di quantità"
+                            },
+                            {
+                                "segment": "per",
+                                "label": "preposizione semplice"
+                            },
+                            {
+                                "segment": "l'",
+                                "label": "articolo determinativo maschile singolare"
+                            },
+                            {
+                                "segment": "esame.",
+                                "label": "nome comune di cosa maschile singolare"
+                            }
+                        ]
                     },
                     {
                         "id": 1607,
                         "type": "sentence-analysis",
                         "title": "Allenamento Finale",
                         "instruction": "Clicca tra le parole per inserire una barretta (/), poi clicca ETICHETTA per indicare la categoria grammaticale di ciascuna parola.",
-                        "sentence": "Un piccolo cane abbaiava nella notte silenziosa."
+                        "sentence": "Un piccolo cane abbaiava nella notte silenziosa.",
+                        "answer": [
+                            {
+                                "segment": "Un",
+                                "label": "articolo indeterminativo maschile singolare"
+                            },
+                            {
+                                "segment": "piccolo",
+                                "label": "aggettivo qualificativo maschile singolare"
+                            },
+                            {
+                                "segment": "cane",
+                                "label": "nome comune di animale maschile singolare"
+                            },
+                            {
+                                "segment": "abbaiava",
+                                "label": "voce del verbo abbaiare prima coniugazione modo indicativo tempo imperfetto terza persona singolare"
+                            },
+                            {
+                                "segment": "nella",
+                                "label": "preposizione articolata"
+                            },
+                            {
+                                "segment": "notte",
+                                "label": "nome comune di cosa femminile singolare"
+                            },
+                            {
+                                "segment": "silenziosa.",
+                                "label": "aggettivo qualificativo femminile singolare"
+                            }
+                        ]
                     },
                     {
                         "id": 1608,
                         "type": "sentence-analysis",
                         "title": "Analisi Grammaticale Guidata Finale",
                         "instruction": "Clicca tra le parole per inserire una barretta (/), poi clicca ETICHETTA per indicare la categoria grammaticale di ciascuna parola.",
-                        "sentence": "Ieri ho incontrato Marco e gli ho parlato."
+                        "sentence": "Ieri ho incontrato Marco e gli ho parlato.",
+                        "answer": [
+                            {
+                                "segment": "Ieri",
+                                "label": "avverbio di tempo"
+                            },
+                            {
+                                "segment": "ho incontrato",
+                                "label": "voce del verbo incontrare prima coniugazione modo indicativo tempo passato prossimo prima persona singolare"
+                            },
+                            {
+                                "segment": "Marco",
+                                "label": "nome proprio di persona maschile singolare"
+                            },
+                            {
+                                "segment": "e",
+                                "label": "congiunzione"
+                            },
+                            {
+                                "segment": "gli",
+                                "label": "pronome personale maschile singolare"
+                            },
+                            {
+                                "segment": "ho parlato.",
+                                "label": "voce del verbo parlare prima coniugazione modo indicativo tempo passato prossimo prima persona singolare"
+                            }
+                        ]
                     },
                     {
                         "id": 1609,
                         "type": "sentence-analysis",
                         "title": "Analisi Grammaticale Guidata Finale",
                         "instruction": "Clicca tra le parole per inserire una barretta (/), poi clicca ETICHETTA per indicare la categoria grammaticale di ciascuna parola.",
-                        "sentence": "Questi fiori profumati sono per te."
+                        "sentence": "Questi fiori profumati sono per te.",
+                        "answer": [
+                            {
+                                "segment": "Questi",
+                                "label": "aggettivo dimostrativo maschile plurale"
+                            },
+                            {
+                                "segment": "fiori",
+                                "label": "nome comune di cosa maschile plurale"
+                            },
+                            {
+                                "segment": "profumati",
+                                "label": "aggettivo qualificativo maschile plurale"
+                            },
+                            {
+                                "segment": "sono",
+                                "label": "voce del verbo essere coniugazione propria modo indicativo tempo presente terza persona plurale"
+                            },
+                            {
+                                "segment": "per",
+                                "label": "preposizione semplice"
+                            },
+                            {
+                                "segment": "te.",
+                                "label": "pronome personale seconda persona singolare"
+                            }
+                        ]
                     },
                     {
                         "id": 1610,
                         "type": "sentence-analysis",
                         "title": "Analisi Grammaticale Guidata Finale",
                         "instruction": "Clicca tra le parole per inserire una barretta (/), poi clicca ETICHETTA per indicare la categoria grammaticale di ciascuna parola.",
-                        "sentence": "Ah! Che bella sorpresa mi avete fatto!"
+                        "sentence": "Ah! Che bella sorpresa mi avete fatto!",
+                        "answer": [
+                            {
+                                "segment": "Ah!",
+                                "label": "interiezione propria"
+                            },
+                            {
+                                "segment": "Che",
+                                "label": "aggettivo esclamativo femminile singolare"
+                            },
+                            {
+                                "segment": "bella",
+                                "label": "aggettivo qualificativo femminile singolare"
+                            },
+                            {
+                                "segment": "sorpresa",
+                                "label": "nome comune di cosa femminile singolare"
+                            },
+                            {
+                                "segment": "mi",
+                                "label": "pronome personale prima persona singolare"
+                            },
+                            {
+                                "segment": "avete fatto!",
+                                "label": "voce del verbo fare prima coniugazione modo indicativo tempo passato prossimo seconda persona plurale"
+                            }
+                        ]
                     },
                     {
                         "id": 1611,
                         "type": "sentence-analysis",
                         "title": "Analisi Grammaticale Guidata Finale",
                         "instruction": "Clicca tra le parole per inserire una barretta (/), poi clicca ETICHETTA per indicare la categoria grammaticale di ciascuna parola.",
-                        "sentence": "Un asino con un carico di sale attraversò un fiume."
+                        "sentence": "Un asino con un carico di sale attraversò un fiume.",
+                        "answer": [
+                            {
+                                "segment": "Un",
+                                "label": "articolo indeterminativo maschile singolare"
+                            },
+                            {
+                                "segment": "asino",
+                                "label": "nome comune di animale maschile singolare"
+                            },
+                            {
+                                "segment": "con",
+                                "label": "preposizione semplice"
+                            },
+                            {
+                                "segment": "un",
+                                "label": "articolo indeterminativo maschile singolare"
+                            },
+                            {
+                                "segment": "carico",
+                                "label": "nome comune di cosa maschile singolare"
+                            },
+                            {
+                                "segment": "di",
+                                "label": "preposizione semplice"
+                            },
+                            {
+                                "segment": "sale",
+                                "label": "nome comune di cosa maschile singolare"
+                            },
+                            {
+                                "segment": "attraversò",
+                                "label": "voce del verbo attraversare prima coniugazione modo indicativo tempo passato remoto terza persona singolare"
+                            },
+                            {
+                                "segment": "un",
+                                "label": "articolo indeterminativo maschile singolare"
+                            },
+                            {
+                                "segment": "fiume.",
+                                "label": "nome comune di cosa maschile singolare"
+                            }
+                        ]
                     },
                     {
                         "id": 1612,
                         "type": "sentence-analysis",
                         "title": "Analisi Grammaticale Guidata Finale",
                         "instruction": "Clicca tra le parole per inserire una barretta (/), poi clicca ETICHETTA per indicare la categoria grammaticale di ciascuna parola.",
-                        "sentence": "Il sale si sciolse e il carico divenne leggero."
+                        "sentence": "Il sale si sciolse e il carico divenne leggero.",
+                        "answer": [
+                            {
+                                "segment": "Il",
+                                "label": "articolo determinativo maschile singolare"
+                            },
+                            {
+                                "segment": "sale",
+                                "label": "nome comune di cosa maschile singolare"
+                            },
+                            {
+                                "segment": "si sciolse",
+                                "label": "voce del verbo sciogliere seconda coniugazione modo indicativo tempo passato remoto terza persona singolare"
+                            },
+                            {
+                                "segment": "e",
+                                "label": "congiunzione"
+                            },
+                            {
+                                "segment": "il",
+                                "label": "articolo determinativo maschile singolare"
+                            },
+                            {
+                                "segment": "carico",
+                                "label": "nome comune di cosa maschile singolare"
+                            },
+                            {
+                                "segment": "divenne",
+                                "label": "voce del verbo divenire terza coniugazione modo indicativo tempo passato remoto terza persona singolare"
+                            },
+                            {
+                                "segment": "leggero.",
+                                "label": "aggettivo qualificativo maschile singolare"
+                            }
+                        ]
                     },
                     {
                         "id": 1613,
                         "type": "sentence-analysis",
                         "title": "Analisi Grammaticale Guidata Finale",
                         "instruction": "Clicca tra le parole per inserire una barretta (/), poi clicca ETICHETTA per indicare la categoria grammaticale di ciascuna parola.",
-                        "sentence": "Un giorno l'asino portava un carico di spugne."
+                        "sentence": "Un giorno l'asino portava un carico di spugne.",
+                        "answer": [
+                            {
+                                "segment": "Un",
+                                "label": "articolo indeterminativo maschile singolare"
+                            },
+                            {
+                                "segment": "giorno",
+                                "label": "nome comune di cosa maschile singolare"
+                            },
+                            {
+                                "segment": "l'",
+                                "label": "articolo determinativo maschile singolare"
+                            },
+                            {
+                                "segment": "asino",
+                                "label": "nome comune di animale maschile singolare"
+                            },
+                            {
+                                "segment": "portava",
+                                "label": "voce del verbo portare prima coniugazione modo indicativo tempo imperfetto terza persona singolare"
+                            },
+                            {
+                                "segment": "un",
+                                "label": "articolo indeterminativo maschile singolare"
+                            },
+                            {
+                                "segment": "carico",
+                                "label": "nome comune di cosa maschile singolare"
+                            },
+                            {
+                                "segment": "di",
+                                "label": "preposizione semplice"
+                            },
+                            {
+                                "segment": "spugne.",
+                                "label": "nome comune di cosa femminile plurale"
+                            }
+                        ]
                     },
                     {
                         "id": 1614,
                         "type": "sentence-analysis",
                         "title": "Analisi Grammaticale Guidata Finale",
                         "instruction": "Clicca tra le parole per inserire una barretta (/), poi clicca ETICHETTA per indicare la categoria grammaticale di ciascuna parola.",
-                        "sentence": "L'animale pensò di cadere per alleggerire il peso."
+                        "sentence": "L'animale pensò di cadere per alleggerire il peso.",
+                        "answer": [
+                            {
+                                "segment": "L'",
+                                "label": "articolo determinativo maschile singolare"
+                            },
+                            {
+                                "segment": "animale",
+                                "label": "nome comune di animale maschile singolare"
+                            },
+                            {
+                                "segment": "pensò",
+                                "label": "voce del verbo pensare prima coniugazione modo indicativo tempo passato remoto terza persona singolare"
+                            },
+                            {
+                                "segment": "di",
+                                "label": "preposizione semplice"
+                            },
+                            {
+                                "segment": "cadere",
+                                "label": "voce del verbo cadere seconda coniugazione modo infinito tempo presente"
+                            },
+                            {
+                                "segment": "per",
+                                "label": "preposizione semplice"
+                            },
+                            {
+                                "segment": "alleggerire",
+                                "label": "voce del verbo alleggerire terza coniugazione modo infinito tempo presente"
+                            },
+                            {
+                                "segment": "il",
+                                "label": "articolo determinativo maschile singolare"
+                            },
+                            {
+                                "segment": "peso.",
+                                "label": "nome comune di cosa maschile singolare"
+                            }
+                        ]
                     },
                     {
                         "id": 1615,
                         "type": "sentence-analysis",
                         "title": "Analisi Grammaticale Guidata Finale",
                         "instruction": "Clicca tra le parole per inserire una barretta (/), poi clicca ETICHETTA per indicare la categoria grammaticale di ciascuna parola.",
-                        "sentence": "Le spugne assorbirono l'acqua e diventarono pesanti."
+                        "sentence": "Le spugne assorbirono l'acqua e diventarono pesanti.",
+                        "answer": [
+                            {
+                                "segment": "Le",
+                                "label": "articolo determinativo femminile plurale"
+                            },
+                            {
+                                "segment": "spugne",
+                                "label": "nome comune di cosa femminile plurale"
+                            },
+                            {
+                                "segment": "assorbirono",
+                                "label": "voce del verbo assorbire terza coniugazione modo indicativo tempo passato remoto terza persona plurale"
+                            },
+                            {
+                                "segment": "l'",
+                                "label": "articolo determinativo femminile singolare"
+                            },
+                            {
+                                "segment": "acqua",
+                                "label": "nome comune di cosa femminile singolare"
+                            },
+                            {
+                                "segment": "e",
+                                "label": "congiunzione"
+                            },
+                            {
+                                "segment": "diventarono",
+                                "label": "voce del verbo diventare prima coniugazione modo indicativo tempo passato remoto terza persona plurale"
+                            },
+                            {
+                                "segment": "pesanti.",
+                                "label": "aggettivo qualificativo femminile plurale"
+                            }
+                        ]
                     },
                     {
                         "id": 1616,
                         "type": "sentence-analysis",
                         "title": "Analisi Grammaticale Guidata Finale",
                         "instruction": "Clicca tra le parole per inserire una barretta (/), poi clicca ETICHETTA per indicare la categoria grammaticale di ciascuna parola.",
-                        "sentence": "L'asino non riuscì a rialzarsi."
+                        "sentence": "L'asino non riuscì a rialzarsi.",
+                        "answer": [
+                            {
+                                "segment": "L'",
+                                "label": "articolo determinativo maschile singolare"
+                            },
+                            {
+                                "segment": "asino",
+                                "label": "nome comune di animale maschile singolare"
+                            },
+                            {
+                                "segment": "non",
+                                "label": "avverbio di negazione"
+                            },
+                            {
+                                "segment": "riuscì",
+                                "label": "voce del verbo riuscire terza coniugazione modo indicativo tempo passato remoto terza persona singolare"
+                            },
+                            {
+                                "segment": "a",
+                                "label": "preposizione semplice"
+                            },
+                            {
+                                "segment": "rialzarsi.",
+                                "label": "voce del verbo rialzare prima coniugazione modo infinito tempo presente"
+                            }
+                        ]
                     }
                 ],
                 "verifica": [
@@ -5308,70 +5722,346 @@ window.exercisesData = {
                         "type": "sentence-analysis",
                         "title": "Allenamento Combinato 1",
                         "instruction": "Clicca tra le parole per inserire una barretta (/), poi clicca ETICHETTA per indicare la categoria grammaticale di ciascuna parola.",
-                        "sentence": "Il vento forte scuote i rami degli alberi."
+                        "sentence": "Il vento forte scuote i rami degli alberi.",
+                        "answer": [
+                            {
+                                "segment": "Mentre tornavo a casa,",
+                                "label": "proposizione subordinata temporale esplicita"
+                            },
+                            {
+                                "segment": "ho incontrato Marco",
+                                "label": "proposizione principale"
+                            },
+                            {
+                                "segment": "che mi ha detto",
+                                "label": "proposizione subordinata relativa esplicita"
+                            },
+                            {
+                                "segment": "di avere trovato un nuovo lavoro in centro.",
+                                "label": "proposizione subordinata oggettiva implicita"
+                            }
+                        ]
                     },
                     {
                         "id": 1703,
                         "type": "sentence-analysis",
                         "title": "Allenamento Combinato 1",
                         "instruction": "Clicca tra le parole per inserire una barretta (/), poi clicca ETICHETTA per indicare la categoria grammaticale di ciascuna parola.",
-                        "sentence": "La mia amica simpatica studia molto ogni giorno."
+                        "sentence": "La mia amica simpatica studia molto ogni giorno.",
+                        "answer": [
+                            {
+                                "segment": "La",
+                                "label": "articolo determinativo femminile singolare"
+                            },
+                            {
+                                "segment": "mia",
+                                "label": "aggettivo possessivo femminile singolare"
+                            },
+                            {
+                                "segment": "amica",
+                                "label": "nome comune di persona femminile singolare"
+                            },
+                            {
+                                "segment": "simpatica",
+                                "label": "aggettivo qualificativo femminile singolare"
+                            },
+                            {
+                                "segment": "studia",
+                                "label": "voce del verbo studiare prima coniugazione modo indicativo tempo presente terza persona singolare"
+                            },
+                            {
+                                "segment": "molto",
+                                "label": "avverbio di quantità"
+                            },
+                            {
+                                "segment": "ogni",
+                                "label": "aggettivo indefinito maschile singolare"
+                            },
+                            {
+                                "segment": "giorno.",
+                                "label": "nome comune di cosa maschile singolare"
+                            }
+                        ]
                     },
                     {
                         "id": 1704,
                         "type": "sentence-analysis",
                         "title": "Allenamento Combinato 1",
                         "instruction": "Clicca tra le parole per inserire una barretta (/), poi clicca ETICHETTA per indicare la categoria grammaticale di ciascuna parola.",
-                        "sentence": "I bambini giocano felici nel giardino."
+                        "sentence": "I bambini giocano felici nel giardino.",
+                        "answer": [
+                            {
+                                "segment": "I",
+                                "label": "articolo determinativo maschile plurale"
+                            },
+                            {
+                                "segment": "bambini",
+                                "label": "nome comune di persona maschile plurale"
+                            },
+                            {
+                                "segment": "giocano",
+                                "label": "voce del verbo giocare prima coniugazione modo indicativo tempo presente terza persona plurale"
+                            },
+                            {
+                                "segment": "felici",
+                                "label": "aggettivo qualificativo maschile plurale"
+                            },
+                            {
+                                "segment": "nel",
+                                "label": "preposizione articolata"
+                            },
+                            {
+                                "segment": "giardino.",
+                                "label": "nome comune di cosa maschile singolare"
+                            }
+                        ]
                     },
                     {
                         "id": 1705,
                         "type": "sentence-analysis",
                         "title": "Allenamento Combinato 1",
                         "instruction": "Clicca tra le parole per inserire una barretta (/), poi clicca ETICHETTA per indicare la categoria grammaticale di ciascuna parola.",
-                        "sentence": "Marco ha scritto una lunga lettera alla nonna."
+                        "sentence": "Marco ha scritto una lunga lettera alla nonna.",
+                        "answer": [
+                            {
+                                "segment": "Marco",
+                                "label": "nome proprio di persona maschile singolare"
+                            },
+                            {
+                                "segment": "ha scritto",
+                                "label": "voce del verbo scrivere seconda coniugazione modo indicativo tempo passato prossimo terza persona singolare"
+                            },
+                            {
+                                "segment": "una",
+                                "label": "articolo indeterminativo femminile singolare"
+                            },
+                            {
+                                "segment": "lunga",
+                                "label": "aggettivo qualificativo femminile singolare"
+                            },
+                            {
+                                "segment": "lettera",
+                                "label": "nome comune di cosa femminile singolare"
+                            },
+                            {
+                                "segment": "alla",
+                                "label": "preposizione articolata"
+                            },
+                            {
+                                "segment": "nonna.",
+                                "label": "nome comune di persona femminile singolare"
+                            }
+                        ]
                     },
                     {
                         "id": 1706,
                         "type": "sentence-analysis",
                         "title": "Allenamento Combinato 1",
                         "instruction": "Clicca tra le parole per inserire una barretta (/), poi clicca ETICHETTA per indicare la categoria grammaticale di ciascuna parola.",
-                        "sentence": "La professoressa spiega pazientemente la lezione."
+                        "sentence": "La professoressa spiega pazientemente la lezione.",
+                        "answer": [
+                            {
+                                "segment": "La",
+                                "label": "articolo determinativo femminile singolare"
+                            },
+                            {
+                                "segment": "professoressa",
+                                "label": "nome comune di persona femminile singolare"
+                            },
+                            {
+                                "segment": "spiega",
+                                "label": "voce del verbo spiegare prima coniugazione modo indicativo tempo presente terza persona singolare"
+                            },
+                            {
+                                "segment": "pazientemente",
+                                "label": "avverbio di modo"
+                            },
+                            {
+                                "segment": "la",
+                                "label": "articolo determinativo femminile singolare"
+                            },
+                            {
+                                "segment": "lezione.",
+                                "label": "nome comune di cosa femminile singolare"
+                            }
+                        ]
                     },
                     {
                         "id": 1707,
                         "type": "sentence-analysis",
                         "title": "Allenamento Combinato 1",
                         "instruction": "Clicca tra le parole per inserire una barretta (/), poi clicca ETICHETTA per indicare la categoria grammaticale di ciascuna parola.",
-                        "sentence": "Il piccolo gatto bianco dorme sul cuscino morbido."
+                        "sentence": "Il piccolo gatto bianco dorme sul cuscino morbido.",
+                        "answer": [
+                            {
+                                "segment": "Il",
+                                "label": "articolo determinativo maschile singolare"
+                            },
+                            {
+                                "segment": "piccolo",
+                                "label": "aggettivo qualificativo maschile singolare"
+                            },
+                            {
+                                "segment": "gatto",
+                                "label": "nome comune di animale maschile singolare"
+                            },
+                            {
+                                "segment": "bianco",
+                                "label": "aggettivo qualificativo maschile singolare"
+                            },
+                            {
+                                "segment": "dorme",
+                                "label": "voce del verbo dormire terza coniugazione modo indicativo tempo presente terza persona singolare"
+                            },
+                            {
+                                "segment": "sul",
+                                "label": "preposizione articolata"
+                            },
+                            {
+                                "segment": "cuscino",
+                                "label": "nome comune di cosa maschile singolare"
+                            },
+                            {
+                                "segment": "morbido.",
+                                "label": "aggettivo qualificativo maschile singolare"
+                            }
+                        ]
                     },
                     {
                         "id": 1708,
                         "type": "sentence-analysis",
                         "title": "Allenamento Combinato 1",
                         "instruction": "Clicca tra le parole per inserire una barretta (/), poi clicca ETICHETTA per indicare la categoria grammaticale di ciascuna parola.",
-                        "sentence": "Mia sorella legge sempre libri di avventura."
+                        "sentence": "Mia sorella legge sempre libri di avventura.",
+                        "answer": [
+                            {
+                                "segment": "Mia",
+                                "label": "aggettivo possessivo femminile singolare"
+                            },
+                            {
+                                "segment": "sorella",
+                                "label": "nome comune di persona femminile singolare"
+                            },
+                            {
+                                "segment": "legge",
+                                "label": "voce del verbo leggere seconda coniugazione modo indicativo tempo presente terza persona singolare"
+                            },
+                            {
+                                "segment": "sempre",
+                                "label": "avverbio di tempo"
+                            },
+                            {
+                                "segment": "libri",
+                                "label": "nome comune di cosa maschile plurale"
+                            },
+                            {
+                                "segment": "di",
+                                "label": "preposizione semplice"
+                            },
+                            {
+                                "segment": "avventura.",
+                                "label": "nome comune di cosa femminile singolare"
+                            }
+                        ]
                     },
                     {
                         "id": 1709,
                         "type": "sentence-analysis",
                         "title": "Allenamento Combinato 1",
                         "instruction": "Clicca tra le parole per inserire una barretta (/), poi clicca ETICHETTA per indicare la categoria grammaticale di ciascuna parola.",
-                        "sentence": "Il treno partì in ritardo dalla stazione."
+                        "sentence": "Il treno partì in ritardo dalla stazione.",
+                        "answer": [
+                            {
+                                "segment": "Il",
+                                "label": "articolo determinativo maschile singolare"
+                            },
+                            {
+                                "segment": "treno",
+                                "label": "nome comune di cosa maschile singolare"
+                            },
+                            {
+                                "segment": "partì",
+                                "label": "voce del verbo partire terza coniugazione modo indicativo tempo passato remoto terza persona singolare"
+                            },
+                            {
+                                "segment": "in",
+                                "label": "preposizione semplice"
+                            },
+                            {
+                                "segment": "ritardo",
+                                "label": "nome comune di cosa maschile singolare"
+                            },
+                            {
+                                "segment": "dalla",
+                                "label": "preposizione articolata"
+                            },
+                            {
+                                "segment": "stazione.",
+                                "label": "nome comune di cosa femminile singolare"
+                            }
+                        ]
                     },
                     {
                         "id": 1710,
                         "type": "sentence-analysis",
                         "title": "Allenamento Combinato 1",
                         "instruction": "Clicca tra le parole per inserire una barretta (/), poi clicca ETICHETTA per indicare la categoria grammaticale di ciascuna parola.",
-                        "sentence": "Gli studenti diligenti hanno consegnato il compito."
+                        "sentence": "Gli studenti diligenti hanno consegnato il compito.",
+                        "answer": [
+                            {
+                                "segment": "Gli",
+                                "label": "articolo determinativo maschile plurale"
+                            },
+                            {
+                                "segment": "studenti",
+                                "label": "nome comune di persona maschile plurale"
+                            },
+                            {
+                                "segment": "diligenti",
+                                "label": "aggettivo qualificativo maschile plurale"
+                            },
+                            {
+                                "segment": "hanno consegnato",
+                                "label": "voce del verbo consegnare prima coniugazione modo indicativo tempo passato prossimo terza persona plurale"
+                            },
+                            {
+                                "segment": "il",
+                                "label": "articolo determinativo maschile singolare"
+                            },
+                            {
+                                "segment": "compito.",
+                                "label": "nome comune di cosa maschile singolare"
+                            }
+                        ]
                     },
                     {
                         "id": 1711,
                         "type": "sentence-analysis",
                         "title": "Allenamento Combinato 1",
                         "instruction": "Clicca tra le parole per inserire una barretta (/), poi clicca ETICHETTA per indicare la categoria grammaticale di ciascuna parola.",
-                        "sentence": "Luca e Sofia camminano lentamente."
+                        "sentence": "Luca e Sofia camminano lentamente.",
+                        "answer": [
+                            {
+                                "segment": "Luca",
+                                "label": "nome proprio di persona maschile singolare"
+                            },
+                            {
+                                "segment": "e",
+                                "label": "congiunzione"
+                            },
+                            {
+                                "segment": "Sofia",
+                                "label": "nome proprio di persona femminile singolare"
+                            },
+                            {
+                                "segment": "camminano",
+                                "label": "voce del verbo camminare prima coniugazione modo indicativo tempo presente terza persona plurale"
+                            },
+                            {
+                                "segment": "lentamente.",
+                                "label": "avverbio di modo"
+                            }
+                        ]
                     }
                 ],
                 "verifica": [
@@ -5420,70 +6110,370 @@ window.exercisesData = {
                         "type": "sentence-analysis",
                         "title": "Allenamento Combinato 2",
                         "instruction": "Clicca tra le parole per inserire una barretta (/), poi clicca ETICHETTA per indicare la categoria grammaticale di ciascuna parola.",
-                        "sentence": "La cuoca preparava ogni sera una zuppa deliziosa."
+                        "sentence": "La cuoca preparava ogni sera una zuppa deliziosa.",
+                        "answer": [
+                            {
+                                "segment": "La",
+                                "label": "articolo determinativo femminile singolare"
+                            },
+                            {
+                                "segment": "cuoca",
+                                "label": "nome comune di persona femminile singolare"
+                            },
+                            {
+                                "segment": "preparava",
+                                "label": "voce del verbo preparare prima coniugazione modo indicativo tempo imperfetto terza persona singolare"
+                            },
+                            {
+                                "segment": "ogni",
+                                "label": "aggettivo indefinito femminile singolare"
+                            },
+                            {
+                                "segment": "sera",
+                                "label": "nome comune di cosa femminile singolare"
+                            },
+                            {
+                                "segment": "una",
+                                "label": "articolo indeterminativo femminile singolare"
+                            },
+                            {
+                                "segment": "zuppa",
+                                "label": "nome comune di cosa femminile singolare"
+                            },
+                            {
+                                "segment": "deliziosa.",
+                                "label": "aggettivo qualificativo femminile singolare"
+                            }
+                        ]
                     },
                     {
                         "id": 5703,
                         "type": "sentence-analysis",
                         "title": "Allenamento Combinato 2",
                         "instruction": "Clicca tra le parole per inserire una barretta (/), poi clicca ETICHETTA per indicare la categoria grammaticale di ciascuna parola.",
-                        "sentence": "Il sole splende luminoso nel cielo azzurro."
+                        "sentence": "Il sole splende luminoso nel cielo azzurro.",
+                        "answer": [
+                            {
+                                "segment": "Il",
+                                "label": "articolo determinativo maschile singolare"
+                            },
+                            {
+                                "segment": "sole",
+                                "label": "nome comune di cosa maschile singolare"
+                            },
+                            {
+                                "segment": "splende",
+                                "label": "voce del verbo splendere seconda coniugazione modo indicativo tempo presente terza persona singolare"
+                            },
+                            {
+                                "segment": "luminoso",
+                                "label": "aggettivo qualificativo maschile singolare"
+                            },
+                            {
+                                "segment": "nel",
+                                "label": "preposizione articolata"
+                            },
+                            {
+                                "segment": "cielo",
+                                "label": "nome comune di cosa maschile singolare"
+                            },
+                            {
+                                "segment": "azzurro.",
+                                "label": "aggettivo qualificativo maschile singolare"
+                            }
+                        ]
                     },
                     {
                         "id": 5704,
                         "type": "sentence-analysis",
                         "title": "Allenamento Combinato 2",
                         "instruction": "Clicca tra le parole per inserire una barretta (/), poi clicca ETICHETTA per indicare la categoria grammaticale di ciascuna parola.",
-                        "sentence": "Queste scarpe comode appartengono a mia sorella."
+                        "sentence": "Queste scarpe comode appartengono a mia sorella.",
+                        "answer": [
+                            {
+                                "segment": "Queste",
+                                "label": "aggettivo dimostrativo femminile plurale"
+                            },
+                            {
+                                "segment": "scarpe",
+                                "label": "nome comune di cosa femminile plurale"
+                            },
+                            {
+                                "segment": "comode",
+                                "label": "aggettivo qualificativo femminile plurale"
+                            },
+                            {
+                                "segment": "appartengono",
+                                "label": "voce del verbo appartenere seconda coniugazione modo indicativo tempo presente terza persona plurale"
+                            },
+                            {
+                                "segment": "a",
+                                "label": "preposizione semplice"
+                            },
+                            {
+                                "segment": "mia",
+                                "label": "aggettivo possessivo femminile singolare"
+                            },
+                            {
+                                "segment": "sorella.",
+                                "label": "nome comune di persona femminile singolare"
+                            }
+                        ]
                     },
                     {
                         "id": 5705,
                         "type": "sentence-analysis",
                         "title": "Allenamento Combinato 2",
                         "instruction": "Clicca tra le parole per inserire una barretta (/), poi clicca ETICHETTA per indicare la categoria grammaticale di ciascuna parola.",
-                        "sentence": "Il capitano della nave guidava i marinai."
+                        "sentence": "Il capitano della nave guidava i marinai.",
+                        "answer": [
+                            {
+                                "segment": "Il",
+                                "label": "articolo determinativo maschile singolare"
+                            },
+                            {
+                                "segment": "capitano",
+                                "label": "nome comune di persona maschile singolare"
+                            },
+                            {
+                                "segment": "della",
+                                "label": "preposizione articolata"
+                            },
+                            {
+                                "segment": "nave",
+                                "label": "nome comune di cosa femminile singolare"
+                            },
+                            {
+                                "segment": "guidava",
+                                "label": "voce del verbo guidare prima coniugazione modo indicativo tempo imperfetto terza persona singolare"
+                            },
+                            {
+                                "segment": "i",
+                                "label": "articolo determinativo maschile plurale"
+                            },
+                            {
+                                "segment": "marinai.",
+                                "label": "nome comune di persona maschile plurale"
+                            }
+                        ]
                     },
                     {
                         "id": 5706,
                         "type": "sentence-analysis",
                         "title": "Allenamento Combinato 2",
                         "instruction": "Clicca tra le parole per inserire una barretta (/), poi clicca ETICHETTA per indicare la categoria grammaticale di ciascuna parola.",
-                        "sentence": "Ieri sera abbiamo guardato un bellissimo film."
+                        "sentence": "Ieri sera abbiamo guardato un bellissimo film.",
+                        "answer": [
+                            {
+                                "segment": "Ieri",
+                                "label": "avverbio di tempo"
+                            },
+                            {
+                                "segment": "sera",
+                                "label": "nome comune di cosa femminile singolare"
+                            },
+                            {
+                                "segment": "abbiamo guardato",
+                                "label": "voce del verbo guardare prima coniugazione modo indicativo tempo passato prossimo prima persona plurale"
+                            },
+                            {
+                                "segment": "un",
+                                "label": "articolo indeterminativo maschile singolare"
+                            },
+                            {
+                                "segment": "bellissimo",
+                                "label": "aggettivo qualificativo maschile singolare"
+                            },
+                            {
+                                "segment": "film.",
+                                "label": "nome comune di cosa maschile singolare"
+                            }
+                        ]
                     },
                     {
                         "id": 5707,
                         "type": "sentence-analysis",
                         "title": "Allenamento Combinato 2",
                         "instruction": "Clicca tra le parole per inserire una barretta (/), poi clicca ETICHETTA per indicare la categoria grammaticale di ciascuna parola.",
-                        "sentence": "La nonna cucina torte buonissime per i nipoti."
+                        "sentence": "La nonna cucina torte buonissime per i nipoti.",
+                        "answer": [
+                            {
+                                "segment": "La",
+                                "label": "articolo determinativo femminile singolare"
+                            },
+                            {
+                                "segment": "nonna",
+                                "label": "nome comune di persona femminile singolare"
+                            },
+                            {
+                                "segment": "cucina",
+                                "label": "voce del verbo cucinare prima coniugazione modo indicativo tempo presente terza persona singolare"
+                            },
+                            {
+                                "segment": "torte",
+                                "label": "nome comune di cosa femminile plurale"
+                            },
+                            {
+                                "segment": "buonissime",
+                                "label": "aggettivo qualificativo femminile plurale"
+                            },
+                            {
+                                "segment": "per",
+                                "label": "preposizione semplice"
+                            },
+                            {
+                                "segment": "i",
+                                "label": "articolo determinativo maschile plurale"
+                            },
+                            {
+                                "segment": "nipoti.",
+                                "label": "nome comune di persona maschile plurale"
+                            }
+                        ]
                     },
                     {
                         "id": 5708,
                         "type": "sentence-analysis",
                         "title": "Allenamento Combinato 2",
                         "instruction": "Clicca tra le parole per inserire una barretta (/), poi clicca ETICHETTA per indicare la categoria grammaticale di ciascuna parola.",
-                        "sentence": "Il vecchio professore racconta storie meravigliose."
+                        "sentence": "Il vecchio professore racconta storie meravigliose.",
+                        "answer": [
+                            {
+                                "segment": "Il",
+                                "label": "articolo determinativo maschile singolare"
+                            },
+                            {
+                                "segment": "vecchio",
+                                "label": "aggettivo qualificativo maschile singolare"
+                            },
+                            {
+                                "segment": "professore",
+                                "label": "nome comune di persona maschile singolare"
+                            },
+                            {
+                                "segment": "racconta",
+                                "label": "voce del verbo raccontare prima coniugazione modo indicativo tempo presente terza persona singolare"
+                            },
+                            {
+                                "segment": "storie",
+                                "label": "nome comune di cosa femminile plurale"
+                            },
+                            {
+                                "segment": "meravigliose.",
+                                "label": "aggettivo qualificativo femminile plurale"
+                            }
+                        ]
                     },
                     {
                         "id": 5709,
                         "type": "sentence-analysis",
                         "title": "Allenamento Combinato 2",
                         "instruction": "Clicca tra le parole per inserire una barretta (/), poi clicca ETICHETTA per indicare la categoria grammaticale di ciascuna parola.",
-                        "sentence": "Giulia suona il violino con passione."
+                        "sentence": "Giulia suona il violino con passione.",
+                        "answer": [
+                            {
+                                "segment": "Giulia",
+                                "label": "nome proprio di persona femminile singolare"
+                            },
+                            {
+                                "segment": "suona",
+                                "label": "voce del verbo suonare prima coniugazione modo indicativo tempo presente terza persona singolare"
+                            },
+                            {
+                                "segment": "il",
+                                "label": "articolo determinativo maschile singolare"
+                            },
+                            {
+                                "segment": "violino",
+                                "label": "nome comune di cosa maschile singolare"
+                            },
+                            {
+                                "segment": "con",
+                                "label": "preposizione semplice"
+                            },
+                            {
+                                "segment": "passione.",
+                                "label": "nome comune di cosa femminile singolare"
+                            }
+                        ]
                     },
                     {
                         "id": 5710,
                         "type": "sentence-analysis",
                         "title": "Allenamento Combinato 2",
                         "instruction": "Clicca tra le parole per inserire una barretta (/), poi clicca ETICHETTA per indicare la categoria grammaticale di ciascuna parola.",
-                        "sentence": "I turisti stranieri visitano le città d'arte."
+                        "sentence": "I turisti stranieri visitano le città d'arte.",
+                        "answer": [
+                            {
+                                "segment": "I",
+                                "label": "articolo determinativo maschile plurale"
+                            },
+                            {
+                                "segment": "turisti",
+                                "label": "nome comune di persona maschile plurale"
+                            },
+                            {
+                                "segment": "stranieri",
+                                "label": "aggettivo qualificativo maschile plurale"
+                            },
+                            {
+                                "segment": "visitano",
+                                "label": "voce del verbo visitare prima coniugazione modo indicativo tempo presente terza persona plurale"
+                            },
+                            {
+                                "segment": "le",
+                                "label": "articolo determinativo femminile plurale"
+                            },
+                            {
+                                "segment": "città",
+                                "label": "nome comune di cosa femminile plurale"
+                            },
+                            {
+                                "segment": "d'",
+                                "label": "preposizione semplice"
+                            },
+                            {
+                                "segment": "arte.",
+                                "label": "nome comune di cosa femminile singolare"
+                            }
+                        ]
                     },
                     {
                         "id": 5711,
                         "type": "sentence-analysis",
                         "title": "Allenamento Combinato 2",
                         "instruction": "Clicca tra le parole per inserire una barretta (/), poi clicca ETICHETTA per indicare la categoria grammaticale di ciascuna parola.",
-                        "sentence": "Il piccolo fiume scorreva tra i boschi."
+                        "sentence": "Il piccolo fiume scorreva tra i boschi.",
+                        "answer": [
+                            {
+                                "segment": "Il",
+                                "label": "articolo determinativo maschile singolare"
+                            },
+                            {
+                                "segment": "piccolo",
+                                "label": "aggettivo qualificativo maschile singolare"
+                            },
+                            {
+                                "segment": "fiume",
+                                "label": "nome comune di cosa maschile singolare"
+                            },
+                            {
+                                "segment": "scorreva",
+                                "label": "voce del verbo scorrere seconda coniugazione modo indicativo tempo imperfetto terza persona singolare"
+                            },
+                            {
+                                "segment": "tra",
+                                "label": "preposizione semplice"
+                            },
+                            {
+                                "segment": "i",
+                                "label": "articolo determinativo maschile plurale"
+                            },
+                            {
+                                "segment": "boschi.",
+                                "label": "nome comune di cosa maschile plurale"
+                            }
+                        ]
                     }
                 ],
                 "verifica": [
@@ -6637,7 +7627,7 @@ window.exercisesData = {
                         "type": "completion",
                         "title": "Tempo o Altro?",
                         "instruction": "Riconosci se il complemento evidenziato è di Tempo (T) o qualcos'altro (X).",
-                        "text": "<div style='text-align:left;padding-left:2rem'><ol><li>Esco <span style=\"color:#27ae60;font-weight:bold\">ALLE OTTO</span>. (___)</li><li>Abito <span style=\"color:#e74c3c;font-weight:bold\">A MILANO</span>. (___)</li><li>Studio <span style=\"color:#27ae60;font-weight:bold\">DI NOTTE</span>. (___)</li><li>Mangio <span style=\"color:#e74c3c;font-weight:bold\">UNA MELA</span>. (___)</li><li>Ti chiamo <span style=\"color:#27ae60;font-weight:bold\">FRA POCO</span>. (___)</li></ol></div>",
+                        "text": "<div style='text-align:left;padding-left:2rem'><ol><li>Esco <span style=\"font-weight:bold\">ALLE OTTO</span>. (___)</li><li>Abito <span style=\"font-weight:bold\">A MILANO</span>. (___)</li><li>Studio <span style=\"font-weight:bold\">DI NOTTE</span>. (___)</li><li>Mangio <span style=\"font-weight:bold\">UNA MELA</span>. (___)</li><li>Ti chiamo <span style=\"font-weight:bold\">FRA POCO</span>. (___)</li></ol></div>",
                         "answer": "T|X|T|X|T"
                     }
                 ],
@@ -6767,7 +7757,7 @@ window.exercisesData = {
                         "type": "completion",
                         "title": "Termine o Oggetto?",
                         "instruction": "Distingui tra Termine (T) e Oggetto (O). Scrivi l'abbreviazione corretta (rispetta le maiuscole).",
-                        "text": "<div style='text-align:left;padding-left:2rem'><ol><li>Do un libro <span style=\"color:#27ae60;font-weight:bold\">A LUCA</span>. (___)</li><li>Guardo <span style=\"color:#e67e22;font-weight:bold\">LA TV</span>. (___)</li><li>Parlo <span style=\"color:#27ae60;font-weight:bold\">AI NONNI</span>. (___)</li><li>Mangio <span style=\"color:#e67e22;font-weight:bold\">LA PIZZA</span>. (___)</li><li>Scrivo <span style=\"color:#27ae60;font-weight:bold\">A TE</span>. (___)</li></ol></div>",
+                        "text": "<div style='text-align:left;padding-left:2rem'><ol><li>Do un libro <span style=\"font-weight:bold\">A LUCA</span>. (___)</li><li>Guardo <span style=\"font-weight:bold\">LA TV</span>. (___)</li><li>Parlo <span style=\"font-weight:bold\">AI NONNI</span>. (___)</li><li>Mangio <span style=\"font-weight:bold\">LA PIZZA</span>. (___)</li><li>Scrivo <span style=\"font-weight:bold\">A TE</span>. (___)</li></ol></div>",
                         "answer": "T|O|T|O|T"
                     },
                     {
@@ -6807,7 +7797,7 @@ window.exercisesData = {
                         "type": "completion",
                         "title": "Termine o Luogo?",
                         "instruction": "Riconosci se il complemento evidenziato è di Termine (T) o di Luogo (L).",
-                        "text": "<div style='text-align:left;padding-left:2rem'><ol><li>Ho dato un bacio <span style=\"color:#27ae60;font-weight:bold\">ALLA NONNA</span>. (___)</li><li>Vado <span style=\"color:#e74c3c;font-weight:bold\">A SCUOLA</span>. (___)</li><li>Ho scritto <span style=\"color:#27ae60;font-weight:bold\">AL DIRETTORE</span>. (___)</li><li>Resto <span style=\"color:#e74c3c;font-weight:bold\">A CASA</span>. (___)</li><li>Racconto una storia <span style=\"color:#27ae60;font-weight:bold\">AI BAMBINI</span>. (___)</li></ol></div>",
+                        "text": "<div style='text-align:left;padding-left:2rem'><ol><li>Ho dato un bacio <span style=\"font-weight:bold\">ALLA NONNA</span>. (___)</li><li>Vado <span style=\"font-weight:bold\">A SCUOLA</span>. (___)</li><li>Ho scritto <span style=\"font-weight:bold\">AL DIRETTORE</span>. (___)</li><li>Resto <span style=\"font-weight:bold\">A CASA</span>. (___)</li><li>Racconto una storia <span style=\"font-weight:bold\">AI BAMBINI</span>. (___)</li></ol></div>",
                         "answer": "T|L|T|L|T"
                     }
                 ],
@@ -6836,7 +7826,7 @@ window.exercisesData = {
                         "type": "completion",
                         "title": "Agente o Causa Efficiente?",
                         "instruction": "Distingui tra Agente (A) e Causa Efficiente (C). Scrivi l'abbreviazione corretta (rispetta le maiuscole).",
-                        "text": "<div style='text-align:left;padding-left:2rem'><ol><li>Amato <span style=\"color:#27ae60;font-weight:bold\">DA TUTTI</span>. (___)</li><li>Distrutto <span style=\"color:#e67e22;font-weight:bold\">DAL VENTO</span>. (___)</li><li>Inseguito <span style=\"color:#27ae60;font-weight:bold\">DAL CANE</span>. (___)</li><li>Colpito <span style=\"color:#e67e22;font-weight:bold\">DA UN SASSO</span>. (___)</li><li>Sgridato <span style=\"color:#27ae60;font-weight:bold\">DAL PROFESSORE</span>. (___)</li></ol></div>",
+                        "text": "<div style='text-align:left;padding-left:2rem'><ol><li>Amato <span style=\"font-weight:bold\">DA TUTTI</span>. (___)</li><li>Distrutto <span style=\"font-weight:bold\">DAL VENTO</span>. (___)</li><li>Inseguito <span style=\"font-weight:bold\">DAL CANE</span>. (___)</li><li>Colpito <span style=\"font-weight:bold\">DA UN SASSO</span>. (___)</li><li>Sgridato <span style=\"font-weight:bold\">DAL PROFESSORE</span>. (___)</li></ol></div>",
                         "answer": "A|C|A|C|A"
                     },
                     {
@@ -6876,7 +7866,7 @@ window.exercisesData = {
                         "type": "completion",
                         "title": "Agente o Specificazione?",
                         "instruction": "Riconosci se il complemento evidenziato è d'Agente (A) o di Specificazione (S).",
-                        "text": "<div style='text-align:left;padding-left:2rem'><ol><li>Fu ascoltato <span style=\"color:#27ae60;font-weight:bold\">DAI DISCEPOLI</span>. (___)</li><li>La casa <span style=\"color:#e74c3c;font-weight:bold\">DEI DISCEPOLI</span>. (___)</li><li>Punito <span style=\"color:#27ae60;font-weight:bold\">DAL GIUDICE</span>. (___)</li><li>L'aula <span style=\"color:#e74c3c;font-weight:bold\">DEL GIUDICE</span>. (___)</li><li>Applaudito <span style=\"color:#27ae60;font-weight:bold\">DAL PUBBLICO</span>. (___)</li></ol></div>",
+                        "text": "<div style='text-align:left;padding-left:2rem'><ol><li>Fu ascoltato <span style=\"font-weight:bold\">DAI DISCEPOLI</span>. (___)</li><li>La casa <span style=\"font-weight:bold\">DEI DISCEPOLI</span>. (___)</li><li>Punito <span style=\"font-weight:bold\">DAL GIUDICE</span>. (___)</li><li>L'aula <span style=\"font-weight:bold\">DEL GIUDICE</span>. (___)</li><li>Applaudito <span style=\"font-weight:bold\">DAL PUBBLICO</span>. (___)</li></ol></div>",
                         "answer": "A|S|A|S|A"
                     }
                 ],
@@ -6905,7 +7895,7 @@ window.exercisesData = {
                         "type": "completion",
                         "title": "Modo o Mezzo?",
                         "instruction": "Distingui tra Modo (M) e Mezzo (Z). Scrivi l'abbreviazione corretta (rispetta le maiuscole).",
-                        "text": "<div style='text-align:left;padding-left:2rem'><ol><li>Parla <span style=\"color:#27ae60;font-weight:bold\">A VOCE ALTA</span>. (___)</li><li>Scrive <span style=\"color:#e67e22;font-weight:bold\">A PENNA</span>. (___)</li><li>Cammina <span style=\"color:#27ae60;font-weight:bold\">CON CALMA</span>. (___)</li><li>Viaggia <span style=\"color:#e67e22;font-weight:bold\">IN TRENO</span>. (___)</li><li>Lavora <span style=\"color:#27ae60;font-weight:bold\">CON IMPEGNO</span>. (___)</li></ol></div>",
+                        "text": "<div style='text-align:left;padding-left:2rem'><ol><li>Parla <span style=\"font-weight:bold\">A VOCE ALTA</span>. (___)</li><li>Scrive <span style=\"font-weight:bold\">A PENNA</span>. (___)</li><li>Cammina <span style=\"font-weight:bold\">CON CALMA</span>. (___)</li><li>Viaggia <span style=\"font-weight:bold\">IN TRENO</span>. (___)</li><li>Lavora <span style=\"font-weight:bold\">CON IMPEGNO</span>. (___)</li></ol></div>",
                         "answer": "M|Z|M|Z|M"
                     },
                     {
@@ -6945,7 +7935,7 @@ window.exercisesData = {
                         "type": "completion",
                         "title": "Modo o Compagnia?",
                         "instruction": "Riconosci se il complemento evidenziato è di Modo (M) o di Compagnia (C).",
-                        "text": "<div style='text-align:left;padding-left:2rem'><ol><li>Studio <span style=\"color:#27ae60;font-weight:bold\">CON PASSIONE</span>. (___)</li><li>Esco <span style=\"color:#e74c3c;font-weight:bold\">CON GLI AMICI</span>. (___)</li><li>Affronto il pericolo <span style=\"color:#27ae60;font-weight:bold\">CON CORAGGIO</span>. (___)</li><li>Vado al cinema <span style=\"color:#e74c3c;font-weight:bold\">CON SOFIA</span>. (___)</li><li>Parlo <span style=\"color:#27ae60;font-weight:bold\">CON SINCERITÀ</span>. (___)</li></ol></div>",
+                        "text": "<div style='text-align:left;padding-left:2rem'><ol><li>Studio <span style=\"font-weight:bold\">CON PASSIONE</span>. (___)</li><li>Esco <span style=\"font-weight:bold\">CON GLI AMICI</span>. (___)</li><li>Affronto il pericolo <span style=\"font-weight:bold\">CON CORAGGIO</span>. (___)</li><li>Vado al cinema <span style=\"font-weight:bold\">CON SOFIA</span>. (___)</li><li>Parlo <span style=\"font-weight:bold\">CON SINCERITÀ</span>. (___)</li></ol></div>",
                         "answer": "M|C|M|C|M"
                     }
                 ],
@@ -6974,7 +7964,7 @@ window.exercisesData = {
                         "type": "completion",
                         "title": "Mezzo o Modo?",
                         "instruction": "Distingui tra Mezzo (M) e Modo (D). Scrivi l'abbreviazione corretta (rispetta le maiuscole).",
-                        "text": "<div style='text-align:left;padding-left:2rem'><ol><li>Taglio <span style=\"color:#27ae60;font-weight:bold\">CON LE FORBICI</span>. (___)</li><li>Agisco <span style=\"color:#e67e22;font-weight:bold\">CON PRUDENZA</span>. (___)</li><li>Guardo <span style=\"color:#27ae60;font-weight:bold\">CON IL BINOCOLO</span>. (___)</li><li>Studio <span style=\"color:#e67e22;font-weight:bold\">CON ATTENZIONE</span>. (___)</li><li>Pago <span style=\"color:#27ae60;font-weight:bold\">CON LA CARTA</span>. (___)</li></ol></div>",
+                        "text": "<div style='text-align:left;padding-left:2rem'><ol><li>Taglio <span style=\"font-weight:bold\">CON LE FORBICI</span>. (___)</li><li>Agisco <span style=\"font-weight:bold\">CON PRUDENZA</span>. (___)</li><li>Guardo <span style=\"font-weight:bold\">CON IL BINOCOLO</span>. (___)</li><li>Studio <span style=\"font-weight:bold\">CON ATTENZIONE</span>. (___)</li><li>Pago <span style=\"font-weight:bold\">CON LA CARTA</span>. (___)</li></ol></div>",
                         "answer": "M|D|M|D|M"
                     },
                     {
@@ -7014,7 +8004,7 @@ window.exercisesData = {
                         "type": "completion",
                         "title": "Mezzo o Unione?",
                         "instruction": "Riconosci se il complemento evidenziato è di Mezzo (M) o di Unione (U).",
-                        "text": "<div style='text-align:left;padding-left:2rem'><ol><li>Guido <span style=\"color:#27ae60;font-weight:bold\">CON IL NAVIGATORE</span>. (___)</li><li>Bevo il tè <span style=\"color:#e74c3c;font-weight:bold\">CON IL LIMONE</span>. (___)</li><li>Schiaccio la noce <span style=\"color:#27ae60;font-weight:bold\">CON IL SASSO</span>. (___)</li><li>Esco <span style=\"color:#e74c3c;font-weight:bold\">CON L'OMBRELLO</span>. (___)</li><li>Salgo <span style=\"color:#27ae60;font-weight:bold\">CON L'ASCENSORE</span>. (___)</li></ol></div>",
+                        "text": "<div style='text-align:left;padding-left:2rem'><ol><li>Guido <span style=\"font-weight:bold\">CON IL NAVIGATORE</span>. (___)</li><li>Bevo il tè <span style=\"font-weight:bold\">CON IL LIMONE</span>. (___)</li><li>Schiaccio la noce <span style=\"font-weight:bold\">CON IL SASSO</span>. (___)</li><li>Esco <span style=\"font-weight:bold\">CON L'OMBRELLO</span>. (___)</li><li>Salgo <span style=\"font-weight:bold\">CON L'ASCENSORE</span>. (___)</li></ol></div>",
                         "answer": "M|U|M|U|M"
                     }
                 ],
@@ -7043,7 +8033,7 @@ window.exercisesData = {
                         "type": "completion",
                         "title": "Causa o Fine?",
                         "instruction": "Distingui tra Causa (C) e Fine (F). Scrivi l'abbreviazione corretta (rispetta le maiuscole).",
-                        "text": "<div style='text-align:left;padding-left:2rem'><ol><li>Piango <span style=\"color:#27ae60;font-weight:bold\">DI GIOIA</span>. (___)</li><li>Studio <span style=\"color:#e67e22;font-weight:bold\">PER IL SUCCESSO</span>. (___)</li><li>Tremo <span style=\"color:#27ae60;font-weight:bold\">DAL FREDDO</span>. (___)</li><li>Mi preparo <span style=\"color:#e67e22;font-weight:bold\">PER LA GARA</span>. (___)</li><li>Salto <span style=\"color:#27ae60;font-weight:bold\">DALLA FELICITÀ</span>. (___)</li></ol></div>",
+                        "text": "<div style='text-align:left;padding-left:2rem'><ol><li>Piango <span style=\"font-weight:bold\">DI GIOIA</span>. (___)</li><li>Studio <span style=\"font-weight:bold\">PER IL SUCCESSO</span>. (___)</li><li>Tremo <span style=\"font-weight:bold\">DAL FREDDO</span>. (___)</li><li>Mi preparo <span style=\"font-weight:bold\">PER LA GARA</span>. (___)</li><li>Salto <span style=\"font-weight:bold\">DALLA FELICITÀ</span>. (___)</li></ol></div>",
                         "answer": "C|F|C|F|C"
                     },
                     {
@@ -7083,7 +8073,7 @@ window.exercisesData = {
                         "type": "completion",
                         "title": "Causa o Tempo?",
                         "instruction": "Riconosci se il complemento evidenziato è di Causa (C) o di Tempo (T).",
-                        "text": "<div style='text-align:left;padding-left:2rem'><ol><li>è bloccato <span style=\"color:#27ae60;font-weight:bold\">PER LO SCIOPERO</span>. (___)</li><li>Torno <span style=\"color:#e74c3c;font-weight:bold\">PER NATALE</span>. (___)</li><li>Non dormo <span style=\"color:#27ae60;font-weight:bold\">PER IL RUMORE</span>. (___)</li><li>Arrivo <span style=\"color:#e74c3c;font-weight:bold\">PER LE OTTO</span>. (___)</li><li>Strillava <span style=\"color:#27ae60;font-weight:bold\">DALLA RABBIA</span>. (___)</li></ol></div>",
+                        "text": "<div style='text-align:left;padding-left:2rem'><ol><li>è bloccato <span style=\"font-weight:bold\">PER LO SCIOPERO</span>. (___)</li><li>Torno <span style=\"font-weight:bold\">PER NATALE</span>. (___)</li><li>Non dormo <span style=\"font-weight:bold\">PER IL RUMORE</span>. (___)</li><li>Arrivo <span style=\"font-weight:bold\">PER LE OTTO</span>. (___)</li><li>Strillava <span style=\"font-weight:bold\">DALLA RABBIA</span>. (___)</li></ol></div>",
                         "answer": "C|T|C|T|C"
                     }
                 ],
@@ -7112,7 +8102,7 @@ window.exercisesData = {
                         "type": "completion",
                         "title": "Fine o Causa?",
                         "instruction": "Distingui tra Fine (F) e Causa (C). Scrivi l'abbreviazione corretta (rispetta le maiuscole).",
-                        "text": "<div style='text-align:left;padding-left:2rem'><ol><li>Studio <span style=\"color:#27ae60;font-weight:bold\">PER LA PROMOZIONE</span>. (___)</li><li>Tremo <span style=\"color:#e67e22;font-weight:bold\">PER LA PAURA</span>. (___)</li><li>Si allena <span style=\"color:#27ae60;font-weight:bold\">PER IL TORNEO</span>. (___)</li><li>Piange <span style=\"color:#e67e22;font-weight:bold\">PER IL DOLORE</span>. (___)</li><li>Lavora <span style=\"color:#27ae60;font-weight:bold\">PER IL GUADAGNO</span>. (___)</li></ol></div>",
+                        "text": "<div style='text-align:left;padding-left:2rem'><ol><li>Studio <span style=\"font-weight:bold\">PER LA PROMOZIONE</span>. (___)</li><li>Tremo <span style=\"font-weight:bold\">PER LA PAURA</span>. (___)</li><li>Si allena <span style=\"font-weight:bold\">PER IL TORNEO</span>. (___)</li><li>Piange <span style=\"font-weight:bold\">PER IL DOLORE</span>. (___)</li><li>Lavora <span style=\"font-weight:bold\">PER IL GUADAGNO</span>. (___)</li></ol></div>",
                         "answer": "F|C|F|C|F"
                     },
                     {
@@ -7152,7 +8142,7 @@ window.exercisesData = {
                         "type": "completion",
                         "title": "Fine o Luogo?",
                         "instruction": "Riconosci se il complemento evidenziato è di Fine (F) o di Luogo (L).",
-                        "text": "<div style='text-align:left;padding-left:2rem'><ol><li>Guanti <span style=\"color:#27ae60;font-weight:bold\">DA SCI</span>. (___)</li><li>Vado <span style=\"color:#e74c3c;font-weight:bold\">IN MONTAGNA</span>. (___)</li><li>Corso <span style=\"color:#27ae60;font-weight:bold\">DI RECUPERO</span>. (___)</li><li>Vivo <span style=\"color:#e74c3c;font-weight:bold\">A MILANO</span>. (___)</li><li>Bastone <span style=\"color:#27ae60;font-weight:bold\">DA PASSEGGIO</span>. (___)</li></ol></div>",
+                        "text": "<div style='text-align:left;padding-left:2rem'><ol><li>Guanti <span style=\"font-weight:bold\">DA SCI</span>. (___)</li><li>Vado <span style=\"font-weight:bold\">IN MONTAGNA</span>. (___)</li><li>Corso <span style=\"font-weight:bold\">DI RECUPERO</span>. (___)</li><li>Vivo <span style=\"font-weight:bold\">A MILANO</span>. (___)</li><li>Bastone <span style=\"font-weight:bold\">DA PASSEGGIO</span>. (___)</li></ol></div>",
                         "answer": "F|L|F|L|F"
                     }
                 ],
@@ -7181,7 +8171,7 @@ window.exercisesData = {
                         "type": "completion",
                         "title": "Compagnia o Unione?",
                         "instruction": "Distingui tra Compagnia (C) e Unione (U). Scrivi l'abbreviazione corretta (rispetta le maiuscole).",
-                        "text": "<div style='text-align:left;padding-left:2rem'><ol><li>Esco <span style=\"color:#27ae60;font-weight:bold\">CON MARCO</span>. (___)</li><li>Bevo il tè <span style=\"color:#e67e22;font-weight:bold\">CON IL LIMONE</span>. (___)</li><li>Cammino <span style=\"color:#27ae60;font-weight:bold\">CON IL CANE</span>. (___)</li><li>Compro un maglione <span style=\"color:#e67e22;font-weight:bold\">CON LE TRECCE</span>. (___)</li><li>Studio <span style=\"color:#27ae60;font-weight:bold\">CON GIULIA</span>. (___)</li></ol></div>",
+                        "text": "<div style='text-align:left;padding-left:2rem'><ol><li>Esco <span style=\"font-weight:bold\">CON MARCO</span>. (___)</li><li>Bevo il tè <span style=\"font-weight:bold\">CON IL LIMONE</span>. (___)</li><li>Cammino <span style=\"font-weight:bold\">CON IL CANE</span>. (___)</li><li>Compro un maglione <span style=\"font-weight:bold\">CON LE TRECCE</span>. (___)</li><li>Studio <span style=\"font-weight:bold\">CON GIULIA</span>. (___)</li></ol></div>",
                         "answer": "C|U|C|U|C"
                     },
                     {
@@ -7221,7 +8211,7 @@ window.exercisesData = {
                         "type": "completion",
                         "title": "Compagnia/Unione o Modo?",
                         "instruction": "Riconosci se il complemento evidenziato è di Compagnia/Unione (CU) o di Modo (M).",
-                        "text": "<div style='text-align:left;padding-left:2rem'><ol><li>Viaggio <span style=\"color:#27ae60;font-weight:bold\">CON I CUGINI</span>. (___)</li><li>Parlo <span style=\"color:#e74c3c;font-weight:bold\">CON CALMA</span>. (___)</li><li>Prendo il caffè <span style=\"color:#27ae60;font-weight:bold\">CON LO ZUCCHERO</span>. (___)</li><li>Agisco <span style=\"color:#e74c3c;font-weight:bold\">CON FURBIZIA</span>. (___)</li><li>Esco <span style=\"color:#27ae60;font-weight:bold\">CON IL GATTO</span>. (___)</li></ol></div>",
+                        "text": "<div style='text-align:left;padding-left:2rem'><ol><li>Viaggio <span style=\"font-weight:bold\">CON I CUGINI</span>. (___)</li><li>Parlo <span style=\"font-weight:bold\">CON CALMA</span>. (___)</li><li>Prendo il caffè <span style=\"font-weight:bold\">CON LO ZUCCHERO</span>. (___)</li><li>Agisco <span style=\"font-weight:bold\">CON FURBIZIA</span>. (___)</li><li>Esco <span style=\"font-weight:bold\">CON IL GATTO</span>. (___)</li></ol></div>",
                         "answer": "CU|M|CU|M|CU"
                     }
                 ],
@@ -7272,140 +8262,548 @@ window.exercisesData = {
                         "type": "sentence-analysis",
                         "title": "Analisi Logica Guidata",
                         "instruction": "Clicca tra le parole per inserire una barretta (/), poi clicca ETICHETTA per indicare la funzione logica di ciascun sintagma.",
-                        "sentence": "La mamma ha preparato una torta deliziosa."
+                        "sentence": "La mamma ha preparato una torta deliziosa.",
+                        "answer": [
+                            {
+                                "segment": "La mamma",
+                                "label": "soggetto"
+                            },
+                            {
+                                "segment": "ha preparato",
+                                "label": "predicato verbale"
+                            },
+                            {
+                                "segment": "una torta",
+                                "label": "complemento oggetto"
+                            },
+                            {
+                                "segment": "deliziosa.",
+                                "label": "attributo del complemento oggetto"
+                            }
+                        ]
                     },
                     {
                         "id": 3603,
                         "type": "sentence-analysis",
                         "title": "Analisi Logica Guidata",
                         "instruction": "Clicca tra le parole per inserire una barretta (/), poi clicca ETICHETTA per indicare la funzione logica di ciascun sintagma.",
-                        "sentence": "Noi andremo al mare domani con gli amici."
+                        "sentence": "Noi andremo al mare domani con gli amici.",
+                        "answer": [
+                            {
+                                "segment": "Noi",
+                                "label": "soggetto"
+                            },
+                            {
+                                "segment": "andremo",
+                                "label": "predicato verbale"
+                            },
+                            {
+                                "segment": "al mare",
+                                "label": "complemento di moto a luogo"
+                            },
+                            {
+                                "segment": "domani",
+                                "label": "complemento di tempo determinato"
+                            },
+                            {
+                                "segment": "con gli amici.",
+                                "label": "complemento di compagnia"
+                            }
+                        ]
                     },
                     {
                         "id": 3604,
                         "type": "sentence-analysis",
                         "title": "Analisi Logica Guidata",
                         "instruction": "Clicca tra le parole per inserire una barretta (/), poi clicca ETICHETTA per indicare la funzione logica di ciascun sintagma.",
-                        "sentence": "Quella ragazza bionda legge un libro interessante."
+                        "sentence": "Quella ragazza bionda legge un libro interessante.",
+                        "answer": [
+                            {
+                                "segment": "Quella ragazza",
+                                "label": "soggetto"
+                            },
+                            {
+                                "segment": "bionda",
+                                "label": "attributo del soggetto"
+                            },
+                            {
+                                "segment": "legge",
+                                "label": "predicato verbale"
+                            },
+                            {
+                                "segment": "un libro",
+                                "label": "complemento oggetto"
+                            },
+                            {
+                                "segment": "interessante.",
+                                "label": "attributo del complemento oggetto"
+                            }
+                        ]
                     },
                     {
                         "id": 3605,
                         "type": "sentence-analysis",
                         "title": "Analisi Logica Guidata",
                         "instruction": "Clicca tra le parole per inserire una barretta (/), poi clicca ETICHETTA per indicare la funzione logica di ciascun sintagma.",
-                        "sentence": "Il vento forte soffiava tra gli alberi del parco."
+                        "sentence": "Il vento forte soffiava tra gli alberi del parco.",
+                        "answer": [
+                            {
+                                "segment": "Il vento",
+                                "label": "soggetto"
+                            },
+                            {
+                                "segment": "forte",
+                                "label": "attributo del soggetto"
+                            },
+                            {
+                                "segment": "soffiava",
+                                "label": "predicato verbale"
+                            },
+                            {
+                                "segment": "tra gli alberi",
+                                "label": "complemento di moto per luogo"
+                            },
+                            {
+                                "segment": "del parco.",
+                                "label": "complemento di specificazione"
+                            }
+                        ]
                     },
                     {
                         "id": 3606,
                         "type": "sentence-analysis",
                         "title": "Analisi Logica Guidata",
                         "instruction": "Clicca tra le parole per inserire una barretta (/), poi clicca ETICHETTA per indicare la funzione logica di ciascun sintagma.",
-                        "sentence": "Voi avete studiato molto per l'esame."
+                        "sentence": "Voi avete studiato molto per l'esame.",
+                        "answer": [
+                            {
+                                "segment": "Voi",
+                                "label": "soggetto"
+                            },
+                            {
+                                "segment": "avete studiato",
+                                "label": "predicato verbale"
+                            },
+                            {
+                                "segment": "molto",
+                                "label": "complemento avverbiale di quantità"
+                            },
+                            {
+                                "segment": "per l'esame.",
+                                "label": "complemento di fine"
+                            }
+                        ]
                     },
                     {
                         "id": 3607,
                         "type": "sentence-analysis",
                         "title": "Analisi Logica Guidata",
                         "instruction": "Clicca tra le parole per inserire una barretta (/), poi clicca ETICHETTA per indicare la funzione logica di ciascun sintagma.",
-                        "sentence": "Un piccolo cane abbaiava nella notte silenziosa."
+                        "sentence": "Un piccolo cane abbaiava nella notte silenziosa.",
+                        "answer": [
+                            {
+                                "segment": "Un piccolo cane",
+                                "label": "soggetto con attributo"
+                            },
+                            {
+                                "segment": "abbaiava",
+                                "label": "predicato verbale"
+                            },
+                            {
+                                "segment": "nella notte",
+                                "label": "complemento di tempo determinato"
+                            },
+                            {
+                                "segment": "silenziosa.",
+                                "label": "attributo del complemento di tempo"
+                            }
+                        ]
                     },
                     {
                         "id": 3608,
                         "type": "sentence-analysis",
                         "title": "Analisi Logica Guidata",
                         "instruction": "Clicca tra le parole per inserire una barretta (/), poi clicca ETICHETTA per indicare la funzione logica di ciascun sintagma.",
-                        "sentence": "Ieri ho incontrato Marco e gli ho parlato."
+                        "sentence": "Ieri ho incontrato Marco e gli ho parlato.",
+                        "answer": [
+                            {
+                                "segment": "Ieri",
+                                "label": "complemento di tempo determinato"
+                            },
+                            {
+                                "segment": "io",
+                                "label": "soggetto sottinteso"
+                            },
+                            {
+                                "segment": "ho incontrato",
+                                "label": "predicato verbale"
+                            },
+                            {
+                                "segment": "Marco",
+                                "label": "complemento oggetto"
+                            },
+                            {
+                                "segment": "e",
+                                "label": "congiunzione"
+                            },
+                            {
+                                "segment": "gli",
+                                "label": "complemento di termine"
+                            },
+                            {
+                                "segment": "ho parlato.",
+                                "label": "predicato verbale"
+                            }
+                        ]
                     },
                     {
                         "id": 3609,
                         "type": "sentence-analysis",
                         "title": "Analisi Logica Guidata",
                         "instruction": "Clicca tra le parole per inserire una barretta (/), poi clicca ETICHETTA per indicare la funzione logica di ciascun sintagma.",
-                        "sentence": "Questi fiori profumati sono per te."
+                        "sentence": "Questi fiori profumati sono per te.",
+                        "answer": [
+                            {
+                                "segment": "Questi fiori",
+                                "label": "soggetto"
+                            },
+                            {
+                                "segment": "profumati",
+                                "label": "attributo del soggetto"
+                            },
+                            {
+                                "segment": "sono",
+                                "label": "predicato verbale"
+                            },
+                            {
+                                "segment": "per te.",
+                                "label": "complemento di fine"
+                            }
+                        ]
                     },
                     {
                         "id": 3610,
                         "type": "sentence-analysis",
                         "title": "Analisi Logica Guidata",
                         "instruction": "Clicca tra le parole per inserire una barretta (/), poi clicca ETICHETTA per indicare la funzione logica di ciascun sintagma.",
-                        "sentence": "Luca è stato premiato dal professore per il suo impegno."
+                        "sentence": "Luca è stato premiato dal professore per il suo impegno.",
+                        "answer": [
+                            {
+                                "segment": "Luca",
+                                "label": "soggetto"
+                            },
+                            {
+                                "segment": "è stato premiato",
+                                "label": "predicato verbale"
+                            },
+                            {
+                                "segment": "dal professore",
+                                "label": "complemento d'agente"
+                            },
+                            {
+                                "segment": "per il suo impegno.",
+                                "label": "complemento di causa con attributo"
+                            }
+                        ]
                     },
                     {
                         "id": 3611,
                         "type": "sentence-analysis",
                         "title": "Analisi Logica Guidata Finale",
                         "instruction": "Clicca tra le parole per inserire una barretta (/), poi clicca ETICHETTA per indicare la funzione logica di ciascun sintagma.",
-                        "sentence": "Mio padre lavora in ufficio tutto il giorno."
+                        "sentence": "Mio padre lavora in ufficio tutto il giorno.",
+                        "answer": [
+                            {
+                                "segment": "Mio padre",
+                                "label": "soggetto con attributo"
+                            },
+                            {
+                                "segment": "lavora",
+                                "label": "predicato verbale"
+                            },
+                            {
+                                "segment": "in ufficio",
+                                "label": "complemento di stato in luogo"
+                            },
+                            {
+                                "segment": "tutto il giorno.",
+                                "label": "complemento di tempo continuato con attributo"
+                            }
+                        ]
                     },
                     {
                         "id": 3612,
                         "type": "sentence-analysis",
                         "title": "Analisi Logica Guidata Finale",
                         "instruction": "Clicca tra le parole per inserire una barretta (/), poi clicca ETICHETTA per indicare la funzione logica di ciascun sintagma.",
-                        "sentence": "La nonna cucina spesso le lasagne per noi."
+                        "sentence": "La nonna cucina spesso le lasagne per noi.",
+                        "answer": [
+                            {
+                                "segment": "La nonna",
+                                "label": "soggetto"
+                            },
+                            {
+                                "segment": "cucina",
+                                "label": "predicato verbale"
+                            },
+                            {
+                                "segment": "spesso",
+                                "label": "complemento avverbiale di tempo"
+                            },
+                            {
+                                "segment": "le lasagne",
+                                "label": "complemento oggetto"
+                            },
+                            {
+                                "segment": "per noi.",
+                                "label": "complemento di vantaggio"
+                            }
+                        ]
                     },
                     {
                         "id": 3613,
                         "type": "sentence-analysis",
                         "title": "Analisi Logica Guidata Finale",
                         "instruction": "Clicca tra le parole per inserire una barretta (/), poi clicca ETICHETTA per indicare la funzione logica di ciascun sintagma.",
-                        "sentence": "Il treno per Roma partirà dal binario due."
+                        "sentence": "Il treno per Roma partirà dal binario due.",
+                        "answer": [
+                            {
+                                "segment": "Il treno",
+                                "label": "soggetto"
+                            },
+                            {
+                                "segment": "per Roma",
+                                "label": "complemento di moto a luogo"
+                            },
+                            {
+                                "segment": "partirà",
+                                "label": "predicato verbale"
+                            },
+                            {
+                                "segment": "dal binario",
+                                "label": "complemento di moto da luogo"
+                            },
+                            {
+                                "segment": "due.",
+                                "label": "attributo"
+                            }
+                        ]
                     },
                     {
                         "id": 3614,
                         "type": "sentence-analysis",
                         "title": "Analisi Logica Guidata Finale",
                         "instruction": "Clicca tra le parole per inserire una barretta (/), poi clicca ETICHETTA per indicare la funzione logica di ciascun sintagma.",
-                        "sentence": "Abbiamo visitato una città ricca di monumenti storici."
+                        "sentence": "Abbiamo visitato una città ricca di monumenti storici.",
+                        "answer": [
+                            {
+                                "segment": "Noi",
+                                "label": "soggetto sottinteso"
+                            },
+                            {
+                                "segment": "abbiamo visitato",
+                                "label": "predicato verbale"
+                            },
+                            {
+                                "segment": "una città",
+                                "label": "complemento oggetto"
+                            },
+                            {
+                                "segment": "ricca",
+                                "label": "attributo del complemento oggetto"
+                            },
+                            {
+                                "segment": "di monumenti storici.",
+                                "label": "complemento di abbondanza con attributo"
+                            }
+                        ]
                     },
                     {
                         "id": 3615,
                         "type": "sentence-analysis",
                         "title": "Analisi Logica Guidata Finale",
                         "instruction": "Clicca tra le parole per inserire una barretta (/), poi clicca ETICHETTA per indicare la funzione logica di ciascun sintagma.",
-                        "sentence": "Lo studente rispondeva con sicurezza alle domande."
+                        "sentence": "Lo studente rispondeva con sicurezza alle domande.",
+                        "answer": [
+                            {
+                                "segment": "Lo studente",
+                                "label": "soggetto"
+                            },
+                            {
+                                "segment": "rispondeva",
+                                "label": "predicato verbale"
+                            },
+                            {
+                                "segment": "con sicurezza",
+                                "label": "complemento di modo"
+                            },
+                            {
+                                "segment": "alle domande.",
+                                "label": "complemento di termine"
+                            }
+                        ]
                     },
                     {
                         "id": 3616,
                         "type": "sentence-analysis",
                         "title": "Analisi Logica Guidata Finale",
                         "instruction": "Clicca tra le parole per inserire una barretta (/), poi clicca ETICHETTA per indicare la funzione logica di ciascun sintagma.",
-                        "sentence": "La stanchezza impediva a Marco di concentrarsi."
+                        "sentence": "La stanchezza impediva a Marco di concentrarsi.",
+                        "answer": [
+                            {
+                                "segment": "La stanchezza",
+                                "label": "soggetto"
+                            },
+                            {
+                                "segment": "impediva",
+                                "label": "predicato verbale"
+                            },
+                            {
+                                "segment": "a Marco",
+                                "label": "complemento di termine"
+                            },
+                            {
+                                "segment": "di concentrarsi.",
+                                "label": "complemento di specificazione"
+                            }
+                        ]
                     },
                     {
                         "id": 25107,
                         "type": "sentence-analysis",
                         "title": "Allenamento Finale",
                         "instruction": "Esegui l'analisi completa della frase.",
-                        "sentence": "Il professore ha parlato a lungo dell'esame di maturità."
+                        "sentence": "Il professore ha parlato a lungo dell'esame di maturità.",
+                        "answer": [
+                            {
+                                "segment": "Il professore",
+                                "label": "soggetto"
+                            },
+                            {
+                                "segment": "ha parlato",
+                                "label": "predicato verbale"
+                            },
+                            {
+                                "segment": "a lungo",
+                                "label": "complemento avverbiale di tempo"
+                            },
+                            {
+                                "segment": "dell'esame",
+                                "label": "complemento di argomento"
+                            },
+                            {
+                                "segment": "di maturità.",
+                                "label": "complemento di specificazione"
+                            }
+                        ]
                     },
                     {
                         "id": 25108,
                         "type": "sentence-analysis",
                         "title": "Allenamento Finale",
                         "instruction": "Esegui l'analisi completa della frase.",
-                        "sentence": "Questa bellissima statua in bronzo è alta tre metri."
+                        "sentence": "Questa bellissima statua in bronzo è alta tre metri.",
+                        "answer": [
+                            {
+                                "segment": "Questa bellissima statua",
+                                "label": "soggetto con attributi"
+                            },
+                            {
+                                "segment": "in bronzo",
+                                "label": "complemento di materia"
+                            },
+                            {
+                                "segment": "è alta",
+                                "label": "predicato nominale"
+                            },
+                            {
+                                "segment": "tre metri.",
+                                "label": "complemento di estensione"
+                            }
+                        ]
                     },
                     {
                         "id": 25109,
                         "type": "sentence-analysis",
                         "title": "Allenamento Finale",
                         "instruction": "Esegui l'analisi completa della frase.",
-                        "sentence": "Ho acquistato questa camicia a fiori per cinquanta euro."
+                        "sentence": "Ho acquistato questa camicia a fiori per cinquanta euro.",
+                        "answer": [
+                            {
+                                "segment": "Io",
+                                "label": "soggetto sottinteso"
+                            },
+                            {
+                                "segment": "ho acquistato",
+                                "label": "predicato verbale"
+                            },
+                            {
+                                "segment": "questa camicia",
+                                "label": "complemento oggetto con attributo"
+                            },
+                            {
+                                "segment": "a fiori",
+                                "label": "complemento di modo o maniera"
+                            },
+                            {
+                                "segment": "per cinquanta euro.",
+                                "label": "complemento di prezzo"
+                            }
+                        ]
                     },
                     {
                         "id": 25110,
                         "type": "sentence-analysis",
                         "title": "Allenamento Finale",
                         "instruction": "Esegui l'analisi completa della frase.",
-                        "sentence": "La borsa della spesa pesa circa sei chili."
+                        "sentence": "La borsa della spesa pesa circa sei chili.",
+                        "answer": [
+                            {
+                                "segment": "La borsa",
+                                "label": "soggetto"
+                            },
+                            {
+                                "segment": "della spesa",
+                                "label": "complemento di specificazione"
+                            },
+                            {
+                                "segment": "pesa",
+                                "label": "predicato verbale"
+                            },
+                            {
+                                "segment": "circa",
+                                "label": "avverbio"
+                            },
+                            {
+                                "segment": "sei chili.",
+                                "label": "complemento di peso"
+                            }
+                        ]
                     },
                     {
                         "id": 25111,
                         "type": "sentence-analysis",
                         "title": "Allenamento Finale",
                         "instruction": "Esegui l'analisi completa della frase.",
-                        "sentence": "Abbiamo discusso con passione di quel nuovo libro."
+                        "sentence": "Abbiamo discusso con passione di quel nuovo libro.",
+                        "answer": [
+                            {
+                                "segment": "Noi",
+                                "label": "soggetto sottinteso"
+                            },
+                            {
+                                "segment": "abbiamo discusso",
+                                "label": "predicato verbale"
+                            },
+                            {
+                                "segment": "con passione",
+                                "label": "complemento di modo"
+                            },
+                            {
+                                "segment": "di quel nuovo libro.",
+                                "label": "complemento di argomento con attributi"
+                            }
+                        ]
                     }
                 ],
                 "verifica": [],
@@ -7455,70 +8853,210 @@ window.exercisesData = {
                         "type": "sentence-analysis",
                         "title": "Allenamento Combinato 1",
                         "instruction": "Clicca tra le parole per inserire una barretta (/), poi clicca ETICHETTA per indicare la funzione logica di ciascun sintagma.",
-                        "sentence": "Il cane rincorre il gatto."
+                        "sentence": "Il cane rincorre il gatto.",
+                        "answer": [
+                            {
+                                "segment": "Il cane",
+                                "label": "soggetto"
+                            },
+                            {
+                                "segment": "rincorre",
+                                "label": "predicato verbale"
+                            },
+                            {
+                                "segment": "il gatto.",
+                                "label": "complemento oggetto"
+                            }
+                        ]
                     },
                     {
                         "id": 2753,
                         "type": "sentence-analysis",
                         "title": "Allenamento Combinato 1",
                         "instruction": "Clicca tra le parole per inserire una barretta (/), poi clicca ETICHETTA per indicare la funzione logica di ciascun sintagma.",
-                        "sentence": "La mamma legge un libro."
+                        "sentence": "La mamma legge un libro.",
+                        "answer": [
+                            {
+                                "segment": "La mamma",
+                                "label": "soggetto"
+                            },
+                            {
+                                "segment": "legge",
+                                "label": "predicato verbale"
+                            },
+                            {
+                                "segment": "un libro.",
+                                "label": "complemento oggetto"
+                            }
+                        ]
                     },
                     {
                         "id": 2754,
                         "type": "sentence-analysis",
                         "title": "Allenamento Combinato 1",
                         "instruction": "Clicca tra le parole per inserire una barretta (/), poi clicca ETICHETTA per indicare la funzione logica di ciascun sintagma.",
-                        "sentence": "Mio fratello studia inglese."
+                        "sentence": "Mio fratello studia inglese.",
+                        "answer": [
+                            {
+                                "segment": "Mio fratello",
+                                "label": "soggetto con attributo"
+                            },
+                            {
+                                "segment": "studia",
+                                "label": "predicato verbale"
+                            },
+                            {
+                                "segment": "inglese.",
+                                "label": "complemento oggetto"
+                            }
+                        ]
                     },
                     {
                         "id": 2755,
                         "type": "sentence-analysis",
                         "title": "Allenamento Combinato 1",
                         "instruction": "Clicca tra le parole per inserire una barretta (/), poi clicca ETICHETTA per indicare la funzione logica di ciascun sintagma.",
-                        "sentence": "Il sole scalda la terra."
+                        "sentence": "Il sole scalda la terra.",
+                        "answer": [
+                            {
+                                "segment": "Il sole",
+                                "label": "soggetto"
+                            },
+                            {
+                                "segment": "scalda",
+                                "label": "predicato verbale"
+                            },
+                            {
+                                "segment": "la terra.",
+                                "label": "complemento oggetto"
+                            }
+                        ]
                     },
                     {
                         "id": 2756,
                         "type": "sentence-analysis",
                         "title": "Allenamento Combinato 1",
                         "instruction": "Clicca tra le parole per inserire una barretta (/), poi clicca ETICHETTA per indicare la funzione logica di ciascun sintagma.",
-                        "sentence": "Il vento muove le foglie."
+                        "sentence": "Il vento muove le foglie.",
+                        "answer": [
+                            {
+                                "segment": "Il vento",
+                                "label": "soggetto"
+                            },
+                            {
+                                "segment": "muove",
+                                "label": "predicato verbale"
+                            },
+                            {
+                                "segment": "le foglie.",
+                                "label": "complemento oggetto"
+                            }
+                        ]
                     },
                     {
                         "id": 2757,
                         "type": "sentence-analysis",
                         "title": "Allenamento Combinato 1",
                         "instruction": "Clicca tra le parole per inserire una barretta (/), poi clicca ETICHETTA per indicare la funzione logica di ciascun sintagma.",
-                        "sentence": "Noi guardiamo un film."
+                        "sentence": "Noi guardiamo un film.",
+                        "answer": [
+                            {
+                                "segment": "Noi",
+                                "label": "soggetto"
+                            },
+                            {
+                                "segment": "guardiamo",
+                                "label": "predicato verbale"
+                            },
+                            {
+                                "segment": "un film.",
+                                "label": "complemento oggetto"
+                            }
+                        ]
                     },
                     {
                         "id": 2758,
                         "type": "sentence-analysis",
                         "title": "Allenamento Combinato 1",
                         "instruction": "Clicca tra le parole per inserire una barretta (/), poi clicca ETICHETTA per indicare la funzione logica di ciascun sintagma.",
-                        "sentence": "Voi avete vinto la gara."
+                        "sentence": "Voi avete vinto la gara.",
+                        "answer": [
+                            {
+                                "segment": "Voi",
+                                "label": "soggetto"
+                            },
+                            {
+                                "segment": "avete vinto",
+                                "label": "predicato verbale"
+                            },
+                            {
+                                "segment": "la gara.",
+                                "label": "complemento oggetto"
+                            }
+                        ]
                     },
                     {
                         "id": 2759,
                         "type": "sentence-analysis",
                         "title": "Allenamento Combinato 1",
                         "instruction": "Clicca tra le parole per inserire una barretta (/), poi clicca ETICHETTA per indicare la funzione logica di ciascun sintagma.",
-                        "sentence": "La pioggia bagna i fiori."
+                        "sentence": "La pioggia bagna i fiori.",
+                        "answer": [
+                            {
+                                "segment": "La pioggia",
+                                "label": "soggetto"
+                            },
+                            {
+                                "segment": "bagna",
+                                "label": "predicato verbale"
+                            },
+                            {
+                                "segment": "i fiori.",
+                                "label": "complemento oggetto"
+                            }
+                        ]
                     },
                     {
                         "id": 2760,
                         "type": "sentence-analysis",
                         "title": "Allenamento Combinato 1",
                         "instruction": "Clicca tra le parole per inserire una barretta (/), poi clicca ETICHETTA per indicare la funzione logica di ciascun sintagma.",
-                        "sentence": "Il professore spiega la lezione."
+                        "sentence": "Il professore spiega la lezione.",
+                        "answer": [
+                            {
+                                "segment": "Il professore",
+                                "label": "soggetto"
+                            },
+                            {
+                                "segment": "spiega",
+                                "label": "predicato verbale"
+                            },
+                            {
+                                "segment": "la lezione.",
+                                "label": "complemento oggetto"
+                            }
+                        ]
                     },
                     {
                         "id": 2761,
                         "type": "sentence-analysis",
                         "title": "Allenamento Combinato 1",
                         "instruction": "Clicca tra le parole per inserire una barretta (/), poi clicca ETICHETTA per indicare la funzione logica di ciascun sintagma.",
-                        "sentence": "Il nonno racconta una storia."
+                        "sentence": "Il nonno racconta una storia.",
+                        "answer": [
+                            {
+                                "segment": "Il nonno",
+                                "label": "soggetto"
+                            },
+                            {
+                                "segment": "racconta",
+                                "label": "predicato verbale"
+                            },
+                            {
+                                "segment": "una storia.",
+                                "label": "complemento oggetto"
+                            }
+                        ]
                     }
                 ],
                 "verifica": [],
@@ -7568,70 +9106,214 @@ window.exercisesData = {
                         "type": "sentence-analysis",
                         "title": "Allenamento Combinato 2",
                         "instruction": "Clicca tra le parole per inserire una barretta (/), poi clicca ETICHETTA per indicare la funzione logica di ciascun sintagma.",
-                        "sentence": "Abito a Roma."
+                        "sentence": "Abito a Roma.",
+                        "answer": [
+                            {
+                                "segment": "Io",
+                                "label": "soggetto sottinteso"
+                            },
+                            {
+                                "segment": "abito",
+                                "label": "predicato verbale"
+                            },
+                            {
+                                "segment": "a Roma.",
+                                "label": "complemento di stato in luogo"
+                            }
+                        ]
                     },
                     {
                         "id": 2853,
                         "type": "sentence-analysis",
                         "title": "Allenamento Combinato 2",
                         "instruction": "Clicca tra le parole per inserire una barretta (/), poi clicca ETICHETTA per indicare la funzione logica di ciascun sintagma.",
-                        "sentence": "Vengo da Milano."
+                        "sentence": "Vengo da Milano.",
+                        "answer": [
+                            {
+                                "segment": "Io",
+                                "label": "soggetto sottinteso"
+                            },
+                            {
+                                "segment": "vengo",
+                                "label": "predicato verbale"
+                            },
+                            {
+                                "segment": "da Milano.",
+                                "label": "complemento di moto da luogo"
+                            }
+                        ]
                     },
                     {
                         "id": 2854,
                         "type": "sentence-analysis",
                         "title": "Allenamento Combinato 2",
                         "instruction": "Clicca tra le parole per inserire una barretta (/), poi clicca ETICHETTA per indicare la funzione logica di ciascun sintagma.",
-                        "sentence": "Passo per il parco."
+                        "sentence": "Passo per il parco.",
+                        "answer": [
+                            {
+                                "segment": "Io",
+                                "label": "soggetto sottinteso"
+                            },
+                            {
+                                "segment": "passo",
+                                "label": "predicato verbale"
+                            },
+                            {
+                                "segment": "per il parco.",
+                                "label": "complemento di moto per luogo"
+                            }
+                        ]
                     },
                     {
                         "id": 2855,
                         "type": "sentence-analysis",
                         "title": "Allenamento Combinato 2",
                         "instruction": "Clicca tra le parole per inserire una barretta (/), poi clicca ETICHETTA per indicare la funzione logica di ciascun sintagma.",
-                        "sentence": "Arrivo alle otto."
+                        "sentence": "Arrivo alle otto.",
+                        "answer": [
+                            {
+                                "segment": "Io",
+                                "label": "soggetto sottinteso"
+                            },
+                            {
+                                "segment": "arrivo",
+                                "label": "predicato verbale"
+                            },
+                            {
+                                "segment": "alle otto.",
+                                "label": "complemento di tempo determinato"
+                            }
+                        ]
                     },
                     {
                         "id": 2856,
                         "type": "sentence-analysis",
                         "title": "Allenamento Combinato 2",
                         "instruction": "Clicca tra le parole per inserire una barretta (/), poi clicca ETICHETTA per indicare la funzione logica di ciascun sintagma.",
-                        "sentence": "Studio per tre ore."
+                        "sentence": "Studio per tre ore.",
+                        "answer": [
+                            {
+                                "segment": "Io",
+                                "label": "soggetto sottinteso"
+                            },
+                            {
+                                "segment": "studio",
+                                "label": "predicato verbale"
+                            },
+                            {
+                                "segment": "per tre ore.",
+                                "label": "complemento di tempo continuato"
+                            }
+                        ]
                     },
                     {
                         "id": 2857,
                         "type": "sentence-analysis",
                         "title": "Allenamento Combinato 2",
                         "instruction": "Clicca tra le parole per inserire una barretta (/), poi clicca ETICHETTA per indicare la funzione logica di ciascun sintagma.",
-                        "sentence": "Il libro di storia è sul tavolo."
+                        "sentence": "Il libro di storia è sul tavolo.",
+                        "answer": [
+                            {
+                                "segment": "Il libro",
+                                "label": "soggetto"
+                            },
+                            {
+                                "segment": "di storia",
+                                "label": "complemento di specificazione"
+                            },
+                            {
+                                "segment": "è",
+                                "label": "predicato verbale"
+                            },
+                            {
+                                "segment": "sul tavolo.",
+                                "label": "complemento di stato in luogo"
+                            }
+                        ]
                     },
                     {
                         "id": 2858,
                         "type": "sentence-analysis",
                         "title": "Allenamento Combinato 2",
                         "instruction": "Clicca tra le parole per inserire una barretta (/), poi clicca ETICHETTA per indicare la funzione logica di ciascun sintagma.",
-                        "sentence": "Parlo ai miei amici."
+                        "sentence": "Parlo ai miei amici.",
+                        "answer": [
+                            {
+                                "segment": "Io",
+                                "label": "soggetto sottinteso"
+                            },
+                            {
+                                "segment": "parlo",
+                                "label": "predicato verbale"
+                            },
+                            {
+                                "segment": "ai miei amici.",
+                                "label": "complemento di termine con attributo"
+                            }
+                        ]
                     },
                     {
                         "id": 2859,
                         "type": "sentence-analysis",
                         "title": "Allenamento Combinato 2",
                         "instruction": "Clicca tra le parole per inserire una barretta (/), poi clicca ETICHETTA per indicare la funzione logica di ciascun sintagma.",
-                        "sentence": "Il vaso fu rotto dal vento."
+                        "sentence": "Il vaso fu rotto dal vento.",
+                        "answer": [
+                            {
+                                "segment": "Il vaso",
+                                "label": "soggetto"
+                            },
+                            {
+                                "segment": "fu rotto",
+                                "label": "predicato verbale"
+                            },
+                            {
+                                "segment": "dal vento.",
+                                "label": "complemento di causa efficiente"
+                            }
+                        ]
                     },
                     {
                         "id": 2860,
                         "type": "sentence-analysis",
                         "title": "Allenamento Combinato 2",
                         "instruction": "Clicca tra le parole per inserire una barretta (/), poi clicca ETICHETTA per indicare la funzione logica di ciascun sintagma.",
-                        "sentence": "Lavoriamo con impegno."
+                        "sentence": "Lavoriamo con impegno.",
+                        "answer": [
+                            {
+                                "segment": "Noi",
+                                "label": "soggetto sottinteso"
+                            },
+                            {
+                                "segment": "lavoriamo",
+                                "label": "predicato verbale"
+                            },
+                            {
+                                "segment": "con impegno.",
+                                "label": "complemento di modo"
+                            }
+                        ]
                     },
                     {
                         "id": 2861,
                         "type": "sentence-analysis",
                         "title": "Allenamento Combinato 2",
                         "instruction": "Clicca tra le parole per inserire una barretta (/), poi clicca ETICHETTA per indicare la funzione logica di ciascun sintagma.",
-                        "sentence": "Esco con la pioggia."
+                        "sentence": "Esco con la pioggia.",
+                        "answer": [
+                            {
+                                "segment": "Io",
+                                "label": "soggetto sottinteso"
+                            },
+                            {
+                                "segment": "esco",
+                                "label": "predicato verbale"
+                            },
+                            {
+                                "segment": "con la pioggia.",
+                                "label": "complemento di unione"
+                            }
+                        ]
                     }
                 ],
                 "verifica": [],
@@ -7658,35 +9340,121 @@ window.exercisesData = {
                         "type": "sentence-analysis",
                         "title": "Allenamento Combinato 3",
                         "instruction": "Dividi la frase in sintagmi (/) e assegna a ciascuno la sua funzione logica.",
-                        "sentence": "Lo zio ha regalato un orologio a Luigi."
+                        "sentence": "Lo zio ha regalato un orologio a Luigi.",
+                        "answer": [
+                            {
+                                "segment": "Lo zio",
+                                "label": "soggetto"
+                            },
+                            {
+                                "segment": "ha regalato",
+                                "label": "predicato verbale"
+                            },
+                            {
+                                "segment": "un orologio",
+                                "label": "complemento oggetto"
+                            },
+                            {
+                                "segment": "a Luigi.",
+                                "label": "complemento di termine"
+                            }
+                        ]
                     },
                     {
                         "id": 25103,
                         "type": "sentence-analysis",
                         "title": "Allenamento Combinato 3",
                         "instruction": "Dividi la frase in sintagmi (/) e assegna a ciascuno la sua funzione logica.",
-                        "sentence": "Domani andremo in montagna con l'auto."
+                        "sentence": "Domani andremo in montagna con l'auto.",
+                        "answer": [
+                            {
+                                "segment": "Noi",
+                                "label": "soggetto sottinteso"
+                            },
+                            {
+                                "segment": "domani",
+                                "label": "complemento avverbiale di tempo"
+                            },
+                            {
+                                "segment": "andremo",
+                                "label": "predicato verbale"
+                            },
+                            {
+                                "segment": "in montagna",
+                                "label": "complemento di moto a luogo"
+                            },
+                            {
+                                "segment": "con l'auto.",
+                                "label": "complemento di mezzo"
+                            }
+                        ]
                     },
                     {
                         "id": 25104,
                         "type": "sentence-analysis",
                         "title": "Allenamento Combinato 3",
                         "instruction": "Dividi la frase in sintagmi (/) e assegna a ciascuno la sua funzione logica.",
-                        "sentence": "Il film era molto divertente."
+                        "sentence": "Il film era molto divertente.",
+                        "answer": [
+                            {
+                                "segment": "Il film",
+                                "label": "soggetto"
+                            },
+                            {
+                                "segment": "era molto divertente.",
+                                "label": "predicato nominale"
+                            }
+                        ]
                     },
                     {
                         "id": 25105,
                         "type": "sentence-analysis",
                         "title": "Allenamento Combinato 3",
                         "instruction": "Dividi la frase in sintagmi (/) e assegna a ciascuno la sua funzione logica.",
-                        "sentence": "Per la pioggia siamo rimasti in casa."
+                        "sentence": "Per la pioggia siamo rimasti in casa.",
+                        "answer": [
+                            {
+                                "segment": "Noi",
+                                "label": "soggetto sottinteso"
+                            },
+                            {
+                                "segment": "per la pioggia",
+                                "label": "complemento di causa"
+                            },
+                            {
+                                "segment": "siamo rimasti",
+                                "label": "predicato verbale"
+                            },
+                            {
+                                "segment": "in casa.",
+                                "label": "complemento di stato in luogo"
+                            }
+                        ]
                     },
                     {
                         "id": 25106,
                         "type": "sentence-analysis",
                         "title": "Allenamento Combinato 3",
                         "instruction": "Dividi la frase in sintagmi (/) e assegna a ciascuno la sua funzione logica.",
-                        "sentence": "Marco studia con impegno per l'interrogazione."
+                        "sentence": "Marco studia con impegno per l'interrogazione.",
+                        "answer": [
+                            {
+                                "segment": "Marco",
+                                "label": "soggetto"
+                            },
+                            {
+                                "segment": "studia",
+                                "label": "predicato verbale"
+                            },
+                            {
+                                "segment": "con impegno",
+                                "label": "complemento di modo"
+                            },
+                            {
+                                "segment": "per l'interrogazione.",
+                                "label": "complemento di fine"
+                            }
+                        ]
                     }
                 ],
                 "verifica": [],
@@ -10024,14 +11792,34 @@ window.exercisesData = {
                         "type": "sentence-analysis",
                         "title": "Allenamento Combinato 1",
                         "instruction": "Clicca tra le parole per inserire una barretta (/), poi clicca ETICHETTA per indicare il nome della proposizione.",
-                        "sentence": "Tutti sanno che Alessandro è un vero asso nel nuoto."
+                        "sentence": "Tutti sanno che Alessandro è un vero asso nel nuoto.",
+                        "answer": [
+                            {
+                                "segment": "Tutti sanno",
+                                "label": "proposizione principale"
+                            },
+                            {
+                                "segment": "che Alessandro è un vero asso nel nuoto.",
+                                "label": "proposizione subordinata oggettiva"
+                            }
+                        ]
                     },
                     {
                         "id": 1502,
                         "type": "sentence-analysis",
                         "title": "Allenamento Combinato 1",
                         "instruction": "Clicca tra le parole per inserire una barretta (/), poi clicca ETICHETTA per indicare il nome della proposizione.",
-                        "sentence": "Si spera che finiscano presto i lavori stradali."
+                        "sentence": "Si spera che finiscano presto i lavori stradali.",
+                        "answer": [
+                            {
+                                "segment": "Si spera",
+                                "label": "proposizione principale"
+                            },
+                            {
+                                "segment": "che finiscano presto i lavori stradali.",
+                                "label": "proposizione subordinata soggettiva"
+                            }
+                        ]
                     }
                 ],
                 "verifica": [],
@@ -10068,7 +11856,21 @@ window.exercisesData = {
                         "type": "sentence-analysis",
                         "title": "Allenamento Combinato 2",
                         "instruction": "Clicca tra le parole per inserire una barretta (/), poi clicca ETICHETTA per indicare il nome della proposizione.",
-                        "sentence": "Dopo tanto tempo ci guardavamo in silenzio senza trovare parole, ma ogni tanto sorridevamo l'uno all'altro."
+                        "sentence": "Dopo tanto tempo ci guardavamo in silenzio senza trovare parole, ma ogni tanto sorridevamo l'uno all'altro.",
+                        "answer": [
+                            {
+                                "segment": "Dopo tanto tempo ci guardavamo in silenzio",
+                                "label": "proposizione principale"
+                            },
+                            {
+                                "segment": "senza trovare parole,",
+                                "label": "proposizione subordinata modale implicita"
+                            },
+                            {
+                                "segment": "ma ogni tanto sorridevamo l'uno all'altro.",
+                                "label": "proposizione coordinata avversativa alla principale"
+                            }
+                        ]
                     },
                     {
                         "id": 1602,
@@ -10138,14 +11940,46 @@ window.exercisesData = {
                         "type": "sentence-analysis",
                         "title": "Allenamento Finale",
                         "instruction": "Esercizio di riepilogo: clicca tra le parole per separare le proposizioni, poi assegna ad ognuna la sua etichetta corretta.",
-                        "sentence": "La professoressa ci ha spiegato che, se studiamo con attenzione, supereremo l'esame senza alcuna difficoltà."
+                        "sentence": "La professoressa ci ha spiegato che, se studiamo con attenzione, supereremo l'esame senza alcuna difficoltà.",
+                        "answer": [
+                            {
+                                "segment": "La professoressa ci ha spiegato",
+                                "label": "proposizione principale"
+                            },
+                            {
+                                "segment": "che supereremo l'esame senza alcuna difficoltà,",
+                                "label": "proposizione subordinata oggettiva esplicita"
+                            },
+                            {
+                                "segment": "se studiamo con attenzione,",
+                                "label": "proposizione subordinata condizionale esplicita"
+                            }
+                        ]
                     },
                     {
                         "id": 1702,
                         "type": "sentence-analysis",
                         "title": "Allenamento Finale",
                         "instruction": "Esercizio di riepilogo: clicca tra le parole per separare le proposizioni, poi assegna ad ognuna la sua etichetta corretta.",
-                        "sentence": "Mentre tornavo a casa, ho incontrato Marco che mi ha detto di avere trovato un nuovo lavoro in centro."
+                        "sentence": "Mentre tornavo a casa, ho incontrato Marco che mi ha detto di avere trovato un nuovo lavoro in centro.",
+                        "answer": [
+                            {
+                                "segment": "Mentre tornavo a casa,",
+                                "label": "proposizione subordinata temporale esplicita"
+                            },
+                            {
+                                "segment": "ho incontrato Marco",
+                                "label": "proposizione principale"
+                            },
+                            {
+                                "segment": "che mi ha detto",
+                                "label": "proposizione subordinata relativa esplicita"
+                            },
+                            {
+                                "segment": "di avere trovato un nuovo lavoro in centro.",
+                                "label": "proposizione subordinata oggettiva implicita"
+                            }
+                        ]
                     }
                 ],
                 "verifica": [],

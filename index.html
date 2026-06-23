@@ -177,9 +177,28 @@
     <script src="js/exercises.js?v=50"></script>
     <script src="js/cultura_generale_data.js?v=50"></script>
     <script src="js/cultura_generale.js?v=50"></script>
+    <script src="js/music.js"></script>
+    <script src="js/timer.js"></script>
     <script src="js/ui.js?v=50"></script>
     <script src="js/main.js?v=50"></script>
 
+    <!-- FLOATING MUSIC PLAYER -->
+    <div id="music-player-widget" style="position: fixed; bottom: 20px; right: 20px; background: white; padding: 10px 20px; border-radius: 50px; box-shadow: 0 5px 20px rgba(0,0,0,0.15); display: flex; align-items: center; gap: 15px; z-index: 9999; border: 2px solid #f0f0f0;">
+        <button id="music-play-btn" onclick="if(window.MusicPlayer) window.MusicPlayer.togglePlay()" style="background: var(--primary-color); color: white; border: none; width: 40px; height: 40px; border-radius: 50%; font-size: 1.2rem; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 10px rgba(93, 95, 239, 0.3);">▶️</button>
+        <div style="display: flex; flex-direction: column; max-width: 150px;">
+            <span style="font-size: 0.7rem; color: #888; font-weight: 800; text-transform: uppercase; letter-spacing: 1px;">In Riproduzione</span>
+            <span id="music-track-title" style="font-size: 0.85rem; font-weight: 700; color: #333; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Pronto...</span>
+        </div>
+        <button onclick="if(window.MusicPlayer) window.MusicPlayer.nextTrack()" style="background: #f8f9fa; color: #555; border: 1px solid #ddd; width: 35px; height: 35px; border-radius: 50%; cursor: pointer; font-size: 0.9rem; display: flex; align-items: center; justify-content: center;">⏭️</button>
+    </div>
 
+    <!-- FLOATING TIMER & CAT WIDGET -->
+    <div id="dropdown-timer-container" style="display: none; position: fixed; top: 20px; right: 20px; z-index: 10000; background: white; padding: 10px 20px; border-radius: 20px; box-shadow: 0 5px 20px rgba(0,0,0,0.15); border: 2px solid #ffb74d; display: flex; align-items: center; gap: 10px;">
+        <span style="font-size: 1.5rem;">🐈</span>
+        <div style="display: flex; flex-direction: column;">
+            <span style="font-size: 0.6rem; font-weight: 800; color: #ff9800; text-transform: uppercase;">Tempo Studio</span>
+            <span id="dropdown-session-timer" style="font-size: 1.2rem; font-weight: 900; color: #e65100; font-variant-numeric: tabular-nums;">--:--</span>
+        </div>
+    </div>
 </body>
 </html>

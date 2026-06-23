@@ -377,7 +377,7 @@ renderLessico: (exercise, isUda, path, total) => {
                     ${exercise.target && exercise.text ? exercise.text.replace(exercise.target, `<span style="color: var(--primary-color); font-weight: 800; border-bottom: 4px solid var(--accent-color);">${exercise.target}</span>`) : (exercise.text || '')}
                 </div>
             </div>
-            <p style="font-weight: 700; margin-bottom: 2rem;">CHE FUNZIONE HA LA PAROLA IN EVIDENZA?</p>
+            ${exercise.instruction ? `<p style="font-weight: 700; margin-bottom: 2rem;">${exercise.instruction}</p>` : (exercise.word ? `<p style="font-weight: 700; margin-bottom: 2rem;">CHE FUNZIONE HA LA PAROLA IN EVIDENZA?</p>` : '')}
             <div class="options-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
                 ${(exercise.options || []).map(opt => `
                     <button class="btn btn-secondary" style="padding: 1.5rem; text-align: center;" onclick="checkAnswer('${opt.replace(/'/g, "\\'")}', '${exercise.answer.replace(/'/g, "\\'")}', 'logica', ${exercise.id})">${opt}</button>

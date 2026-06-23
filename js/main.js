@@ -650,6 +650,7 @@ async function renderProfiloPage() {
     }
     const assignments = JSON.parse(localStorage.getItem('palestra_assignments') || '[]');
     const studentClassCode = localStorage.getItem('palestra_student_class_code') || null;
+    const myAssignments = studentClassCode ? assignments.filter(a => a.classCode === studentClassCode) : [];
 
     // Calculate rank and precision
     let rank = "Cadetto";
@@ -1209,6 +1210,14 @@ async function renderAdminPage() {
                         <p>Caricamento utenti in corso...</p>
                     </div>
                 </div>
+                
+                <div style="margin-top: 3rem; padding-top: 2rem; border-top: 2px dashed #eee;">
+                    <h3 style="color: #c53030; margin-bottom: 1rem; font-size: 1.3rem;">📦 GESTIONE ANNUALE</h3>
+                    <p style="color: #666; margin-bottom: 1.5rem; font-size: 0.9rem;">Archivia tutti gli utenti e i progressi dell'anno in corso nello storico permanente e resetta la piattaforma per il nuovo anno scolastico.</p>
+                    <button class="btn" style="background: #c53030; color: white; border: none; padding: 1rem 2rem; border-radius: 15px; font-weight: 800; display: flex; align-items: center; gap: 0.5rem; cursor: pointer;" onclick="window.archiviaAnnoCorrente()">
+                        📦 Archivia Anno Corrente
+                    </button>
+                </div>
             </div>
         </div>
     `;
@@ -1280,6 +1289,71 @@ window.adminDeleteUser = async function(uid, name) {
     } catch (e) {
         console.error("Errore eliminazione utente:", e);
         alert("Impossibile eliminare l'utente: " + e.message);
+    }
+};
+
+
+window.archiviaAnnoCorrente = async function() {
+    const conferma = confirm("ATTENZIONE! L'archiviazione sposterà tutti gli utenti e i punteggi dell'anno in corso in un archivio storico permanente, resettando la piattaforma per il nuovo anno. Procedere?");
+    if (!conferma) return;
+    
+    try {
+        const year = prompt("Inserisci l'anno scolastico da archiviare (es. 2025-2026):", "2025-2026");
+        if (!year) return;
+        
+        const usersSnapshot = await window.fbDb.collection('users').get();
+        const progressSnapshot = await window.fbDb.collection('progress').get();
+        
+        let batch = window.fbDb.batch();
+        let operationCount = 0;
+        
+        const progressMap = {};
+        progressSnapshot.forEach(doc => { progressMap[doc.id] = doc.data(); });
+        
+        // Crea record storico
+        const archiveRef = window.fbDb.collection('history').doc(year);
+        const historyData = { 
+            timestamp: new Date().toISOString(),
+            users: [] 
+        };
+        
+        usersSnapshot.forEach(doc => {
+            const userData = doc.data();
+            const userProgress = progressMap[doc.id] || {};
+            // Non eliminare i docenti/admin
+            if (userData.role !== 'admin' && userData.role !== 'docente') {
+                historyData.users.push({
+                    name: userData.name || 'Anonimo',
+                    email: userData.email || '',
+                    role: userData.role || 'studente',
+                    points: userProgress.points || 0,
+                    joinedAt: userData.joinedAt || null
+                });
+                
+                // Elimina l'utente
+                batch.delete(doc.ref);
+                if (progressMap[doc.id]) {
+                    batch.delete(window.fbDb.collection('progress').doc(doc.id));
+                }
+                operationCount += 2;
+            }
+        });
+        
+        batch.set(archiveRef, historyData);
+        operationCount++;
+        
+        // Se si superano le 500 operazioni, andrebbe diviso in più batch, 
+        // per ora consideriamo che funzioni per numeri standard.
+        if (operationCount > 0) {
+            await batch.commit();
+            alert(`Anno ${year} archiviato con successo. Gli account degli studenti sono stati resettati.`);
+            renderAdminPage();
+        } else {
+            alert("Nessun dato da archiviare.");
+        }
+    } catch (e) {
+        console.error("Errore archiviazione:", e);
+        alert("Impossibile archiviare: " + e.message);
     }
 };
 

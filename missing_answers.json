@@ -1,0 +1,583 @@
+[
+  {
+    "category": "grammaticale",
+    "uda": "uda16",
+    "id": 1604,
+    "sentence": "Quella ragazza bionda legge un libro interessante.",
+    "type": "sentence-analysis"
+  },
+  {
+    "category": "grammaticale",
+    "uda": "uda16",
+    "id": 1605,
+    "sentence": "Il vento forte soffiava tra gli alberi del parco.",
+    "type": "sentence-analysis"
+  },
+  {
+    "category": "grammaticale",
+    "uda": "uda16",
+    "id": 1606,
+    "sentence": "Voi avete studiato molto per l'esame.",
+    "type": "sentence-analysis"
+  },
+  {
+    "category": "grammaticale",
+    "uda": "uda16",
+    "id": 1607,
+    "sentence": "Un piccolo cane abbaiava nella notte silenziosa.",
+    "type": "sentence-analysis"
+  },
+  {
+    "category": "grammaticale",
+    "uda": "uda16",
+    "id": 1608,
+    "sentence": "Ieri ho incontrato Marco e gli ho parlato.",
+    "type": "sentence-analysis"
+  },
+  {
+    "category": "grammaticale",
+    "uda": "uda16",
+    "id": 1609,
+    "sentence": "Questi fiori profumati sono per te.",
+    "type": "sentence-analysis"
+  },
+  {
+    "category": "grammaticale",
+    "uda": "uda16",
+    "id": 1610,
+    "sentence": "Ah! Che bella sorpresa mi avete fatto!",
+    "type": "sentence-analysis"
+  },
+  {
+    "category": "grammaticale",
+    "uda": "uda16",
+    "id": 1611,
+    "sentence": "Un asino con un carico di sale attraversò un fiume.",
+    "type": "sentence-analysis"
+  },
+  {
+    "category": "grammaticale",
+    "uda": "uda16",
+    "id": 1612,
+    "sentence": "Il sale si sciolse e il carico divenne leggero.",
+    "type": "sentence-analysis"
+  },
+  {
+    "category": "grammaticale",
+    "uda": "uda16",
+    "id": 1613,
+    "sentence": "Un giorno l'asino portava un carico di spugne.",
+    "type": "sentence-analysis"
+  },
+  {
+    "category": "grammaticale",
+    "uda": "uda16",
+    "id": 1614,
+    "sentence": "L'animale pensò di cadere per alleggerire il peso.",
+    "type": "sentence-analysis"
+  },
+  {
+    "category": "grammaticale",
+    "uda": "uda16",
+    "id": 1615,
+    "sentence": "Le spugne assorbirono l'acqua e diventarono pesanti.",
+    "type": "sentence-analysis"
+  },
+  {
+    "category": "grammaticale",
+    "uda": "uda16",
+    "id": 1616,
+    "sentence": "L'asino non riuscì a rialzarsi.",
+    "type": "sentence-analysis"
+  },
+  {
+    "category": "grammaticale",
+    "uda": "uda_gram_guidata1",
+    "id": 1702,
+    "sentence": "Il vento forte scuote i rami degli alberi.",
+    "type": "sentence-analysis"
+  },
+  {
+    "category": "grammaticale",
+    "uda": "uda_gram_guidata1",
+    "id": 1703,
+    "sentence": "La mia amica simpatica studia molto ogni giorno.",
+    "type": "sentence-analysis"
+  },
+  {
+    "category": "grammaticale",
+    "uda": "uda_gram_guidata1",
+    "id": 1704,
+    "sentence": "I bambini giocano felici nel giardino.",
+    "type": "sentence-analysis"
+  },
+  {
+    "category": "grammaticale",
+    "uda": "uda_gram_guidata1",
+    "id": 1705,
+    "sentence": "Marco ha scritto una lunga lettera alla nonna.",
+    "type": "sentence-analysis"
+  },
+  {
+    "category": "grammaticale",
+    "uda": "uda_gram_guidata1",
+    "id": 1706,
+    "sentence": "La professoressa spiega pazientemente la lezione.",
+    "type": "sentence-analysis"
+  },
+  {
+    "category": "grammaticale",
+    "uda": "uda_gram_guidata1",
+    "id": 1707,
+    "sentence": "Il piccolo gatto bianco dorme sul cuscino morbido.",
+    "type": "sentence-analysis"
+  },
+  {
+    "category": "grammaticale",
+    "uda": "uda_gram_guidata1",
+    "id": 1708,
+    "sentence": "Mia sorella legge sempre libri di avventura.",
+    "type": "sentence-analysis"
+  },
+  {
+    "category": "grammaticale",
+    "uda": "uda_gram_guidata1",
+    "id": 1709,
+    "sentence": "Il treno partì in ritardo dalla stazione.",
+    "type": "sentence-analysis"
+  },
+  {
+    "category": "grammaticale",
+    "uda": "uda_gram_guidata1",
+    "id": 1710,
+    "sentence": "Gli studenti diligenti hanno consegnato il compito.",
+    "type": "sentence-analysis"
+  },
+  {
+    "category": "grammaticale",
+    "uda": "uda_gram_guidata1",
+    "id": 1711,
+    "sentence": "Luca e Sofia camminano lentamente.",
+    "type": "sentence-analysis"
+  },
+  {
+    "category": "grammaticale",
+    "uda": "uda_gram_guidata2",
+    "id": 5702,
+    "sentence": "La cuoca preparava ogni sera una zuppa deliziosa.",
+    "type": "sentence-analysis"
+  },
+  {
+    "category": "grammaticale",
+    "uda": "uda_gram_guidata2",
+    "id": 5703,
+    "sentence": "Il sole splende luminoso nel cielo azzurro.",
+    "type": "sentence-analysis"
+  },
+  {
+    "category": "grammaticale",
+    "uda": "uda_gram_guidata2",
+    "id": 5704,
+    "sentence": "Queste scarpe comode appartengono a mia sorella.",
+    "type": "sentence-analysis"
+  },
+  {
+    "category": "grammaticale",
+    "uda": "uda_gram_guidata2",
+    "id": 5705,
+    "sentence": "Il capitano della nave guidava i marinai.",
+    "type": "sentence-analysis"
+  },
+  {
+    "category": "grammaticale",
+    "uda": "uda_gram_guidata2",
+    "id": 5706,
+    "sentence": "Ieri sera abbiamo guardato un bellissimo film.",
+    "type": "sentence-analysis"
+  },
+  {
+    "category": "grammaticale",
+    "uda": "uda_gram_guidata2",
+    "id": 5707,
+    "sentence": "La nonna cucina torte buonissime per i nipoti.",
+    "type": "sentence-analysis"
+  },
+  {
+    "category": "grammaticale",
+    "uda": "uda_gram_guidata2",
+    "id": 5708,
+    "sentence": "Il vecchio professore racconta storie meravigliose.",
+    "type": "sentence-analysis"
+  },
+  {
+    "category": "grammaticale",
+    "uda": "uda_gram_guidata2",
+    "id": 5709,
+    "sentence": "Giulia suona il violino con passione.",
+    "type": "sentence-analysis"
+  },
+  {
+    "category": "grammaticale",
+    "uda": "uda_gram_guidata2",
+    "id": 5710,
+    "sentence": "I turisti stranieri visitano le città d'arte.",
+    "type": "sentence-analysis"
+  },
+  {
+    "category": "grammaticale",
+    "uda": "uda_gram_guidata2",
+    "id": 5711,
+    "sentence": "Il piccolo fiume scorreva tra i boschi.",
+    "type": "sentence-analysis"
+  },
+  {
+    "category": "analisiLogica",
+    "uda": "udaLogica16",
+    "id": 3602,
+    "sentence": "La mamma ha preparato una torta deliziosa.",
+    "type": "sentence-analysis"
+  },
+  {
+    "category": "analisiLogica",
+    "uda": "udaLogica16",
+    "id": 3603,
+    "sentence": "Noi andremo al mare domani con gli amici.",
+    "type": "sentence-analysis"
+  },
+  {
+    "category": "analisiLogica",
+    "uda": "udaLogica16",
+    "id": 3604,
+    "sentence": "Quella ragazza bionda legge un libro interessante.",
+    "type": "sentence-analysis"
+  },
+  {
+    "category": "analisiLogica",
+    "uda": "udaLogica16",
+    "id": 3605,
+    "sentence": "Il vento forte soffiava tra gli alberi del parco.",
+    "type": "sentence-analysis"
+  },
+  {
+    "category": "analisiLogica",
+    "uda": "udaLogica16",
+    "id": 3606,
+    "sentence": "Voi avete studiato molto per l'esame.",
+    "type": "sentence-analysis"
+  },
+  {
+    "category": "analisiLogica",
+    "uda": "udaLogica16",
+    "id": 3607,
+    "sentence": "Un piccolo cane abbaiava nella notte silenziosa.",
+    "type": "sentence-analysis"
+  },
+  {
+    "category": "analisiLogica",
+    "uda": "udaLogica16",
+    "id": 3608,
+    "sentence": "Ieri ho incontrato Marco e gli ho parlato.",
+    "type": "sentence-analysis"
+  },
+  {
+    "category": "analisiLogica",
+    "uda": "udaLogica16",
+    "id": 3609,
+    "sentence": "Questi fiori profumati sono per te.",
+    "type": "sentence-analysis"
+  },
+  {
+    "category": "analisiLogica",
+    "uda": "udaLogica16",
+    "id": 3610,
+    "sentence": "Luca è stato premiato dal professore per il suo impegno.",
+    "type": "sentence-analysis"
+  },
+  {
+    "category": "analisiLogica",
+    "uda": "udaLogica16",
+    "id": 3611,
+    "sentence": "Mio padre lavora in ufficio tutto il giorno.",
+    "type": "sentence-analysis"
+  },
+  {
+    "category": "analisiLogica",
+    "uda": "udaLogica16",
+    "id": 3612,
+    "sentence": "La nonna cucina spesso le lasagne per noi.",
+    "type": "sentence-analysis"
+  },
+  {
+    "category": "analisiLogica",
+    "uda": "udaLogica16",
+    "id": 3613,
+    "sentence": "Il treno per Roma partirà dal binario due.",
+    "type": "sentence-analysis"
+  },
+  {
+    "category": "analisiLogica",
+    "uda": "udaLogica16",
+    "id": 3614,
+    "sentence": "Abbiamo visitato una città ricca di monumenti storici.",
+    "type": "sentence-analysis"
+  },
+  {
+    "category": "analisiLogica",
+    "uda": "udaLogica16",
+    "id": 3615,
+    "sentence": "Lo studente rispondeva con sicurezza alle domande.",
+    "type": "sentence-analysis"
+  },
+  {
+    "category": "analisiLogica",
+    "uda": "udaLogica16",
+    "id": 3616,
+    "sentence": "La stanchezza impediva a Marco di concentrarsi.",
+    "type": "sentence-analysis"
+  },
+  {
+    "category": "analisiLogica",
+    "uda": "udaLogica16",
+    "id": 25107,
+    "sentence": "Il professore ha parlato a lungo dell'esame di maturità.",
+    "type": "sentence-analysis"
+  },
+  {
+    "category": "analisiLogica",
+    "uda": "udaLogica16",
+    "id": 25108,
+    "sentence": "Questa bellissima statua in bronzo è alta tre metri.",
+    "type": "sentence-analysis"
+  },
+  {
+    "category": "analisiLogica",
+    "uda": "udaLogica16",
+    "id": 25109,
+    "sentence": "Ho acquistato questa camicia a fiori per cinquanta euro.",
+    "type": "sentence-analysis"
+  },
+  {
+    "category": "analisiLogica",
+    "uda": "udaLogica16",
+    "id": 25110,
+    "sentence": "La borsa della spesa pesa circa sei chili.",
+    "type": "sentence-analysis"
+  },
+  {
+    "category": "analisiLogica",
+    "uda": "udaLogica16",
+    "id": 25111,
+    "sentence": "Abbiamo discusso con passione di quel nuovo libro.",
+    "type": "sentence-analysis"
+  },
+  {
+    "category": "analisiLogica",
+    "uda": "uda_log_guidata1",
+    "id": 2752,
+    "sentence": "Il cane rincorre il gatto.",
+    "type": "sentence-analysis"
+  },
+  {
+    "category": "analisiLogica",
+    "uda": "uda_log_guidata1",
+    "id": 2753,
+    "sentence": "La mamma legge un libro.",
+    "type": "sentence-analysis"
+  },
+  {
+    "category": "analisiLogica",
+    "uda": "uda_log_guidata1",
+    "id": 2754,
+    "sentence": "Mio fratello studia inglese.",
+    "type": "sentence-analysis"
+  },
+  {
+    "category": "analisiLogica",
+    "uda": "uda_log_guidata1",
+    "id": 2755,
+    "sentence": "Il sole scalda la terra.",
+    "type": "sentence-analysis"
+  },
+  {
+    "category": "analisiLogica",
+    "uda": "uda_log_guidata1",
+    "id": 2756,
+    "sentence": "Il vento muove le foglie.",
+    "type": "sentence-analysis"
+  },
+  {
+    "category": "analisiLogica",
+    "uda": "uda_log_guidata1",
+    "id": 2757,
+    "sentence": "Noi guardiamo un film.",
+    "type": "sentence-analysis"
+  },
+  {
+    "category": "analisiLogica",
+    "uda": "uda_log_guidata1",
+    "id": 2758,
+    "sentence": "Voi avete vinto la gara.",
+    "type": "sentence-analysis"
+  },
+  {
+    "category": "analisiLogica",
+    "uda": "uda_log_guidata1",
+    "id": 2759,
+    "sentence": "La pioggia bagna i fiori.",
+    "type": "sentence-analysis"
+  },
+  {
+    "category": "analisiLogica",
+    "uda": "uda_log_guidata1",
+    "id": 2760,
+    "sentence": "Il professore spiega la lezione.",
+    "type": "sentence-analysis"
+  },
+  {
+    "category": "analisiLogica",
+    "uda": "uda_log_guidata1",
+    "id": 2761,
+    "sentence": "Il nonno racconta una storia.",
+    "type": "sentence-analysis"
+  },
+  {
+    "category": "analisiLogica",
+    "uda": "uda_log_guidata2",
+    "id": 2852,
+    "sentence": "Abito a Roma.",
+    "type": "sentence-analysis"
+  },
+  {
+    "category": "analisiLogica",
+    "uda": "uda_log_guidata2",
+    "id": 2853,
+    "sentence": "Vengo da Milano.",
+    "type": "sentence-analysis"
+  },
+  {
+    "category": "analisiLogica",
+    "uda": "uda_log_guidata2",
+    "id": 2854,
+    "sentence": "Passo per il parco.",
+    "type": "sentence-analysis"
+  },
+  {
+    "category": "analisiLogica",
+    "uda": "uda_log_guidata2",
+    "id": 2855,
+    "sentence": "Arrivo alle otto.",
+    "type": "sentence-analysis"
+  },
+  {
+    "category": "analisiLogica",
+    "uda": "uda_log_guidata2",
+    "id": 2856,
+    "sentence": "Studio per tre ore.",
+    "type": "sentence-analysis"
+  },
+  {
+    "category": "analisiLogica",
+    "uda": "uda_log_guidata2",
+    "id": 2857,
+    "sentence": "Il libro di storia è sul tavolo.",
+    "type": "sentence-analysis"
+  },
+  {
+    "category": "analisiLogica",
+    "uda": "uda_log_guidata2",
+    "id": 2858,
+    "sentence": "Parlo ai miei amici.",
+    "type": "sentence-analysis"
+  },
+  {
+    "category": "analisiLogica",
+    "uda": "uda_log_guidata2",
+    "id": 2859,
+    "sentence": "Il vaso fu rotto dal vento.",
+    "type": "sentence-analysis"
+  },
+  {
+    "category": "analisiLogica",
+    "uda": "uda_log_guidata2",
+    "id": 2860,
+    "sentence": "Lavoriamo con impegno.",
+    "type": "sentence-analysis"
+  },
+  {
+    "category": "analisiLogica",
+    "uda": "uda_log_guidata2",
+    "id": 2861,
+    "sentence": "Esco con la pioggia.",
+    "type": "sentence-analysis"
+  },
+  {
+    "category": "analisiLogica",
+    "uda": "uda_log_guidata3",
+    "id": 25102,
+    "sentence": "Lo zio ha regalato un orologio a Luigi.",
+    "type": "sentence-analysis"
+  },
+  {
+    "category": "analisiLogica",
+    "uda": "uda_log_guidata3",
+    "id": 25103,
+    "sentence": "Domani andremo in montagna con l'auto.",
+    "type": "sentence-analysis"
+  },
+  {
+    "category": "analisiLogica",
+    "uda": "uda_log_guidata3",
+    "id": 25104,
+    "sentence": "Il film era molto divertente.",
+    "type": "sentence-analysis"
+  },
+  {
+    "category": "analisiLogica",
+    "uda": "uda_log_guidata3",
+    "id": 25105,
+    "sentence": "Per la pioggia siamo rimasti in casa.",
+    "type": "sentence-analysis"
+  },
+  {
+    "category": "analisiLogica",
+    "uda": "uda_log_guidata3",
+    "id": 25106,
+    "sentence": "Marco studia con impegno per l'interrogazione.",
+    "type": "sentence-analysis"
+  },
+  {
+    "category": "analisiPeriodo",
+    "uda": "udaPeriodoGuidata1",
+    "id": 1501,
+    "sentence": "Tutti sanno che Alessandro è un vero asso nel nuoto.",
+    "type": "sentence-analysis"
+  },
+  {
+    "category": "analisiPeriodo",
+    "uda": "udaPeriodoGuidata1",
+    "id": 1502,
+    "sentence": "Si spera che finiscano presto i lavori stradali.",
+    "type": "sentence-analysis"
+  },
+  {
+    "category": "analisiPeriodo",
+    "uda": "udaPeriodoGuidata2",
+    "id": 1601,
+    "sentence": "Dopo tanto tempo ci guardavamo in silenzio senza trovare parole, ma ogni tanto sorridevamo l'uno all'altro.",
+    "type": "sentence-analysis"
+  },
+  {
+    "category": "analisiPeriodo",
+    "uda": "udaPeriodoGuidataFinale",
+    "id": 1701,
+    "sentence": "La professoressa ci ha spiegato che, se studiamo con attenzione, supereremo l'esame senza alcuna difficoltà.",
+    "type": "sentence-analysis"
+  },
+  {
+    "category": "analisiPeriodo",
+    "uda": "udaPeriodoGuidataFinale",
+    "id": 1702,
+    "sentence": "Mentre tornavo a casa, ho incontrato Marco che mi ha detto di avere trovato un nuovo lavoro in centro.",
+    "type": "sentence-analysis"
+  }
+]
