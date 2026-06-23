@@ -51,6 +51,7 @@ const SessionTimer = {
     },
 
     tick: function(user) {
+        if (!this.data) return;
         const now = Date.now();
         
         // 1. Check se è in pausa

@@ -94,6 +94,16 @@
                 <li><a href="#contatti" class="nav-item" data-section="contatti"><span class="icon">📧</span> <span>Contatti</span></a></li>
                 <li class="nav-logout-separator" style="margin-top: 1rem; border-top: 1px solid #f0f0f0; padding-top: 1rem;"></li>
                 <li><a href="javascript:void(0)" class="nav-item logout" onclick="Auth.logout()"><span class="icon">🚪</span> <span>Esci</span></a></li>
+                <li style="margin-top: 1.5rem; display: flex; justify-content: center; padding: 0 1rem;">
+                    <div id="music-player-widget" style="background: white; padding: 10px 15px; border-radius: 30px; display: flex; align-items: center; gap: 10px; border: 2px solid #f0f0f0; width: 100%; box-sizing: border-box; box-shadow: 0 2px 10px rgba(0,0,0,0.05);">
+                        <button id="music-play-btn" onclick="if(window.MusicPlayer) window.MusicPlayer.togglePlay()" style="background: var(--primary-color); color: white; border: none; width: 35px; height: 35px; border-radius: 50%; font-size: 1rem; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; box-shadow: 0 2px 5px rgba(93, 95, 239, 0.3);">▶️</button>
+                        <div style="display: flex; flex-direction: column; overflow: hidden; flex-grow: 1;">
+                            <span style="font-size: 0.6rem; color: #888; font-weight: 800; text-transform: uppercase; letter-spacing: 1px;">In Riproduzione</span>
+                            <span id="music-track-title" style="font-size: 0.75rem; font-weight: 700; color: #333; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Pronto...</span>
+                        </div>
+                        <button onclick="if(window.MusicPlayer) window.MusicPlayer.nextTrack()" style="background: #f8f9fa; color: #555; border: 1px solid #ddd; width: 30px; height: 30px; border-radius: 50%; cursor: pointer; font-size: 0.8rem; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">⏭️</button>
+                    </div>
+                </li>
             </ul>
         </div>
     </nav>
@@ -182,15 +192,7 @@
     <script src="js/ui.js?v=50"></script>
     <script src="js/main.js?v=50"></script>
 
-    <!-- FLOATING MUSIC PLAYER -->
-    <div id="music-player-widget" style="position: fixed; bottom: 20px; right: 20px; background: white; padding: 10px 20px; border-radius: 50px; box-shadow: 0 5px 20px rgba(0,0,0,0.15); display: flex; align-items: center; gap: 15px; z-index: 9999; border: 2px solid #f0f0f0;">
-        <button id="music-play-btn" onclick="if(window.MusicPlayer) window.MusicPlayer.togglePlay()" style="background: var(--primary-color); color: white; border: none; width: 40px; height: 40px; border-radius: 50%; font-size: 1.2rem; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 10px rgba(93, 95, 239, 0.3);">▶️</button>
-        <div style="display: flex; flex-direction: column; max-width: 150px;">
-            <span style="font-size: 0.7rem; color: #888; font-weight: 800; text-transform: uppercase; letter-spacing: 1px;">In Riproduzione</span>
-            <span id="music-track-title" style="font-size: 0.85rem; font-weight: 700; color: #333; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Pronto...</span>
-        </div>
-        <button onclick="if(window.MusicPlayer) window.MusicPlayer.nextTrack()" style="background: #f8f9fa; color: #555; border: 1px solid #ddd; width: 35px; height: 35px; border-radius: 50%; cursor: pointer; font-size: 0.9rem; display: flex; align-items: center; justify-content: center;">⏭️</button>
-    </div>
+    <!-- MUSIC PLAYER MOVED TO SIDEBAR -->
 
     <!-- FLOATING TIMER & CAT WIDGET -->
     <div id="dropdown-timer-container" style="display: none; position: fixed; top: 20px; right: 20px; z-index: 10000; background: white; padding: 10px 20px; border-radius: 20px; box-shadow: 0 5px 20px rgba(0,0,0,0.15); border: 2px solid #ffb74d; display: flex; align-items: center; gap: 10px;">
