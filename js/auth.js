@@ -114,11 +114,18 @@ const Auth = {
             localStorage.removeItem('pending_role'); // Pulisci dopo l'uso
             
             // Controllo privilegi Admin per email specifiche
-            const ADMIN_EMAILS = ['prof.memmo@gmail.com', 'guglielmo.piersanti@padregemelli.net'];
+            const ADMIN_EMAILS = ['prof.memmo@gmail.com'];
             if (fbUser.email && ADMIN_EMAILS.includes(fbUser.email)) {
                 Auth._user.role = 'admin';
                 Auth._user.setupComplete = true; // Gli admin saltano l'onboarding se necessario o lo fanno una volta
                 await window.fbDb.collection('users').doc(fbUser.uid).set({ role: 'admin', setupComplete: true }, { merge: true });
+            }
+
+            // Controllo docenti forzati (es. email specifiche che devono essere docenti e non admin)
+            const TEACHER_EMAILS = ['guglielmo.piersanti@padregemelli.net'];
+            if (fbUser.email && TEACHER_EMAILS.includes(fbUser.email) && Auth._user.role !== 'docente') {
+                Auth._user.role = 'docente';
+                await window.fbDb.collection('users').doc(fbUser.uid).set({ role: 'docente' }, { merge: true });
             }
 
             localStorage.setItem('palestra_user', JSON.stringify(Auth._user));
