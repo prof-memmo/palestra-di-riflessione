@@ -958,8 +958,8 @@ async function loadAdminUsersInProfile() {
 
         const counts = { 
             tutti: allUsers.length, 
-            docente: allUsers.filter(u => u.role === 'docente').length, 
-            studente: allUsers.filter(u => (u.role === 'studente' || u.role === 'admin') && u.roleLabel !== 'Amico della Palestra').length, 
+            docente: allUsers.filter(u => u.role === 'docente' || u.role === 'admin').length, 
+            studente: allUsers.filter(u => u.role === 'studente' && u.roleLabel !== 'Amico della Palestra').length, 
             amico: allUsers.filter(u => u.role === 'amico' || u.role === 'guest' || u.roleLabel === 'Amico della Palestra').length
         };
 
@@ -1046,8 +1046,8 @@ window.filterAdminEntities = function() {
             const matchesSearch = !search || (u.name || '').toLowerCase().includes(search) || (u.email || '').toLowerCase().includes(search) || (u.school || '').toLowerCase().includes(search) || (u.className || '').toLowerCase().includes(search);
             let matchesFilter = filter === 'tutti';
             const isAmico = u.role === 'amico' || u.role === 'guest' || u.roleLabel === 'Amico della Palestra';
-            if (filter === 'docente' && u.role === 'docente') matchesFilter = true;
-            if (filter === 'studente' && (u.role === 'studente' || u.role === 'admin') && !isAmico) matchesFilter = true;
+            if (filter === 'docente' && (u.role === 'docente' || u.role === 'admin')) matchesFilter = true;
+            if (filter === 'studente' && u.role === 'studente' && !isAmico) matchesFilter = true;
             if (filter === 'amico' && isAmico) matchesFilter = true;
             return matchesSearch && matchesFilter;
         });

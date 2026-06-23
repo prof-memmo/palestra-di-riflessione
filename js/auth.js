@@ -114,7 +114,7 @@ const Auth = {
             localStorage.removeItem('pending_role'); // Pulisci dopo l'uso
             
             // Controllo privilegi Admin per email specifiche
-            const ADMIN_EMAILS = ['prof.memmo@gmail.com'];
+            const ADMIN_EMAILS = ['prof.memmo@gmail.com', 'guglielmo.piersanti@padregemelli.net'];
             if (fbUser.email && ADMIN_EMAILS.includes(fbUser.email)) {
                 Auth._user.role = 'admin';
                 Auth._user.setupComplete = true; // Gli admin saltano l'onboarding se necessario o lo fanno una volta
