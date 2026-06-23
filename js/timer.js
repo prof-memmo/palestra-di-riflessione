@@ -109,7 +109,18 @@ const SessionTimer = {
 
         appContainer.innerHTML = `
             <div style="display:flex; flex-direction:column; align-items:center; justify-content:center; min-height:80vh; text-align:center; padding:2rem;">
-                <div style="font-size: 5rem; margin-bottom: 1rem;">🐈</div>
+                <svg width="0" height="0" style="position: absolute;">
+                    <filter id="remove-white" color-interpolation-filters="sRGB">
+                        <feColorMatrix type="matrix" values="
+                            1 0 0 0 0
+                            0 1 0 0 0
+                            0 0 1 0 0
+                            -3 -3 -3 1 8" />
+                    </filter>
+                </svg>
+                <div style="margin-bottom: 1rem;">
+                    <video src="assets/Gatto che dorme.mp4" autoplay loop muted playsinline style="filter: url(#remove-white); max-width: 100%; max-height: 250px;"></video>
+                </div>
                 <h2 style="font-weight: 900; color: #2c3e50; font-size: 2rem; margin-bottom: 1rem;">MIAO! PAUSA OBBLIGATORIA</h2>
                 
                 <div id="pausa-timer-display" style="font-size: 4rem; font-weight: 900; color: #e74c3c; font-variant-numeric: tabular-nums; letter-spacing: -2px; margin: 2rem 0; display: none;"></div>
