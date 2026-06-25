@@ -1218,18 +1218,27 @@ async function renderAdminPage() {
                     </div>
                 </div>
                 
-                <div style="margin-top: 3rem; padding-top: 2rem; border-top: 2px dashed #eee;">
-                    <h3 style="color: #c53030; margin-bottom: 1rem; font-size: 1.3rem;">📦 GESTIONE ANNUALE</h3>
-                    <p style="color: #666; margin-bottom: 1.5rem; font-size: 0.9rem;">Archivia tutti gli utenti e i progressi dell'anno in corso nello storico permanente e resetta la piattaforma per il nuovo anno scolastico.</p>
-                    <button class="btn" style="background: #c53030; color: white; border: none; padding: 1rem 2rem; border-radius: 15px; font-weight: 800; display: flex; align-items: center; gap: 0.5rem; cursor: pointer;" onclick="window.archiviaAnnoCorrente()">
-                        📦 Archivia Anno Corrente
+                <div style="margin-top: 3rem; padding-top: 2rem; border-top: 2px dashed #eee; background: rgba(231, 76, 60, 0.05); padding: 1.5rem; border-radius: 20px;">
+                    <h3 style="color: #c53030; margin-bottom: 1rem; font-size: 1.3rem;">⚠️ Danger Zone: Archiviazione Annuale</h3>
+                    <p style="color: #666; margin-bottom: 1.5rem; font-size: 0.9rem;">Questa opzione archivia tutti gli studenti dell'anno in corso, salvandone una "fotografia". Se necessario, l'operazione potrà essere annullata dall'Archivio Storico.</p>
+                    <button class="btn" style="background: transparent; color: #c53030; border: 2px solid #c53030; padding: 1rem 2rem; border-radius: 15px; font-weight: 800; display: flex; align-items: center; gap: 0.5rem; cursor: pointer;" onclick="window.archiviaAnnoCorrente()">
+                        📦 Esegui Archiviazione Anno
                     </button>
+                </div>
+                
+                <div id="admin-historical-archives-area" style="margin-top: 2rem; padding: 1.5rem; background: #f8f9fa; border: 1px solid #eee; border-radius: 20px;">
+                    <h3 style="color: #f39c12; margin-top:0; font-size: 1.3rem;">🕒 Archivio Storico</h3>
+                    <p style="font-size: 0.85rem; margin-bottom: 15px; color: #666;">Consulta lo storico degli studenti degli anni passati o ripristina un anno archiviato.</p>
+                    <div id="admin-historical-archives-list">
+                        <p style="font-size: 0.85rem; color: #999;">Caricamento archivio in corso...</p>
+                    </div>
                 </div>
             </div>
         </div>
     `;
 
     window.currentSection = 'admin';
+    if(window.loadHistoricalArchives) window.loadHistoricalArchives();
 
     // Recupera utenti da Firestore
     if (window.fbDb) {
