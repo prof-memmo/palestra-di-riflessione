@@ -457,18 +457,19 @@ function renderContattiPage() {
                     <span>prof.memmo@gmail.com</span>
                 </div>
 
+                <div style="margin-top: 1rem; margin-bottom: 2rem; display: flex; align-items: center; gap: 10px;">
+                    <span style="font-weight: 600; color: white;">Seguimi sui social:</span>
+                    <a href="https://www.instagram.com/prof.memmo_games?igsh=MW5pNHY3dHBxMHEyag%3D%3D&utm_source=qr" target="_blank" style="color: #E1306C; font-size: 2.5rem; display: inline-flex; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
+                        <i class="fa-brands fa-instagram"></i>
+                    </a>
+                </div>
+
                 <div class="info-card-box">
                     <div class="info-card-icon">📦</div>
                     <div class="info-card-text">
                         <h4>Scopri il mondo Prof. Memmo</h4>
                         <p><a href="https://prof-memmo.github.io/games/" target="_blank" style="color: #ffffff; font-weight: bold; text-decoration: underline;">Visita il sito</a> per scoprire i materiali, i giochi e la filosofia, oppure <a href="https://prof-memmo.github.io/games/condividi-esperienza.html" target="_blank" style="color: #ffffff; font-weight: bold; text-decoration: underline;">condividi la tua esperienza</a> lasciando commenti e feedback tramite il modulo!</p>
                     </div>
-                </div>
-                <div style="margin-top: 2rem; display: flex; align-items: center; gap: 10px;">
-                    <span style="font-weight: 600; color: white;">Seguimi sui social:</span>
-                    <a href="https://www.instagram.com/prof.memmo_games?igsh=MW5pNHY3dHBxMHEyag%3D%3D&utm_source=qr" target="_blank" style="color: #E1306C; font-size: 2.5rem; display: inline-flex; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
-                        <i class="fa-brands fa-instagram"></i>
-                    </a>
                 </div>
             </div>
 
