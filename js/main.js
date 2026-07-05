@@ -449,7 +449,7 @@ function renderContattiPage() {
             <div class="contact-info-side">
                 <div>
                     <h2>Mettiamoci in contatto</h2>
-                    <p>Hai domande, vuoi provare un gioco nella tua classe o proporre una collaborazione? Scrivimi!</p>
+                    <p>Hai domande o vuoi proporre una collaborazione? Scrivimi!</p>
                 </div>
                 
                 <div class="contact-method">
@@ -465,7 +465,7 @@ function renderContattiPage() {
                     </div>
                 </div>
                 <div style="margin-top: 2rem; display: flex; align-items: center; gap: 10px;">
-                    <span style="font-weight: 600; color: #333;">Seguimi sui social:</span>
+                    <span style="font-weight: 600; color: white;">Seguimi sui social:</span>
                     <a href="https://www.instagram.com/prof.memmo_games?igsh=MW5pNHY3dHBxMHEyag%3D%3D&utm_source=qr" target="_blank" style="color: #E1306C; font-size: 2.5rem; display: inline-flex; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
                         <i class="fa-brands fa-instagram"></i>
                     </a>
@@ -482,6 +482,16 @@ function renderContattiPage() {
                 <div class="form-group-contact">
                     <label for="contact-email">Email</label>
                     <input type="email" id="contact-email" placeholder="La tua email">
+                </div>
+
+                <div class="form-group-contact">
+                    <label for="contact-topic">Tipologia della comunicazione</label>
+                    <select id="contact-topic" style="width: 100%; padding: 0.875rem 1rem; border: 1px solid rgba(0,0,0,0.1); border-radius: 8px; font-family: inherit; font-size: 1rem; background-color: white;">
+                        <option value="" disabled selected>Seleziona un'opzione...</option>
+                        <option value="Richiesta di informazioni">Richiesta di informazioni</option>
+                        <option value="Opinioni">Opinioni</option>
+                        <option value="Altro">Altro</option>
+                    </select>
                 </div>
 
                 <div class="form-group-contact">
@@ -507,11 +517,12 @@ function renderContattiPage() {
 window.handleContactSubmit = function() {
     const name = document.getElementById('contact-name').value.trim();
     const email = document.getElementById('contact-email').value.trim();
+    const topic = document.getElementById('contact-topic').value;
     const message = document.getElementById('contact-message').value.trim();
     const check = document.getElementById('contact-check').checked;
 
-    if (!name || !email || !message) {
-        alert("Per favore, compila tutti i campi obbligatori.");
+    if (!name || !email || !topic || !message) {
+        alert("Per favore, compila tutti i campi obbligatori, compresa la tipologia di comunicazione.");
         return;
     }
 
