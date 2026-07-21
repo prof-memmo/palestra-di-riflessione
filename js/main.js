@@ -1126,7 +1126,7 @@ function renderAdminUserRow(userData) {
             ${avatarHtml}
         </div>
         <div style="flex: 1; min-width: 200px;">
-            <h4 style="margin: 0; font-weight: 800;">${userData.name || 'Anonimo'}</h4>
+            <h4 style="margin: 0; font-weight: 800;">${userData.name || 'Anonimo'} <a href="mailto:${userData.email}" title="Scrivi a ${userData.name || 'Anonimo'}" style="color:var(--primary-color); margin-left:6px; font-size:1.1rem; text-decoration:none;"><i class="fa-solid fa-envelope"></i></a></h4>
             <p style="margin: 0; font-size: 0.85rem; color: #666;">${userData.email || 'No email'} • <span style="color: ${roleColor}; font-weight: 700;">${userData.roleLabel || userData.role || 'Studente'}</span></p>
             <p style="margin: 0; font-size: 0.75rem; color: #999;">${userData.school ? `🏫 ${userData.school} • ` : ''} ${classLabel ? `📁 ${classLabel} • ` : ''} Iscritto il: ${userData.joinedAt ? new Date(userData.joinedAt).toLocaleDateString() : 'N/D'}</p>
         </div>
