@@ -79,6 +79,25 @@
             </div>
         </div>
     </div>
+
+    <!-- Edit Profile Modal -->
+    <div id="edit-profile-modal" class="legal-modal hidden">
+        <div class="legal-modal-content" style="max-width: 450px;">
+            <span class="close-legal" onclick="document.getElementById('edit-profile-modal').classList.add('hidden')">&times;</span>
+            <h2 style="color: var(--primary-color); margin-bottom: 20px;"><i class="fa-solid fa-user-edit"></i> Modifica Profilo</h2>
+            <form id="form-edit-profile" onsubmit="event.preventDefault(); if(window.saveProfileData) window.saveProfileData();">
+                <div style="margin-bottom: 1.5rem; text-align: left;">
+                    <label style="display: block; font-weight: 800; color: #444; margin-bottom: 0.5rem; font-size: 0.9rem;">Nome e Cognome / Nickname:</label>
+                    <input type="text" id="edit-profile-name" required style="width: 100%; padding: 0.8rem; border-radius: 10px; border: 2px solid #eee; font-size: 1rem;">
+                </div>
+                <div style="margin-bottom: 1.5rem; text-align: left;" id="edit-profile-school-group" class="hidden">
+                    <label style="display: block; font-weight: 800; color: #444; margin-bottom: 0.5rem; font-size: 0.9rem;">Scuola:</label>
+                    <input type="text" id="edit-profile-school" style="width: 100%; padding: 0.8rem; border-radius: 10px; border: 2px solid #eee; font-size: 1rem;">
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%; padding: 1rem; border-radius: 30px; font-weight: 800;">Salva Modifiche</button>
+            </form>
+        </div>
+    </div>
     
     <nav class="navbar hidden">
         <div class="nav-container">
@@ -99,6 +118,7 @@
                 <li><a href="#culturagenerale" class="nav-item" data-section="culturagenerale"><span class="icon">🌍</span> <span>Cultura Generale</span></a></li>
                 <li><a href="#contatti" class="nav-item" data-section="contatti"><span class="icon">📧</span> <span>Contatti</span></a></li>
                 <li class="nav-logout-separator" style="margin-top: 1rem; border-top: 1px solid #f0f0f0; padding-top: 1rem;"></li>
+                <li><a href="javascript:void(0)" class="nav-item" onclick="if(window.openEditProfileModal) window.openEditProfileModal()"><span class="icon">📝</span> <span>Modifica Profilo</span></a></li>
                 <li><a href="javascript:void(0)" class="nav-item logout" onclick="Auth.logout()"><span class="icon">🚪</span> <span>Esci</span></a></li>
 
             </ul>

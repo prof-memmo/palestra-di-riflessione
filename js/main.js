@@ -709,7 +709,7 @@ async function renderProfiloPage() {
                     ${user.isGuest ? `<p class="guest-notice">📍 PROFILO LOCALE</p>` : ''}
                 </div>
                 <div class="profile-actions">
-                    <button class="btn btn-edit" onclick="showEditProfileModal()">✏️ Modifica</button>
+                    <button class="btn btn-edit" onclick="openEditProfileModal()">✏️ Modifica</button>
                     <button class="btn btn-logout" onclick="Auth.logout()">Esci</button>
                 </div>
             </div>
@@ -4604,5 +4604,79 @@ window.loadHistoricalArchives = async function() {
         container.innerHTML = html;
     } catch(e) {
         console.error("Errore caricamento archivio storico:", e);
+    }
+};
+
+window.openEditProfileModal = async function() {
+    if (!window.Auth || !window.Auth.isLoggedIn()) return;
+    const user = window.Auth.getUser();
+    
+    const modal = document.getElementById('edit-profile-modal');
+    const nameInput = document.getElementById('edit-profile-name');
+    const schoolGroup = document.getElementById('edit-profile-school-group');
+    const schoolInput = document.getElementById('edit-profile-school');
+    
+    try {
+        const doc = await window.fbDb.collection('users').doc(user.uid).get();
+        if (!doc.exists) return;
+        
+        const userData = doc.data();
+        const isTeacher = (userData.role === 'docente' || userData.role === 'teacher' || userData.role === 'admin' || user.email === 'prof.memmo@gmail.com');
+        
+        if (isTeacher) {
+            schoolGroup.classList.remove('hidden');
+            schoolInput.value = userData.school || '';
+        } else {
+            schoolGroup.classList.add('hidden');
+        }
+        
+        nameInput.value = userData.name || user.name || '';
+        modal.classList.remove('hidden');
+    } catch (err) {
+        console.error(err);
+    }
+};
+
+window.saveProfileData = async function() {
+    if (!window.Auth || !window.Auth.isLoggedIn()) return;
+    const user = window.Auth.getUser();
+    
+    const nameInput = document.getElementById('edit-profile-name').value.trim();
+    const schoolInput = document.getElementById('edit-profile-school').value.trim();
+    
+    if (!nameInput) {
+        alert('Il nome non può essere vuoto.');
+        return;
+    }
+    
+    try {
+        const docRef = window.fbDb.collection('users').doc(user.uid);
+        const doc = await docRef.get();
+        const userData = doc.exists ? doc.data() : {};
+        
+        const isTeacher = (userData.role === 'docente' || userData.role === 'teacher' || userData.role === 'admin' || user.email === 'prof.memmo@gmail.com');
+        const updateData = { name: nameInput };
+        if (isTeacher) {
+            updateData.school = schoolInput;
+        }
+        
+        await docRef.update(updateData);
+        alert('Profilo aggiornato con successo!');
+        document.getElementById('edit-profile-modal').classList.add('hidden');
+        
+        // Update local user data
+        if (window.Auth && window.Auth.currentUser) {
+            window.Auth.currentUser.name = nameInput;
+            localStorage.setItem('palestra_user', JSON.stringify(window.Auth.currentUser));
+        }
+        
+        // Refresh profile page
+        if (window.currentSection === 'profilo') {
+            renderProfiloPage();
+        }
+        
+    } catch (err) {
+        console.error(err);
+        alert('Errore durante il salvataggio.');
     }
 };
