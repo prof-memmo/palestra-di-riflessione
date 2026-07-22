@@ -23,6 +23,9 @@ body {
     overflow-x: hidden;
     line-height: 1.5;
     -webkit-font-smoothing: antialiased;
+    overscroll-behavior-y: none;
+    -webkit-user-select: none;
+    user-select: none;
 }
 
 /* Global word breaking to prevent overflow */
@@ -145,6 +148,14 @@ main.full-width { margin-left: 0 !important; padding: 1rem !important; transitio
     .materie-grid { grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 1rem; }
     .materia-card { padding: 2rem 1rem; border-radius: 20px; }
     .materia-icon { font-size: 2.8rem; }
+    
+    /* Layout piatto per app-friendly view */
+    .exercise-container, .profile-card, .theory-schema {
+        background: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+        padding: 10px 5px !important;
+    }
 }
 
 @media (max-width: 480px) {
