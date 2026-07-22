@@ -1126,12 +1126,13 @@ function renderAdminUserRow(userData) {
             ${avatarHtml}
         </div>
         <div style="flex: 1; min-width: 200px;">
-            <h4 style="margin: 0; font-weight: 800;">${userData.name || 'Anonimo'} <a href="mailto:${userData.email}" title="Scrivi a ${userData.name || 'Anonimo'}" style="color:var(--primary-color); margin-left:6px; font-size:1.1rem; text-decoration:none;"><i class="fa-solid fa-envelope"></i></a></h4>
+            <h4 style="margin: 0; font-weight: 800;">${userData.name || 'Anonimo'}</h4>
             <p style="margin: 0; font-size: 0.85rem; color: #666;">${userData.email || 'No email'} • <span style="color: ${roleColor}; font-weight: 700;">${userData.roleLabel || userData.role || 'Studente'}</span></p>
             <p style="margin: 0; font-size: 0.75rem; color: #999;">${userData.school ? `🏫 ${userData.school} • ` : ''} ${classLabel ? `📁 ${classLabel} • ` : ''} Iscritto il: ${userData.joinedAt ? new Date(userData.joinedAt).toLocaleDateString() : 'N/D'}</p>
         </div>
-        <div style="text-align: right; margin-right: 1rem;">
+        <div style="display: flex; align-items: center; gap: 15px; margin-right: 1rem;">
             <div style="font-weight: 800; color: var(--primary-color);">${userProgress.points || 0} XP</div>
+            <a href="mailto:${userData.email}" title="Scrivi a ${userData.name || 'Anonimo'}" style="color:var(--primary-color); font-size:1.1rem; text-decoration:none;"><i class="fa-solid fa-envelope"></i></a>
         </div>
         <button onclick="adminDeleteUserInProfile('${userData.id}', '${(userData.name || 'Anonimo').replace(/'/g, "\\'")}')" style="background: #fff0f0; border: none; padding: 0.8rem; border-radius: 15px; cursor: pointer; color: #e74c3c;">🗑️</button>
     </div>`;
