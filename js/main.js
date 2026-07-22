@@ -1069,6 +1069,17 @@ window.setActiveAdminFilter = function(filter) {
     window.filterAdminEntities();
 };
 
+window.sortAdminEntities = function(col) {
+    if (!window.adminEntitiesSortObj) window.adminEntitiesSortObj = { col: 'date', asc: false };
+    if (window.adminEntitiesSortObj.col === col) {
+        window.adminEntitiesSortObj.asc = !window.adminEntitiesSortObj.asc;
+    } else {
+        window.adminEntitiesSortObj.col = col;
+        window.adminEntitiesSortObj.asc = true;
+    }
+    window.filterAdminEntities();
+};
+
 window.filterAdminEntities = function() {
     const search = (document.getElementById('admin-search-input')?.value || '').toLowerCase();
     const filter = window.currentAdminFilter || 'tutti';
@@ -1086,7 +1097,38 @@ window.filterAdminEntities = function() {
             if (filter === 'amico' && isAmico) matchesFilter = true;
             return matchesSearch && matchesFilter;
         });
-        html = filtered.map(u => renderAdminUserRow(u)).join('');
+        const state = window.adminEntitiesSortObj || { col: 'date', asc: false };
+        filtered.sort((a, b) => {
+            let valA, valB;
+            if (state.col === 'name') { valA = (a.name || '').toLowerCase(); valB = (b.name || '').toLowerCase(); }
+            else if (state.col === 'role') { valA = (a.role || '').toLowerCase(); valB = (b.role || '').toLowerCase(); }
+            else if (state.col === 'date') { 
+                let dA = a.joinedAt;
+                let dB = b.joinedAt;
+                valA = dA ? new Date(dA).getTime() : 0; 
+                valB = dB ? new Date(dB).getTime() : 0; 
+            }
+            else { valA = (a.name || '').toLowerCase(); valB = (b.name || '').toLowerCase(); }
+            
+            if (valA < valB) return state.asc ? -1 : 1;
+            if (valA > valB) return state.asc ? 1 : -1;
+            return 0;
+        });
+
+        let headerHtml = `
+            <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 1rem; padding: 1.2rem; background: transparent; border-bottom: 2px solid var(--primary-color); font-weight: 800; color: var(--primary-color); text-transform: uppercase; font-size: 0.85rem;">
+                <div style="width: 40px;"></div>
+                <div style="width: 50px;"></div>
+                <div style="flex: 1; min-width: 200px; display:flex; gap:20px;">
+                    <div style="cursor:pointer;" onclick="window.sortAdminEntities('name')">Utente <i class="fa-solid fa-sort" style="color:#aaa;"></i></div>
+                    <div style="cursor:pointer;" onclick="window.sortAdminEntities('role')">Ruolo <i class="fa-solid fa-sort" style="color:#aaa;"></i></div>
+                    <div style="cursor:pointer;" onclick="window.sortAdminEntities('date')">Data Iscrizione <i class="fa-solid fa-sort" style="color:#aaa;"></i></div>
+                </div>
+                <div style="display: flex; align-items: center; gap: 15px; margin-right: 1rem;">Azioni</div>
+                <div style="width: 40px;"></div>
+            </div>
+        `;
+        html = headerHtml + filtered.map(u => renderAdminUserRow(u)).join('');
     }
 
     container.innerHTML = html || '<p style="text-align: center; color: #999; padding: 3rem;">Nessun risultato trovato per questa selezione.</p>';
