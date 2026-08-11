@@ -427,8 +427,20 @@ function renderIntroPage() {
 }
 
 function renderContattiPage() {
+    if (typeof openSharedModal === 'function') {
+        openSharedModal('contatti');
+    }
     const appContainer = document.getElementById('app');
-    appContainer.innerHTML = `
+    if (appContainer) {
+        appContainer.innerHTML = `
+            <div style="padding: 3rem; text-align: center;">
+                <h2>Contatti</h2>
+                <p>Si è aperta la finestra dei contatti dell'Ecosistema.</p>
+                <button class="btn btn-primary" onclick="openSharedModal('contatti')" style="margin-top: 1rem;">Riapri Modulo Contatti</button>
+            </div>
+        `;
+    }
+}
         <div class="contact-card-wrapper">
             <!-- Lato Sinistro: Informazioni -->
             <div class="contact-info-side">
