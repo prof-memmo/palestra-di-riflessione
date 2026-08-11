@@ -14,7 +14,9 @@ window.adminDeleteUser = async function(uid, name) {
         alert("Impossibile eliminare l'utente: " + e.message);
     }
 };
-\n\nwindow.adminDeleteUserInProfile = async function(uid, name) {
+
+
+window.adminDeleteUserInProfile = async function(uid, name) {
     if (!confirm(`Sei sicuro di voler eliminare definitivamente l'utente "${name}"? \n\nVerranno cancellati tutti i suoi dati e i suoi progressi dalla Palestra.`)) return;
     
     try {
@@ -27,7 +29,9 @@ window.adminDeleteUser = async function(uid, name) {
         alert("Impossibile eliminare l'utente: " + e.message);
     }
 };
-\n\nwindow.adminEditAttribute = async function(type, oldValue) {
+
+
+window.adminEditAttribute = async function(type, oldValue) {
     const newValue = prompt(`Inserisci il nuovo nome per ${type === 'school' ? 'la scuola' : 'la città'} "${oldValue}":`, oldValue);
     if (!newValue || newValue === oldValue) return;
 
@@ -48,7 +52,9 @@ window.adminDeleteUser = async function(uid, name) {
         loadAdminUsersInProfile();
     } catch (e) { alert("Errore durante l'aggiornamento massivo: " + e.message); }
 };
-\n\nwindow.adminActionOnSelected = async function(action) {
+
+
+window.adminActionOnSelected = async function(action) {
     const selectedCbs = document.querySelectorAll('.admin-student-checkbox:checked');
     if (selectedCbs.length === 0) return;
 
@@ -94,7 +100,9 @@ window.adminDeleteUser = async function(uid, name) {
         } catch (e) { alert("Errore: " + e.message); }
     }
 };
-\n\nwindow.moveSelectedStudents = async function(currentCode, currentName, currentId) {
+
+
+window.moveSelectedStudents = async function(currentCode, currentName, currentId) {
     const selectedCbs = document.querySelectorAll('.student-checkbox:checked');
     const destClassId = document.getElementById('move-destination-class').value;
     
@@ -149,7 +157,9 @@ window.adminDeleteUser = async function(uid, name) {
         alert("Errore durante lo spostamento: " + e.message);
     }
 };
-\n\nwindow.deleteSelectedStudents = async function(currentCode, currentName, currentId) {
+
+
+window.deleteSelectedStudents = async function(currentCode, currentName, currentId) {
     const selectedCbs = document.querySelectorAll('.student-checkbox:checked');
     
     if (selectedCbs.length === 0) {
@@ -184,7 +194,9 @@ window.adminDeleteUser = async function(uid, name) {
         alert("Errore durante la rimozione: " + e.message);
     }
 };
-\n\nwindow.saveProfileData = async function() {
+
+
+window.saveProfileData = async function() {
     if (!window.Auth || !window.Auth.isLoggedIn()) return;
     const user = window.Auth.getUser();
     
@@ -227,7 +239,9 @@ window.adminDeleteUser = async function(uid, name) {
         alert('Errore durante il salvataggio.');
     }
 };
-\n\nwindow.openEditProfileModal = async function() {
+
+
+window.openEditProfileModal = async function() {
     if (!window.Auth || !window.Auth.isLoggedIn()) return;
     const user = window.Auth.getUser();
     
@@ -256,4 +270,4 @@ window.adminDeleteUser = async function(uid, name) {
         console.error(err);
     }
 };
-\n
+

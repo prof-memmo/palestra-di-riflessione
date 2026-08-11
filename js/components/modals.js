@@ -5,8 +5,10 @@ function showLoginOverlay(redirectRoute = null) {
         window.pendingRoute = redirectRoute;
     }
 }
-\n\nfunction hideLoginOverlay() {
+
+
+function hideLoginOverlay() {
     const overlay = document.getElementById('login-overlay');
     if (overlay) overlay.classList.add('hidden');
 }
-\n
+

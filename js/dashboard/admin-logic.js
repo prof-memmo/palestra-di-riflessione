@@ -85,7 +85,9 @@ async function renderAdminPage() {
         }
     }
 }
-\n\nasync function loadAdminUsersInProfile() {
+
+
+async function loadAdminUsersInProfile() {
     if (!window.fbDb) return;
     const container = document.getElementById('admin-users-list');
     if (!container) return;
@@ -212,7 +214,9 @@ async function renderAdminPage() {
         container.innerHTML = `<p style="color: #e74c3c;">Errore nel caricamento dei dati: ${e.message}</p>`;
     }
 }
-\n\nfunction renderAdminUserRow(userData) {
+
+
+function renderAdminUserRow(userData) {
     const allClasses = window.adminData.classes || [];
     const userProgress = userData._progress || {};
     const isImage = userData.avatar && (userData.avatar.includes('/') || userData.avatar.includes('.'));
@@ -247,4 +251,4 @@ async function renderAdminPage() {
         <button onclick="adminDeleteUserInProfile('${userData.id}', '${(userData.name || 'Anonimo').replace(/'/g, "\\'")}')" style="background: #fff0f0; border: none; padding: 0.8rem; border-radius: 15px; cursor: pointer; color: #e74c3c;">🗑️</button>
     </div>`;
 }
-\n
+

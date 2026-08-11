@@ -56,7 +56,9 @@ function initNavigation() {
         toggleSidebar(false);
     }
 }
-\n\nfunction navigateTo(section, subType = null, level = null, updateHash = true, extra = null) {
+
+
+function navigateTo(section, subType = null, level = null, updateHash = true, extra = null) {
     if (!window.collapsedSections) window.collapsedSections = [];
 
     if (updateHash) {
@@ -268,4 +270,4 @@ function initNavigation() {
         `;
     }
 }
-\n
+

@@ -39,7 +39,9 @@ window.addTeacherClass = async function() {
         alert("Errore durante la creazione della classe: " + e.message);
     }
 };
-\n\nwindow.recoverTeacherClass = async function() {
+
+
+window.recoverTeacherClass = async function() {
     const input = document.getElementById('recover-class-code');
     const code = input.value.trim().toUpperCase();
     if (!code) return;
@@ -102,7 +104,9 @@ window.addTeacherClass = async function() {
         alert("Errore durante il recupero: " + e.message);
     }
 };
-\n\nwindow.removeTeacherClass = async function(index) {
+
+
+window.removeTeacherClass = async function(index) {
     let classes = JSON.parse(localStorage.getItem('palestra_classes') || '[]');
     const classObj = classes[index];
     const classCode = classObj.code;
@@ -134,7 +138,9 @@ window.addTeacherClass = async function() {
         }
     }
 };
-\n\nwindow.viewClassStudents = async function(code, name, classId = null) {
+
+
+window.viewClassStudents = async function(code, name, classId = null) {
     const content = document.getElementById('class-register-content');
     if (!content) return;
 
@@ -281,7 +287,9 @@ window.addTeacherClass = async function() {
 
 
 };
-\n\nwindow.viewClassTeachers = async function(classId, className, classCode) {
+
+
+window.viewClassTeachers = async function(classId, className, classCode) {
     const content = document.getElementById('class-register-content');
     if (!content) return;
 
@@ -396,7 +404,9 @@ window.addTeacherClass = async function() {
         content.innerHTML = `<p style="color: red; text-align: center; padding: 2rem;">Errore durante il caricamento docenti: ${e.message}</p>`;
     }
 };
-\n\nwindow.joinClass = async function() {
+
+
+window.joinClass = async function() {
     const input = document.getElementById('join-class-code');
     const code = (input.value || '').trim().toUpperCase();
     if (!code) return;
@@ -450,7 +460,9 @@ window.addTeacherClass = async function() {
         alert("Errore durante l'accesso alla classe: " + e.message);
     }
 };
-\n\nwindow.leaveClass = async function() {
+
+
+window.leaveClass = async function() {
     if (!confirm("Sei sicuro di voler uscire dalla classe?")) return;
     
     const user = Auth.getUser();
@@ -474,7 +486,9 @@ window.addTeacherClass = async function() {
     
     renderProfiloPage();
 };
-\n\nwindow.saveTeacherClass = async function(id) {
+
+
+window.saveTeacherClass = async function(id) {
     const name = document.getElementById('edit-class-name').value.trim().toUpperCase();
     const school = document.getElementById('edit-class-school').value.trim();
     const city = document.getElementById('edit-class-city').value.trim();
@@ -510,4 +524,4 @@ window.addTeacherClass = async function() {
         alert(msg);
     }
 };
-\n
+

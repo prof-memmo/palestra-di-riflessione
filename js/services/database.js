@@ -6,7 +6,9 @@ window.adminDeleteEntity = async function(collection, id, name) {
         loadAdminUsersInProfile();
     } catch (e) { alert("Errore: " + e.message); }
 };
-\n\nwindow.archiviaAnnoCorrente = async function() {
+
+
+window.archiviaAnnoCorrente = async function() {
     const conferma = confirm("ATTENZIONE! L'archiviazione sposterà tutti gli utenti e i punteggi dell'anno in corso in un archivio storico permanente, resettando la piattaforma per il nuovo anno. Procedere?");
     if (!conferma) return;
     
@@ -84,7 +86,9 @@ window.adminDeleteEntity = async function(collection, id, name) {
         alert("Impossibile archiviare: " + e.message);
     }
 };
-\n\nwindow.ripristinaAnnoArchiviato = async function(backupName) {
+
+
+window.ripristinaAnnoArchiviato = async function(backupName) {
     if (!isAdminUser()) return;
     if(!confirm(`Sei ASSOLUTAMENTE sicuro di voler RIPRISTINARE l'anno archiviato "${backupName}"?\nQuesta operazione ripristinerà gli account degli studenti e tutti i loro progressi (punti, moduli).`)) return;
     try {
@@ -128,7 +132,9 @@ window.adminDeleteEntity = async function(collection, id, name) {
         alert("Errore durante il ripristino: " + e.message);
     }
 };
-\n\nwindow.loadHistoricalArchives = async function() {
+
+
+window.loadHistoricalArchives = async function() {
     if (!isAdminUser()) return;
     try {
         const snapshot = await window.fbDb.collection('history').orderBy('timestamp', 'desc').get();
@@ -190,4 +196,4 @@ window.adminDeleteEntity = async function(collection, id, name) {
         console.error("Errore caricamento archivio storico:", e);
     }
 };
-\n
+
