@@ -82,12 +82,8 @@ let _hasConfirmedPrivacy = false;
 let _hasConfirmedTerms = false;
 
 window.showLegal = function(type) {
-    const modal = document.getElementById('legal-modal');
-    const container = document.getElementById('legal-text-container');
-    if (modal && container) {
-        _currentLegalType = type;
-        container.innerHTML = LEGAL_TEXTS[type] || 'Contenuto non disponibile.';
-        modal.classList.remove('hidden');
+    if (typeof openSharedModal === 'function') {
+        openSharedModal(type === 'terms' ? 'termini' : type);
     }
 };
 
