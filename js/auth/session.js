@@ -48,99 +48,77 @@ Object.assign(window.Auth = window.Auth || {}, {
     _handleFirebaseUser: async (fbUser) => {
         try {
             const email = fbUser.email ? fbUser.email.toLowerCase() : '';
-            const isSuperAdmin = (email === 'prof.memmo@gmail.com');
+            let isSuperAdmin = (email === 'prof.memmo@gmail.com');
+            let userPiano = 'base';
+            let hubRole = 'studente';
+            let hubName = fbUser.displayName || 'Utente Palestra';
 
             // 1. Verifica sull'Hub Centrale (Single Sign-On Auth)
-            let userPiano = 'base';
-            if (!isSuperAdmin) {
-                try {
-                    const hubDoc = await window.fbDb.collection('hub_users').doc(fbUser.uid).get();
-                    if (!hubDoc.exists) {
-                        alert("Profilo Hub non trovato. Completa l'onboarding nell'Hub.");
-                        window.location.href = 'https://prof-memmo.github.io/prof-memmo-gestione-siti/portal.html?redirect=palestra_riflessione';
-                        return;
-                    }
+            try {
+                const hubDoc = await window.fbDb.collection('hub_users').doc(fbUser.uid).get();
+                if (hubDoc.exists) {
                     const hubData = hubDoc.data();
-                    if (hubData.statusAccount !== 'active') {
-                        alert("Accesso negato: L'account non è attivo nell'Hub (potrebbe essere sospeso o in attesa di approvazione).");
+                    if (hubData.role === 'admin' || isSuperAdmin) {
+                        isSuperAdmin = true;
+                        hubRole = 'admin';
+                    } else if (hubData.role === 'docente') {
+                        hubRole = 'docente';
+                    } else if (hubData.role === 'viandante' || hubData.role === 'amico_del_prof' || hubData.role === 'forestiero') {
+                        hubRole = 'amico';
+                    } else {
+                        hubRole = 'studente';
+                    }
+                    if (hubData.anagrafica && hubData.anagrafica.nome) {
+                        hubName = hubData.anagrafica.nome;
+                    }
+                    userPiano = hubData.subscription || hubData.abbonamento || (isSuperAdmin ? 'docente_ecosistema' : 'base');
+                    if (!isSuperAdmin && hubData.statusAccount && hubData.statusAccount !== 'active') {
+                        alert("Accesso negato: L'account non è ancora attivo nell'Hub (potrebbe essere sospeso o in attesa di approvazione).");
                         window.location.href = 'https://prof-memmo.github.io/prof-memmo-gestione-siti/portal.html';
                         return;
                     }
-                    if (!hubData.platforms || !hubData.platforms.palestra_riflessione || !hubData.platforms.palestra_riflessione.enabled) {
-                        alert("Accesso negato: Piattaforma Palestra di Riflessione non abilitata per il tuo profilo.");
-                        window.location.href = 'https://prof-memmo.github.io/prof-memmo-gestione-siti/portal.html';
-                        return;
-                    }
-                    userPiano = hubData.subscription || hubData.abbonamento || 'base';
-                } catch (err) {
-                    console.error("Errore verifica Hub:", err);
-                    alert("Errore di sicurezza Hub. Riprova.");
-                    window.location.href = 'https://prof-memmo.github.io/prof-memmo-gestione-siti/portal.html';
+                } else if (!isSuperAdmin) {
+                    console.warn("Profilo Hub non trovato: redirect all'onboarding centrale.");
+                    window.location.href = 'https://prof-memmo.github.io/prof-memmo-gestione-siti/portal.html?redirect=palestra_riflessione';
                     return;
                 }
-            } else {
-                userPiano = 'docente_ecosistema';
+            } catch (err) {
+                console.error("Errore verifica Hub:", err);
             }
 
+            if (isSuperAdmin) userPiano = 'docente_ecosistema';
             localStorage.setItem('palestra_user_plan', userPiano);
 
             const doc = await window.fbDb.collection('users').doc(fbUser.uid).get();
-            const pendingRole = localStorage.getItem('pending_role');
 
             if (doc.exists) {
                 window.Auth._user = doc.data();
                 window.Auth._user.piano = userPiano;
+                if (isSuperAdmin) {
+                    window.Auth._user.role = 'admin';
+                } else if (hubRole) {
+                    window.Auth._user.role = hubRole;
+                }
+                if (!window.Auth._user.name && hubName) {
+                    window.Auth._user.name = hubName;
+                }
+                window.Auth._user.setupComplete = true;
                 
                 if (!window.Auth._user.email && fbUser.email) {
                     window.Auth._user.email = fbUser.email;
                     await window.fbDb.collection('users').doc(fbUser.uid).update({ email: fbUser.email });
                 }
-
-                if (window.Auth._user.status === 'archived' && window.Auth._user.role === 'studente') {
-                    const newClassCode = prompt("Il tuo account è archiviato. Inserisci il nuovo Codice Classe per riattivarti:");
-                    if (newClassCode) {
-                        const q = await window.fbDb.collection('classes').where('code', '==', newClassCode.toUpperCase()).get();
-                        if (!q.empty) {
-                            const classData = q.docs[0].data();
-                            const classId = q.docs[0].id;
-                            window.Auth._user.status = 'active';
-                            window.Auth._user.classId = classId;
-                            window.Auth._user.className = classData.name;
-                            window.Auth._user.teacherId = classData.teacherId;
-                            await window.fbDb.collection('users').doc(fbUser.uid).update({
-                                status: 'active',
-                                classId: classId,
-                                className: classData.name,
-                                teacherId: classData.teacherId
-                            });
-                            alert("Bentornato! Sei stato riattivato nella classe " + classData.name);
-                        } else {
-                            alert("Codice classe non valido.");
-                            window.Auth.logout();
-                            return;
-                        }
-                    } else {
-                        alert("Codice necessario per riattivare l'account.");
-                        window.Auth.logout();
-                        return;
-                    }
-                }
-                
-                if (pendingRole && window.Auth._user.role !== pendingRole && window.Auth._user.role !== 'admin') {
-                    window.Auth._user.role = pendingRole;
-                    await window.fbDb.collection('users').doc(fbUser.uid).update({ role: pendingRole });
-                }
             } else {
                 window.Auth._user = {
                     uid: fbUser.uid,
-                    name: fbUser.displayName || '',
-                    avatar: fbUser.photoURL || 'assets/avatar.png',
-                    role: isSuperAdmin ? 'admin' : (pendingRole || 'studente'),
+                    name: hubName,
+                    avatar: fbUser.photoURL || 'assets/logo.png',
+                    role: isSuperAdmin ? 'admin' : hubRole,
                     piano: userPiano,
                     points: 0,
                     isGuest: false,
                     email: fbUser.email,
-                    setupComplete: isSuperAdmin ? true : false,
+                    setupComplete: true,
                     createdAt: new Date().toISOString()
                 };
 
