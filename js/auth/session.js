@@ -47,29 +47,49 @@ Object.assign(window.Auth = window.Auth || {}, {
 
     _handleFirebaseUser: async (fbUser) => {
         try {
+            const email = fbUser.email ? fbUser.email.toLowerCase() : '';
+            const isSuperAdmin = (email === 'prof.memmo@gmail.com');
+
+            // 1. Verifica sull'Hub Centrale (Single Sign-On Auth)
+            let userPiano = 'base';
+            if (!isSuperAdmin) {
+                try {
+                    const hubDoc = await window.fbDb.collection('hub_users').doc(fbUser.uid).get();
+                    if (!hubDoc.exists) {
+                        alert("Profilo Hub non trovato. Completa l'onboarding nell'Hub.");
+                        window.location.href = 'https://prof-memmo.github.io/prof-memmo-gestione-siti/portal.html?redirect=palestra_riflessione';
+                        return;
+                    }
+                    const hubData = hubDoc.data();
+                    if (hubData.statusAccount !== 'active') {
+                        alert("Accesso negato: L'account non è attivo nell'Hub (potrebbe essere sospeso o in attesa di approvazione).");
+                        window.location.href = 'https://prof-memmo.github.io/prof-memmo-gestione-siti/portal.html';
+                        return;
+                    }
+                    if (!hubData.platforms || !hubData.platforms.palestra_riflessione || !hubData.platforms.palestra_riflessione.enabled) {
+                        alert("Accesso negato: Piattaforma Palestra di Riflessione non abilitata per il tuo profilo.");
+                        window.location.href = 'https://prof-memmo.github.io/prof-memmo-gestione-siti/portal.html';
+                        return;
+                    }
+                    userPiano = hubData.subscription || hubData.abbonamento || 'base';
+                } catch (err) {
+                    console.error("Errore verifica Hub:", err);
+                    alert("Errore di sicurezza Hub. Riprova.");
+                    window.location.href = 'https://prof-memmo.github.io/prof-memmo-gestione-siti/portal.html';
+                    return;
+                }
+            } else {
+                userPiano = 'docente_ecosistema';
+            }
+
+            localStorage.setItem('palestra_user_plan', userPiano);
+
             const doc = await window.fbDb.collection('users').doc(fbUser.uid).get();
             const pendingRole = localStorage.getItem('pending_role');
 
             if (doc.exists) {
                 window.Auth._user = doc.data();
-                
-                // --- FETCH PIANO UTENTE DAL HUB ---
-                try {
-                    let hubApp = firebase.apps.find(a => a.name === "HubGuardApp");
-                    if (hubApp) {
-                        const hubDoc = await hubApp.firestore().collection('hub_users').doc(fbUser.uid).get();
-                        if (hubDoc.exists) {
-                            const piano = hubDoc.data().abbonamento;
-                            localStorage.setItem('palestra_user_plan', piano || 'base');
-                            window.Auth._user.piano = piano || 'base';
-                        } else {
-                            localStorage.setItem('palestra_user_plan', 'base');
-                        }
-                    }
-                } catch(err) {
-                    console.error("Errore fetch piano hub:", err);
-                    localStorage.setItem('palestra_user_plan', 'base');
-                }
+                window.Auth._user.piano = userPiano;
                 
                 if (!window.Auth._user.email && fbUser.email) {
                     window.Auth._user.email = fbUser.email;
@@ -115,31 +135,14 @@ Object.assign(window.Auth = window.Auth || {}, {
                     uid: fbUser.uid,
                     name: fbUser.displayName || '',
                     avatar: fbUser.photoURL || 'assets/avatar.png',
-                    role: pendingRole || 'studente',
+                    role: isSuperAdmin ? 'admin' : (pendingRole || 'studente'),
+                    piano: userPiano,
                     points: 0,
                     isGuest: false,
                     email: fbUser.email,
-                    setupComplete: false,
+                    setupComplete: isSuperAdmin ? true : false,
                     createdAt: new Date().toISOString()
                 };
-                
-                // --- FETCH PIANO UTENTE DAL HUB ---
-                try {
-                    let hubApp = firebase.apps.find(a => a.name === "HubGuardApp");
-                    if (hubApp) {
-                        const hubDoc = await hubApp.firestore().collection('hub_users').doc(fbUser.uid).get();
-                        if (hubDoc.exists) {
-                            const piano = hubDoc.data().abbonamento;
-                            localStorage.setItem('palestra_user_plan', piano || 'base');
-                            window.Auth._user.piano = piano || 'base';
-                        } else {
-                            localStorage.setItem('palestra_user_plan', 'base');
-                        }
-                    }
-                } catch(err) {
-                    console.error("Errore fetch piano hub (nuovo utente):", err);
-                    localStorage.setItem('palestra_user_plan', 'base');
-                }
 
                 await window.fbDb.collection('users').doc(fbUser.uid).set(window.Auth._user);
             }
