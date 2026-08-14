@@ -50,22 +50,11 @@
                 </div>
 
                 <!-- Autenticazione Centrale -->
-                <div id="login-primary-actions" style="display: flex; flex-direction: column; gap: 1rem; margin-bottom: 1rem;">
-                    <button id="google-login-btn" class="btn" onclick="handleGoogleLogin()" style="width:100%; display:flex; align-items:center; justify-content:center; gap:1rem; background:white; border:2px solid #eee; color:#444; padding:1.2rem; border-radius:50px; font-weight:800; font-size: 1.1rem; cursor:pointer; box-shadow: 0 4px 15px rgba(0,0,0,0.05); transition: all 0.3s;">
-                        <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" width="24"> ACCEDI CON GOOGLE
+                <div id="login-primary-actions" style="display: flex; flex-direction: column; gap: 1rem; margin-bottom: 1rem; align-items: center;">
+                    <button type="button" class="btn" style="background: var(--primary-color); color: white; font-size: 1.2rem; font-weight: 800; padding: 15px 30px; border-radius: 50px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); border: none; cursor: pointer; width: 100%;" onclick="window.location.href='https://prof-memmo.github.io/prof-memmo-gestione-siti/portal.html?redirect=palestra_riflessione'">
+                        <i class="fa-solid fa-right-to-bracket" style="margin-right: 10px;"></i> ACCEDI TRAMITE HUB
                     </button>
-                    
-                    <div style="margin: 0.5rem 0; display: flex; align-items: center; gap: 1rem; color: #ddd; font-size: 0.8rem; font-weight: 600; letter-spacing: 1px;">
-                        <hr style="flex:1; border:0; border-top:1px solid #f0f0f0;"> OPPURE <hr style="flex:1; border:0; border-top:1px solid #f0f0f0;">
-                    </div>
-
-                    <div style="background: #fafafa; padding: 1.8rem; border-radius: 35px; border: 2px solid #f0f0f0;">
-                        <div id="registration-input-area" style="display:flex; flex-direction:column; gap:1rem;">
-                            <input type="email" id="login-email" placeholder="La tua email" style="padding:1rem 1.5rem; border:2px solid #eee; border-radius:50px; font-size:1.1rem; outline:none; width: 100%;">
-                            <input type="password" id="login-password" placeholder="Password" style="padding:1rem 1.5rem; border:2px solid #eee; border-radius:50px; font-size:1.1rem; outline:none; width: 100%;">
-                            <button class="btn btn-primary" onclick="handleEmailLogin()" style="width: 100%; padding: 1.2rem; font-weight: 900; border-radius: 50px; font-size: 1.1rem; margin-top: 0.5rem;">ACCEDI ORA ➜</button>
-                        </div>
-                    </div>
+                    <p class="text-center mt-2" style="font-size: 0.85rem; color: #888;">Verrai reindirizzato al Portale Unico del Prof. Memmo per l'accesso sicuro.</p>
                 </div>
             </div>
 

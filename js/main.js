@@ -441,76 +441,7 @@ function renderContattiPage() {
         `;
     }
 }
-        <div class="contact-card-wrapper">
-            <!-- Lato Sinistro: Informazioni -->
-            <div class="contact-info-side">
-                <div>
-                    <h2>Mettiamoci in contatto</h2>
-                    <p>Hai domande o vuoi proporre una collaborazione? Scrivimi!</p>
-                </div>
-                
-                <div class="contact-method">
-                    <div class="contact-method-icon">✉️</div>
-                    <span>prof.memmo@gmail.com</span>
-                </div>
 
-                <div style="margin-top: 1rem; margin-bottom: 2rem; display: flex; align-items: center; gap: 10px;">
-                    <span style="font-weight: 600; color: white;">Seguimi sui social:</span>
-                    <a href="https://www.instagram.com/prof.memmo_games?igsh=MW5pNHY3dHBxMHEyag%3D%3D&utm_source=qr" target="_blank" style="color: #E1306C; font-size: 2.5rem; display: inline-flex; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
-                        <i class="fa-brands fa-instagram"></i>
-                    </a>
-                </div>
-
-                <div class="info-card-box">
-                    <div class="info-card-icon">📦</div>
-                    <div class="info-card-text">
-                        <h4>Scopri il mondo Prof. Memmo</h4>
-                        <p><a href="https://prof-memmo.github.io/games/" target="_blank" style="color: #ffffff; font-weight: bold; text-decoration: underline;">Visita il sito</a> per scoprire i materiali, i giochi e la filosofia, oppure <a href="https://prof-memmo.github.io/games/condividi-esperienza.html" target="_blank" style="color: #ffffff; font-weight: bold; text-decoration: underline;">condividi la tua esperienza</a> lasciando commenti e feedback tramite il modulo!</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Lato Destro: Modulo -->
-            <div class="contact-form-side">
-                <div class="form-group-contact">
-                    <label for="contact-name">Nome</label>
-                    <input type="text" id="contact-name" placeholder="Il tuo nome">
-                </div>
-                
-                <div class="form-group-contact">
-                    <label for="contact-email">Email</label>
-                    <input type="email" id="contact-email" placeholder="La tua email">
-                </div>
-
-                <div class="form-group-contact">
-                    <label for="contact-topic">Tipologia della comunicazione</label>
-                    <select id="contact-topic" style="width: 100%; padding: 0.875rem 1rem; border: 1px solid rgba(0,0,0,0.1); border-radius: 8px; font-family: inherit; font-size: 1rem; background-color: white;">
-                        <option value="" disabled selected>Seleziona un'opzione...</option>
-                        <option value="Richiesta di informazioni">Richiesta di informazioni</option>
-                        <option value="Opinioni">Opinioni</option>
-                        <option value="Altro">Altro</option>
-                    </select>
-                </div>
-
-                <div class="form-group-contact">
-                    <label for="contact-message">Messaggio</label>
-                    <textarea id="contact-message" placeholder="Come posso aiutarti?"></textarea>
-                </div>
-
-                <div class="contact-legal">
-                    <input type="checkbox" id="contact-check">
-                    <label for="contact-check">
-                        Ho almeno 16 anni o sono sotto la supervisione di un adulto. 
-                        Accetto la <a href="javascript:void(0)" onclick="showLegal('privacy')">Privacy Policy</a> e i <a href="javascript:void(0)" onclick="showLegal('terms')">Termini e Condizioni</a>.
-                    </label>
-                </div>
-
-                <button class="btn-contact-submit" onclick="handleContactSubmit()">Invia Messaggio</button>
-            </div>
-        </div>
-    `;
-    currentSection = 'contatti';
-}
 
 window.handleContactSubmit = function() {
     const name = document.getElementById('contact-name').value.trim();
