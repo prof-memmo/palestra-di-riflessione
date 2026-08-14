@@ -72,18 +72,17 @@ Object.assign(window.Auth = window.Auth || {}, {
                         hubName = hubData.anagrafica.nome;
                     }
                     userPiano = hubData.subscription || hubData.abbonamento || (isSuperAdmin ? 'docente_ecosistema' : 'base');
-                    if (!isSuperAdmin && hubData.statusAccount && hubData.statusAccount !== 'active') {
-                        alert("Accesso negato: L'account non è ancora attivo nell'Hub (potrebbe essere sospeso o in attesa di approvazione).");
+                    if (!isSuperAdmin && hubData.statusAccount && (hubData.statusAccount === 'rejected' || hubData.statusAccount === 'suspended')) {
+                        alert("Accesso negato: L'account è stato sospeso nell'Hub.");
                         window.location.href = 'https://prof-memmo.github.io/prof-memmo-gestione-siti/portal.html';
                         return;
                     }
-                } else if (!isSuperAdmin) {
-                    console.warn("Profilo Hub non trovato: redirect all'onboarding centrale.");
-                    window.location.href = 'https://prof-memmo.github.io/prof-memmo-gestione-siti/portal.html?redirect=palestra_riflessione';
-                    return;
+                } else {
+                    hubRole = isSuperAdmin ? 'admin' : 'studente';
                 }
             } catch (err) {
-                console.error("Errore verifica Hub:", err);
+                console.warn("Verifica Hub (fallback locale):", err);
+                hubRole = isSuperAdmin ? 'admin' : 'studente';
             }
 
             if (isSuperAdmin) userPiano = 'docente_ecosistema';

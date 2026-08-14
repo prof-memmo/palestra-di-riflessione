@@ -9,14 +9,20 @@ const firebaseConfig = {
 };
 
 // Inizializza Firebase
-if (!firebase.apps.length) {
-    firebase.initializeApp(firebaseConfig);
-}
+try {
+    let app = (firebase.apps || []).find(a => a.name === '[DEFAULT]');
+    if (!app) {
+        app = firebase.initializeApp(firebaseConfig);
+    }
 
-// Esponi auth e db globalmente per usarli negli altri script
-window.fbAuth = firebase.auth();
-window.fbDb = firebase.firestore();
-window.db = window.fbDb;
+    // Esponi auth e db globalmente per usarli negli altri script
+    window.fbAuth = app.auth();
+    window.fbDb = app.firestore();
+    window.db = window.fbDb;
+    window.auth = window.fbAuth;
+} catch(e) {
+    console.error("Errore inizializzazione Firebase Palestra:", e);
+}
 
 // =========================================================
 // WRAPPER "ZERO REFACTORING" PER LE COLLEZIONI HUB
