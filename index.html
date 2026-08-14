@@ -41,18 +41,7 @@
                     <button type="button" class="btn btn-primary" style="background: var(--primary-color); color: white; font-size: 1.15rem; font-weight: 800; padding: 14px 28px; border-radius: 50px; box-shadow: 0 4px 15px rgba(0,0,0,0.15); border: none; cursor: pointer; width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px;" onclick="window.location.href='https://prof-memmo.github.io/prof-memmo-gestione-siti/portal.html?redirect=palestra_riflessione'">
                         <i class="fa-solid fa-right-to-bracket"></i> Accedi tramite Hub
                     </button>
-                </div>
-
-                <!-- Login Studente con Codice Classe -->
-                <div style="margin-top: 10px; border-top: 1px solid #e5e7eb; padding-top: 10px;">
-                    <button type="button" class="btn" onclick="const f = document.getElementById('palestra-class-box'); f.style.display = f.style.display==='none'?'block':'none';" style="font-size: 0.85rem; padding: 6px 12px; border-radius: 20px; width: 100%; border: 1px solid #d1d5db; color: #4b5563; background: #f9fafb; cursor: pointer;">
-                        🎓 Sei uno Studente con Codice Classe?
-                    </button>
-                    <div id="palestra-class-box" style="display:none; margin-top: 10px; text-align: left;">
-                        <input type="text" id="palestra-input-student-name" placeholder="Il tuo Nome e Cognome" class="form-control" style="width: 100%; padding: 8px 12px; border-radius: 8px; margin-bottom: 8px; border: 1px solid #d1d5db; box-sizing: border-box;">
-                        <input type="text" id="palestra-input-class-code" placeholder="Codice Classe (es. CLASSE1)" class="form-control" style="width: 100%; padding: 8px 12px; border-radius: 8px; margin-bottom: 8px; text-transform: uppercase; border: 1px solid #d1d5db; box-sizing: border-box;">
-                        <button type="button" class="btn btn-primary" style="width: 100%; padding: 8px; font-weight: bold; border-radius: 8px;" onclick="const c = document.getElementById('palestra-input-class-code').value.trim(); const n = document.getElementById('palestra-input-student-name').value.trim(); if(!c || !n){ alert('Inserisci nome e codice classe.'); return; } window.Auth.loginWithClassCode(c, n);">Entra in Classe</button>
-                    </div>
+                    <p style="font-size: 0.85rem; color: #6b7280; margin-top: 5px;">Verrai reindirizzato al Portale Unico del Prof. Memmo per l'accesso sicuro.</p>
                 </div>
             </div>
 
