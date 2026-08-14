@@ -4,16 +4,29 @@ async function renderAdminPage() {
         <div class="exercise-container">
             <h2 class="exercise-title">🛡️ DASHBOARD AMMINISTRATORE</h2>
             <div style="background: white; padding: 2rem; border-radius: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.05);">
-                <p style="margin-bottom: 2rem; color: #666;">Benvenuto, <b>prof.memmo</b>. Qui puoi monitorare tutti gli iscritti alla Palestra.</p>
-                
-                <div id="admin-users-list" style="display: flex; flex-direction: column; gap: 1rem;">
-                    <div style="text-align: center; padding: 2rem;">
-                        <div class="spinner"></div>
-                        <p>Caricamento utenti in corso...</p>
+                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; margin-bottom: 2rem; border-bottom: 2px dashed #eee; padding-bottom: 1.5rem;">
+                    <div>
+                        <p style="margin: 0; font-weight: 800; font-size: 1.2rem; color: #2c3e50;">Pannello di Controllo &amp; Archivi</p>
+                        <p style="margin: 5px 0 0 0; color: #666; font-size: 0.9rem;">Gestisci gli archivi storici e i salvataggi annuali della Palestra.</p>
                     </div>
+                    <a href="https://prof-memmo.github.io/prof-memmo-gestione-siti/" target="_blank" class="btn" style="background: linear-gradient(135deg, #6366f1, #4f46e5); color: white; padding: 0.8rem 1.5rem; border-radius: 15px; font-weight: 800; text-decoration: none; display: inline-flex; align-items: center; gap: 8px;">
+                        ⚙️ Vai all'Hub Utenti &amp; Analytics
+                    </a>
+                </div>
+
+                <div style="background: #f0f4ff; border: 1px solid #d0deff; padding: 1.5rem; border-radius: 20px; margin-bottom: 2rem;">
+                    <h3 style="color: #3b82f6; margin-top: 0; font-size: 1.1rem; display: flex; align-items: center; gap: 8px;">
+                        <span>👥</span> Gestione Utenti &amp; Iscritti Centralizzata
+                    </h3>
+                    <p style="color: #4b5563; font-size: 0.9rem; margin-bottom: 1rem; line-height: 1.5;">
+                        La consultazione di tutti gli account registrati, l'approvazione delle richieste docenti, la modifica dei ruoli e le statistiche sono ora gestite a livello globale dall'<b>Hub Didattico di Gestione Generale</b>.
+                    </p>
+                    <a href="https://prof-memmo.github.io/prof-memmo-gestione-siti/" target="_blank" style="color: #2563eb; font-weight: 800; font-size: 0.9rem; text-decoration: underline;">
+                        Apri Hub Didattico →
+                    </a>
                 </div>
                 
-                <div style="margin-top: 3rem; padding-top: 2rem; border-top: 2px dashed #eee; background: rgba(231, 76, 60, 0.05); padding: 1.5rem; border-radius: 20px;">
+                <div style="margin-top: 2rem; padding-top: 2rem; border-top: 2px dashed #eee; background: rgba(231, 76, 60, 0.05); padding: 1.5rem; border-radius: 20px;">
                     <h3 style="color: #c53030; margin-bottom: 1rem; font-size: 1.3rem;">⚠️ Danger Zone: Archiviazione Annuale</h3>
                     <p style="color: #666; margin-bottom: 1.5rem; font-size: 0.9rem;">Questa opzione archivia tutti gli studenti dell'anno in corso, salvandone una "fotografia". Se necessario, l'operazione potrà essere annullata dall'Archivio Storico.</p>
                     <button class="btn" style="background: transparent; color: #c53030; border: 2px solid #c53030; padding: 1rem 2rem; border-radius: 15px; font-weight: 800; display: flex; align-items: center; gap: 0.5rem; cursor: pointer;" onclick="window.archiviaAnnoCorrente()">
@@ -34,56 +47,6 @@ async function renderAdminPage() {
 
     window.currentSection = 'admin';
     if(window.loadHistoricalArchives) window.loadHistoricalArchives();
-
-    // Recupera utenti da Firestore
-    if (window.fbDb) {
-        try {
-            const usersSnapshot = await window.fbDb.collection('users').get();
-            const progressSnapshot = await window.fbDb.collection('progress').get();
-            
-            const progressMap = {};
-            progressSnapshot.forEach(doc => { progressMap[doc.id] = doc.data(); });
-
-            let html = '';
-            if (usersSnapshot.empty) {
-                html = '<p style="text-align: center; color: #999;">Nessun utente registrato ancora.</p>';
-            } else {
-                usersSnapshot.forEach(doc => {
-                    const userData = doc.data();
-                    const userProgress = progressMap[doc.id] || {};
-                    const isImage = userData.avatar && (userData.avatar.includes('/') || userData.avatar.includes('.'));
-                    const avatarHtml = isImage ? `<img src="${userData.avatar}" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;">` : `<span style="font-size: 1.5rem;">${userData.avatar || '👤'}</span>`;
-
-                    html += `
-                        <div class="admin-user-row" style="display: flex; flex-wrap: wrap; align-items: center; gap: 1rem; padding: 1.2rem; background: #f8f9fa; border-radius: 20px; border: 1px solid #eee; transition: all 0.2s;">
-                            <div style="width: 50px; height: 50px; background: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 2px solid #eee; overflow: hidden; flex-shrink: 0;">
-                                ${avatarHtml}
-                            </div>
-                            <div style="flex: 1; min-width: 200px;">
-                                <h4 style="margin: 0; font-weight: 800; font-size: 1.1rem;">${userData.name || 'Anonimo'}</h4>
-                                <p style="margin: 0; font-size: 0.85rem; color: #666;">
-                                    ${userData.email || 'No email'} • 
-                                    <span style="color: #27ae60; font-weight: 700;">${userData.roleLabel || userData.role || 'Studente'}</span>
-                                </p>
-                                <p style="margin: 0; font-size: 0.75rem; color: #999;">Iscritto il: ${userData.joinedAt ? new Date(userData.joinedAt).toLocaleDateString() : 'N/D'}</p>
-                            </div>
-                            <div style="text-align: right; margin-right: 1rem; flex-shrink: 0;">
-                                <div style="font-weight: 800; color: var(--primary-color); font-size: 1.1rem;">${userProgress.points || 0} XP</div>
-                                <div style="font-size: 0.8rem; color: #999;">${userProgress.vocab ? userProgress.vocab.length : 0} parole</div>
-                            </div>
-                            <button onclick="adminDeleteUser('${doc.id}', '${(userData.name || 'Anonimo').replace(/'/g, "\\'")}')" style="background: #fff0f0; border: none; padding: 0.8rem; border-radius: 15px; cursor: pointer; color: #e74c3c; font-size: 1.2rem; transition: all 0.2s; margin-left: auto;" title="Elimina Utente">
-                                🗑️
-                            </button>
-                        </div>
-                    `;
-                });
-            }
-            document.getElementById('admin-users-list').innerHTML = html;
-        } catch (e) {
-            console.error("Errore recupero utenti admin:", e);
-            document.getElementById('admin-users-list').innerHTML = `<p style="color: #e74c3c;">Errore nel caricamento dei dati: ${e.message}</p>`;
-        }
-    }
 }
 
 
