@@ -31,26 +31,13 @@
     <div id="login-overlay" class="login-overlay hidden">
         <div class="login-card">
             <div class="login-header">
-                <img src="assets/avatar.png" alt="Logo" class="login-logo">
+                <img src="assets/logo.png" alt="Palestra di Riflessione Logo" class="login-logo" style="max-height: 120px; object-fit: contain; margin-bottom: 10px;">
                 <h2>BENVENUTO NELLA PALESTRA</h2>
                 <p>Accedi per iniziare il tuo allenamento personalizzato.</p>
             </div>
             <div class="login-form">
-                <div class="legal-notice" style="margin-bottom: 1.5rem; text-align: left;">
-                    <div style="display: flex; flex-direction: column; gap: 8px;">
-                        <label style="display: flex; align-items: flex-start; gap: 8px; font-size: 0.8rem; color: #777; cursor: pointer; line-height: 1.2;">
-                            <input type="checkbox" id="login-check-age" style="margin-top: 2px;">
-                            <span>Ho almeno 16 anni o sono sotto la supervisione di un adulto</span>
-                        </label>
-                        <label style="display: flex; align-items: flex-start; gap: 8px; font-size: 0.8rem; color: #777; cursor: pointer; line-height: 1.2;">
-                            <input type="checkbox" id="login-check-privacy" style="margin-top: 2px;">
-                            <span>Accetto la <a href="javascript:void(0)" onclick="showLegal('privacy')" style="color: var(--primary-color); font-weight: 600;">Privacy Policy</a> e i <a href="javascript:void(0)" onclick="showLegal('terms')" style="color: var(--primary-color); font-weight: 600;">Termini</a></span>
-                        </label>
-                    </div>
-                </div>
-
                 <!-- Autenticazione Centrale -->
-                <div id="login-primary-actions" style="display: flex; flex-direction: column; gap: 1rem; margin-bottom: 1rem; align-items: center;">
+                <div id="login-primary-actions" style="display: flex; flex-direction: column; gap: 1rem; margin-top: 1.5rem; margin-bottom: 1rem; align-items: center;">
                     <button type="button" class="btn" style="background: var(--primary-color); color: white; font-size: 1.2rem; font-weight: 800; padding: 15px 30px; border-radius: 50px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); border: none; cursor: pointer; width: 100%;" onclick="window.location.href='https://prof-memmo.github.io/prof-memmo-gestione-siti/portal.html?redirect=palestra_riflessione'">
                         <i class="fa-solid fa-right-to-bracket" style="margin-right: 10px;"></i> ACCEDI TRAMITE HUB
                     </button>
