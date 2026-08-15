@@ -105,6 +105,47 @@ async function loadAdminUsersInProfile() {
             }
         });
 
+        // 2b. Integrazione da Hub Centrale (hub_users) per studenti/utenti globali
+        try {
+            const hubUsersSnap = await window.fbDb.collection('hub_users').get();
+            hubUsersSnap.forEach(hdoc => {
+                const hd = hdoc.data() || {};
+                const hEmail = (hd.anagrafica && hd.anagrafica.email) || hd.email || '';
+                const alreadyPresent = allUsers.find(u => u.id === hdoc.id || (hEmail && u.email && u.email.toLowerCase() === hEmail.toLowerCase()));
+                if (!alreadyPresent) {
+                    const uRole = (hd.role === 'admin' || hEmail === 'prof.memmo@gmail.com') ? 'admin' : (hd.role === 'docente' ? 'docente' : (hd.role === 'viandante' ? 'amico' : 'studente'));
+                    const uName = (hd.anagrafica && hd.anagrafica.nome) ? `${hd.anagrafica.nome} ${hd.anagrafica.cognome || ''}`.trim() : (hd.displayName || 'Utente Hub');
+                    const uSchool = (hd.anagrafica && hd.anagrafica.scuola) || hd.school || '';
+                    const uCity = (hd.anagrafica && hd.anagrafica.citta) || hd.city || '';
+                    const userData = {
+                        id: hdoc.id,
+                        name: uName,
+                        email: hEmail,
+                        role: uRole,
+                        school: uSchool,
+                        city: uCity,
+                        classId: hd.classId || null,
+                        className: hd.className || '',
+                        joinedAt: hd.createdAt || '',
+                        avatar: hd.avatar || '👤',
+                        _progress: progressMap[hdoc.id] || {}
+                    };
+                    allUsers.push(userData);
+
+                    if (uSchool) {
+                        if (!schoolsMap[uSchool]) schoolsMap[uSchool] = { classCount: 0, studentCount: 0 };
+                        schoolsMap[uSchool].studentCount++;
+                    }
+                    if (uCity) {
+                        if (!citiesMap[uCity]) citiesMap[uCity] = { userCount: 0 };
+                        citiesMap[uCity].userCount++;
+                    }
+                }
+            });
+        } catch (hubErr) {
+            console.warn("Recupero hub_users per dashboard admin:", hubErr);
+        }
+
         const counts = { 
             tutti: allUsers.length, 
             docente: allUsers.filter(u => u.role === 'docente' || u.role === 'admin').length, 

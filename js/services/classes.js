@@ -222,6 +222,36 @@ window.viewClassStudents = async function(code, name, classId = null) {
             }
         }
 
+        // Ulteriore controllo su hub_users (Studenti registrati nell'Hub con classe)
+        try {
+            const hubSnap = await window.fbDb.collection('hub_users').get();
+            hubSnap.forEach(hdoc => {
+                const hd = hdoc.data() || {};
+                if (hd.role !== 'docente' && hd.role !== 'admin' && hd.statusAccount !== 'suspended') {
+                    const matchId = hd.classId === realClassId || hd.classId === realClassCode;
+                    const matchCode = (hd.classCode && hd.classCode.toUpperCase() === realClassCode.toUpperCase()) || 
+                                      (hd.code && hd.code.toUpperCase() === realClassCode.toUpperCase());
+                    const matchName = (hd.className && hd.className.trim().toUpperCase() === realClassName.trim().toUpperCase()) ||
+                                      (hd.classe && hd.classe.trim().toUpperCase() === realClassName.trim().toUpperCase()) ||
+                                      (hd.scuolaClasse && hd.scuolaClasse.trim().toUpperCase() === realClassName.trim().toUpperCase());
+                    if (matchId || matchCode || matchName) {
+                        if (!studentsMap.has(hdoc.id)) {
+                            studentsMap.set(hdoc.id, {
+                                id: hdoc.id,
+                                name: (hd.anagrafica && hd.anagrafica.nome) ? `${hd.anagrafica.nome} ${hd.anagrafica.cognome || ''}`.trim() : (hd.displayName || 'Studente Hub'),
+                                email: (hd.anagrafica && hd.anagrafica.email) || hd.email || '',
+                                classId: realClassId,
+                                className: realClassName,
+                                role: 'studente'
+                            });
+                        }
+                    }
+                }
+            });
+        } catch (hubErr) {
+            console.warn("Hub users search in viewClassStudents error:", hubErr);
+        }
+
         const classStudents = Array.from(studentsMap.values());
 
         if (classStudents.length === 0) {
