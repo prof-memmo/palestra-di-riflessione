@@ -491,21 +491,41 @@ async function renderProfiloPage() {
     // Se docente o admin, sincronizziamo le classi dal database
     if ((user.role === 'docente' || user.role === 'admin' || user.email === 'prof.memmo@gmail.com') && !user.isGuest && window.fbDb) {
         try {
-            // Recupera sia le classi con il vecchio formato (teacherId string) 
-            // che quelle nuove (teacherIds array)
-            const classesSnapshot = await window.fbDb.collection('classes').where('teacherIds', 'array-contains', user.uid).get();
-            const legacySnapshot = await window.fbDb.collection('classes').where('teacherId', '==', user.uid).get();
-            
+            const isSuperAdmin = (user.role === 'admin' || (user.email && user.email.toLowerCase() === 'prof.memmo@gmail.com'));
             const firestoreClasses = [];
-            classesSnapshot.forEach(doc => {
-                firestoreClasses.push({ id: doc.id, ...doc.data() });
-            });
-            
-            legacySnapshot.forEach(doc => {
-                if (!firestoreClasses.find(c => c.id === doc.id)) {
-                    firestoreClasses.push({ id: doc.id, ...doc.data() });
+
+            if (isSuperAdmin) {
+                // L'Amministratore carica TUTTE le classi presenti su Firestore (sia 'classes' che 'palestra_classes')
+                const [cSnap, pcSnap] = await Promise.all([
+                    window.fbDb.collection('classes').get().catch(e => { console.warn("classes query error", e); return { forEach: () => {} }; }),
+                    window.fbDb.collection('palestra_classes').get().catch(e => { console.warn("palestra_classes query error", e); return { forEach: () => {} }; })
+                ]);
+                cSnap.forEach(doc => firestoreClasses.push({ id: doc.id, ...doc.data() }));
+                pcSnap.forEach(doc => {
+                    if (!firestoreClasses.find(c => c.id === doc.id || (doc.data().code && c.code === doc.data().code))) {
+                        firestoreClasses.push({ id: doc.id, ...doc.data() });
+                    }
+                });
+            } else {
+                // Docente: cerca sia per UID che per email su entrambe le collezioni
+                const queries = [
+                    window.fbDb.collection('classes').where('teacherIds', 'array-contains', user.uid).get().catch(() => ({ forEach: () => {} })),
+                    window.fbDb.collection('classes').where('teacherId', '==', user.uid).get().catch(() => ({ forEach: () => {} })),
+                    window.fbDb.collection('palestra_classes').where('teacherId', '==', user.uid).get().catch(() => ({ forEach: () => {} }))
+                ];
+                if (user.email) {
+                    queries.push(window.fbDb.collection('classes').where('teacherEmail', '==', user.email.toLowerCase()).get().catch(() => ({ forEach: () => {} })));
+                    queries.push(window.fbDb.collection('classes').where('collaboratori', 'array-contains', user.email.toLowerCase()).get().catch(() => ({ forEach: () => {} })));
                 }
-            });
+                const snaps = await Promise.all(queries);
+                snaps.forEach(snap => {
+                    snap.forEach(doc => {
+                        if (!firestoreClasses.find(c => c.id === doc.id || (doc.data().code && c.code === doc.data().code))) {
+                            firestoreClasses.push({ id: doc.id, ...doc.data() });
+                        }
+                    });
+                });
+            }
 
             // RETROATTIVITÀ: Se il docente ha un classId (unito via codice), recuperiamo anche quella classe
             if (user.classId && !firestoreClasses.find(c => c.id === user.classId)) {
@@ -516,13 +536,13 @@ async function renderProfiloPage() {
                     }
                 } catch (err) { console.warn("Errore recupero classe unita via codice:", err); }
             }
-            console.log("DEBUG CLASSI - Classi trovate su Firestore:", firestoreClasses.map(c => ({nome: c.name, docenti: c.teacherIds || [c.teacherId]})));
+            console.log("DEBUG CLASSI - Classi trovate su Firestore:", firestoreClasses.map(c => ({nome: c.name, code: c.code, docenti: c.teacherIds || [c.teacherId]})));
             
             // Merge e Aggiornamento: aggiorna le classi locali con i dati freschi di Firestore
             firestoreClasses.forEach(fc => {
-                const localIdx = classes.findIndex(lc => lc.id === fc.id || lc.code === fc.code);
+                const localIdx = classes.findIndex(lc => lc.id === fc.id || (fc.code && lc.code === fc.code));
                 if (localIdx !== -1) {
-                    // Aggiorna la classe esistente (importante per nuovi teacherIds)
+                    // Aggiorna la classe esistente
                     classes[localIdx] = { ...classes[localIdx], ...fc };
                 } else {
                     // Aggiunge la nuova classe
@@ -532,7 +552,7 @@ async function renderProfiloPage() {
             
             // De-duplica e pulisci
             classes = classes.filter((c, index, self) =>
-                index === self.findIndex(t => t.code === c.code)
+                index === self.findIndex(t => (t.code && c.code) ? t.code === c.code : t.id === c.id)
             );
             
             localStorage.setItem('palestra_classes', JSON.stringify(classes));

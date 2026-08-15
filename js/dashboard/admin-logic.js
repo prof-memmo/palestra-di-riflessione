@@ -50,10 +50,12 @@ async function loadAdminUsersInProfile() {
     if (!container) return;
 
     try {
-        const [usersSnapshot, progressSnapshot, classesSnapshot] = await Promise.all([
-            window.fbDb.collection('users').get(),
-            window.fbDb.collection('progress').get(),
-            window.fbDb.collection('classes').get()
+        const [usersSnapshot, pUsersSnapshot, progressSnapshot, classesSnapshot, pClassesSnapshot] = await Promise.all([
+            window.fbDb.collection('users').get().catch(() => ({ forEach: () => {} })),
+            window.fbDb.collection('palestra_users').get().catch(() => ({ forEach: () => {} })),
+            window.fbDb.collection('progress').get().catch(() => ({ forEach: () => {} })),
+            window.fbDb.collection('classes').get().catch(() => ({ forEach: () => {} })),
+            window.fbDb.collection('palestra_classes').get().catch(() => ({ forEach: () => {} }))
         ]);
         
         const progressMap = {};
@@ -63,35 +65,43 @@ async function loadAdminUsersInProfile() {
         const citiesMap = {};  
         const allClasses = [];
         
-        // 1. Mappiamo le classi e iniziamo a riempire scuole/città dalle classi
-        classesSnapshot.forEach(doc => { 
+        // 1. Mappiamo le classi da 'classes' e 'palestra_classes'
+        const addClassToAdmin = (doc) => {
             const d = doc.data();
-            allClasses.push({ id: doc.id, ...d });
-            if (d.school) {
-                if (!schoolsMap[d.school]) schoolsMap[d.school] = { classCount: 0, studentCount: 0 };
-                schoolsMap[d.school].classCount++;
+            if (!allClasses.find(c => c.id === doc.id || (d.code && c.code === d.code))) {
+                allClasses.push({ id: doc.id, ...d });
+                if (d.school) {
+                    if (!schoolsMap[d.school]) schoolsMap[d.school] = { classCount: 0, studentCount: 0 };
+                    schoolsMap[d.school].classCount++;
+                }
+                if (d.city) {
+                    if (!citiesMap[d.city]) citiesMap[d.city] = { userCount: 0 };
+                    citiesMap[d.city].userCount++;
+                }
             }
-            if (d.city) {
-                if (!citiesMap[d.city]) citiesMap[d.city] = { userCount: 0 };
-                citiesMap[d.city].userCount++;
-            }
-        });
+        };
+
+        classesSnapshot.forEach(addClassToAdmin);
+        pClassesSnapshot.forEach(addClassToAdmin);
         window.allClassesForAdmin = allClasses;
 
-        // 2. Processiamo gli utenti e integriamo i conteggi (con ereditarietà)
+        // 2. Processiamo gli utenti da 'users' e 'palestra_users'
         const allUsers = [];
-        usersSnapshot.forEach(doc => {
+        const seenUserIds = new Set();
+
+        const processUserDoc = (doc) => {
+            if (seenUserIds.has(doc.id)) return;
+            seenUserIds.add(doc.id);
             const u = doc.data();
-            if (u.status === 'archived') return; // Skip archived users
+            if (u.status === 'archived') return;
             const userData = { id: doc.id, ...u, _progress: progressMap[doc.id] || {} };
             allUsers.push(userData);
 
-            let uSchool = u.school;
-            let uCity = u.city;
+            let uSchool = u.school || (u.anagrafica && u.anagrafica.scuola);
+            let uCity = u.city || (u.anagrafica && u.anagrafica.citta);
 
-            // Inheritance: se manca nel profilo, prendi dalla classe
             if (!uSchool && u.classId) {
-                const c = allClasses.find(cls => cls.id === u.classId);
+                const c = allClasses.find(cls => cls.id === u.classId || cls.code === u.classId);
                 if (c) { uSchool = c.school; uCity = uCity || c.city; }
             }
 
@@ -103,7 +113,10 @@ async function loadAdminUsersInProfile() {
                 if (!citiesMap[uCity]) citiesMap[uCity] = { userCount: 0 };
                 citiesMap[uCity].userCount++;
             }
-        });
+        };
+
+        usersSnapshot.forEach(processUserDoc);
+        pUsersSnapshot.forEach(processUserDoc);
 
         // 2b. Integrazione da Hub Centrale (hub_users) per studenti/utenti globali
         try {

@@ -152,105 +152,86 @@ window.viewClassStudents = async function(code, name, classId = null) {
     `;
 
     try {
-        let classDoc;
-        // 1. Cerchiamo la classe prioritariamente per ID, poi per Codice
+        let classDoc = null;
+        // 1. Cerchiamo la classe prioritariamente per ID, poi per Codice sia in 'classes' che 'palestra_classes'
         if (classId) {
-            classDoc = await window.fbDb.collection('classes').doc(classId).get();
-            if (!classDoc.exists) {
-                // Fallback: se l'ID non trova nulla, proviamo il codice
-                const classQ = await window.fbDb.collection('classes').where('code', '==', code).get();
-                if (!classQ.empty) classDoc = classQ.docs[0];
+            classDoc = await window.fbDb.collection('classes').doc(classId).get().catch(() => ({ exists: false }));
+            if (!classDoc || !classDoc.exists) {
+                classDoc = await window.fbDb.collection('palestra_classes').doc(classId).get().catch(() => ({ exists: false }));
+            }
+            if (!classDoc || !classDoc.exists) {
+                const classQ = await window.fbDb.collection('classes').where('code', '==', code).get().catch(() => ({ empty: true }));
+                if (classQ && !classQ.empty) classDoc = classQ.docs[0];
+            }
+            if (!classDoc || !classDoc.exists) {
+                const pClassQ = await window.fbDb.collection('palestra_classes').where('code', '==', code).get().catch(() => ({ empty: true }));
+                if (pClassQ && !pClassQ.empty) classDoc = pClassQ.docs[0];
             }
         } else {
-            const classQ = await window.fbDb.collection('classes').where('code', '==', code).get();
-            if (!classQ.empty) classDoc = classQ.docs[0];
+            const classQ = await window.fbDb.collection('classes').where('code', '==', code).get().catch(() => ({ empty: true }));
+            if (classQ && !classQ.empty) classDoc = classQ.docs[0];
+            else {
+                const pClassQ = await window.fbDb.collection('palestra_classes').where('code', '==', code).get().catch(() => ({ empty: true }));
+                if (pClassQ && !pClassQ.empty) classDoc = pClassQ.docs[0];
+            }
         }
 
-        if (!classDoc || (classDoc.exists === false && !classDoc.id)) throw new Error("Classe non trovata");
-        const realClassId = classDoc.id;
-        const classData = classDoc.data() || {};
+        const realClassId = (classDoc && classDoc.id) ? classDoc.id : (classId || code);
+        const classData = (classDoc && typeof classDoc.data === 'function') ? (classDoc.data() || {}) : {};
         const realClassName = classData.name || name;
         const realClassCode = classData.code || code;
 
-        // 2. Trova gli utenti di questa specifica classe (supportando ID, Codice, Nome Classe e fallback globale)
+        // 2. Trova gli utenti di questa specifica classe (supportando ID, Codice, Nome Classe da tutte le collezioni: users, palestra_users, hub_users)
         const studentsMap = new Map();
-        const queries = [
-            window.fbDb.collection('users').where('classId', '==', realClassId).get()
-        ];
-        if (realClassCode && realClassCode !== realClassId) {
-            queries.push(window.fbDb.collection('users').where('classId', '==', realClassCode).get());
-            queries.push(window.fbDb.collection('users').where('classCode', '==', realClassCode).get());
-            queries.push(window.fbDb.collection('users').where('code', '==', realClassCode).get());
-        }
-        if (realClassName) {
-            queries.push(window.fbDb.collection('users').where('className', '==', realClassName).get());
-            queries.push(window.fbDb.collection('users').where('className', '==', realClassName.toUpperCase()).get());
-            queries.push(window.fbDb.collection('users').where('className', '==', realClassName.toLowerCase()).get());
-            queries.push(window.fbDb.collection('users').where('classe', '==', realClassName).get());
-        }
+        
+        const checkAndAddStudent = (id, u) => {
+            if (!u) return;
+            if (u.role === 'docente' || u.role === 'admin' || u.status === 'archived') return;
 
-        const snapshots = await Promise.all(queries);
-        snapshots.forEach(snap => {
-            snap.forEach(doc => {
-                const u = doc.data();
-                if (u.role !== 'docente' && u.role !== 'admin' && u.status !== 'archived') {
-                    studentsMap.set(doc.id, { id: doc.id, ...u });
+            const uClassId = String(u.classId || '').trim();
+            const uClassCode = String(u.classCode || u.code || '').trim().toUpperCase();
+            const uClassName = String(u.className || u.classe || u.schoolClass || (u.anagrafica && u.anagrafica.scuolaClasse) || '').trim().toUpperCase();
+            
+            const targetId = String(realClassId).trim();
+            const targetCode = String(realClassCode).trim().toUpperCase();
+            const targetName = String(realClassName).trim().toUpperCase();
+
+            const matchId = (uClassId && (uClassId === targetId || uClassId === targetCode));
+            const matchCode = (uClassCode && (uClassCode === targetCode || uClassCode === targetId));
+            const matchName = (uClassName && (uClassName === targetName || (targetName && uClassName.includes(targetName))));
+
+            if (matchId || matchCode || matchName) {
+                if (!studentsMap.has(id)) {
+                    studentsMap.set(id, {
+                        id: id,
+                        name: (u.anagrafica && u.anagrafica.nome) ? `${u.anagrafica.nome} ${u.anagrafica.cognome || ''}`.trim() : (u.name || u.displayName || 'Studente'),
+                        email: (u.anagrafica && u.anagrafica.email) || u.email || '',
+                        classId: realClassId,
+                        className: realClassName,
+                        role: 'studente',
+                        ...u
+                    });
                 }
-            });
-        });
-
-        // Fallback globale su tutta la collezione users se i filtri specifici non hanno prodotto risultati
-        if (studentsMap.size === 0) {
-            try {
-                const allUsersSnap = await window.fbDb.collection('users').get();
-                allUsersSnap.forEach(doc => {
-                    const u = doc.data();
-                    if (u.role !== 'docente' && u.role !== 'admin' && u.status !== 'archived') {
-                        const matchId = u.classId === realClassId || u.classId === realClassCode;
-                        const matchCode = (u.classCode && u.classCode.toUpperCase() === realClassCode.toUpperCase()) || 
-                                          (u.code && u.code.toUpperCase() === realClassCode.toUpperCase());
-                        const matchName = (u.className && u.className.trim().toUpperCase() === realClassName.trim().toUpperCase()) ||
-                                          (u.classe && u.classe.trim().toUpperCase() === realClassName.trim().toUpperCase()) ||
-                                          (u.schoolClass && u.schoolClass.trim().toUpperCase() === realClassName.trim().toUpperCase());
-                        if (matchId || matchCode || matchName) {
-                            studentsMap.set(doc.id, { id: doc.id, ...u });
-                        }
-                    }
-                });
-            } catch (fallbackErr) {
-                console.warn("Fallback all users search error:", fallbackErr);
             }
-        }
+        };
 
-        // Ulteriore controllo su hub_users (Studenti registrati nell'Hub con classe)
+        // Scansione da 'users'
         try {
-            const hubSnap = await window.fbDb.collection('hub_users').get();
-            hubSnap.forEach(hdoc => {
-                const hd = hdoc.data() || {};
-                if (hd.role !== 'docente' && hd.role !== 'admin' && hd.statusAccount !== 'suspended') {
-                    const matchId = hd.classId === realClassId || hd.classId === realClassCode;
-                    const matchCode = (hd.classCode && hd.classCode.toUpperCase() === realClassCode.toUpperCase()) || 
-                                      (hd.code && hd.code.toUpperCase() === realClassCode.toUpperCase());
-                    const matchName = (hd.className && hd.className.trim().toUpperCase() === realClassName.trim().toUpperCase()) ||
-                                      (hd.classe && hd.classe.trim().toUpperCase() === realClassName.trim().toUpperCase()) ||
-                                      (hd.scuolaClasse && hd.scuolaClasse.trim().toUpperCase() === realClassName.trim().toUpperCase());
-                    if (matchId || matchCode || matchName) {
-                        if (!studentsMap.has(hdoc.id)) {
-                            studentsMap.set(hdoc.id, {
-                                id: hdoc.id,
-                                name: (hd.anagrafica && hd.anagrafica.nome) ? `${hd.anagrafica.nome} ${hd.anagrafica.cognome || ''}`.trim() : (hd.displayName || 'Studente Hub'),
-                                email: (hd.anagrafica && hd.anagrafica.email) || hd.email || '',
-                                classId: realClassId,
-                                className: realClassName,
-                                role: 'studente'
-                            });
-                        }
-                    }
-                }
-            });
-        } catch (hubErr) {
-            console.warn("Hub users search in viewClassStudents error:", hubErr);
-        }
+            const usersSnap = await window.fbDb.collection('users').get();
+            usersSnap.forEach(doc => checkAndAddStudent(doc.id, doc.data()));
+        } catch (e) { console.warn("Errore scansione users:", e); }
+
+        // Scansione da 'palestra_users'
+        try {
+            const pUsersSnap = await window.fbDb.collection('palestra_users').get();
+            pUsersSnap.forEach(doc => checkAndAddStudent(doc.id, doc.data()));
+        } catch (e) { console.warn("Errore scansione palestra_users:", e); }
+
+        // Scansione da 'hub_users'
+        try {
+            const hubUsersSnap = await window.fbDb.collection('hub_users').get();
+            hubUsersSnap.forEach(doc => checkAndAddStudent(doc.id, doc.data()));
+        } catch (e) { console.warn("Errore scansione hub_users:", e); }
 
         const classStudents = Array.from(studentsMap.values());
 
