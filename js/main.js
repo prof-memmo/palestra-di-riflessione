@@ -1590,7 +1590,11 @@ function loadExercise(path) {
         window.Progress.startLesson(exercises.length);
     }
 
-    const exercise = exercises[window.currentExerciseIndex];
+    let exercise = exercises[window.currentExerciseIndex];
+    if (exercise && window.LiveEditor && typeof window.LiveEditor.apply === 'function') {
+        const itemKey = exercise.id || (path.join('_') + '_' + window.currentExerciseIndex);
+        exercise = window.LiveEditor.apply(itemKey, exercise);
+    }
     if (!exercise) {
         let statsHtml = '';
         if (window.Progress && window.Progress.currentLessonCorrectCount !== undefined) {
@@ -1631,6 +1635,18 @@ function loadExercise(path) {
 
     // Inject teacher share button if role is docente
     injectTeacherShareButton(mount);
+
+    // Inject Live Editor quick button if user is Admin
+    if (exercise && window.LiveEditor && typeof window.LiveEditor.renderBtn === 'function') {
+        const itemKey = exercise.id || (path.join('_') + '_' + window.currentExerciseIndex);
+        const editBtnHtml = window.LiveEditor.renderBtn(itemKey, exercise);
+        if (editBtnHtml) {
+            const titleEl = mount.querySelector('.exercise-title, .section-title, h2, .exercise-header, .sentence-display');
+            if (titleEl) {
+                titleEl.insertAdjacentHTML('beforeend', editBtnHtml);
+            }
+        }
+    }
 }
 
 function loadUdaPhase(path) {
@@ -1656,7 +1672,11 @@ function loadUdaPhase(path) {
         window.Progress.startLesson(exercises.length);
     }
 
-    const exercise = exercises[window.currentExerciseIndex];
+    let exercise = exercises[window.currentExerciseIndex];
+    if (exercise && window.LiveEditor && typeof window.LiveEditor.apply === 'function') {
+        const itemKey = exercise.id || (path.join('_') + '_' + window.currentExerciseIndex);
+        exercise = window.LiveEditor.apply(itemKey, exercise);
+    }
 
     if (!exercise && phase !== 'recupera') {
         // Se la fase è 'verifica', calcoliamo il punteggio
@@ -1692,9 +1712,20 @@ function loadUdaPhase(path) {
         }
     }
 
-
     // Inject teacher share button if role is docente
     injectTeacherShareButton(mount);
+
+    // Inject Live Editor quick button if user is Admin
+    if (exercise && window.LiveEditor && typeof window.LiveEditor.renderBtn === 'function') {
+        const itemKey = exercise.id || (path.join('_') + '_' + window.currentExerciseIndex);
+        const editBtnHtml = window.LiveEditor.renderBtn(itemKey, exercise);
+        if (editBtnHtml) {
+            const titleEl = mount.querySelector('.exercise-title, .section-title, h2, .exercise-header, .sentence-display');
+            if (titleEl) {
+                titleEl.insertAdjacentHTML('beforeend', editBtnHtml);
+            }
+        }
+    }
 }
 
 function checkSubAnswer(selected, correct, id) {
