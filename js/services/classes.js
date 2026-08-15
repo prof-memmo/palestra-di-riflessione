@@ -172,7 +172,7 @@ window.viewClassStudents = async function(code, name, classId = null) {
         const realClassName = classData.name || name;
         const realClassCode = classData.code || code;
 
-        // 2. Trova gli utenti di questa specifica classe (supportando sia ID che Codice Classe)
+        // 2. Trova gli utenti di questa specifica classe (supportando ID, Codice, Nome Classe e fallback globale)
         const studentsMap = new Map();
         const queries = [
             window.fbDb.collection('users').where('classId', '==', realClassId).get()
@@ -180,6 +180,13 @@ window.viewClassStudents = async function(code, name, classId = null) {
         if (realClassCode && realClassCode !== realClassId) {
             queries.push(window.fbDb.collection('users').where('classId', '==', realClassCode).get());
             queries.push(window.fbDb.collection('users').where('classCode', '==', realClassCode).get());
+            queries.push(window.fbDb.collection('users').where('code', '==', realClassCode).get());
+        }
+        if (realClassName) {
+            queries.push(window.fbDb.collection('users').where('className', '==', realClassName).get());
+            queries.push(window.fbDb.collection('users').where('className', '==', realClassName.toUpperCase()).get());
+            queries.push(window.fbDb.collection('users').where('className', '==', realClassName.toLowerCase()).get());
+            queries.push(window.fbDb.collection('users').where('classe', '==', realClassName).get());
         }
 
         const snapshots = await Promise.all(queries);
@@ -192,13 +199,42 @@ window.viewClassStudents = async function(code, name, classId = null) {
             });
         });
 
+        // Fallback globale su tutta la collezione users se i filtri specifici non hanno prodotto risultati
+        if (studentsMap.size === 0) {
+            try {
+                const allUsersSnap = await window.fbDb.collection('users').get();
+                allUsersSnap.forEach(doc => {
+                    const u = doc.data();
+                    if (u.role !== 'docente' && u.role !== 'admin' && u.status !== 'archived') {
+                        const matchId = u.classId === realClassId || u.classId === realClassCode;
+                        const matchCode = (u.classCode && u.classCode.toUpperCase() === realClassCode.toUpperCase()) || 
+                                          (u.code && u.code.toUpperCase() === realClassCode.toUpperCase());
+                        const matchName = (u.className && u.className.trim().toUpperCase() === realClassName.trim().toUpperCase()) ||
+                                          (u.classe && u.classe.trim().toUpperCase() === realClassName.trim().toUpperCase()) ||
+                                          (u.schoolClass && u.schoolClass.trim().toUpperCase() === realClassName.trim().toUpperCase());
+                        if (matchId || matchCode || matchName) {
+                            studentsMap.set(doc.id, { id: doc.id, ...u });
+                        }
+                    }
+                });
+            } catch (fallbackErr) {
+                console.warn("Fallback all users search error:", fallbackErr);
+            }
+        }
+
         const classStudents = Array.from(studentsMap.values());
 
         if (classStudents.length === 0) {
             content.innerHTML = `
-                <div style="text-align: center; padding: 2rem; background: #f8f9fa; border-radius: 20px;">
-                    <p style="color: #888;">Nessun utente si è ancora unito alla classe <b>${name}</b>.</p>
-                    <p style="font-size: 0.8rem;">Condividi il codice <b>${code}</b> con i tuoi studenti.</p>
+                <div style="text-align: center; padding: 2.5rem; background: #f8f9fa; border-radius: 20px; border: 1px dashed #ddd;">
+                    <div style="font-size: 2rem; margin-bottom: 0.5rem;">👨‍🎓</div>
+                    <p style="color: #2c3e50; font-weight: 700; font-size: 1.05rem; margin-bottom: 0.3rem;">Nessun utente associato alla classe <b>${name}</b>.</p>
+                    <p style="font-size: 0.85rem; color: #666; margin-bottom: 1.2rem;">Fai inserire agli studenti il codice classe: <b style="background: #eef2f7; padding: 4px 10px; border-radius: 6px; color: var(--primary-color); font-family: monospace; font-size: 1rem;">${code}</b></p>
+                    ${window.Auth && window.Auth.getUser && (window.Auth.getUser().role === 'admin' || window.Auth.getUser().role === 'docente') ? `
+                        <button onclick="if(window.renderAdminPage) { window.renderAdminPage(); } else { alert('Accedi al pannello admin per gestire e spostare gli studenti.'); }" class="btn btn-secondary" style="font-size: 0.8rem; padding: 8px 16px; border-radius: 12px;">
+                            📋 Gestisci o Sposta Studenti nella Dashboard
+                        </button>
+                    ` : ''}
                 </div>
             `;
             return;
