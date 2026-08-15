@@ -6,27 +6,20 @@ async function renderAdminPage() {
             <div style="background: white; padding: 2rem; border-radius: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.05);">
                 <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; margin-bottom: 2rem; border-bottom: 2px dashed #eee; padding-bottom: 1.5rem;">
                     <div>
-                        <p style="margin: 0; font-weight: 800; font-size: 1.2rem; color: #2c3e50;">Pannello di Controllo &amp; Archivi</p>
-                        <p style="margin: 5px 0 0 0; color: #666; font-size: 0.9rem;">Gestisci gli archivi storici e i salvataggi annuali della Palestra.</p>
+                        <p style="margin: 0; font-weight: 800; font-size: 1.2rem; color: #2c3e50;">Pannello di Controllo &amp; Gestione Utenti</p>
+                        <p style="margin: 5px 0 0 0; color: #666; font-size: 0.9rem;">Gestisci tutti gli iscritti, le classi, i ruoli e gli archivi storici della Palestra.</p>
                     </div>
                     <a href="https://prof-memmo.github.io/prof-memmo-gestione-siti/" target="_blank" class="btn" style="background: linear-gradient(135deg, #6366f1, #4f46e5); color: white; padding: 0.8rem 1.5rem; border-radius: 15px; font-weight: 800; text-decoration: none; display: inline-flex; align-items: center; gap: 8px;">
-                        ⚙️ Vai all'Hub Utenti &amp; Analytics
+                        ⚙️ Vai all'Hub Centrale
                     </a>
                 </div>
 
-                <div style="background: #f0f4ff; border: 1px solid #d0deff; padding: 1.5rem; border-radius: 20px; margin-bottom: 2rem;">
-                    <h3 style="color: #3b82f6; margin-top: 0; font-size: 1.1rem; display: flex; align-items: center; gap: 8px;">
-                        <span>👥</span> Gestione Utenti &amp; Iscritti Centralizzata
-                    </h3>
-                    <p style="color: #4b5563; font-size: 0.9rem; margin-bottom: 1rem; line-height: 1.5;">
-                        La consultazione di tutti gli account registrati, l'approvazione delle richieste docenti, la modifica dei ruoli e le statistiche sono ora gestite a livello globale dall'<b>Hub Didattico di Gestione Generale</b>.
-                    </p>
-                    <a href="https://prof-memmo.github.io/prof-memmo-gestione-siti/" target="_blank" style="color: #2563eb; font-weight: 800; font-size: 0.9rem; text-decoration: underline;">
-                        Apri Hub Didattico →
-                    </a>
+                <!-- Elenco Utenti, Statistiche e Gestione Selezionati -->
+                <div id="admin-users-list">
+                    <p style="color: #666; font-size: 0.9rem; text-align: center; padding: 2rem;">Caricamento utenti e statistiche in corso...</p>
                 </div>
                 
-                <div style="margin-top: 2rem; padding-top: 2rem; border-top: 2px dashed #eee; background: rgba(231, 76, 60, 0.05); padding: 1.5rem; border-radius: 20px;">
+                <div style="margin-top: 2.5rem; padding-top: 2rem; border-top: 2px dashed #eee; background: rgba(231, 76, 60, 0.05); padding: 1.5rem; border-radius: 20px;">
                     <h3 style="color: #c53030; margin-bottom: 1rem; font-size: 1.3rem;">⚠️ Danger Zone: Archiviazione Annuale</h3>
                     <p style="color: #666; margin-bottom: 1.5rem; font-size: 0.9rem;">Questa opzione archivia tutti gli studenti dell'anno in corso, salvandone una "fotografia". Se necessario, l'operazione potrà essere annullata dall'Archivio Storico.</p>
                     <button class="btn" style="background: transparent; color: #c53030; border: 2px solid #c53030; padding: 1rem 2rem; border-radius: 15px; font-weight: 800; display: flex; align-items: center; gap: 0.5rem; cursor: pointer;" onclick="window.archiviaAnnoCorrente()">
@@ -46,6 +39,7 @@ async function renderAdminPage() {
     `;
 
     window.currentSection = 'admin';
+    await loadAdminUsersInProfile();
     if(window.loadHistoricalArchives) window.loadHistoricalArchives();
 }
 

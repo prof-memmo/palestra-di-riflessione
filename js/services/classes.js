@@ -172,20 +172,27 @@ window.viewClassStudents = async function(code, name, classId = null) {
         const realClassName = classData.name || name;
         const realClassCode = classData.code || code;
 
-        // 2. Trova gli utenti di questa specifica classe
-        const usersSnapshot = await window.fbDb.collection('users')
-            .where('classId', '==', realClassId)
-            .get();
-        
-        const classStudents = [];
-        
-        usersSnapshot.forEach(doc => {
-            const u = doc.data();
-            // Filtro studenti (escludiamo esplicitamente i docenti da questa vista)
-            if (u.role === 'studente' || (!u.role && u.classId === realClassId)) {
-                classStudents.push({ id: doc.id, ...u });
-            }
+        // 2. Trova gli utenti di questa specifica classe (supportando sia ID che Codice Classe)
+        const studentsMap = new Map();
+        const queries = [
+            window.fbDb.collection('users').where('classId', '==', realClassId).get()
+        ];
+        if (realClassCode && realClassCode !== realClassId) {
+            queries.push(window.fbDb.collection('users').where('classId', '==', realClassCode).get());
+            queries.push(window.fbDb.collection('users').where('classCode', '==', realClassCode).get());
+        }
+
+        const snapshots = await Promise.all(queries);
+        snapshots.forEach(snap => {
+            snap.forEach(doc => {
+                const u = doc.data();
+                if (u.role !== 'docente' && u.role !== 'admin' && u.status !== 'archived') {
+                    studentsMap.set(doc.id, { id: doc.id, ...u });
+                }
+            });
         });
+
+        const classStudents = Array.from(studentsMap.values());
 
         if (classStudents.length === 0) {
             content.innerHTML = `
