@@ -14,6 +14,9 @@ async function renderAdminPage() {
                     </a>
                 </div>
 
+                <!-- Live Editor Didattico (Correzioni al Volo) -->
+                <div id="admin-live-editor-container"></div>
+
                 <!-- Elenco Utenti, Statistiche e Gestione Selezionati -->
                 <div id="admin-users-list">
                     <p style="color: #666; font-size: 0.9rem; text-align: center; padding: 2rem;">Caricamento utenti e statistiche in corso...</p>
@@ -39,6 +42,9 @@ async function renderAdminPage() {
     `;
 
     window.currentSection = 'admin';
+    if (window.LiveEditor && typeof window.LiveEditor.renderAdminPanel === 'function') {
+        window.LiveEditor.renderAdminPanel('admin-live-editor-container');
+    }
     await loadAdminUsersInProfile();
     if(window.loadHistoricalArchives) window.loadHistoricalArchives();
 }

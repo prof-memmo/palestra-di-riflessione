@@ -1,7 +1,7 @@
 /**
  * LIVE EDITOR DIDATTICO (Quick-Edit al Volo) - Palestra di Riflessione
  * Consente all'Amministratore / Docente (prof.memmo@gmail.com) di correggere
- * e modificare al volo testi, frasi ed esercizi direttamente dal gioco,
+ * e modificare al volo testi, frasi ed esercizi direttamente dal gioco o dal Pannello Admin,
  * salvandoli su Firestore nell'Hub senza toccare i file di codice sorgente.
  */
 
@@ -90,9 +90,10 @@
         _originalCache: {},
 
         init: async function() {
-            if (!window.fbDb) return;
+            const db = window.fbDb || window.db || (typeof firebase !== 'undefined' && firebase.firestore ? firebase.firestore() : null);
+            if (!db) return;
             try {
-                const snapshot = await window.fbDb.collection('hub_didactic_overrides')
+                const snapshot = await db.collection('hub_didactic_overrides')
                     .where('platform', '==', this.platformKey)
                     .get();
                 
@@ -115,12 +116,18 @@
                 if (u.email && u.email.toLowerCase() === 'prof.memmo@gmail.com') return true;
                 if (u.role === 'admin' || u.role === 'docente') return true;
             }
+
+            if (typeof currentUserEmail !== 'undefined' && currentUserEmail && currentUserEmail.toLowerCase() === 'prof.memmo@gmail.com') return true;
+            if (window.currentUser && window.currentUser.email && window.currentUser.email.toLowerCase() === 'prof.memmo@gmail.com') return true;
+
             try {
-                const stored = localStorage.getItem('palestra_user') || localStorage.getItem('hub_user_session');
-                if (stored) {
-                    const parsed = JSON.parse(stored);
-                    if (parsed.email && parsed.email.toLowerCase() === 'prof.memmo@gmail.com') return true;
-                    if (parsed.role === 'admin' || parsed.role === 'docente') return true;
+                for (let k of ['palestra_user', 'gym_user', 'hub_user_session', 'fanta_user', 'corte_user_session', 'hub_user']) {
+                    const raw = localStorage.getItem(k);
+                    if (raw) {
+                        const parsed = JSON.parse(raw);
+                        if (parsed.email && parsed.email.toLowerCase() === 'prof.memmo@gmail.com') return true;
+                        if (parsed.role === 'admin' || parsed.role === 'docente') return true;
+                    }
                 }
             } catch(e){}
             return false;
@@ -133,30 +140,6 @@
             const override = this.overrides[key];
             if (!override || !override.data) return originalItem;
             return { ...originalItem, ...override.data, _isOverridden: true };
-        },
-
-        renderFloatingBadge: function() {
-            if (!this.isAdmin()) {
-                const existing = document.getElementById('live-editor-floating-badge');
-                if (existing) existing.remove();
-                return;
-            }
-            let badge = document.getElementById('live-editor-floating-badge');
-            if (!badge) {
-                badge = document.createElement('div');
-                badge.id = 'live-editor-floating-badge';
-                badge.style.cssText = 'position: fixed; bottom: 20px; right: 20px; z-index: 99999; background: #0f172a; color: #38bdf8; padding: 8px 16px; border-radius: 50px; font-size: 0.85rem; font-weight: 700; box-shadow: 0 10px 25px rgba(0,0,0,0.4); border: 1.5px solid #38bdf8; display: flex; align-items: center; gap: 8px; cursor: pointer; transition: transform 0.2s;';
-                badge.title = "Fai click per visualizzare o correggere al volo i testi didattici";
-                badge.onmouseenter = () => badge.style.transform = 'scale(1.05)';
-                badge.onmouseleave = () => badge.style.transform = 'scale(1)';
-                badge.onclick = () => {
-                    const key = prompt("✏️ Inserisci l'ID dell'esercizio da modificare:", "");
-                    if (key) this.openModal(key.trim(), '');
-                };
-                document.body.appendChild(badge);
-            }
-            badge.innerHTML = `<span>✏️ Live Editor [${Object.keys(this.overrides).length} attivi]</span>`;
-            this.scanAndInjectPencils();
         },
 
         scanAndInjectPencils: function() {
@@ -238,7 +221,7 @@
                 <div class="modal-content" style="background: white; border-radius: 20px; width: 100%; max-width: 620px; padding: 24px; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.35); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; position: relative;">
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; border-bottom: 1.5px solid #f1f5f9; padding-bottom: 12px;">
                         <h3 style="margin: 0; color: #0f172a; font-size: 1.2rem; display: flex; align-items: center; gap: 8px;">
-                            ✏️ Modifica al Volo Esercizio
+                            ✏️ Modifica al Volo Esercizio [${itemKey}]
                         </h3>
                         <button onclick="document.getElementById('live-editor-modal').style.display='none'" style="background: transparent; border: none; font-size: 1.4rem; color: #94a3b8; cursor: pointer;">&times;</button>
                     </div>
@@ -325,7 +308,6 @@
             let originalHtml = '';
             try { originalHtml = decodeURIComponent(atob(encodedOriginal)); } catch(e){}
 
-            // Riconverte il testo pulito nel formato HTML corretto
             const formattedText = plainTextToHtml(rawText, originalHtml);
 
             const docId = `${this.platformKey}_${itemKey.replace(/[^a-zA-Z0-9_-]/g, '_')}`;
@@ -345,15 +327,16 @@
                 status: 'pending_github_sync'
             };
 
+            const db = window.fbDb || window.db || (typeof firebase !== 'undefined' && firebase.firestore ? firebase.firestore() : null);
             try {
-                await window.fbDb.collection('hub_didactic_overrides').doc(docId).set(overridePayload);
+                await db.collection('hub_didactic_overrides').doc(docId).set(overridePayload);
                 this.overrides[itemKey] = { docId: docId, ...overridePayload };
                 
-                document.getElementById('live-editor-modal').style.display = 'none';
+                const modal = document.getElementById('live-editor-modal');
+                if (modal) modal.style.display = 'none';
                 alert("✅ Modifica salvata con successo! È ora attiva per tutti gli studenti.");
-                this.renderFloatingBadge();
+                this.refreshAdminPanels();
 
-                // Aggiorna la vista corrente se siamo in un esercizio
                 if (typeof loadUdaPhase === 'function' && window.currentPath) {
                     loadUdaPhase(window.currentPath);
                 }
@@ -366,12 +349,14 @@
         remove: async function(itemKey) {
             if (!confirm("Sei sicuro di voler eliminare questa personalizzazione e ripristinare il testo originale?")) return;
             const docId = `${this.platformKey}_${itemKey.replace(/[^a-zA-Z0-9_-]/g, '_')}`;
+            const db = window.fbDb || window.db || (typeof firebase !== 'undefined' && firebase.firestore ? firebase.firestore() : null);
             try {
-                await window.fbDb.collection('hub_didactic_overrides').doc(docId).delete();
+                await db.collection('hub_didactic_overrides').doc(docId).delete();
                 delete this.overrides[itemKey];
-                document.getElementById('live-editor-modal').style.display = 'none';
+                const modal = document.getElementById('live-editor-modal');
+                if (modal) modal.style.display = 'none';
                 alert("✅ Ripristinato il testo originale!");
-                this.renderFloatingBadge();
+                this.refreshAdminPanels();
                 if (typeof loadUdaPhase === 'function' && window.currentPath) {
                     loadUdaPhase(window.currentPath);
                 }
@@ -379,6 +364,96 @@
                 console.error("Errore ripristino override:", e);
                 alert("Errore: " + e.message);
             }
+        },
+
+        refreshAdminPanels: function() {
+            if (document.getElementById('admin-live-editor-container')) {
+                this.renderAdminPanel('admin-live-editor-container');
+            }
+        },
+
+        /**
+         * Renderizza il pannello completo all'interno della pagina Admin di Palestra
+         */
+        renderAdminPanel: function(containerId = 'admin-live-editor-container') {
+            const container = document.getElementById(containerId);
+            if (!container) return;
+
+            const overrideList = Object.values(this.overrides);
+            const count = overrideList.length;
+
+            let rowsHtml = '';
+            if (count === 0) {
+                rowsHtml = `
+                    <div style="text-align: center; padding: 25px 15px; color: #64748b; background: #f8fafc; border-radius: 10px; border: 1px dashed #cbd5e1;">
+                        <i class="fa-solid fa-check-circle" style="color: #10b981; font-size: 1.8rem; margin-bottom: 8px; display: block;"></i>
+                        <strong>Nessuna modifica al volo attiva per Palestra di Riflessione.</strong>
+                        <p style="font-size: 0.85rem; margin: 5px 0 0 0;">Tutti gli esercizi, le frasi e le fasi UdA utilizzano i testi didattici originali.</p>
+                    </div>
+                `;
+            } else {
+                rowsHtml = `
+                    <div style="display: flex; flex-direction: column; gap: 10px; max-height: 380px; overflow-y: auto; padding-right: 5px;">
+                        ${overrideList.map(item => {
+                            const snippet = (item.data && (item.data.text || item.data.frase || item.data.sentence || ''))
+                                .replace(/<[^>]+>/g, ' ')
+                                .slice(0, 110);
+                            const dateStr = item.updatedAt ? new Date(item.updatedAt).toLocaleString('it-IT') : 'N/D';
+                            const keyClean = item.itemKey || item.docId || '';
+
+                            return `
+                                <div style="display: flex; justify-content: space-between; align-items: center; background: white; border: 1px solid #e2e8f0; border-radius: 10px; padding: 12px 16px; gap: 15px; flex-wrap: wrap;">
+                                    <div style="flex: 1; min-width: 220px;">
+                                        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
+                                            <span style="background: #eff6ff; color: #2563eb; padding: 2px 8px; border-radius: 6px; font-size: 0.75rem; font-weight: bold; text-transform: uppercase;">${keyClean}</span>
+                                            <span style="font-size: 0.75rem; color: #94a3b8;"><i class="fa-regular fa-clock"></i> ${dateStr}</span>
+                                        </div>
+                                        <div style="font-size: 0.85rem; color: #1e293b; line-height: 1.4;">
+                                            "${snippet}..."
+                                        </div>
+                                    </div>
+                                    <div style="display: flex; gap: 8px;">
+                                        <button type="button" class="btn" style="background: #2563eb; color: white; padding: 6px 12px; font-size: 0.8rem; font-weight: bold; border-radius: 6px; border: none; cursor: pointer;" onclick="LiveEditor.openModal('${keyClean}', '')">
+                                            ✏️ Modifica
+                                        </button>
+                                        <button type="button" class="btn" style="background: #fee2e2; color: #dc2626; border: 1px solid #fca5a5; padding: 6px 12px; font-size: 0.8rem; font-weight: bold; border-radius: 6px; cursor: pointer;" onclick="LiveEditor.remove('${keyClean}')">
+                                            🔄 Ripristina
+                                        </button>
+                                    </div>
+                                </div>
+                            `;
+                        }).join('')}
+                    </div>
+                `;
+            }
+
+            container.innerHTML = `
+                <div style="margin-bottom: 25px; padding: 20px; border: 1px solid #bfdbfe; border-radius: 16px; background: #f0fdf4;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; flex-wrap: wrap; gap: 10px;">
+                        <div>
+                            <h3 style="color: #1e40af; margin: 0; font-size: 1.15rem; display: flex; align-items: center; gap: 8px;">
+                                <i class="fa-solid fa-pen-to-square"></i> Live Editor Didattico (Correzioni al Volo)
+                            </h3>
+                            <p style="font-size: 0.85rem; color: #64748b; margin: 4px 0 0 0;">
+                                Modifica in tempo reale frasi, esercizi e lezioni di grammatica/analisi per tutti gli studenti.
+                            </p>
+                        </div>
+                        <div style="display: flex; gap: 8px; align-items: center;">
+                            <span style="background: ${count > 0 ? '#2563eb' : '#e2e8f0'}; color: ${count > 0 ? 'white' : '#475569'}; font-weight: 800; font-size: 0.8rem; padding: 4px 12px; border-radius: 20px;">
+                                ${count} ${count === 1 ? 'override attivo' : 'override attivi'}
+                            </span>
+                            <button type="button" class="btn" style="background: white; border: 1px solid #cbd5e1; color: #334155; padding: 6px 14px; font-size: 0.8rem; font-weight: bold; border-radius: 8px; cursor: pointer;" onclick="LiveEditor.init().then(() => LiveEditor.renderAdminPanel('${containerId}'))">
+                                <i class="fa-solid fa-arrows-rotate"></i> Aggiorna
+                            </button>
+                            <button type="button" class="btn" style="background: #2563eb; color: white; padding: 6px 14px; font-size: 0.8rem; font-weight: bold; border-radius: 8px; border: none; cursor: pointer;" onclick="const k = prompt('✏️ Inserisci la chiave dell\\'esercizio o frase da modificare:', ''); if(k) LiveEditor.openModal(k.trim(), '');">
+                                <i class="fa-solid fa-plus"></i> Modifica Nuovo
+                            </button>
+                        </div>
+                    </div>
+
+                    ${rowsHtml}
+                </div>
+            `;
         }
     };
 
@@ -411,13 +486,16 @@
     document.addEventListener('DOMContentLoaded', () => {
         setTimeout(async () => {
             await window.LiveEditor.init();
-            window.LiveEditor.renderFloatingBadge();
+            if (document.getElementById('admin-live-editor-container')) {
+                window.LiveEditor.renderAdminPanel('admin-live-editor-container');
+            }
+            window.LiveEditor.scanAndInjectPencils();
         }, 500);
     });
 
     setInterval(() => {
-        if (window.LiveEditor && typeof window.LiveEditor.renderFloatingBadge === 'function') {
-            window.LiveEditor.renderFloatingBadge();
+        if (window.LiveEditor && typeof window.LiveEditor.scanAndInjectPencils === 'function') {
+            window.LiveEditor.scanAndInjectPencils();
         }
-    }, 2000);
+    }, 2500);
 })();
