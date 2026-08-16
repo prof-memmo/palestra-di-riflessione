@@ -235,6 +235,14 @@ window.viewClassStudents = async function(code, name, classId = null) {
             hubUsersSnap.forEach(doc => checkAndAddStudent(doc.id, doc.data()));
         } catch (e) { console.warn("Errore scansione hub_users:", e); }
 
+        // Scansione da 'legacyDb' (Database originario 'palestra-riflessione')
+        try {
+            if (window.legacyDb) {
+                const legacyUsersSnap = await window.legacyDb.collection('users').get().catch(() => ({ forEach: () => {} }));
+                legacyUsersSnap.forEach(doc => checkAndAddStudent(doc.id, doc.data()));
+            }
+        } catch (e) { console.warn("Errore scansione legacy users:", e); }
+
         const classStudents = Array.from(studentsMap.values());
 
         if (classStudents.length === 0) {
@@ -257,12 +265,17 @@ window.viewClassStudents = async function(code, name, classId = null) {
         const progressMap = {};
         const progressPromises = classStudents.map(async (s) => {
             try {
-                const pDoc = await window.fbDb.collection('progress').doc(s.id).get();
-                if (pDoc.exists) {
+                let pDoc = await window.fbDb.collection('progress').doc(s.id).get().catch(() => null);
+                if (!pDoc || !pDoc.exists) {
+                    if (window.legacyDb) {
+                        pDoc = await window.legacyDb.collection('progress').doc(s.id).get().catch(() => null);
+                    }
+                }
+                if (pDoc && pDoc.exists) {
                     progressMap[s.id] = pDoc.data();
                 }
-            } catch (err) {
-                console.warn(`Impossibile caricare progresso per ${s.name}:`, err);
+            } catch (e) {
+                console.warn(`Impossibile recuperare progressi per ${s.id}:`, e);
             }
         });
 

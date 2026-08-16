@@ -8,7 +8,16 @@ const firebaseConfig = {
   appId: "1:839149485689:web:04ee4fa6237d94d0b71ea8"
 };
 
-// Inizializza Firebase
+const legacyPalestraConfig = {
+  apiKey: "AIzaSyC9WhGYaWyaJtqDHhKhii5yhnP363SczJo",
+  authDomain: "palestra-riflessione.firebaseapp.com",
+  projectId: "palestra-riflessione",
+  storageBucket: "palestra-riflessione.firebasestorage.app",
+  messagingSenderId: "617112106958",
+  appId: "1:617112106958:web:f017958c52e4f1d5845d9f"
+};
+
+// Inizializza Firebase Hub & Legacy
 try {
     let app = (firebase.apps || []).find(a => a.name === '[DEFAULT]');
     if (!app) {
@@ -20,6 +29,13 @@ try {
     window.fbDb = app.firestore();
     window.db = window.fbDb;
     window.auth = window.fbAuth;
+
+    // Database legacy per recupero classi e studenti storici
+    let legacyApp = (firebase.apps || []).find(a => a.name === 'LegacyPalestra');
+    if (!legacyApp) {
+        legacyApp = firebase.initializeApp(legacyPalestraConfig, 'LegacyPalestra');
+    }
+    window.legacyDb = legacyApp.firestore();
 } catch(e) {
     console.error("Errore inizializzazione Firebase Palestra:", e);
 }
@@ -27,8 +43,6 @@ try {
 // =========================================================
 // WRAPPER "ZERO REFACTORING" PER LE COLLEZIONI HUB
 // =========================================================
-// Aggiunge automaticamente il prefisso 'palestra_' a tutte le 
-// chiamate db.collection() effettuate dal codice esistente.
 const originalCollection = window.fbDb.collection.bind(window.fbDb);
 window.fbDb.rawCollection = originalCollection;
 window.fbDb.collection = function(path) {
@@ -41,4 +55,4 @@ window.fbDb.collection = function(path) {
     return originalCollection('palestra_' + path);
 };
 
-console.log("🔥 Firebase Palestra di Riflessione inizializzato con Hub SSO e rawCollection.");
+console.log("🔥 Firebase Palestra di Riflessione inizializzato con Hub SSO, rawCollection e legacyDb.");
