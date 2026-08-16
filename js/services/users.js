@@ -1,33 +1,28 @@
 window.adminDeleteUser = async function(uid, name) {
-    if (!confirm(`Sei sicuro di voler eliminare definitivamente l'utente "${name}"? \n\nVerranno cancellati tutti i suoi dati e i suoi progressi dalla Palestra.`)) return;
+    if (!confirm(`Sei sicuro di voler eliminare definitivamente l'utente "${name}"? \n\nVerranno cancellati tutti i suoi dati e i suoi progressi dall'ecosistema.`)) return;
     
     try {
-        // Elimina profilo
-        await window.fbDb.collection('users').doc(uid).delete();
-        // Elimina progressi (se esistono)
-        await window.fbDb.collection('progress').doc(uid).delete();
+        // Elimina da palestra_users e palestra_progress
+        await window.fbDb.collection('users').doc(uid).delete().catch(() => {});
+        await window.fbDb.collection('progress').doc(uid).delete().catch(() => {});
         
-        alert(`Utente "${name}" eliminato con successo.`);
-        renderAdminPage(); // Ricarica la lista
+        // Elimina dalla root legacy 'users' e da 'hub_users'
+        if (window.fbDb.rawCollection) {
+            await window.fbDb.rawCollection('users').doc(uid).delete().catch(() => {});
+        }
+        await window.fbDb.collection('hub_users').doc(uid).delete().catch(() => {});
+        
+        alert(`Utente "${name}" eliminato con successo dall'ecosistema.`);
+        if (typeof renderAdminPage === 'function') renderAdminPage();
+        if (typeof loadAdminUsersInProfile === 'function') loadAdminUsersInProfile();
     } catch (e) {
         console.error("Errore eliminazione utente:", e);
         alert("Impossibile eliminare l'utente: " + e.message);
     }
 };
 
-
 window.adminDeleteUserInProfile = async function(uid, name) {
-    if (!confirm(`Sei sicuro di voler eliminare definitivamente l'utente "${name}"? \n\nVerranno cancellati tutti i suoi dati e i suoi progressi dalla Palestra.`)) return;
-    
-    try {
-        await window.fbDb.collection('users').doc(uid).delete();
-        await window.fbDb.collection('progress').doc(uid).delete();
-        alert(`Utente "${name}" eliminato con successo.`);
-        loadAdminUsersInProfile();
-    } catch (e) {
-        console.error("Errore eliminazione utente:", e);
-        alert("Impossibile eliminare l'utente: " + e.message);
-    }
+    return window.adminDeleteUser(uid, name);
 };
 
 

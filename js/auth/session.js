@@ -95,33 +95,32 @@ Object.assign(window.Auth = window.Auth || {}, {
                 window.Auth._user.piano = userPiano;
                 if (isSuperAdmin) {
                     window.Auth._user.role = 'admin';
+                    window.Auth._user.setupComplete = true;
                 } else if (hubRole) {
                     window.Auth._user.role = hubRole;
                 }
                 if (!window.Auth._user.name && hubName) {
                     window.Auth._user.name = hubName;
                 }
-                window.Auth._user.setupComplete = true;
                 
                 if (!window.Auth._user.email && fbUser.email) {
                     window.Auth._user.email = fbUser.email;
                     await window.fbDb.collection('users').doc(fbUser.uid).update({ email: fbUser.email });
                 }
             } else {
+                // Nuovo utente: deve completare l'onboarding (a meno che non sia il super admin)
                 window.Auth._user = {
                     uid: fbUser.uid,
-                    name: hubName,
-                    avatar: fbUser.photoURL || 'assets/logo.png',
-                    role: isSuperAdmin ? 'admin' : hubRole,
+                    name: hubName || fbUser.displayName || 'Nuovo Utente',
+                    avatar: fbUser.photoURL || 'assets/avatar.png',
+                    role: isSuperAdmin ? 'admin' : (hubRole || 'studente'),
                     piano: userPiano,
                     points: 0,
                     isGuest: false,
                     email: fbUser.email,
-                    setupComplete: true,
+                    setupComplete: isSuperAdmin ? true : false,
                     createdAt: new Date().toISOString()
                 };
-
-                await window.fbDb.collection('users').doc(fbUser.uid).set(window.Auth._user);
             }
             localStorage.removeItem('pending_role');
             
