@@ -24,6 +24,26 @@ try {
     console.error("Errore inizializzazione Firebase Palestra:", e);
 }
 
+// Inizializza Database Palestra Legacy (palestra-riflessione) per accedere agli utenti e classi storici
+const legacyPalestraConfig = {
+  apiKey: "AIzaSyC9WhGYaWyaJtqDHhKhii5yhnP363SczJo",
+  authDomain: "palestra-riflessione.firebaseapp.com",
+  projectId: "palestra-riflessione",
+  storageBucket: "palestra-riflessione.firebasestorage.app",
+  messagingSenderId: "839149485689",
+  appId: "1:839149485689:web:04ee4fa6237d94d0b71ea8"
+};
+
+try {
+    let legacyApp = (firebase.apps || []).find(a => a.name === 'PalestraLegacy');
+    if (!legacyApp) {
+        legacyApp = firebase.initializeApp(legacyPalestraConfig, 'PalestraLegacy');
+    }
+    window.legacyFbDb = legacyApp.firestore();
+} catch(e) {
+    console.warn("Legacy Palestra init warning:", e);
+}
+
 // =========================================================
 // WRAPPER "ZERO REFACTORING" PER LE COLLEZIONI HUB
 // =========================================================

@@ -257,6 +257,14 @@ window.viewClassStudents = async function(code, name, classId = null) {
             } catch(e) {}
         }
 
+        // Scansione universale da PalestraCrossDB (Hub + Legacy palestra-riflessione)
+        if (window.PalestraCrossDB) {
+            try {
+                const crossUsers = await window.PalestraCrossDB.fetchAllPalestraUsers();
+                crossUsers.forEach(u => checkAndAddStudent(u.id || u.uid, u));
+            } catch (e) { console.warn("Errore scansione PalestraCrossDB:", e); }
+        }
+
         // Scansione da 'palestra_users'
         try {
             const pUsersSnap = await window.fbDb.collection('palestra_users').get().catch(() => ({ forEach: () => {} }));
@@ -268,22 +276,6 @@ window.viewClassStudents = async function(code, name, classId = null) {
             const hubUsersSnap = await window.fbDb.collection('hub_users').get().catch(() => ({ forEach: () => {} }));
             hubUsersSnap.forEach(doc => checkAndAddStudent(doc.id, doc.data()));
         } catch (e) { console.warn("Errore scansione hub_users:", e); }
-
-        // Scansione da 'users' legacy se presente
-        try {
-            if (window.fbDb.rawCollection) {
-                const rawUsersSnap = await window.fbDb.rawCollection('users').get().catch(() => ({ forEach: () => {} }));
-                rawUsersSnap.forEach(doc => checkAndAddStudent(doc.id, doc.data()));
-            }
-        } catch(e) {}
-
-        // Scansione da 'fanta_users' per recuperare studenti registrati negli altri giochi
-        try {
-            if (window.fbDb.rawCollection) {
-                const fantaSnap = await window.fbDb.rawCollection('fanta_users').get().catch(() => ({ forEach: () => {} }));
-                fantaSnap.forEach(doc => checkAndAddStudent(doc.id, doc.data()));
-            }
-        } catch(e) {}
 
         const classStudents = Array.from(studentsMap.values());
 

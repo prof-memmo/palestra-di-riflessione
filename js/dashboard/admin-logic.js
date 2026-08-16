@@ -127,58 +127,51 @@ async function loadAdminUsersInProfile() {
     if (!container) return;
 
     try {
-        const rawUsersPromise = window.fbDb.rawCollection ? window.fbDb.rawCollection('users').get().catch(() => ({ forEach: () => {} })) : Promise.resolve({ forEach: () => {} });
-        const rawClassesPromise = window.fbDb.rawCollection ? window.fbDb.rawCollection('classes').get().catch(() => ({ forEach: () => {} })) : Promise.resolve({ forEach: () => {} });
-
-        const [usersSnapshot, pUsersSnapshot, rawUsersSnapshot, progressSnapshot, classesSnapshot, pClassesSnapshot, rawClassesSnapshot] = await Promise.all([
-            window.fbDb.collection('users').get().catch(() => ({ forEach: () => {} })),
-            window.fbDb.collection('palestra_users').get().catch(() => ({ forEach: () => {} })),
-            rawUsersPromise,
-            window.fbDb.collection('progress').get().catch(() => ({ forEach: () => {} })),
-            window.fbDb.collection('classes').get().catch(() => ({ forEach: () => {} })),
-            window.fbDb.collection('palestra_classes').get().catch(() => ({ forEach: () => {} })),
-            rawClassesPromise
-        ]);
-        
+        const progressSnapshot = await window.fbDb.collection('progress').get().catch(() => ({ forEach: () => {} }));
         const progressMap = {};
         progressSnapshot.forEach(doc => { progressMap[doc.id] = doc.data(); });
+
+        const [crossUsers, crossClasses] = await Promise.all([
+            window.PalestraCrossDB ? window.PalestraCrossDB.fetchAllPalestraUsers() : Promise.resolve([]),
+            window.PalestraCrossDB ? window.PalestraCrossDB.fetchAllPalestraClasses() : Promise.resolve([])
+        ]);
 
         const schoolsMap = {}; 
         const citiesMap = {};  
         const allClasses = [];
+        const seenClassIds = new Set();
         
-        // 1. Mappiamo le classi da tutte le collezioni
-        const addClassToAdmin = (doc) => {
-            if (!doc || !doc.id) return;
-            const d = typeof doc.data === 'function' ? doc.data() : (doc.data || {});
-            if (!allClasses.find(c => c.id === doc.id || (d.code && c.code === d.code))) {
-                allClasses.push({ id: doc.id, ...d });
-                if (d.school) {
-                    if (!schoolsMap[d.school]) schoolsMap[d.school] = { classCount: 0, studentCount: 0 };
-                    schoolsMap[d.school].classCount++;
-                }
-                if (d.city) {
-                    if (!citiesMap[d.city]) citiesMap[d.city] = { userCount: 0 };
-                    citiesMap[d.city].userCount++;
-                }
+        // 1. Mappiamo le classi
+        crossClasses.forEach(c => {
+            if (!c || !c.id || seenClassIds.has(c.id)) return;
+            seenClassIds.add(c.id);
+            allClasses.push(c);
+            if (c.school) {
+                if (!schoolsMap[c.school]) schoolsMap[c.school] = { classCount: 0, studentCount: 0 };
+                schoolsMap[c.school].classCount++;
             }
-        };
-
-        classesSnapshot.forEach(addClassToAdmin);
-        pClassesSnapshot.forEach(addClassToAdmin);
-        rawClassesSnapshot.forEach(addClassToAdmin);
+            if (c.city) {
+                if (!citiesMap[c.city]) citiesMap[c.city] = { userCount: 0 };
+                citiesMap[c.city].userCount++;
+            }
+        });
         window.allClassesForAdmin = allClasses;
 
-        // 2. Processiamo gli utenti da tutte le collezioni
+        // 2. Processiamo gli utenti
         const allUsers = [];
         const seenUserIds = new Set();
+        const seenEmails = new Set();
 
-        const processUserDoc = (doc) => {
-            if (!doc || !doc.id || seenUserIds.has(doc.id)) return;
-            seenUserIds.add(doc.id);
-            const u = typeof doc.data === 'function' ? doc.data() : (doc.data || {});
+        crossUsers.forEach(u => {
+            if (!u || !u.id) return;
+            const emailKey = (u.email || '').toLowerCase().trim();
+            if (seenUserIds.has(u.id) || (emailKey && seenEmails.has(emailKey))) return;
+            seenUserIds.add(u.id);
+            if (emailKey) seenEmails.add(emailKey);
+
             if (u.status === 'archived') return;
-            const userData = { id: doc.id, ...u, _progress: progressMap[doc.id] || {} };
+
+            const userData = { id: u.id, uid: u.id, ...u, _progress: progressMap[u.id] || {} };
             allUsers.push(userData);
 
             let uSchool = u.school || (u.anagrafica && u.anagrafica.scuola);
@@ -197,58 +190,13 @@ async function loadAdminUsersInProfile() {
                 if (!citiesMap[uCity]) citiesMap[uCity] = { userCount: 0 };
                 citiesMap[uCity].userCount++;
             }
-        };
-
-        usersSnapshot.forEach(processUserDoc);
-        pUsersSnapshot.forEach(processUserDoc);
-        rawUsersSnapshot.forEach(processUserDoc);
-
-        // 2b. Integrazione da Hub Centrale (hub_users) per studenti/utenti globali
-        try {
-            const hubUsersSnap = await window.fbDb.collection('hub_users').get();
-            hubUsersSnap.forEach(hdoc => {
-                const hd = hdoc.data() || {};
-                const hEmail = (hd.anagrafica && hd.anagrafica.email) || hd.email || '';
-                const alreadyPresent = allUsers.find(u => u.id === hdoc.id || (hEmail && u.email && u.email.toLowerCase() === hEmail.toLowerCase()));
-                if (!alreadyPresent) {
-                    const uRole = (hd.role === 'admin' || hEmail === 'prof.memmo@gmail.com') ? 'admin' : (hd.role === 'docente' ? 'docente' : (hd.role === 'viandante' ? 'amico' : 'studente'));
-                    const uName = (hd.anagrafica && hd.anagrafica.nome) ? `${hd.anagrafica.nome} ${hd.anagrafica.cognome || ''}`.trim() : (hd.displayName || 'Utente Hub');
-                    const uSchool = (hd.anagrafica && hd.anagrafica.scuola) || hd.school || '';
-                    const uCity = (hd.anagrafica && hd.anagrafica.citta) || hd.city || '';
-                    const userData = {
-                        id: hdoc.id,
-                        name: uName,
-                        email: hEmail,
-                        role: uRole,
-                        school: uSchool,
-                        city: uCity,
-                        classId: hd.classId || null,
-                        className: hd.className || '',
-                        joinedAt: hd.createdAt || '',
-                        avatar: hd.avatar || '👤',
-                        _progress: progressMap[hdoc.id] || {}
-                    };
-                    allUsers.push(userData);
-
-                    if (uSchool) {
-                        if (!schoolsMap[uSchool]) schoolsMap[uSchool] = { classCount: 0, studentCount: 0 };
-                        schoolsMap[uSchool].studentCount++;
-                    }
-                    if (uCity) {
-                        if (!citiesMap[uCity]) citiesMap[uCity] = { userCount: 0 };
-                        citiesMap[uCity].userCount++;
-                    }
-                }
-            });
-        } catch (hubErr) {
-            console.warn("Recupero hub_users per dashboard admin:", hubErr);
-        }
+        });
 
         const counts = { 
             tutti: allUsers.length, 
-            docente: allUsers.filter(u => u.role === 'docente' || u.role === 'admin').length, 
-            studente: allUsers.filter(u => u.role === 'studente' && u.roleLabel !== 'Amico della Palestra').length, 
-            amico: allUsers.filter(u => u.role === 'amico' || u.role === 'guest' || u.roleLabel === 'Amico della Palestra').length
+            docente: allUsers.filter(u => u.role === 'docente' || u.role === 'admin' || (u.email && u.email.toLowerCase() === 'prof.memmo@gmail.com')).length, 
+            studente: allUsers.filter(u => u.role !== 'docente' && u.role !== 'admin' && (u.email || '').toLowerCase() !== 'prof.memmo@gmail.com' && u.role !== 'amico' && u.role !== 'viandante' && u.roleLabel !== 'Amico della Palestra').length, 
+            amico: allUsers.filter(u => u.role === 'amico' || u.role === 'viandante' || u.role === 'guest' || u.roleLabel === 'Amico della Palestra').length
         };
 
         window.adminData = {

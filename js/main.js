@@ -483,12 +483,24 @@ async function renderProfiloPage() {
             const firestoreClasses = [];
 
             if (isSuperAdmin) {
-                // L'Amministratore carica TUTTE le classi presenti su Firestore (sia 'classes' che 'palestra_classes')
+                // L'Amministratore carica TUTTE le classi presenti su Firestore (Hub + Legacy)
+                if (window.PalestraCrossDB) {
+                    const crossClasses = await window.PalestraCrossDB.fetchAllPalestraClasses();
+                    crossClasses.forEach(c => {
+                        if (!firestoreClasses.find(existing => existing.id === c.id || (c.code && existing.code === c.code))) {
+                            firestoreClasses.push(c);
+                        }
+                    });
+                }
                 const [cSnap, pcSnap] = await Promise.all([
                     window.fbDb.collection('classes').get().catch(e => { console.warn("classes query error", e); return { forEach: () => {} }; }),
                     window.fbDb.collection('palestra_classes').get().catch(e => { console.warn("palestra_classes query error", e); return { forEach: () => {} }; })
                 ]);
-                cSnap.forEach(doc => firestoreClasses.push({ id: doc.id, ...doc.data() }));
+                cSnap.forEach(doc => {
+                    if (!firestoreClasses.find(c => c.id === doc.id || (doc.data().code && c.code === doc.data().code))) {
+                        firestoreClasses.push({ id: doc.id, ...doc.data() });
+                    }
+                });
                 pcSnap.forEach(doc => {
                     if (!firestoreClasses.find(c => c.id === doc.id || (doc.data().code && c.code === doc.data().code))) {
                         firestoreClasses.push({ id: doc.id, ...doc.data() });

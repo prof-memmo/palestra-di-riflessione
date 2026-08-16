@@ -197,3 +197,237 @@ window.loadHistoricalArchives = async function() {
     }
 };
 
+// ============================================================================
+// PALESTRA CROSS-DATABASE BRIDGE (UNIFICA TUTTI GLI UTENTI E CLASSI)
+// ============================================================================
+window.PalestraCrossDB = {
+    getAuthToken: async function() {
+        if (window.fbAuth && window.fbAuth.currentUser) {
+            try {
+                const tok = await window.fbAuth.currentUser.getIdToken(true);
+                if (tok) return tok;
+            } catch(e) {}
+        }
+        return new Promise((resolve) => {
+            const req = indexedDB.open('firebaseLocalStorageDb');
+            req.onsuccess = (e) => {
+                const db = e.target.result;
+                if (!db.objectStoreNames.contains('firebaseLocalStorage')) return resolve(null);
+                const tx = db.transaction('firebaseLocalStorage', 'readonly');
+                const store = tx.objectStore('firebaseLocalStorage');
+                const getReq = store.get('firebase:authUser:AIzaSyD-n2m-kYEuzGXPMKclZTggf4Y5Zm8_cdM:[DEFAULT]');
+                getReq.onsuccess = async (e2) => {
+                    if (e2.target.result && e2.target.result.value && e2.target.result.value.stsTokenManager) {
+                        const tm = e2.target.result.value.stsTokenManager;
+                        if (tm.refreshToken) {
+                            try {
+                                const refreshRes = await fetch('https://securetoken.googleapis.com/v1/token?key=AIzaSyD-n2m-kYEuzGXPMKclZTggf4Y5Zm8_cdM', {
+                                    method: 'POST',
+                                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                                    body: `grant_type=refresh_token&refresh_token=${tm.refreshToken}`
+                                });
+                                const refreshData = await refreshRes.json();
+                                return resolve(refreshData.id_token || tm.accessToken);
+                            } catch(err) {
+                                return resolve(tm.accessToken);
+                            }
+                        }
+                        resolve(tm.accessToken);
+                    } else {
+                        // Fallback con apiKey secondaria
+                        const altReq = store.get('firebase:authUser:AIzaSyC9WhGYaWyaJtqDHhKhii5yhnP363SczJo:[DEFAULT]');
+                        altReq.onsuccess = (e3) => {
+                            if (e3.target.result && e3.target.result.value && e3.target.result.value.stsTokenManager) {
+                                resolve(e3.target.result.value.stsTokenManager.accessToken);
+                            } else {
+                                resolve(null);
+                            }
+                        };
+                        altReq.onerror = () => resolve(null);
+                    }
+                };
+                getReq.onerror = () => resolve(null);
+            };
+            req.onerror = () => resolve(null);
+        });
+    },
+
+    fetchAllPalestraUsers: async function() {
+        const usersMap = new Map();
+
+        // 1. Dalla collezione Hub (palestra_users o raw users)
+        if (window.fbDb) {
+            try {
+                const snap = await window.fbDb.collection('users').get();
+                snap.forEach(doc => {
+                    const d = doc.data();
+                    usersMap.set(doc.id, { id: doc.id, uid: doc.id, ...d });
+                });
+            } catch(e) {}
+            try {
+                const rawSnap = window.fbDb.rawCollection ? await window.fbDb.rawCollection('users').get() : null;
+                if (rawSnap) {
+                    rawSnap.forEach(doc => {
+                        if (!usersMap.has(doc.id)) {
+                            usersMap.set(doc.id, { id: doc.id, uid: doc.id, ...doc.data() });
+                        }
+                    });
+                }
+            } catch(e) {}
+        }
+
+        // 2. Dal database legacy (palestra-riflessione) via SDK
+        if (window.legacyFbDb) {
+            try {
+                const legSnap = await window.legacyFbDb.collection('users').get();
+                legSnap.forEach(doc => {
+                    if (!usersMap.has(doc.id)) {
+                        usersMap.set(doc.id, { id: doc.id, uid: doc.id, ...doc.data() });
+                    }
+                });
+            } catch(e) {}
+        }
+
+        // 3. Da REST API di palestra-riflessione (esattamente come fa l'Hub centrale)
+        try {
+            const token = await this.getAuthToken();
+            const res = await fetch('https://firestore.googleapis.com/v1/projects/palestra-riflessione/databases/(default)/documents/users?pageSize=1000', {
+                headers: token ? { Authorization: `Bearer ${token}` } : {}
+            });
+            if (res.ok) {
+                const data = await res.json();
+                if (data.documents && Array.isArray(data.documents)) {
+                    data.documents.forEach(doc => {
+                        const uid = doc.name.split('/').pop();
+                        if (!usersMap.has(uid)) {
+                            const f = doc.fields || {};
+                            const rawRole = (f.role && f.role.stringValue) || (f.ruolo && f.ruolo.stringValue) || 'studente';
+                            const rawName = (f.name && f.name.stringValue) || (f.nome && f.nome.stringValue) || (f.displayName && f.displayName.stringValue) || 'Utente';
+                            const rawEmail = (f.email && f.email.stringValue) || '';
+                            const rawClassId = (f.classId && f.classId.stringValue) || (f.class && f.class.stringValue) || (f.classe && f.classe.stringValue) || '';
+                            const rawClassName = (f.className && f.className.stringValue) || '';
+                            const rawSchool = (f.school && f.school.stringValue) || (f.scuola && f.scuola.stringValue) || '';
+                            const rawCity = (f.city && f.city.stringValue) || (f.citta && f.citta.stringValue) || '';
+                            const rawPlan = (f.plan && f.plan.stringValue) || (f.piano && f.piano.stringValue) || 'base';
+                            const rawTeacherId = (f.teacherId && f.teacherId.stringValue) || '';
+
+                            usersMap.set(uid, {
+                                id: uid,
+                                uid: uid,
+                                name: rawName,
+                                email: rawEmail,
+                                role: rawRole,
+                                classId: rawClassId,
+                                className: rawClassName,
+                                school: rawSchool,
+                                city: rawCity,
+                                plan: rawPlan,
+                                teacherId: rawTeacherId
+                            });
+                        }
+                    });
+                }
+            }
+        } catch(e) {
+            console.warn("REST Users fetch error:", e);
+        }
+
+        // 4. Da Hub Centrale (hub_users) per studenti registrati
+        if (window.fbDb) {
+            try {
+                const hubSnap = await window.fbDb.collection('hub_users').get();
+                hubSnap.forEach(hdoc => {
+                    const hd = hdoc.data() || {};
+                    const hEmail = (hd.anagrafica && hd.anagrafica.email) || hd.email || '';
+                    const exists = Array.from(usersMap.values()).some(u => u.id === hdoc.id || (hEmail && u.email && u.email.toLowerCase() === hEmail.toLowerCase()));
+                    if (!exists) {
+                        const uRole = (hd.role === 'admin' || hEmail === 'prof.memmo@gmail.com') ? 'admin' : (hd.role === 'docente' ? 'docente' : (hd.role === 'viandante' ? 'amico' : 'studente'));
+                        const uName = (hd.anagrafica && hd.anagrafica.nome) ? `${hd.anagrafica.nome} ${hd.anagrafica.cognome || ''}`.trim() : (hd.displayName || 'Utente Hub');
+                        usersMap.set(hdoc.id, {
+                            id: hdoc.id,
+                            uid: hdoc.id,
+                            name: uName,
+                            email: hEmail,
+                            role: uRole,
+                            classId: hd.classId || hd.class || '',
+                            school: (hd.anagrafica && hd.anagrafica.scuola) || hd.school || '',
+                            city: (hd.anagrafica && hd.anagrafica.citta) || hd.city || '',
+                            plan: hd.subscription || hd.abbonamento || 'base'
+                        });
+                    }
+                });
+            } catch(e) {}
+        }
+
+        return Array.from(usersMap.values());
+    },
+
+    fetchAllPalestraClasses: async function() {
+        const classesMap = new Map();
+
+        // 1. Da Hub (palestra_classes e raw classes)
+        if (window.fbDb) {
+            try {
+                const snap = await window.fbDb.collection('classes').get();
+                snap.forEach(doc => {
+                    classesMap.set(doc.id, { id: doc.id, ...doc.data() });
+                });
+            } catch(e) {}
+            try {
+                const rawSnap = window.fbDb.rawCollection ? await window.fbDb.rawCollection('classes').get() : null;
+                if (rawSnap) {
+                    rawSnap.forEach(doc => {
+                        if (!classesMap.has(doc.id)) {
+                            classesMap.set(doc.id, { id: doc.id, ...doc.data() });
+                        }
+                    });
+                }
+            } catch(e) {}
+        }
+
+        // 2. Dal database legacy (palestra-riflessione) via SDK
+        if (window.legacyFbDb) {
+            try {
+                const legSnap = await window.legacyFbDb.collection('classes').get();
+                legSnap.forEach(doc => {
+                    if (!classesMap.has(doc.id)) {
+                        classesMap.set(doc.id, { id: doc.id, ...doc.data() });
+                    }
+                });
+            } catch(e) {}
+        }
+
+        // 3. Da REST API di palestra-riflessione
+        try {
+            const token = await this.getAuthToken();
+            const res = await fetch('https://firestore.googleapis.com/v1/projects/palestra-riflessione/databases/(default)/documents/classes?pageSize=100', {
+                headers: token ? { Authorization: `Bearer ${token}` } : {}
+            });
+            if (res.ok) {
+                const data = await res.json();
+                if (data.documents && Array.isArray(data.documents)) {
+                    data.documents.forEach(doc => {
+                        const cid = doc.name.split('/').pop();
+                        if (!classesMap.has(cid)) {
+                            const f = doc.fields || {};
+                            classesMap.set(cid, {
+                                id: cid,
+                                name: (f.name && f.name.stringValue) || 'Classe',
+                                code: (f.code && f.code.stringValue) || '',
+                                school: (f.school && f.school.stringValue) || (f.scuola && f.scuola.stringValue) || '',
+                                city: (f.city && f.city.stringValue) || (f.citta && f.citta.stringValue) || '',
+                                teacherId: (f.teacherId && f.teacherId.stringValue) || '',
+                                teacherIds: (f.teacherIds && f.teacherIds.arrayValue && f.teacherIds.arrayValue.values) ? f.teacherIds.arrayValue.values.map(v => v.stringValue) : []
+                            });
+                        }
+                    });
+                }
+            }
+        } catch(e) {
+            console.warn("REST Classes fetch error:", e);
+        }
+
+        return Array.from(classesMap.values());
+    }
+};
+
