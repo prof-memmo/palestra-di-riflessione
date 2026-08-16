@@ -134,13 +134,7 @@ function navigateTo(section, subType = null, level = null, updateHash = true, ex
         }
 
         if (section === 'contatti') {
-            window.currentSection = 'contatti';
-            window.currentSubType = null;
-            window.currentLevel = null;
-            window.currentExtra = null;
-            renderContattiPage();
-            document.querySelector('.nav-item[data-section="contatti"]')?.classList.add('active');
-            if (typeof updateSidebarMenu === 'function') updateSidebarMenu();
+            window.open('https://prof-memmo.github.io/games/contatti.html', '_blank');
             return;
         }
         if (section === 'profilo') {
