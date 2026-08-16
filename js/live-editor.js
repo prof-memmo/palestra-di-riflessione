@@ -161,8 +161,13 @@
 
         scanAndInjectPencils: function() {
             if (!this.isAdmin()) return;
-            // Seleziona i contenitori di esercizi a schermo
-            const selectors = ['.exercise-header', '.exercise-title', '.sentence-display', '.quiz-question-text', '.section-title'];
+            // Seleziona i contenitori di esercizi, lezioni, teoria e testi a schermo
+            const selectors = [
+                '.exercise-header', '.exercise-title', '.sentence-display', '.quiz-question-text', 
+                '.section-title', '.theory-schema', '.theory-box', '.concept-card', 
+                '.scopri-container', '.scopri-definition', '.ripassa-card', '.produzione-prompt',
+                '#exercise-mount h2', '#exercise-mount h3', '#exercise-mount .theory-schema h4'
+            ];
             selectors.forEach(sel => {
                 document.querySelectorAll(sel).forEach(el => {
                     if (el.querySelector('.live-edit-quick-btn')) return;
@@ -172,7 +177,7 @@
                         const btn = document.createElement('button');
                         btn.type = 'button';
                         btn.className = 'live-edit-quick-btn';
-                        btn.title = 'Modifica al volo questo esercizio (Solo Docente/Admin)';
+                        btn.title = 'Modifica al volo questo testo/lezione (Solo Docente/Admin)';
                         btn.innerHTML = '✏️';
                         btn.onclick = (e) => {
                             e.stopPropagation();
