@@ -226,15 +226,21 @@ window.viewClassStudents = async function(code, name, classId = null) {
             }
         };
 
-        // Scansione da 'users' (collezione root legacy tramite rawCollection nell'Hub)
-        try {
-            if (window.fbDb.rawCollection) {
-                const rawUsersSnap = await window.fbDb.rawCollection('users').get().catch(() => ({ forEach: () => {} }));
-                rawUsersSnap.forEach(doc => checkAndAddStudent(doc.id, doc.data()));
-            }
-        } catch (e) { console.warn("Errore scansione raw users:", e); }
+        // Query mirate rapide su palestra_users
+        if (realClassCode) {
+            try {
+                const qCode = await window.fbDb.collection('palestra_users').where('classCode', '==', realClassCode).get().catch(() => ({ forEach: () => {} }));
+                qCode.forEach(doc => checkAndAddStudent(doc.id, doc.data()));
+            } catch(e) {}
+        }
+        if (realClassId) {
+            try {
+                const qId = await window.fbDb.collection('palestra_users').where('classId', '==', realClassId).get().catch(() => ({ forEach: () => {} }));
+                qId.forEach(doc => checkAndAddStudent(doc.id, doc.data()));
+            } catch(e) {}
+        }
 
-        // Scansione da 'palestra_users'
+        // Scansione completa da 'palestra_users'
         try {
             const pUsersSnap = await window.fbDb.collection('palestra_users').get().catch(() => ({ forEach: () => {} }));
             pUsersSnap.forEach(doc => checkAndAddStudent(doc.id, doc.data()));

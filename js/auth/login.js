@@ -37,26 +37,53 @@ Object.assign(window.Auth = window.Auth || {}, {
     loginWithClassCode: async (code, studentName) => {
         if (!window.fbDb) return false;
         try {
-            const q = await window.fbDb.collection('classes').where('code', '==', code.toUpperCase()).get();
+            const cleanCode = (code || '').trim().toUpperCase();
+            let q = await window.fbDb.collection('classes').where('code', '==', cleanCode).get();
+            if (q.empty) {
+                q = await window.fbDb.collection('palestra_classes').where('code', '==', cleanCode).get();
+            }
             if (q.empty) {
                 alert("Codice classe non valido. Chiedi al tuo docente!");
                 return false;
             }
-            const classData = q.docs[0].data();
-            const classId = q.docs[0].id;
-            window.Auth._user = {
-                uid: 'std_' + Math.random().toString(36).substr(2, 9),
+            const classDoc = q.docs[0];
+            const classData = classDoc.data();
+            const classId = classDoc.id;
+            const studentUid = 'std_' + Math.random().toString(36).substr(2, 9);
+            
+            const studentObj = {
+                uid: studentUid,
+                id: studentUid,
                 name: studentName || 'Studente',
-                avatar: 'assets/avatar.png',
+                avatar: '👤',
                 role: 'studente',
                 classId: classId,
-                teacherId: classData.teacherId,
-                className: classData.name,
+                classCode: cleanCode,
+                className: classData.name || '',
+                teacherId: classData.teacherId || '',
                 points: 0,
                 isGuest: false,
-                setupComplete: false
+                setupComplete: true,
+                createdAt: new Date().toISOString(),
+                lastUpdated: new Date().toISOString()
             };
-            localStorage.setItem('palestra_user', JSON.stringify(window.Auth._user));
+
+            // Salva su Firestore per renderlo visibile al docente nel Registro
+            try {
+                await window.fbDb.collection('palestra_users').doc(studentUid).set(studentObj, { merge: true });
+                if (classDoc.ref && typeof classDoc.ref.update === 'function') {
+                    await classDoc.ref.update({
+                        studentIds: firebase.firestore.FieldValue.arrayUnion(studentUid),
+                        studentsCount: firebase.firestore.FieldValue.increment(1)
+                    }).catch(() => {});
+                }
+            } catch(err) {
+                console.warn("Impossibile salvare studente su Firestore:", err);
+            }
+
+            window.Auth._user = studentObj;
+            localStorage.setItem('palestra_user', JSON.stringify(studentObj));
+            localStorage.setItem('palestra_student_class_code', cleanCode);
             window.dispatchEvent(new CustomEvent('authChange'));
             return true;
         } catch (e) {
