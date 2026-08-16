@@ -178,12 +178,16 @@ window.viewClassStudents = async function(code, name, classId = null) {
 
         const realClassId = (classDoc && classDoc.id) ? classDoc.id : (classId || code);
         const classData = (classDoc && typeof classDoc.data === 'function') ? (classDoc.data() || {}) : {};
-        const realClassName = classData.name || name;
-        const realClassCode = classData.code || code;
+        const realClassName = classData.name || name || '';
+        const realClassCode = classData.code || code || '';
 
-        // 2. Trova gli utenti di questa specifica classe (supportando ID, Codice, Nome Classe da tutte le collezioni: users, palestra_users, hub_users)
+        // 2. Trova gli utenti di questa specifica classe (supportando ID, Codice, Nome Classe da tutte le collezioni: users raw, palestra_users, hub_users)
         const studentsMap = new Map();
         
+        const targetId = String(realClassId || '').trim();
+        const targetCode = String(realClassCode || '').trim().toUpperCase();
+        const targetName = String(realClassName || '').trim().toUpperCase();
+
         const checkAndAddStudent = (id, u) => {
             if (!u) return;
             if (u.role === 'docente' || u.role === 'admin' || u.status === 'archived') return;
@@ -191,14 +195,10 @@ window.viewClassStudents = async function(code, name, classId = null) {
             const uClassId = String(u.classId || '').trim();
             const uClassCode = String(u.classCode || u.code || '').trim().toUpperCase();
             const uClassName = String(u.className || u.classe || u.schoolClass || (u.anagrafica && u.anagrafica.scuolaClasse) || '').trim().toUpperCase();
-            
-            const targetId = String(realClassId).trim();
-            const targetCode = String(realClassCode).trim().toUpperCase();
-            const targetName = String(realClassName).trim().toUpperCase();
 
-            const matchId = (uClassId && (uClassId === targetId || uClassId === targetCode));
-            const matchCode = (uClassCode && (uClassCode === targetCode || uClassCode === targetId));
-            const matchName = (uClassName && (uClassName === targetName || (targetName && uClassName.includes(targetName))));
+            const matchId = (uClassId && (uClassId === targetId || (targetCode && uClassId === targetCode) || (targetName && uClassId.toUpperCase() === targetName)));
+            const matchCode = (uClassCode && ((targetCode && uClassCode === targetCode) || (targetId && uClassCode === targetId) || (targetName && uClassCode === targetName)));
+            const matchName = (targetName && uClassName && (uClassName === targetName || uClassName.includes(targetName) || targetName.includes(uClassName)));
 
             if (matchId || matchCode || matchName) {
                 if (!studentsMap.has(id)) {
@@ -215,21 +215,23 @@ window.viewClassStudents = async function(code, name, classId = null) {
             }
         };
 
-        // Scansione da 'users'
+        // Scansione da 'users' (collezione root legacy tramite rawCollection)
         try {
-            const usersSnap = await window.fbDb.collection('users').get();
-            usersSnap.forEach(doc => checkAndAddStudent(doc.id, doc.data()));
-        } catch (e) { console.warn("Errore scansione users:", e); }
+            if (window.fbDb.rawCollection) {
+                const rawUsersSnap = await window.fbDb.rawCollection('users').get().catch(() => ({ forEach: () => {} }));
+                rawUsersSnap.forEach(doc => checkAndAddStudent(doc.id, doc.data()));
+            }
+        } catch (e) { console.warn("Errore scansione raw users:", e); }
 
         // Scansione da 'palestra_users'
         try {
-            const pUsersSnap = await window.fbDb.collection('palestra_users').get();
+            const pUsersSnap = await window.fbDb.collection('palestra_users').get().catch(() => ({ forEach: () => {} }));
             pUsersSnap.forEach(doc => checkAndAddStudent(doc.id, doc.data()));
         } catch (e) { console.warn("Errore scansione palestra_users:", e); }
 
         // Scansione da 'hub_users'
         try {
-            const hubUsersSnap = await window.fbDb.collection('hub_users').get();
+            const hubUsersSnap = await window.fbDb.collection('hub_users').get().catch(() => ({ forEach: () => {} }));
             hubUsersSnap.forEach(doc => checkAndAddStudent(doc.id, doc.data()));
         } catch (e) { console.warn("Errore scansione hub_users:", e); }
 

@@ -30,6 +30,7 @@ try {
 // Aggiunge automaticamente il prefisso 'palestra_' a tutte le 
 // chiamate db.collection() effettuate dal codice esistente.
 const originalCollection = window.fbDb.collection.bind(window.fbDb);
+window.fbDb.rawCollection = originalCollection;
 window.fbDb.collection = function(path) {
     // Eccezioni per le collezioni globali dell'Hub o di altri giochi
     if (path.startsWith('hub_') || path === 'games_status' || path === 'vetrina' || path.startsWith('fanta_') || path.startsWith('eroi_') || path.startsWith('corte_')) {
@@ -40,4 +41,4 @@ window.fbDb.collection = function(path) {
     return originalCollection('palestra_' + path);
 };
 
-console.log("🔥 Firebase Palestra di Riflessione inizializzato con Hub SSO.");
+console.log("🔥 Firebase Palestra di Riflessione inizializzato con Hub SSO e rawCollection.");

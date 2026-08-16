@@ -50,12 +50,17 @@ async function loadAdminUsersInProfile() {
     if (!container) return;
 
     try {
-        const [usersSnapshot, pUsersSnapshot, progressSnapshot, classesSnapshot, pClassesSnapshot] = await Promise.all([
+        const rawUsersPromise = window.fbDb.rawCollection ? window.fbDb.rawCollection('users').get().catch(() => ({ forEach: () => {} })) : Promise.resolve({ forEach: () => {} });
+        const rawClassesPromise = window.fbDb.rawCollection ? window.fbDb.rawCollection('classes').get().catch(() => ({ forEach: () => {} })) : Promise.resolve({ forEach: () => {} });
+
+        const [usersSnapshot, pUsersSnapshot, rawUsersSnapshot, progressSnapshot, classesSnapshot, pClassesSnapshot, rawClassesSnapshot] = await Promise.all([
             window.fbDb.collection('users').get().catch(() => ({ forEach: () => {} })),
             window.fbDb.collection('palestra_users').get().catch(() => ({ forEach: () => {} })),
+            rawUsersPromise,
             window.fbDb.collection('progress').get().catch(() => ({ forEach: () => {} })),
             window.fbDb.collection('classes').get().catch(() => ({ forEach: () => {} })),
-            window.fbDb.collection('palestra_classes').get().catch(() => ({ forEach: () => {} }))
+            window.fbDb.collection('palestra_classes').get().catch(() => ({ forEach: () => {} })),
+            rawClassesPromise
         ]);
         
         const progressMap = {};
@@ -65,9 +70,10 @@ async function loadAdminUsersInProfile() {
         const citiesMap = {};  
         const allClasses = [];
         
-        // 1. Mappiamo le classi da 'classes' e 'palestra_classes'
+        // 1. Mappiamo le classi da tutte le collezioni
         const addClassToAdmin = (doc) => {
-            const d = doc.data();
+            if (!doc || !doc.id) return;
+            const d = typeof doc.data === 'function' ? doc.data() : (doc.data || {});
             if (!allClasses.find(c => c.id === doc.id || (d.code && c.code === d.code))) {
                 allClasses.push({ id: doc.id, ...d });
                 if (d.school) {
@@ -83,16 +89,17 @@ async function loadAdminUsersInProfile() {
 
         classesSnapshot.forEach(addClassToAdmin);
         pClassesSnapshot.forEach(addClassToAdmin);
+        rawClassesSnapshot.forEach(addClassToAdmin);
         window.allClassesForAdmin = allClasses;
 
-        // 2. Processiamo gli utenti da 'users' e 'palestra_users'
+        // 2. Processiamo gli utenti da tutte le collezioni
         const allUsers = [];
         const seenUserIds = new Set();
 
         const processUserDoc = (doc) => {
-            if (seenUserIds.has(doc.id)) return;
+            if (!doc || !doc.id || seenUserIds.has(doc.id)) return;
             seenUserIds.add(doc.id);
-            const u = doc.data();
+            const u = typeof doc.data === 'function' ? doc.data() : (doc.data || {});
             if (u.status === 'archived') return;
             const userData = { id: doc.id, ...u, _progress: progressMap[doc.id] || {} };
             allUsers.push(userData);
@@ -117,6 +124,7 @@ async function loadAdminUsersInProfile() {
 
         usersSnapshot.forEach(processUserDoc);
         pUsersSnapshot.forEach(processUserDoc);
+        rawUsersSnapshot.forEach(processUserDoc);
 
         // 2b. Integrazione da Hub Centrale (hub_users) per studenti/utenti globali
         try {
