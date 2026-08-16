@@ -94,26 +94,38 @@ function navigateTo(section, subType = null, level = null, updateHash = true, ex
         if (level) hash += `/${level}`;
         if (extra) hash += `/${extra}`;
 
-        if (currentPath.includes(targetId)) {
-            const isDifferentView = (section !== window.currentSection) ||
-                (subType !== window.currentSubType) ||
-                (level !== window.currentLevel) ||
-                (extra !== window.currentExtra);
-
-            if (!isDifferentView) {
-                const idx = window.collapsedSections.indexOf(targetId);
-                if (idx > -1) window.collapsedSections.splice(idx, 1);
-                else window.collapsedSections.push(targetId);
-                if (typeof updateSidebarMenu === 'function') updateSidebarMenu();
+        // Se è una sezione principale autonoma (es: profilo, admin, home, ripassa)
+        if (['profilo', 'admin', 'home', 'ripassa', 'culturagenerale', 'contatti'].includes(section)) {
+            const oldHash = window.location.hash;
+            window.location.hash = hash;
+            if (oldHash === hash) {
+                // L'hash non è cambiato, quindi hashchange non scatta: forziamo il rendering diretto!
+                // Continua l'esecuzione sotto
+            } else {
                 return;
             }
         } else {
-            const idx = window.collapsedSections.indexOf(targetId);
-            if (idx > -1) window.collapsedSections.splice(idx, 1);
-        }
+            if (currentPath.includes(targetId)) {
+                const isDifferentView = (section !== window.currentSection) ||
+                    (subType !== window.currentSubType) ||
+                    (level !== window.currentLevel) ||
+                    (extra !== window.currentExtra);
 
-        window.location.hash = hash;
-        return;
+                if (!isDifferentView) {
+                    const idx = window.collapsedSections.indexOf(targetId);
+                    if (idx > -1) window.collapsedSections.splice(idx, 1);
+                    else window.collapsedSections.push(targetId);
+                    if (typeof updateSidebarMenu === 'function') updateSidebarMenu();
+                    return;
+                }
+            } else {
+                const idx = window.collapsedSections.indexOf(targetId);
+                if (idx > -1) window.collapsedSections.splice(idx, 1);
+            }
+
+            window.location.hash = hash;
+            return;
+        }
     }
 
     const appContainer = document.getElementById('app');
