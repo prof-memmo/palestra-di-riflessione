@@ -52,25 +52,18 @@ async function loadAdminUsersInProfile() {
     try {
         const rawUsersPromise = window.fbDb.rawCollection ? window.fbDb.rawCollection('users').get().catch(() => ({ forEach: () => {} })) : Promise.resolve({ forEach: () => {} });
         const rawClassesPromise = window.fbDb.rawCollection ? window.fbDb.rawCollection('classes').get().catch(() => ({ forEach: () => {} })) : Promise.resolve({ forEach: () => {} });
-        const legacyUsersPromise = window.legacyDb ? window.legacyDb.collection('users').get().catch(() => ({ forEach: () => {} })) : Promise.resolve({ forEach: () => {} });
-        const legacyClassesPromise = window.legacyDb ? window.legacyDb.collection('classes').get().catch(() => ({ forEach: () => {} })) : Promise.resolve({ forEach: () => {} });
-        const legacyProgressPromise = window.legacyDb ? window.legacyDb.collection('progress').get().catch(() => ({ forEach: () => {} })) : Promise.resolve({ forEach: () => {} });
 
-        const [usersSnapshot, pUsersSnapshot, rawUsersSnapshot, legacyUsersSnapshot, progressSnapshot, legacyProgressSnapshot, classesSnapshot, pClassesSnapshot, rawClassesSnapshot, legacyClassesSnapshot] = await Promise.all([
+        const [usersSnapshot, pUsersSnapshot, rawUsersSnapshot, progressSnapshot, classesSnapshot, pClassesSnapshot, rawClassesSnapshot] = await Promise.all([
             window.fbDb.collection('users').get().catch(() => ({ forEach: () => {} })),
             window.fbDb.collection('palestra_users').get().catch(() => ({ forEach: () => {} })),
             rawUsersPromise,
-            legacyUsersPromise,
             window.fbDb.collection('progress').get().catch(() => ({ forEach: () => {} })),
-            legacyProgressPromise,
             window.fbDb.collection('classes').get().catch(() => ({ forEach: () => {} })),
             window.fbDb.collection('palestra_classes').get().catch(() => ({ forEach: () => {} })),
-            rawClassesPromise,
-            legacyClassesPromise
+            rawClassesPromise
         ]);
         
         const progressMap = {};
-        legacyProgressSnapshot.forEach(doc => { progressMap[doc.id] = doc.data(); });
         progressSnapshot.forEach(doc => { progressMap[doc.id] = doc.data(); });
 
         const schoolsMap = {}; 
@@ -97,7 +90,6 @@ async function loadAdminUsersInProfile() {
         classesSnapshot.forEach(addClassToAdmin);
         pClassesSnapshot.forEach(addClassToAdmin);
         rawClassesSnapshot.forEach(addClassToAdmin);
-        legacyClassesSnapshot.forEach(addClassToAdmin);
         window.allClassesForAdmin = allClasses;
 
         // 2. Processiamo gli utenti da tutte le collezioni
@@ -133,7 +125,6 @@ async function loadAdminUsersInProfile() {
         usersSnapshot.forEach(processUserDoc);
         pUsersSnapshot.forEach(processUserDoc);
         rawUsersSnapshot.forEach(processUserDoc);
-        legacyUsersSnapshot.forEach(processUserDoc);
 
         // 2b. Integrazione da Hub Centrale (hub_users) per studenti/utenti globali
         try {

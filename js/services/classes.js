@@ -181,31 +181,42 @@ window.viewClassStudents = async function(code, name, classId = null) {
         const realClassName = classData.name || name || '';
         const realClassCode = classData.code || code || '';
 
-        // 2. Trova gli utenti di questa specifica classe (supportando ID, Codice, Nome Classe da tutte le collezioni: users raw, palestra_users, hub_users)
+        // Funzione di normalizzazione (rimuove spazi, trattini, apici, simboli grado)
+        const norm = (s) => String(s || '').toLowerCase().replace(/[\s\-_–^°§#.]/g, '').trim();
+
+        const nTargetId = norm(realClassId);
+        const nTargetCode = norm(realClassCode);
+        const nTargetName = norm(realClassName);
+
+        const explicitStudentIds = new Set(
+            (Array.isArray(classData.studentIds) ? classData.studentIds : [])
+            .concat(Array.isArray(classData.students) ? classData.students.map(s => typeof s === 'string' ? s : (s.id || s.email)) : [])
+            .concat(Array.isArray(classData.alunni) ? classData.alunni.map(s => typeof s === 'string' ? s : (s.id || s.email)) : [])
+        );
+
+        // 2. Trova gli utenti di questa specifica classe (supportando ID, Codice, Nome Classe da tutte le collezioni Hub)
         const studentsMap = new Map();
-        
-        const targetId = String(realClassId || '').trim();
-        const targetCode = String(realClassCode || '').trim().toUpperCase();
-        const targetName = String(realClassName || '').trim().toUpperCase();
 
         const checkAndAddStudent = (id, u) => {
             if (!u) return;
             if (u.role === 'docente' || u.role === 'admin' || u.status === 'archived') return;
 
-            const uClassId = String(u.classId || '').trim();
-            const uClassCode = String(u.classCode || u.code || '').trim().toUpperCase();
-            const uClassName = String(u.className || u.classe || u.schoolClass || (u.anagrafica && u.anagrafica.scuolaClasse) || '').trim().toUpperCase();
+            const uClassId = norm(u.classId);
+            const uClassCode = norm(u.classCode || u.code || u.codiceClasse || (u.anagrafica && (u.anagrafica.codiceClasse || u.anagrafica.code)));
+            const uClassName = norm(u.className || u.classe || u.schoolClass || u.sezione || u.classeSezione || (u.anagrafica && (u.anagrafica.scuolaClasse || u.anagrafica.classe || u.anagrafica.sezione)));
+            const uEmail = (u.anagrafica && u.anagrafica.email) || u.email || '';
 
-            const matchId = (uClassId && (uClassId === targetId || (targetCode && uClassId === targetCode) || (targetName && uClassId.toUpperCase() === targetName)));
-            const matchCode = (uClassCode && ((targetCode && uClassCode === targetCode) || (targetId && uClassCode === targetId) || (targetName && uClassCode === targetName)));
-            const matchName = (targetName && uClassName && (uClassName === targetName || uClassName.includes(targetName) || targetName.includes(uClassName)));
+            const isExplicit = explicitStudentIds.has(id) || (uEmail && explicitStudentIds.has(uEmail));
+            const matchId = uClassId && (uClassId === nTargetId || (nTargetCode && uClassId === nTargetCode) || (nTargetName && uClassId === nTargetName));
+            const matchCode = uClassCode && ((nTargetCode && uClassCode === nTargetCode) || (nTargetId && uClassCode === nTargetId) || (nTargetName && uClassCode === nTargetName));
+            const matchName = nTargetName && uClassName && (uClassName === nTargetName || uClassName.includes(nTargetName) || nTargetName.includes(uClassName));
 
-            if (matchId || matchCode || matchName) {
+            if (isExplicit || matchId || matchCode || matchName) {
                 if (!studentsMap.has(id)) {
                     studentsMap.set(id, {
                         id: id,
                         name: (u.anagrafica && u.anagrafica.nome) ? `${u.anagrafica.nome} ${u.anagrafica.cognome || ''}`.trim() : (u.name || u.displayName || 'Studente'),
-                        email: (u.anagrafica && u.anagrafica.email) || u.email || '',
+                        email: uEmail,
                         classId: realClassId,
                         className: realClassName,
                         role: 'studente',
@@ -215,7 +226,7 @@ window.viewClassStudents = async function(code, name, classId = null) {
             }
         };
 
-        // Scansione da 'users' (collezione root legacy tramite rawCollection)
+        // Scansione da 'users' (collezione root legacy tramite rawCollection nell'Hub)
         try {
             if (window.fbDb.rawCollection) {
                 const rawUsersSnap = await window.fbDb.rawCollection('users').get().catch(() => ({ forEach: () => {} }));
@@ -234,14 +245,6 @@ window.viewClassStudents = async function(code, name, classId = null) {
             const hubUsersSnap = await window.fbDb.collection('hub_users').get().catch(() => ({ forEach: () => {} }));
             hubUsersSnap.forEach(doc => checkAndAddStudent(doc.id, doc.data()));
         } catch (e) { console.warn("Errore scansione hub_users:", e); }
-
-        // Scansione da 'legacyDb' (Database originario 'palestra-riflessione')
-        try {
-            if (window.legacyDb) {
-                const legacyUsersSnap = await window.legacyDb.collection('users').get().catch(() => ({ forEach: () => {} }));
-                legacyUsersSnap.forEach(doc => checkAndAddStudent(doc.id, doc.data()));
-            }
-        } catch (e) { console.warn("Errore scansione legacy users:", e); }
 
         const classStudents = Array.from(studentsMap.values());
 
@@ -265,12 +268,7 @@ window.viewClassStudents = async function(code, name, classId = null) {
         const progressMap = {};
         const progressPromises = classStudents.map(async (s) => {
             try {
-                let pDoc = await window.fbDb.collection('progress').doc(s.id).get().catch(() => null);
-                if (!pDoc || !pDoc.exists) {
-                    if (window.legacyDb) {
-                        pDoc = await window.legacyDb.collection('progress').doc(s.id).get().catch(() => null);
-                    }
-                }
+                const pDoc = await window.fbDb.collection('progress').doc(s.id).get().catch(() => null);
                 if (pDoc && pDoc.exists) {
                     progressMap[s.id] = pDoc.data();
                 }
