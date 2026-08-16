@@ -650,37 +650,7 @@ async function renderProfiloPage() {
                 </div>
             </div>
 
-            ${user.email === 'prof.memmo@gmail.com' ? `
-                <div style="margin-top: 3rem; margin-bottom: 3rem; padding: 2.5rem; background: #fff5f5; border-radius: 40px; border: 2px solid #feb2b2; box-shadow: 0 10px 30px rgba(231, 76, 60, 0.05);">
-                    <h3 style="color: #c53030; margin-bottom: 2rem; display: flex; align-items: center; gap: 0.8rem; font-weight: 900; font-size: 1.6rem;">🛡️ DASHBOARD AMMINISTRATORE</h3>
-                    <p style="margin-bottom: 2rem; color: #742a2a; font-weight: 500;">Benvenuto, Amministratore. Qui puoi monitorare e gestire tutti gli iscritti alla Palestra.</p>
-                    
-                    <div id="admin-users-list" style="display: flex; flex-direction: column; gap: 1rem;">
-                        <div style="text-align: center; padding: 2rem;">
-                            <div class="spinner"></div>
-                            <p>Caricamento utenti...</p>
-                        </div>
-                    </div>
-                    
-                    <div style="margin-top: 3rem; padding-top: 2rem; border-top: 2px dashed #eee; background: rgba(231, 76, 60, 0.05); padding: 1.5rem; border-radius: 20px;">
-                        <h3 style="color: #c53030; margin-bottom: 1rem; font-size: 1.3rem;">⚠️ Danger Zone: Archiviazione Annuale</h3>
-                        <p style="color: #666; margin-bottom: 1.5rem; font-size: 0.9rem;">Questa opzione archivia tutti gli studenti dell'anno in corso, salvandone una "fotografia". Se necessario, l'operazione potrà essere annullata dall'Archivio Storico.</p>
-                        <button class="btn" style="background: transparent; color: #c53030; border: 2px solid #c53030; padding: 1rem 2rem; border-radius: 15px; font-weight: 800; display: flex; align-items: center; gap: 0.5rem; cursor: pointer;" onclick="window.archiviaAnnoCorrente()">
-                            📦 Esegui Archiviazione Anno
-                        </button>
-                    </div>
-                    
-                    <div id="admin-historical-archives-area" style="margin-top: 2rem; padding: 1.5rem; background: #f8f9fa; border: 1px solid #eee; border-radius: 20px;">
-                        <h3 style="color: #f39c12; margin-top:0; font-size: 1.3rem;">🕒 Archivio Storico</h3>
-                        <p style="font-size: 0.85rem; margin-bottom: 15px; color: #666;">Consulta lo storico degli studenti degli anni passati o ripristina un anno archiviato.</p>
-                        <div id="admin-historical-archives-list">
-                            <p style="font-size: 0.85rem; color: #999;">Caricamento archivio in corso...</p>
-                        </div>
-                    </div>
-                </div>
-            ` : ''}
-
-            ${(user.role === 'docente' || user.role === 'admin' || user.email === 'prof.memmo@gmail.com') ? `
+            ${(user.role === 'docente' || user.role === 'admin' || (user.email && user.email.toLowerCase() === 'prof.memmo@gmail.com')) ? `
                 <div class="teacher-area">
                     <!-- Titolo rimosso come richiesto -->
                     
@@ -2369,12 +2339,12 @@ function updateSidebarMenu() {
         { id: 'contatti', title: 'Contatti', icon: '📧' }
     ];
 
-    // Admin link removed - already integrated in Profile page
-    /*
-    if (user.role === 'admin') {
+    if (user.role === 'docente' || user.role === 'admin' || (user.email && user.email.toLowerCase() === 'prof.memmo@gmail.com')) {
+        mainSections.push({ id: 'profilo', title: 'Pannello Docente', icon: '👨‍🏫' });
+    }
+    if (user.role === 'admin' || (user.email && user.email.toLowerCase() === 'prof.memmo@gmail.com')) {
         mainSections.push({ id: 'admin', title: 'Dashboard Admin', icon: '🛡️' });
     }
-    */
 
     let activeMainSection = window.currentSection;
     let activeSubSection = null;

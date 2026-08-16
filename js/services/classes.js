@@ -140,6 +140,21 @@ window.removeTeacherClass = async function(index) {
 };
 
 
+function normalizeClassName(str) {
+    if (!str) return '';
+    return String(str).toLowerCase()
+        .replace(/\bprima\b/g, '1')
+        .replace(/\bseconda\b/g, '2')
+        .replace(/\bterza\b/g, '3')
+        .replace(/\bquarta\b/g, '4')
+        .replace(/\bquinta\b/g, '5')
+        .replace(/classe/g, '')
+        .replace(/sez\./g, '')
+        .replace(/sezione/g, '')
+        .replace(/[\s\-_–^°§#.]/g, '')
+        .trim();
+}
+
 window.viewClassStudents = async function(code, name, classId = null) {
     const content = document.getElementById('class-register-content');
     if (!content) return;
@@ -181,17 +196,14 @@ window.viewClassStudents = async function(code, name, classId = null) {
         const realClassName = classData.name || name || '';
         const realClassCode = classData.code || code || '';
 
-        // Funzione di normalizzazione (rimuove spazi, trattini, apici, simboli grado)
-        const norm = (s) => String(s || '').toLowerCase().replace(/[\s\-_–^°§#.]/g, '').trim();
-
-        const nTargetId = norm(realClassId);
-        const nTargetCode = norm(realClassCode);
-        const nTargetName = norm(realClassName);
+        const nTargetId = normalizeClassName(realClassId);
+        const nTargetCode = normalizeClassName(realClassCode);
+        const nTargetName = normalizeClassName(realClassName);
 
         const explicitStudentIds = new Set(
             (Array.isArray(classData.studentIds) ? classData.studentIds : [])
-            .concat(Array.isArray(classData.students) ? classData.students.map(s => typeof s === 'string' ? s : (s.id || s.email)) : [])
-            .concat(Array.isArray(classData.alunni) ? classData.alunni.map(s => typeof s === 'string' ? s : (s.id || s.email)) : [])
+            .concat(Array.isArray(classData.students) ? classData.students.map(s => typeof s === 'string' ? s : (s.id || s.uid || s.email)) : [])
+            .concat(Array.isArray(classData.alunni) ? classData.alunni.map(s => typeof s === 'string' ? s : (s.id || s.uid || s.email)) : [])
         );
 
         // 2. Trova gli utenti di questa specifica classe (supportando ID, Codice, Nome Classe da tutte le collezioni Hub)
@@ -199,17 +211,18 @@ window.viewClassStudents = async function(code, name, classId = null) {
 
         const checkAndAddStudent = (id, u) => {
             if (!u) return;
-            if (u.role === 'docente' || u.role === 'admin' || u.status === 'archived') return;
+            if (u.role === 'docente' || u.role === 'admin') return;
 
-            const uClassId = norm(u.classId || u.class_id || (u.profile && u.profile.classId));
-            const uClassCode = norm(u.classCode || u.class_code || u.code || u.codiceClasse || u.codice_classe || (u.anagrafica && (u.anagrafica.codiceClasse || u.anagrafica.code || u.anagrafica.classCode)));
-            const uClassName = norm(u.className || u.class_name || u.classe || u.classeSezione || u.classe_sezione || u.schoolClass || u.school_class || u.sezione || (u.anno && u.sezione ? (u.anno + u.sezione) : '') || (u.anagrafica && (u.anagrafica.scuolaClasse || u.anagrafica.classe || u.anagrafica.sezione || (u.anagrafica.anno && u.anagrafica.sezione ? u.anagrafica.anno + u.anagrafica.sezione : ''))) || (u.datiScolastici && (u.datiScolastici.classe || u.datiScolastici.sezione || u.datiScolastici.codiceClasse)));
+            const uClassId = normalizeClassName(u.classId || u.class_id || (u.profile && u.profile.classId));
+            const uClassCode = normalizeClassName(u.classCode || u.class_code || u.code || u.codiceClasse || u.codice_classe || (u.anagrafica && (u.anagrafica.codiceClasse || u.anagrafica.code || u.anagrafica.classCode)));
+            const uClassName = normalizeClassName(u.className || u.class_name || u.classe || u.classeSezione || u.classe_sezione || u.schoolClass || u.school_class || u.classRoom || u.sezione || (u.anno && u.sezione ? (u.anno + u.sezione) : '') || (u.anagrafica && (u.anagrafica.scuolaClasse || u.anagrafica.classe || u.anagrafica.sezione || (u.anagrafica.anno && u.anagrafica.sezione ? u.anagrafica.anno + u.anagrafica.sezione : ''))) || (u.datiScolastici && (u.datiScolastici.classe || u.datiScolastici.sezione || u.datiScolastici.codiceClasse)));
             const uEmail = (u.anagrafica && u.anagrafica.email) || u.email || '';
+            const uName = (u.anagrafica && u.anagrafica.nome) ? `${u.anagrafica.nome} ${u.anagrafica.cognome || ''}`.trim() : (u.name || u.displayName || 'Studente');
 
             // Verifica array multipli di classi
-            const uClassesArr = (Array.isArray(u.classes) ? u.classes : []).concat(Array.isArray(u.classIds) ? u.classIds : []).concat(Array.isArray(u.classCodes) ? u.classCodes : []).map(norm);
+            const uClassesArr = (Array.isArray(u.classes) ? u.classes : []).concat(Array.isArray(u.classIds) ? u.classIds : []).concat(Array.isArray(u.classCodes) ? u.classCodes : []).map(normalizeClassName);
 
-            const isExplicit = explicitStudentIds.has(id) || (uEmail && explicitStudentIds.has(uEmail)) || explicitStudentIds.has(u.name);
+            const isExplicit = explicitStudentIds.has(id) || (uEmail && explicitStudentIds.has(uEmail)) || explicitStudentIds.has(uName);
             const matchId = uClassId && (uClassId === nTargetId || (nTargetCode && uClassId === nTargetCode) || (nTargetName && uClassId === nTargetName));
             const matchCode = uClassCode && ((nTargetCode && uClassCode === nTargetCode) || (nTargetId && uClassCode === nTargetId) || (nTargetName && uClassCode === nTargetName));
             const matchName = nTargetName && uClassName && (uClassName === nTargetName || uClassName.includes(nTargetName) || nTargetName.includes(uClassName));
@@ -219,7 +232,7 @@ window.viewClassStudents = async function(code, name, classId = null) {
                 if (!studentsMap.has(id)) {
                     studentsMap.set(id, {
                         id: id,
-                        name: (u.anagrafica && u.anagrafica.nome) ? `${u.anagrafica.nome} ${u.anagrafica.cognome || ''}`.trim() : (u.name || u.displayName || 'Studente'),
+                        name: uName,
                         email: uEmail,
                         classId: realClassId,
                         className: realClassName,
@@ -264,6 +277,14 @@ window.viewClassStudents = async function(code, name, classId = null) {
             }
         } catch(e) {}
 
+        // Scansione da 'fanta_users' per recuperare studenti registrati negli altri giochi
+        try {
+            if (window.fbDb.rawCollection) {
+                const fantaSnap = await window.fbDb.rawCollection('fanta_users').get().catch(() => ({ forEach: () => {} }));
+                fantaSnap.forEach(doc => checkAndAddStudent(doc.id, doc.data()));
+            }
+        } catch(e) {}
+
         const classStudents = Array.from(studentsMap.values());
 
         if (classStudents.length === 0) {
@@ -272,11 +293,16 @@ window.viewClassStudents = async function(code, name, classId = null) {
                     <div style="font-size: 2rem; margin-bottom: 0.5rem;">👨‍🎓</div>
                     <p style="color: #2c3e50; font-weight: 700; font-size: 1.05rem; margin-bottom: 0.3rem;">Nessun utente associato alla classe <b>${name}</b>.</p>
                     <p style="font-size: 0.85rem; color: #666; margin-bottom: 1.2rem;">Fai inserire agli studenti il codice classe: <b style="background: #eef2f7; padding: 4px 10px; border-radius: 6px; color: var(--primary-color); font-family: monospace; font-size: 1rem;">${code}</b></p>
-                    ${window.Auth && window.Auth.getUser && (window.Auth.getUser().role === 'admin' || window.Auth.getUser().role === 'docente') ? `
-                        <button onclick="if(window.renderAdminPage) { window.renderAdminPage(); } else { alert('Accedi al pannello admin per gestire e spostare gli studenti.'); }" class="btn btn-secondary" style="font-size: 0.8rem; padding: 8px 16px; border-radius: 12px;">
-                            📋 Gestisci o Sposta Studenti nella Dashboard
+                    <div style="display: flex; justify-content: center; gap: 10px; flex-wrap: wrap;">
+                        <button onclick="window.openAddStudentToClassModal('${realClassCode}', '${realClassName.replace(/'/g, "\\'")}', '${realClassId}')" class="btn btn-primary" style="font-size: 0.85rem; padding: 8px 18px; border-radius: 12px;">
+                            ➕ Cerca / Associa Studente dall'Hub
                         </button>
-                    ` : ''}
+                        ${window.Auth && window.Auth.getUser && (window.Auth.getUser().role === 'admin' || window.Auth.getUser().role === 'docente') ? `
+                            <button onclick="if(window.renderAdminPage) { window.renderAdminPage(); } else { alert('Accedi al pannello admin per gestire e spostare gli studenti.'); }" class="btn btn-secondary" style="font-size: 0.85rem; padding: 8px 18px; border-radius: 12px;">
+                                🛡️ Dashboard Admin
+                            </button>
+                        ` : ''}
+                    </div>
                 </div>
             `;
             return;
@@ -309,7 +335,10 @@ window.viewClassStudents = async function(code, name, classId = null) {
                     </td>
                     <td style="padding: 12px; display: flex; align-items: center; gap: 0.5rem;">
                         <span style="font-size: 1.2rem;">${s.avatar || '👤'}</span>
-                        <span style="font-weight: 700;">${s.name}</span>
+                        <div>
+                            <span style="font-weight: 700; display: block;">${s.name}</span>
+                            ${s.email ? `<span style="font-size: 0.75rem; color: #888;">${s.email}</span>` : ''}
+                        </div>
                     </td>
                     <td style="padding: 12px; font-weight: 800; color: var(--primary-color);">${p.points || 0} XP</td>
                     <td style="padding: 12px;">${completedCount} attività</td>
@@ -323,9 +352,14 @@ window.viewClassStudents = async function(code, name, classId = null) {
 
         content.innerHTML = `
             <div style="font-family: inherit; animation: fadeIn 0.5s ease-out;">
-                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem; background: #f0f7ff; padding: 1rem; border-radius: 15px;">
-                    <h3 style="color: var(--primary-color); margin: 0; font-size: 1.1rem;">Registro Progressi: Classe ${name}</h3>
-                    <span style="color: #3498db; font-size: 0.8rem; font-weight: 800;">CODICE: ${code}</span>
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem; background: #f0f7ff; padding: 1rem; border-radius: 15px; flex-wrap: wrap; gap: 10px;">
+                    <div>
+                        <h3 style="color: var(--primary-color); margin: 0; font-size: 1.1rem;">Registro Progressi: Classe ${name}</h3>
+                        <span style="color: #3498db; font-size: 0.8rem; font-weight: 800;">CODICE: ${code}</span>
+                    </div>
+                    <button onclick="window.openAddStudentToClassModal('${realClassCode}', '${realClassName.replace(/'/g, "\\'")}', '${realClassId}')" style="background: var(--primary-color); color: white; border: none; padding: 8px 16px; border-radius: 10px; font-weight: 700; font-size: 0.85rem; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 4px 10px rgba(79, 70, 229, 0.2);">
+                        ➕ Associa / Cerca Studente
+                    </button>
                 </div>
 
                 <!-- Gestione Multipla -->
@@ -368,11 +402,7 @@ window.viewClassStudents = async function(code, name, classId = null) {
     } catch (e) {
         console.error("Errore recupero studenti:", e);
         content.innerHTML = `<p style="color: #e74c3c; padding: 1rem;">Errore nel caricamento dei dati: ${e.message}</p>`;
-    }
-
-
 };
-
 
 window.viewClassTeachers = async function(classId, className, classCode) {
     const content = document.getElementById('class-register-content');
@@ -609,4 +639,243 @@ window.saveTeacherClass = async function(id) {
         alert(msg);
     }
 };
+
+
+// =========================================================
+// MODALE E AZIONI PER ASSOCIARE STUDENTI DALL'HUB ALLA CLASSE
+// =========================================================
+window.openAddStudentToClassModal = function(classCode, className, classId) {
+    let modal = document.getElementById('add-student-modal');
+    if (!modal) {
+        modal = document.createElement('div');
+        modal.id = 'add-student-modal';
+        modal.className = 'modal-overlay';
+        modal.style.cssText = 'display: none; align-items: center; justify-content: center; z-index: 100000; background: rgba(15,23,42,0.8); backdrop-filter: blur(4px); position: fixed; inset: 0; padding: 20px;';
+        document.body.appendChild(modal);
+    }
+
+    modal.innerHTML = `
+        <div class="modal-content" style="background: white; border-radius: 20px; width: 100%; max-width: 650px; padding: 24px; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.35); font-family: inherit; position: relative; max-height: 90vh; display: flex; flex-direction: column;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; border-bottom: 1.5px solid #f1f5f9; padding-bottom: 12px;">
+                <h3 style="margin: 0; color: #1e293b; font-size: 1.2rem; display: flex; align-items: center; gap: 8px;">
+                    👨‍🎓 Associa Studente a <b>Classe ${className}</b> (${classCode})
+                </h3>
+                <button onclick="document.getElementById('add-student-modal').style.display='none'" style="background: transparent; border: none; font-size: 1.4rem; color: #94a3b8; cursor: pointer;">&times;</button>
+            </div>
+
+            <!-- Ricerca Studenti Esistenti dall'Hub -->
+            <div style="margin-bottom: 15px;">
+                <label style="display: block; font-weight: 700; font-size: 0.85rem; color: #334155; margin-bottom: 6px;">Cerca tra tutti gli iscritti all'Ecosistema:</label>
+                <input type="text" id="search-hub-student-input" placeholder="Digita nome o email (es: Sara Russo, Gaia Lanzon)..." style="width: 100%; padding: 10px 12px; border-radius: 10px; border: 1.5px solid #cbd5e1; font-size: 0.95rem;" oninput="window.filterHubStudentsForClass(this.value, '${classCode}', '${className.replace(/'/g, "\\'")}', '${classId}')">
+            </div>
+
+            <div id="hub-students-match-list" style="flex: 1; overflow-y: auto; max-height: 220px; border: 1px solid #e2e8f0; border-radius: 10px; padding: 10px; margin-bottom: 20px; background: #f8fafc;">
+                <p style="text-align: center; color: #888; font-size: 0.85rem; margin: 10px 0;">Caricamento studenti dell'ecosistema in corso...</p>
+            </div>
+
+            <!-- Inserimento Rapido Nuovo Studente -->
+            <div style="border-top: 1.5px dashed #e2e8f0; padding-top: 15px;">
+                <h4 style="margin: 0 0 10px 0; font-size: 0.95rem; color: #1e40af;">➕ Non trovi lo studente? Inseriscilo o confermalo qui:</h4>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px;">
+                    <input type="text" id="manual-student-name" placeholder="Nome e Cognome (es: Sara Russo)" style="padding: 9px 12px; border-radius: 8px; border: 1px solid #cbd5e1; font-size: 0.85rem;">
+                    <input type="email" id="manual-student-email" placeholder="Email (opzionale)" style="padding: 9px 12px; border-radius: 8px; border: 1px solid #cbd5e1; font-size: 0.85rem;">
+                </div>
+                <button type="button" class="btn" style="width: 100%; background: #2563eb; color: white; padding: 9px; font-weight: 700; border-radius: 8px; border: none; cursor: pointer;" onclick="window.createAndAssignStudent('${classCode}', '${className.replace(/'/g, "\\'")}', '${classId}')">
+                    💾 Registra / Associa Immediatamente alla Classe ${className}
+                </button>
+            </div>
+        </div>
+    `;
+
+    modal.style.display = 'flex';
+    window.loadHubStudentsForClassModal(classCode, className, classId);
+};
+
+window._allHubStudentsCache = [];
+
+window.loadHubStudentsForClassModal = async function(classCode, className, classId) {
+    const listContainer = document.getElementById('hub-students-match-list');
+    if (!listContainer) return;
+
+    try {
+        const studentsMap = new Map();
+        const processUser = (doc) => {
+            if (!doc || !doc.id) return;
+            const u = typeof doc.data === 'function' ? doc.data() : (doc.data || {});
+            if (u.role === 'docente' || u.role === 'admin') return;
+            
+            const uName = (u.anagrafica && u.anagrafica.nome) ? `${u.anagrafica.nome} ${u.anagrafica.cognome || ''}`.trim() : (u.name || u.displayName || 'Studente');
+            const uEmail = (u.anagrafica && u.anagrafica.email) || u.email || '';
+            const uClass = u.className || u.classe || (u.anagrafica && u.anagrafica.classe) || '';
+            
+            if (!studentsMap.has(doc.id)) {
+                studentsMap.set(doc.id, {
+                    id: doc.id,
+                    name: uName,
+                    email: uEmail,
+                    avatar: u.avatar || '👤',
+                    currentClass: uClass,
+                    classId: u.classId || '',
+                    classCode: u.classCode || '',
+                    ...u
+                });
+            }
+        };
+
+        const [hubSnap, pUsersSnap, rawUsersSnap, fantaSnap] = await Promise.all([
+            window.fbDb.collection('hub_users').get().catch(() => ({ forEach: () => {} })),
+            window.fbDb.collection('palestra_users').get().catch(() => ({ forEach: () => {} })),
+            window.fbDb.rawCollection ? window.fbDb.rawCollection('users').get().catch(() => ({ forEach: () => {} })) : { forEach: () => {} },
+            window.fbDb.rawCollection ? window.fbDb.rawCollection('fanta_users').get().catch(() => ({ forEach: () => {} })) : { forEach: () => {} }
+        ]);
+
+        hubSnap.forEach(processUser);
+        pUsersSnap.forEach(processUser);
+        rawUsersSnap.forEach(processUser);
+        fantaSnap.forEach(processUser);
+
+        window._allHubStudentsCache = Array.from(studentsMap.values());
+        window.renderHubStudentsList(window._allHubStudentsCache, classCode, className, classId);
+    } catch (e) {
+        console.error("Errore caricamento iscritti Hub:", e);
+        listContainer.innerHTML = `<p style="color: #e74c3c; font-size: 0.85rem;">Errore di caricamento: ${e.message}</p>`;
+    }
+};
+
+window.renderHubStudentsList = function(students, classCode, className, classId) {
+    const listContainer = document.getElementById('hub-students-match-list');
+    if (!listContainer) return;
+
+    if (students.length === 0) {
+        listContainer.innerHTML = `<p style="text-align: center; color: #888; font-size: 0.85rem; padding: 10px;">Nessuno studente trovato con questo filtro.</p>`;
+        return;
+    }
+
+    listContainer.innerHTML = students.map(s => {
+        const isCurrentClass = (s.classCode === classCode || s.classId === classId || s.className === className);
+        return `
+            <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px 12px; background: white; border-radius: 8px; margin-bottom: 6px; border: 1px solid #e2e8f0;">
+                <div style="display: flex; align-items: center; gap: 8px; overflow: hidden;">
+                    <span style="font-size: 1.2rem;">${s.avatar || '👤'}</span>
+                    <div style="overflow: hidden;">
+                        <span style="font-weight: 700; font-size: 0.9rem; display: block; color: #1e293b; white-space: nowrap; text-overflow: ellipsis;">${s.name}</span>
+                        <span style="font-size: 0.75rem; color: #64748b;">${s.email ? s.email + ' • ' : ''}${s.currentClass ? 'Classe: ' + s.currentClass : 'Senza classe'}</span>
+                    </div>
+                </div>
+                <div>
+                    ${isCurrentClass ? `
+                        <span style="background: #dcfce7; color: #166534; font-size: 0.75rem; font-weight: 700; padding: 4px 8px; border-radius: 6px;">Già in questa classe</span>
+                    ` : `
+                        <button onclick="window.assignStudentToClass('${s.id}', '${s.name.replace(/'/g, "\\'")}', '${(s.email || '').replace(/'/g, "\\'")}', '${classCode}', '${className.replace(/'/g, "\\'")}', '${classId}')" style="background: #22c55e; color: white; border: none; padding: 5px 10px; border-radius: 6px; font-weight: 700; font-size: 0.75rem; cursor: pointer;">
+                            ➕ Associa a ${className}
+                        </button>
+                    `}
+                </div>
+            </div>
+        `;
+    }).join('');
+};
+
+window.filterHubStudentsForClass = function(query, classCode, className, classId) {
+    const q = (query || '').toLowerCase().trim();
+    if (!q) {
+        window.renderHubStudentsList(window._allHubStudentsCache, classCode, className, classId);
+        return;
+    }
+    const filtered = window._allHubStudentsCache.filter(s => 
+        (s.name && s.name.toLowerCase().includes(q)) || 
+        (s.email && s.email.toLowerCase().includes(q)) ||
+        (s.currentClass && s.currentClass.toLowerCase().includes(q))
+    );
+    window.renderHubStudentsList(filtered, classCode, className, classId);
+};
+
+window.assignStudentToClass = async function(studentUid, studentName, studentEmail, classCode, className, classId) {
+    try {
+        const updateData = {
+            classId: classId,
+            classCode: classCode,
+            className: className,
+            role: 'studente'
+        };
+
+        // Aggiorna su Palestra
+        await window.fbDb.collection('palestra_users').doc(studentUid).set(updateData, { merge: true });
+        
+        // Aggiorna su Hub
+        await window.fbDb.collection('hub_users').doc(studentUid).set(updateData, { merge: true });
+
+        // Aggiorna classe studentIds
+        if (classId && window.firebase) {
+            await window.fbDb.collection('classes').doc(classId).set({
+                studentIds: window.firebase.firestore.FieldValue.arrayUnion(studentUid)
+            }, { merge: true }).catch(() => {});
+        }
+
+        alert(`✅ Studente "${studentName}" associato con successo alla classe ${className}!`);
+        const modal = document.getElementById('add-student-modal');
+        if (modal) modal.style.display = 'none';
+
+        // Ricarica il registro
+        window.viewClassStudents(classCode, className, classId);
+    } catch (e) {
+        console.error("Errore associazione studente:", e);
+        alert("Errore durante l'associazione: " + e.message);
+    }
+};
+
+window.createAndAssignStudent = async function(classCode, className, classId) {
+    const nameInput = document.getElementById('manual-student-name');
+    const emailInput = document.getElementById('manual-student-email');
+    const name = nameInput ? nameInput.value.trim() : '';
+    const email = emailInput ? emailInput.value.trim().toLowerCase() : '';
+
+    if (!name) {
+        alert("Inserisci almeno il Nome e Cognome dello studente.");
+        return;
+    }
+
+    try {
+        const uid = 'student_' + Math.random().toString(36).substring(2, 10);
+        const userData = {
+            id: uid,
+            name: name,
+            email: email || `${name.toLowerCase().replace(/\s+/g, '.')}@studente.hub`,
+            classId: classId,
+            classCode: classCode,
+            className: className,
+            role: 'studente',
+            avatar: '👤',
+            createdAt: new Date().toISOString()
+        };
+
+        // Salva in palestra_users e hub_users
+        await window.fbDb.collection('palestra_users').doc(uid).set(userData, { merge: true });
+        await window.fbDb.collection('hub_users').doc(uid).set(userData, { merge: true });
+        
+        // Inizializza progressi a 0
+        await window.fbDb.collection('progress').doc(uid).set({
+            points: 0,
+            completed: [],
+            lastUpdated: new Date().toISOString()
+        }, { merge: true });
+
+        // Aggiungi all'array della classe
+        if (classId && window.firebase) {
+            await window.fbDb.collection('classes').doc(classId).set({
+                studentIds: window.firebase.firestore.FieldValue.arrayUnion(uid)
+            }, { merge: true }).catch(() => {});
+        }
+
+        alert(`✅ Studente "${name}" registrato e associato alla classe ${className}!`);
+        const modal = document.getElementById('add-student-modal');
+        if (modal) modal.style.display = 'none';
+
+        window.viewClassStudents(classCode, className, classId);
+    } catch (e) {
+        console.error("Errore registrazione studente:", e);
+        alert("Errore: " + e.message);
+    }
+};
+
 

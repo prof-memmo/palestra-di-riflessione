@@ -145,8 +145,9 @@ function navigateTo(section, subType = null, level = null, updateHash = true, ex
         }
         if (section === 'admin') {
             const user = Auth.getUser();
-            if (user.role === 'admin') {
+            if (user.role === 'admin' || (user.email && user.email.toLowerCase() === 'prof.memmo@gmail.com')) {
                 renderAdminPage();
+                document.querySelector('.nav-item[data-section="admin"]')?.classList.add('active');
             } else {
                 window.location.hash = 'home';
             }
