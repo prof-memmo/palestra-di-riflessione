@@ -201,17 +201,21 @@ window.viewClassStudents = async function(code, name, classId = null) {
             if (!u) return;
             if (u.role === 'docente' || u.role === 'admin' || u.status === 'archived') return;
 
-            const uClassId = norm(u.classId);
-            const uClassCode = norm(u.classCode || u.code || u.codiceClasse || (u.anagrafica && (u.anagrafica.codiceClasse || u.anagrafica.code)));
-            const uClassName = norm(u.className || u.classe || u.schoolClass || u.sezione || u.classeSezione || (u.anagrafica && (u.anagrafica.scuolaClasse || u.anagrafica.classe || u.anagrafica.sezione)));
+            const uClassId = norm(u.classId || u.class_id || (u.profile && u.profile.classId));
+            const uClassCode = norm(u.classCode || u.class_code || u.code || u.codiceClasse || u.codice_classe || (u.anagrafica && (u.anagrafica.codiceClasse || u.anagrafica.code || u.anagrafica.classCode)));
+            const uClassName = norm(u.className || u.class_name || u.classe || u.classeSezione || u.classe_sezione || u.schoolClass || u.school_class || u.sezione || (u.anno && u.sezione ? (u.anno + u.sezione) : '') || (u.anagrafica && (u.anagrafica.scuolaClasse || u.anagrafica.classe || u.anagrafica.sezione || (u.anagrafica.anno && u.anagrafica.sezione ? u.anagrafica.anno + u.anagrafica.sezione : ''))) || (u.datiScolastici && (u.datiScolastici.classe || u.datiScolastici.sezione || u.datiScolastici.codiceClasse)));
             const uEmail = (u.anagrafica && u.anagrafica.email) || u.email || '';
 
-            const isExplicit = explicitStudentIds.has(id) || (uEmail && explicitStudentIds.has(uEmail));
+            // Verifica array multipli di classi
+            const uClassesArr = (Array.isArray(u.classes) ? u.classes : []).concat(Array.isArray(u.classIds) ? u.classIds : []).concat(Array.isArray(u.classCodes) ? u.classCodes : []).map(norm);
+
+            const isExplicit = explicitStudentIds.has(id) || (uEmail && explicitStudentIds.has(uEmail)) || explicitStudentIds.has(u.name);
             const matchId = uClassId && (uClassId === nTargetId || (nTargetCode && uClassId === nTargetCode) || (nTargetName && uClassId === nTargetName));
             const matchCode = uClassCode && ((nTargetCode && uClassCode === nTargetCode) || (nTargetId && uClassCode === nTargetId) || (nTargetName && uClassCode === nTargetName));
             const matchName = nTargetName && uClassName && (uClassName === nTargetName || uClassName.includes(nTargetName) || nTargetName.includes(uClassName));
+            const matchArr = uClassesArr.some(c => c === nTargetId || c === nTargetCode || c === nTargetName);
 
-            if (isExplicit || matchId || matchCode || matchName) {
+            if (isExplicit || matchId || matchCode || matchName || matchArr) {
                 if (!studentsMap.has(id)) {
                     studentsMap.set(id, {
                         id: id,
@@ -240,7 +244,7 @@ window.viewClassStudents = async function(code, name, classId = null) {
             } catch(e) {}
         }
 
-        // Scansione completa da 'palestra_users'
+        // Scansione da 'palestra_users'
         try {
             const pUsersSnap = await window.fbDb.collection('palestra_users').get().catch(() => ({ forEach: () => {} }));
             pUsersSnap.forEach(doc => checkAndAddStudent(doc.id, doc.data()));
@@ -251,6 +255,14 @@ window.viewClassStudents = async function(code, name, classId = null) {
             const hubUsersSnap = await window.fbDb.collection('hub_users').get().catch(() => ({ forEach: () => {} }));
             hubUsersSnap.forEach(doc => checkAndAddStudent(doc.id, doc.data()));
         } catch (e) { console.warn("Errore scansione hub_users:", e); }
+
+        // Scansione da 'users' legacy se presente
+        try {
+            if (window.fbDb.rawCollection) {
+                const rawUsersSnap = await window.fbDb.rawCollection('users').get().catch(() => ({ forEach: () => {} }));
+                rawUsersSnap.forEach(doc => checkAndAddStudent(doc.id, doc.data()));
+            }
+        } catch(e) {}
 
         const classStudents = Array.from(studentsMap.values());
 
