@@ -402,6 +402,7 @@ window.viewClassStudents = async function(code, name, classId = null) {
     } catch (e) {
         console.error("Errore recupero studenti:", e);
         content.innerHTML = `<p style="color: #e74c3c; padding: 1rem;">Errore nel caricamento dei dati: ${e.message}</p>`;
+    }
 };
 
 window.viewClassTeachers = async function(classId, className, classCode) {

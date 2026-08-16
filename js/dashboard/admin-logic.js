@@ -2,6 +2,14 @@ async function renderAdminPage() {
     const appContainer = document.getElementById('app');
     appContainer.innerHTML = `
         <div class="exercise-container" style="max-width: 1000px; margin: 0 auto; padding: 20px;">
+            <div style="display: flex; gap: 10px; margin-bottom: 25px; justify-content: center; flex-wrap: wrap;">
+                <button onclick="navigateTo('profilo')" class="btn" style="background: #f1f5f9; color: #334155; border: 1.5px solid #cbd5e1; border-radius: 50px; padding: 10px 22px; font-weight: 800; font-size: 0.9rem; cursor: pointer; display: inline-flex; align-items: center; gap: 8px;">
+                    <i class="fa-solid fa-chalkboard-user"></i> 👨‍🏫 Pannello Docente
+                </button>
+                <button onclick="navigateTo('admin')" class="btn" style="background: var(--primary-color); color: white; border-radius: 50px; padding: 10px 22px; font-weight: 800; font-size: 0.9rem; border: none; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 4px 10px rgba(93, 95, 239, 0.2);">
+                    <i class="fa-solid fa-shield-halved"></i> 🛡️ Dashboard Admin &amp; Impostazioni
+                </button>
+            </div>
             <h2 class="exercise-title" style="margin-bottom: 25px;">🛡️ DASHBOARD AMMINISTRATORE</h2>
             <div style="background: white; padding: 2rem; border-radius: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.05);">
                 <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; margin-bottom: 2rem; border-bottom: 2px dashed #eee; padding-bottom: 1.5rem;">

@@ -622,11 +622,20 @@ async function renderProfiloPage() {
     else if (points > 500) rank = "Veterano";
     else if (points > 100) rank = "Esploratore";
 
-    const isImage = user.avatar.includes('/') || user.avatar.includes('.');
-    const avatarHtml = isImage ? `<img src="${user.avatar}" alt="Avatar" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">` : `<span>${user.avatar}</span>`;
+    const isSuperAdmin = (user.role === 'admin' || (user.email && user.email.toLowerCase() === 'prof.memmo@gmail.com'));
 
     appContainer.innerHTML = `
         <div class="exercise-container">
+            ${isSuperAdmin ? `
+                <div style="display: flex; gap: 10px; margin-bottom: 25px; justify-content: center; flex-wrap: wrap;">
+                    <button onclick="navigateTo('profilo')" class="btn" style="background: var(--primary-color); color: white; border-radius: 50px; padding: 10px 22px; font-weight: 800; font-size: 0.9rem; border: none; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 4px 10px rgba(93, 95, 239, 0.2);">
+                        <i class="fa-solid fa-chalkboard-user"></i> 👨‍🏫 Pannello Docente
+                    </button>
+                    <button onclick="navigateTo('admin')" class="btn" style="background: #f1f5f9; color: #334155; border: 1.5px solid #cbd5e1; border-radius: 50px; padding: 10px 22px; font-weight: 800; font-size: 0.9rem; cursor: pointer; display: inline-flex; align-items: center; gap: 8px;">
+                        <i class="fa-solid fa-shield-halved"></i> 🛡️ Dashboard Admin &amp; Impostazioni
+                    </button>
+                </div>
+            ` : ''}
             <h2 class="exercise-title">👤 IL TUO PROFILO</h2>
             
             <div class="profile-header">
