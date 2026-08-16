@@ -1,40 +1,65 @@
 async function renderAdminPage() {
     const appContainer = document.getElementById('app');
     appContainer.innerHTML = `
-        <div class="exercise-container">
-            <h2 class="exercise-title">🛡️ DASHBOARD AMMINISTRATORE</h2>
-            <div style="background: white; padding: 2rem; border-radius: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.05);">
+        <div class="exercise-container" style="max-width: 1000px; margin: 0 auto; padding: 20px;">
+            <h2 class="exercise-title" style="margin-bottom: 25px;">🛡️ DASHBOARD AMMINISTRATORE</h2>
+            <div style="background: white; padding: 2rem; border-radius: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.05);">
                 <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; margin-bottom: 2rem; border-bottom: 2px dashed #eee; padding-bottom: 1.5rem;">
                     <div>
-                        <p style="margin: 0; font-weight: 800; font-size: 1.2rem; color: #2c3e50;">Pannello di Controllo &amp; Gestione Utenti</p>
-                        <p style="margin: 5px 0 0 0; color: #666; font-size: 0.9rem;">Gestisci tutti gli iscritti, le classi, i ruoli e gli archivi storici della Palestra.</p>
+                        <p style="margin: 0; font-weight: 800; font-size: 1.2rem; color: #2c3e50;">Pannello di Controllo &amp; Impostazioni</p>
+                        <p style="margin: 5px 0 0 0; color: #666; font-size: 0.9rem;">Gestisci le impostazioni, gli override didattici, le classi e gli archivi storici della Palestra.</p>
                     </div>
-                    <a href="https://prof-memmo.github.io/prof-memmo-gestione-siti/" target="_blank" class="btn" style="background: linear-gradient(135deg, #6366f1, #4f46e5); color: white; padding: 0.8rem 1.5rem; border-radius: 15px; font-weight: 800; text-decoration: none; display: inline-flex; align-items: center; gap: 8px;">
+                    <a href="https://prof-memmo.github.io/prof-memmo-gestione-siti/" target="_blank" class="btn" style="background: linear-gradient(135deg, #6366f1, #4f46e5); color: white; padding: 0.8rem 1.5rem; border-radius: 12px; font-weight: 800; text-decoration: none; display: inline-flex; align-items: center; gap: 8px;">
                         ⚙️ Vai all'Hub Centrale
                     </a>
                 </div>
 
-                <!-- Live Editor Didattico (Correzioni al Volo) -->
+                <div style="margin-bottom: 20px;">
+                    <label style="font-size: 0.85rem; color: #64748b; font-weight: 700; display: block; margin-bottom: 6px;">Account Amministratore</label>
+                    <input type="text" value="prof.memmo@gmail.com" readonly style="width: 100%; padding: 10px 14px; border-radius: 10px; border: 1.5px solid #e2e8f0; background: #f8fafc; color: #475569; font-weight: 600;">
+                </div>
+
+                <!-- 1. Live Editor Didattico (Correzioni al Volo) -->
                 <div id="admin-live-editor-container"></div>
 
-                <!-- Elenco Utenti, Statistiche e Gestione Selezionati -->
-                <div id="admin-users-list">
-                    <p style="color: #666; font-size: 0.9rem; text-align: center; padding: 2rem;">Caricamento utenti e statistiche in corso...</p>
+                <!-- 2. Diagnostica e Notifiche -->
+                <div style="margin-bottom: 25px; padding: 18px; border: 1px solid #e2e8f0; border-radius: 16px; background: #f8fafc;">
+                    <h3 style="color: #0284c7; margin-top:0; font-size: 1.05rem; display: flex; align-items: center; gap: 8px;"><i class="fa-solid fa-wrench"></i> Diagnostica &amp; Sistema</h3>
+                    <p style="font-size: 0.85rem; color: #64748b; margin-bottom: 15px;">Strumenti di verifica connessione e gestione avvisi dell'amministratore.</p>
+                    <div style="display:flex; gap:10px; flex-wrap:wrap;">
+                        <button type="button" class="btn" style="background: #0284c7; color: white; border: none; padding: 8px 18px; border-radius: 8px; font-size: 0.85rem; font-weight: 700; cursor: pointer;" onclick="window.testConnessioneAdmin()"><i class="fa-solid fa-satellite-dish"></i> Test Connessione Database</button>
+                        <button type="button" class="btn" style="background: #f1f5f9; color: #334155; border: 1px solid #cbd5e1; padding: 8px 18px; border-radius: 8px; font-size: 0.85rem; font-weight: 700; cursor: pointer;" onclick="window.resetNotificheLette()"><i class="fa-solid fa-bell-slash"></i> Reset Notifiche Non Lette</button>
+                    </div>
                 </div>
-                
-                <div style="margin-top: 2.5rem; padding-top: 2rem; border-top: 2px dashed #eee; background: rgba(231, 76, 60, 0.05); padding: 1.5rem; border-radius: 20px;">
-                    <h3 style="color: #c53030; margin-bottom: 1rem; font-size: 1.3rem;">⚠️ Danger Zone: Archiviazione Annuale</h3>
-                    <p style="color: #666; margin-bottom: 1.5rem; font-size: 0.9rem;">Questa opzione archivia tutti gli studenti dell'anno in corso, salvandone una "fotografia". Se necessario, l'operazione potrà essere annullata dall'Archivio Storico.</p>
-                    <button class="btn" style="background: transparent; color: #c53030; border: 2px solid #c53030; padding: 1rem 2rem; border-radius: 15px; font-weight: 800; display: flex; align-items: center; gap: 0.5rem; cursor: pointer;" onclick="window.archiviaAnnoCorrente()">
-                        📦 Esegui Archiviazione Anno
-                    </button>
+
+                <!-- 3. Danger Zone: Gestione Punteggi Stagionali -->
+                <div style="margin-bottom: 25px; padding: 18px; border: 1px solid rgba(239, 68, 68, 0.3); border-radius: 16px; background: rgba(239, 68, 68, 0.04);">
+                    <h3 style="color: #dc2626; margin-top:0; font-size: 1.05rem; display: flex; align-items: center; gap: 8px;"><i class="fa-solid fa-rotate-left"></i> Reset Validazioni Stagione</h3>
+                    <p style="font-size: 0.85rem; color: #64748b; margin-bottom: 15px;">Azzera contemporaneamente tutti i progressi e le lezioni completate per la nuova stagione mantenendo inalterati studenti, docenti e classi.</p>
+                    <button type="button" class="btn" style="background: #dc2626; color: white; border: none; padding: 8px 18px; border-radius: 8px; font-size: 0.85rem; font-weight: 700; cursor: pointer;" onclick="window.azzeraValidazioniStagione()"><i class="fa-solid fa-rotate-left"></i> Azzera Tutti i Progressi Esercizi</button>
                 </div>
-                
-                <div id="admin-historical-archives-area" style="margin-top: 2rem; padding: 1.5rem; background: #f8f9fa; border: 1px solid #eee; border-radius: 20px;">
-                    <h3 style="color: #f39c12; margin-top:0; font-size: 1.3rem;">🕒 Archivio Storico</h3>
-                    <p style="font-size: 0.85rem; margin-bottom: 15px; color: #666;">Consulta lo storico degli studenti degli anni passati o ripristina un anno archiviato.</p>
+
+                <!-- 4. Danger Zone: Archiviazione Annuale -->
+                <div style="margin-bottom: 25px; padding: 18px; border: 1px solid #dc2626; border-radius: 16px; background: rgba(239, 68, 68, 0.08);">
+                    <h3 style="color: #dc2626; margin-top:0; font-size: 1.05rem; display: flex; align-items: center; gap: 8px;"><i class="fa-solid fa-box-archive"></i> Archiviazione Annuale Palestra di Riflessione</h3>
+                    <p style="font-size: 0.85rem; margin-bottom: 15px; color: #475569;">Salva una "fotografia" della classifica finale e archivia gli studenti dell'anno scolastico in corso. Potrà essere ripristinata dall'Archivio Storico in caso di necessità.</p>
+                    <button type="button" class="btn" style="background: transparent; color: #dc2626; border: 1.5px solid #dc2626; padding: 8px 18px; border-radius: 8px; font-weight: 700; font-size: 0.85rem; cursor: pointer;" onclick="window.archiviaAnnoCorrente()"><i class="fa-solid fa-box-archive"></i> Esegui Archiviazione Anno</button>
+                </div>
+
+                <!-- 5. Archivio Storico -->
+                <div id="admin-historical-archives-area" style="margin-bottom: 30px; padding: 18px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 16px;">
+                    <h3 style="color: #d97706; margin-top:0; font-size: 1.05rem; display: flex; align-items: center; gap: 8px;"><i class="fa-solid fa-clock-rotate-left"></i> Archivio Storico</h3>
+                    <p style="font-size: 0.85rem; margin-bottom: 15px; color: #64748b;">Consulta lo storico degli studenti degli anni passati o ripristina un anno archiviato.</p>
                     <div id="admin-historical-archives-list">
-                        <p style="font-size: 0.85rem; color: #999;">Caricamento archivio in corso...</p>
+                        <p style="font-size: 0.85rem; color: #94a3b8;">Caricamento archivio in corso...</p>
+                    </div>
+                </div>
+
+                <!-- 6. Elenco Iscritti e Statistiche -->
+                <div style="border-top: 2px dashed #eee; padding-top: 20px;">
+                    <h3 style="color: #1e293b; margin-top: 0; font-size: 1.15rem; display: flex; align-items: center; gap: 8px;"><i class="fa-solid fa-users"></i> Gestione Utenti e Classi</h3>
+                    <div id="admin-users-list">
+                        <p style="color: #666; font-size: 0.9rem; text-align: center; padding: 2rem;">Caricamento utenti e statistiche in corso...</p>
                     </div>
                 </div>
             </div>
@@ -49,6 +74,44 @@ async function renderAdminPage() {
     if(window.loadHistoricalArchives) window.loadHistoricalArchives();
 }
 
+window.testConnessioneAdmin = async function() {
+    try {
+        if (!window.fbDb) throw new Error("Database Firebase non inizializzato");
+        await window.fbDb.collection('users').limit(1).get().catch(() => window.fbDb.collection('palestra_users').limit(1).get());
+        alert("✅ Connessione al Cloud Firestore riuscita e operativa!\nLatenza ottimale.");
+    } catch (e) {
+        console.error("Errore test connessione:", e);
+        alert("❌ Errore connessione database: " + e.message);
+    }
+};
+
+window.resetNotificheLette = function() {
+    try {
+        localStorage.removeItem('palestra_unread_notifications');
+        localStorage.removeItem('palestra_seen_notifications');
+        alert("✅ Tutte le notifiche dell'amministratore sono state reimpostate come lette.");
+    } catch (e) {
+        alert("Errore reset notifiche: " + e.message);
+    }
+};
+
+window.azzeraValidazioniStagione = async function() {
+    if (!confirm("Sei sicuro di voler AZZERARE TUTTI I PROGRESSI DEGLI ESERCIZI per la nuova stagione?\nStudenti, docenti e classi rimarranno inalterati.")) return;
+    try {
+        if (!window.fbDb) throw new Error("Database non connesso");
+        const snap = await window.fbDb.collection('progress').get();
+        let batch = window.fbDb.batch();
+        snap.docs.forEach(doc => {
+            batch.delete(doc.ref);
+        });
+        await batch.commit();
+        alert("✅ Tutti i progressi e le validazioni sono stati azzerati con successo!");
+        window.location.reload();
+    } catch (e) {
+        console.error("Errore azzeramento progressi:", e);
+        alert("Errore: " + e.message);
+    }
+};
 
 async function loadAdminUsersInProfile() {
     if (!window.fbDb) return;
