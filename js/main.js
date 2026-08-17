@@ -666,10 +666,7 @@ async function renderProfiloPage() {
                     ${user.isGuest ? `<p class="guest-notice">📍 PROFILO LOCALE</p>` : ''}
                 </div>
                 <div class="profile-actions" style="display: flex; gap: 8px; flex-wrap: wrap;">
-                    <a href="https://prof-memmo.github.io/games/profilo.html" target="_blank" class="btn" style="background: #eef2f7; color: var(--primary-color); border: 1.5px solid var(--primary-color); border-radius: 12px; font-weight: 700; font-size: 0.85rem; padding: 8px 14px; text-decoration: none; display: inline-flex; align-items: center; gap: 6px;">
-                        <i class="fa-solid fa-globe"></i> Profilo Globale
-                    </a>
-                    <button class="btn btn-edit" onclick="openEditProfileModal()">✏️ Modifica</button>
+                    <button class="btn btn-edit" onclick="openEditProfileModal()"><i class="fa-solid fa-user-gear"></i> Modifica Profilo</button>
                     <button class="btn btn-logout" onclick="Auth.logout()">Esci</button>
                 </div>
             </div>
