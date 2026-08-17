@@ -13,6 +13,12 @@ Object.assign(window.Auth = window.Auth || {}, {
         if (window.fbAuth && window.fbAuth.currentUser) {
             try {
                 await window.fbDb.collection('users').doc(window.fbAuth.currentUser.uid).set(window.Auth._user, { merge: true });
+                await window.fbDb.collection('hub_users').doc(window.fbAuth.currentUser.uid).set({
+                    avatar: avatar,
+                    'anagrafica.avatar': avatar,
+                    'anagrafica.nome': name
+                }, { merge: true });
+                await window.fbAuth.currentUser.updateProfile({ photoURL: avatar, displayName: name }).catch(e => console.warn(e));
             } catch (e) {
                 console.error("Errore aggiornamento cloud profilo:", e);
             }
