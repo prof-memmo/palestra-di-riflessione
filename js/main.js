@@ -2845,20 +2845,30 @@ window.showEditProfileModal = () => {
                 <input type="text" id="edit-name-input" value="${user.name}" placeholder="Il tuo nome..." maxlength="20" style="margin-bottom: 1.5rem;">
                 
                 <div class="avatar-selector">
-                    <p>Cambia il tuo avatar:</p>
-                    <div class="avatar-options" id="edit-avatar-options">
-                        <span class="avatar-opt ${user.avatar === 'assets/avatar.png' ? 'active' : ''}" data-avatar="assets/avatar.png">👤</span>
-                        <span class="avatar-opt ${user.avatar === '🚀' ? 'active' : ''}" data-avatar="🚀">🚀</span>
-                        <span class="avatar-opt ${user.avatar === '🦖' ? 'active' : ''}" data-avatar="🦖">🦖</span>
-                        <span class="avatar-opt ${user.avatar === '🦊' ? 'active' : ''}" data-avatar="🦊">🦊</span>
-                        <span class="avatar-opt ${user.avatar === '🧙' ? 'active' : ''}" data-avatar="🧙">🧙</span>
-                        <span class="avatar-opt ${user.avatar === '🦾' ? 'active' : ''}" data-avatar="🦾">🦾</span>
+                    <p style="font-weight: 700; color: #475569; margin-bottom: 8px;">Scegli il tuo avatar ufficiale:</p>
+                    <div class="avatar-options" id="edit-avatar-options" style="display:flex; gap:10px; flex-wrap:wrap; justify-content:center; max-height:180px; overflow-y:auto; padding:8px; background: #f8fafc; border-radius: 12px; border: 1px solid #e2e8f0;">
+                        ${[6,7,8,9,10,11,12,13,14,15,16].map(num => `
+                            <div class="avatar-opt ${user.avatar === `assets/avatars/${num}.png` ? 'active' : ''}" data-avatar="assets/avatars/${num}.png" style="width:48px; height:48px; border-radius:50%; border:3px solid ${user.avatar === `assets/avatars/${num}.png` ? 'var(--primary-color)' : 'transparent'}; cursor:pointer; overflow:hidden; transition:transform 0.2s; box-shadow:0 2px 6px rgba(0,0,0,0.1);">
+                                <img src="assets/avatars/${num}.png" alt="Avatar ${num}" style="width:100%; height:100%; object-fit:cover;">
+                            </div>
+                        `).join('')}
                     </div>
                 </div>
 
-                <div style="display: flex; gap: 1rem; margin-top: 2rem;">
+                <div style="display: flex; gap: 1rem; margin-top: 1.5rem;">
                     <button class="btn btn-primary" style="flex: 1;" onclick="saveProfileEdit()">SALVA MODIFICHE</button>
                     <button class="btn btn-secondary" style="flex: 1;" onclick="document.getElementById('edit-profile-modal').remove()">ANNULLA</button>
+                </div>
+
+                <!-- Box Profilo Globale Ecosistema integrato -->
+                <div style="margin-top: 1.5rem; padding: 15px; border-radius: 14px; background: #eef2f7; border: 1px solid #cbd5e1; text-align: left;">
+                    <div style="font-weight: 800; font-size: 0.85rem; color: var(--primary-color); margin-bottom: 4px;">
+                        <i class="fa-solid fa-globe"></i> Profilo Globale Ecosistema
+                    </div>
+                    <p style="font-size: 0.75rem; color: #64748b; margin: 0 0 10px 0;">Il tuo account è sincronizzato con l'Ecosistema Prof. Memmo. Gestisci abbonamenti e impostazioni generali dall'Hub.</p>
+                    <a href="https://prof-memmo.github.io/games/profilo.html" target="_blank" class="btn" style="width: 100%; border-radius: 20px; font-weight: 700; font-size: 0.8rem; display: inline-flex; align-items: center; justify-content: center; gap: 8px; text-decoration: none; padding: 8px 12px; background: var(--primary-color); color: white;">
+                        Gestisci Profilo Globale <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                    </a>
                 </div>
             </div>
         </div>
@@ -2868,8 +2878,14 @@ window.showEditProfileModal = () => {
     // Gestione selezione avatar nel modal
     modal.querySelectorAll('.avatar-opt').forEach(opt => {
         opt.addEventListener('click', () => {
-            modal.querySelectorAll('.avatar-opt').forEach(o => o.classList.remove('active'));
+            modal.querySelectorAll('.avatar-opt').forEach(o => {
+                o.classList.remove('active');
+                o.style.borderColor = 'transparent';
+                o.style.transform = 'scale(1)';
+            });
             opt.classList.add('active');
+            opt.style.borderColor = 'var(--primary-color)';
+            opt.style.transform = 'scale(1.1)';
         });
     });
 };
@@ -2877,7 +2893,7 @@ window.showEditProfileModal = () => {
 window.saveProfileEdit = async () => {
     const newName = document.getElementById('edit-name-input').value.trim();
     const activeAvatar = document.querySelector('#edit-avatar-options .avatar-opt.active');
-    const newAvatar = activeAvatar ? activeAvatar.dataset.avatar : 'assets/avatar.png';
+    const newAvatar = activeAvatar ? activeAvatar.dataset.avatar : 'assets/avatars/6.png';
 
     if (newName) {
         await Auth.updateProfile(newName, newAvatar);
