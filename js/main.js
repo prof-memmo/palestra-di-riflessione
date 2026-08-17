@@ -699,81 +699,125 @@ async function renderProfiloPage() {
             </div>
 
             ${(user.role === 'docente' || user.role === 'admin' || (user.email && user.email.toLowerCase() === 'prof.memmo@gmail.com')) ? `
-                <div class="teacher-area">
-                    <!-- Titolo rimosso come richiesto -->
-                    
+                <div class="teacher-area" style="margin-top: 2rem;">
+                    <!-- Barra Navigazione Tab Docente Uniformata -->
+                    <div class="teacher-tabs-container" style="display: flex; gap: 10px; justify-content: center; margin-bottom: 25px; flex-wrap: wrap;">
+                        <button id="ptab-btn-classi" class="tab-btn active" onclick="window.switchPalestraTeacherTab('classi')" style="background: var(--primary-color); color: white; border-radius: 50px; padding: 10px 22px; font-weight: 800; font-size: 0.9rem; border: none; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 4px 10px rgba(93, 95, 239, 0.2);">
+                            <i class="fa-solid fa-chalkboard-user"></i> 📁 Le Mie Classi
+                        </button>
+                        <button id="ptab-btn-registro" class="tab-btn" onclick="window.switchPalestraTeacherTab('registro')" style="background: #f1f5f9; color: #334155; border: 1.5px solid #cbd5e1; border-radius: 50px; padding: 10px 22px; font-weight: 800; font-size: 0.9rem; cursor: pointer; display: inline-flex; align-items: center; gap: 8px;">
+                            <i class="fa-solid fa-chart-line"></i> 📊 Registro Progressi
+                        </button>
+                        <button id="ptab-btn-guida" class="tab-btn" onclick="window.switchPalestraTeacherTab('guida')" style="background: #f1f5f9; color: #334155; border: 1.5px solid #cbd5e1; border-radius: 50px; padding: 10px 22px; font-weight: 800; font-size: 0.9rem; cursor: pointer; display: inline-flex; align-items: center; gap: 8px;">
+                            <i class="fa-solid fa-book-open"></i> 📖 Guida &amp; Strumenti
+                        </button>
+                        ${isSuperAdmin ? `
+                            <button onclick="navigateTo('admin')" class="btn" style="background: #fff3e0; color: #e65100; border: 1.5px solid #ffb74d; border-radius: 50px; padding: 10px 22px; font-weight: 800; font-size: 0.9rem; cursor: pointer; display: inline-flex; align-items: center; gap: 8px;">
+                                <i class="fa-solid fa-shield-halved"></i> 🛡️ Dashboard Admin
+                            </button>
+                        ` : ''}
+                    </div>
 
-                    
-                    <div style="display: grid; grid-template-columns: 1fr; gap: 2rem; max-width: 600px; margin: 0 auto;">
-                        <!-- Gestione Classi -->
-                        <div class="profile-card">
-                            <h4 class="profile-card-title">📁 LE MIE CLASSI</h4>
-                            
-                            <div style="margin-bottom: 1rem; position: relative;">
-                                <input type="text" id="teacher-class-filter" placeholder="Filtra per docente o classe..." 
-                                    oninput="window.filterTeacherClasses(this.value)"
-                                    style="width: 100%; padding: 0.8rem 1rem 0.8rem 2.5rem; border-radius: 12px; border: 1px solid #ddd; font-size: 0.85rem; border-color: #3498db44;">
-                                <i style="position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: #3498db; font-style: normal; font-size: 0.9rem;">🔍</i>
-                            </div>
+                    <!-- TAB 1: CLASSI -->
+                    <div id="ptab-content-classi" class="palestra-tab-content" style="display: block;">
+                        <div style="display: grid; grid-template-columns: 1fr; gap: 2rem; max-width: 680px; margin: 0 auto;">
+                            <!-- Gestione Classi -->
+                            <div class="profile-card">
+                                <h4 class="profile-card-title">📁 GESTIONE CLASSI &amp; CODICI</h4>
+                                
+                                <div style="margin-bottom: 1rem; position: relative;">
+                                    <input type="text" id="teacher-class-filter" placeholder="Filtra per docente o classe..." 
+                                        oninput="window.filterTeacherClasses(this.value)"
+                                        style="width: 100%; padding: 0.8rem 1rem 0.8rem 2.5rem; border-radius: 12px; border: 1px solid #ddd; font-size: 0.85rem; border-color: #3498db44;">
+                                    <i style="position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: #3498db; font-style: normal; font-size: 0.9rem;">🔍</i>
+                                </div>
 
-                            <div id="classes-list" style="margin-bottom: 1rem;">
-                                ${classes.length > 0 ? classes.map((c, idx) => {
-                                    const teacherNames = [];
-                                    const rawTeacherNames = []; // Per il filtro
-                                    if (c.teacherIds) {
-                                        c.teacherIds.forEach(tid => {
-                                            const name = window._teacherNames && window._teacherNames[tid] ? window._teacherNames[tid] : 'Docente';
+                                <div id="classes-list" style="margin-bottom: 1rem;">
+                                    ${classes.length > 0 ? classes.map((c, idx) => {
+                                        const teacherNames = [];
+                                        const rawTeacherNames = [];
+                                        if (c.teacherIds) {
+                                            c.teacherIds.forEach(tid => {
+                                                const name = window._teacherNames && window._teacherNames[tid] ? window._teacherNames[tid] : 'Docente';
+                                                rawTeacherNames.push(name);
+                                                teacherNames.push(name);
+                                            });
+                                        } else if (c.teacherId) {
+                                            const name = window._teacherNames && window._teacherNames[c.teacherId] ? window._teacherNames[c.teacherId] : 'Docente';
                                             rawTeacherNames.push(name);
                                             teacherNames.push(name);
-                                        });
-                                    } else if (c.teacherId) {
-                                        const name = window._teacherNames && window._teacherNames[c.teacherId] ? window._teacherNames[c.teacherId] : 'Docente';
-                                        rawTeacherNames.push(name);
-                                        teacherNames.push(name);
-                                    }
-                                    
-                                    const teachersHtml = teacherNames.length > 0 ? `<div style="font-size: 0.7rem; color: #7f8c8d; margin-top: 0.3rem; display: flex; align-items: center; gap: 0.3rem;"><span>👨‍🏫</span> ${teacherNames.join(', ')}</div>` : '';
+                                        }
+                                        
+                                        const teachersHtml = teacherNames.length > 0 ? `<div style="font-size: 0.7rem; color: #7f8c8d; margin-top: 0.3rem; display: flex; align-items: center; gap: 0.3rem;"><span>👨‍🏫</span> ${teacherNames.join(', ')}</div>` : '';
 
-                                    return `
-                                    <div class="teacher-class-item" data-teachers="${rawTeacherNames.join(' ').toLowerCase()}" data-classname="${c.name.toLowerCase()}" style="display: flex; justify-content: space-between; align-items: center; padding: 0.8rem; background: white; border-radius: 12px; margin-bottom: 0.5rem; border: 1px solid #e0e0e0;">
-                                        <div>
-                                            <span style="font-weight: 800;">Classe ${c.name}</span>
-                                            ${c.school ? `<span style="color: #7f8c8d; font-size: 0.75rem; margin-left: 0.5rem;">${c.school}${c.city ? ', ' + c.city : ''}</span>` : ''}
-                                            ${teachersHtml}
-                                            <div style="font-size: 0.7rem; color: var(--primary-color); font-weight: 800; cursor: pointer; margin-top: 0.2rem;" onclick="navigator.clipboard.writeText('${c.code}'); alert('Codice copiato!')">
-                                                CODICE: ${c.code} 📋 <span style="color: #7f8c8d; font-weight: 400; margin-left: 0.5rem; font-style: italic;">(condividi il codice con la classe)</span>
-                                            </div>
-                                            <div style="margin-top: 0.5rem; display: flex; gap: 0.5rem; flex-wrap: wrap;">
-                                                <button onclick="window.viewClassStudents('${c.code}', '${c.name.replace(/'/g, "\\'")}', '${c.id}')" style="background: #eef2f7; border: none; color: #57606f; padding: 0.3rem 0.6rem; border-radius: 8px; font-size: 0.7rem; font-weight: 700; cursor: pointer;">👥 STUDENTI</button>
-                                                <button onclick="window.viewClassTeachers('${c.id}', '${c.name.replace(/'/g, "\\'")}', '${c.code}')" style="background: #eef2f7; border: none; color: #3498db; padding: 0.3rem 0.6rem; border-radius: 8px; font-size: 0.7rem; font-weight: 700; cursor: pointer;">👨‍🏫 DOCENTI</button>
-                                                <button onclick="window.editTeacherClass('${c.id}', '${c.name.replace(/'/g, "\\'")}', '${(c.school || '').replace(/'/g, "\\'")}', '${(c.city || '').replace(/'/g, "\\'")}')" style="background: #eef2f7; border: none; color: #2980b9; padding: 0.3rem 0.6rem; border-radius: 8px; font-size: 0.7rem; font-weight: 700; cursor: pointer;">✏️ MODIFICA</button>
-                                                <button onclick="window.removeTeacherClass(${idx})" style="background: #fceaea; border: none; color: #e74c3c; padding: 0.3rem 0.6rem; border-radius: 8px; font-size: 0.7rem; font-weight: 700; cursor: pointer;">🗑️ ELIMINA</button>
+                                        return `
+                                        <div class="teacher-class-item" data-teachers="${rawTeacherNames.join(' ').toLowerCase()}" data-classname="${c.name.toLowerCase()}" style="display: flex; justify-content: space-between; align-items: center; padding: 0.8rem; background: white; border-radius: 12px; margin-bottom: 0.5rem; border: 1px solid #e0e0e0;">
+                                            <div>
+                                                <span style="font-weight: 800;">Classe ${c.name}</span>
+                                                ${c.school ? `<span style="color: #7f8c8d; font-size: 0.75rem; margin-left: 0.5rem;">${c.school}${c.city ? ', ' + c.city : ''}</span>` : ''}
+                                                ${teachersHtml}
+                                                <div style="font-size: 0.7rem; color: var(--primary-color); font-weight: 800; cursor: pointer; margin-top: 0.2rem;" onclick="navigator.clipboard.writeText('${c.code}'); alert('Codice copiato!')">
+                                                    CODICE: ${c.code} 📋 <span style="color: #7f8c8d; font-weight: 400; margin-left: 0.5rem; font-style: italic;">(condividi il codice con la classe)</span>
+                                                </div>
+                                                <div style="margin-top: 0.5rem; display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                                                    <button onclick="window.viewClassStudents('${c.code}', '${c.name.replace(/'/g, "\\'")}', '${c.id}')" style="background: #eef2f7; border: none; color: #57606f; padding: 0.3rem 0.6rem; border-radius: 8px; font-size: 0.7rem; font-weight: 700; cursor: pointer;">👥 STUDENTI</button>
+                                                    <button onclick="window.viewClassTeachers('${c.id}', '${c.name.replace(/'/g, "\\'")}', '${c.code}')" style="background: #eef2f7; border: none; color: #3498db; padding: 0.3rem 0.6rem; border-radius: 8px; font-size: 0.7rem; font-weight: 700; cursor: pointer;">👨‍🏫 DOCENTI</button>
+                                                    <button onclick="window.editTeacherClass('${c.id}', '${c.name.replace(/'/g, "\\'")}', '${(c.school || '').replace(/'/g, "\\'")}', '${(c.city || '').replace(/'/g, "\\'")}')" style="background: #eef2f7; border: none; color: #2980b9; padding: 0.3rem 0.6rem; border-radius: 8px; font-size: 0.7rem; font-weight: 700; cursor: pointer;">✏️ MODIFICA</button>
+                                                    <button onclick="window.removeTeacherClass(${idx})" style="background: #fceaea; border: none; color: #e74c3c; padding: 0.3rem 0.6rem; border-radius: 8px; font-size: 0.7rem; font-weight: 700; cursor: pointer;">🗑️ ELIMINA</button>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                `;}).join('') : '<p style="color: #888; font-size: 0.9rem;">Non hai ancora creato nessuna classe.</p>'}
-                            </div>
-                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; margin-bottom: 0.5rem;">
-                                <input type="text" id="new-class-school" placeholder="Istituto (es: I.C. Manzoni)" style="padding: 0.7rem; border-radius: 10px; border: 1px solid #ddd; font-size: 0.85rem;">
-                                <input type="text" id="new-class-city" placeholder="Città (es: Roma)" style="padding: 0.7rem; border-radius: 10px; border: 1px solid #ddd; font-size: 0.85rem;">
-                            </div>
-                            <div style="display: flex; gap: 0.5rem;">
-                                <input type="text" id="new-class-name" placeholder="Classe (es: 3D)" style="flex: 1; padding: 0.8rem; border-radius: 10px; border: 1px solid #ddd;">
-                                <button class="btn btn-primary" onclick="window.addTeacherClass()" style="padding: 0.8rem 1.2rem;">CREA</button>
-                            </div>
-                            <div style="display: flex; gap: 0.5rem; margin-top: 1rem; padding-top: 1rem; border-top: 1px solid #eee;">
-                                <input type="text" id="recover-class-code" placeholder="Recupera con Codice (es: PG-MCC5)" style="flex: 1; padding: 0.8rem; border-radius: 10px; border: 1px solid #ddd; font-family: monospace; font-size: 0.8rem;">
-                                <button class="btn" onclick="window.recoverTeacherClass()" style="padding: 0.8rem 1.2rem; background: #f1f2f6; color: #57606f; border: none; border-radius: 10px; font-weight: 700; cursor: pointer; font-size: 0.8rem;">RECUPERA</button>
+                                    `;}).join('') : '<p style="color: #888; font-size: 0.9rem;">Non hai ancora creato nessuna classe.</p>'}
+                                </div>
+                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; margin-bottom: 0.5rem;">
+                                    <input type="text" id="new-class-school" placeholder="Istituto (es: I.C. Manzoni)" style="padding: 0.7rem; border-radius: 10px; border: 1px solid #ddd; font-size: 0.85rem;">
+                                    <input type="text" id="new-class-city" placeholder="Città (es: Roma)" style="padding: 0.7rem; border-radius: 10px; border: 1px solid #ddd; font-size: 0.85rem;">
+                                </div>
+                                <div style="display: flex; gap: 0.5rem;">
+                                    <input type="text" id="new-class-name" placeholder="Nuova Classe (es: 3D)" style="flex: 1; padding: 0.8rem; border-radius: 10px; border: 1px solid #ddd;">
+                                    <button class="btn btn-primary" onclick="window.addTeacherClass()" style="padding: 0.8rem 1.2rem;">CREA</button>
+                                </div>
+                                <div style="display: flex; gap: 0.5rem; margin-top: 1rem; padding-top: 1rem; border-top: 1px solid #eee;">
+                                    <input type="text" id="recover-class-code" placeholder="Recupera con Codice (es: PG-MCC5)" style="flex: 1; padding: 0.8rem; border-radius: 10px; border: 1px solid #ddd; font-family: monospace; font-size: 0.8rem;">
+                                    <button class="btn" onclick="window.recoverTeacherClass()" style="padding: 0.8rem 1.2rem; background: #f1f2f6; color: #57606f; border: none; border-radius: 10px; font-weight: 700; cursor: pointer; font-size: 0.8rem;">RECUPERA</button>
+                                </div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Card Registro Permanente -->
-                    <div class="profile-card" style="margin-top: 2rem; max-width: 800px; margin-left: auto; margin-right: auto;">
-                        <h4 class="profile-card-title">📊 REGISTRO PROGRESSI</h4>
-                        <div id="class-register-content">
-                            <p style="color: #888; font-size: 0.9rem; text-align: center; padding: 2rem;">
-                                Crea una classe in <b>Area Classi</b> oppure clicca sul tasto <b>👥 STUDENTI</b> di una classe per visualizzare qui il registro dei punteggi e delle attività completate.
+                    <!-- TAB 2: REGISTRO PROGRESSI -->
+                    <div id="ptab-content-registro" class="palestra-tab-content" style="display: none;">
+                        <div class="profile-card" style="max-width: 850px; margin: 0 auto;">
+                            <h4 class="profile-card-title">📊 REGISTRO PROGRESSI &amp; ATTIVITÀ</h4>
+                            <div id="class-register-content">
+                                <p style="color: #888; font-size: 0.9rem; text-align: center; padding: 2rem;">
+                                    Clicca sul tasto <b>👥 STUDENTI</b> di una tua classe per caricare qui i progressi dettagliati, gli errori frequenti e le attività completate.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- TAB 3: GUIDA & STRUMENTI -->
+                    <div id="ptab-content-guida" class="palestra-tab-content" style="display: none;">
+                        <div class="profile-card" style="max-width: 750px; margin: 0 auto; text-align: left;">
+                            <h4 class="profile-card-title">📖 GUIDA METODOLOGICA PER DOCENTI</h4>
+                            <p style="color: #444; font-size: 0.95rem; line-height: 1.6; margin-bottom: 1rem;">
+                                Palestra di Riflessione è strutturata su percorsi di grammatica valenziale, logica, lessico e comprensione del testo. 
+                                Puoi proiettare gli esercizi sulla <b>LIM</b> in classe oppure assegnare singoli moduli agli studenti indicando il percorso tematico.
+                            </p>
+                            <div style="background: #f8fafc; border-radius: 12px; padding: 1.2rem; border-left: 4px solid var(--primary-color); margin-bottom: 1.5rem;">
+                                <h5 style="margin: 0 0 0.5rem 0; color: var(--primary-color);">💡 Suggerimento Didattico</h5>
+                                <p style="margin: 0; font-size: 0.85rem; color: #64748b;">
+                                    Gli studenti possono accedere comodamente inserendo il <b>Codice Classe</b> senza bisogno di registrare email personali, garantendo la totale conformità GDPR per i minori.
+                                </p>
+                            </div>
+                            <button class="btn btn-primary" onclick="window.showTeacherGuide()" style="display: inline-flex; align-items: center; gap: 8px;">
+                                <i class="fa-solid fa-circle-info"></i> Apri Guida Completa Didattica
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            ` : ''} oppure clicca sul tasto <b>👥 STUDENTI</b> di una classe per visualizzare qui il registro dei punteggi e delle attività completate.
                             </p>
                         </div>
                     </div>
@@ -1009,6 +1053,30 @@ window.filterAdminEntities = function() {
 
 
 // --- TEACHER FUNCTIONS ---
+window.switchPalestraTeacherTab = function(tabId) {
+    const tabs = ['classi', 'registro', 'guida'];
+    tabs.forEach(t => {
+        const btn = document.getElementById(`ptab-btn-${t}`);
+        const content = document.getElementById(`ptab-content-${t}`);
+        if (btn) {
+            if (t === tabId) {
+                btn.style.background = 'var(--primary-color)';
+                btn.style.color = 'white';
+                btn.style.border = 'none';
+                btn.style.boxShadow = '0 4px 10px rgba(93, 95, 239, 0.2)';
+            } else {
+                btn.style.background = '#f1f5f9';
+                btn.style.color = '#334155';
+                btn.style.border = '1.5px solid #cbd5e1';
+                btn.style.boxShadow = 'none';
+            }
+        }
+        if (content) {
+            content.style.display = (t === tabId) ? 'block' : 'none';
+        }
+    });
+};
+
 window.filterTeacherClasses = function(val) {
     const q = val.toLowerCase();
     document.querySelectorAll('.teacher-class-item').forEach(item => {
