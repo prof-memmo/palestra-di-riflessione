@@ -18,9 +18,26 @@ const SessionTimer = {
 
     loadSessionData: async function(user) {
         try {
-            const doc = await window.fbDb.collection('users').doc(user.uid).get();
-            let data = doc.data().sessionData || null;
             const today = new Date().toLocaleDateString();
+            let data = null;
+
+            if (window.fbDb && window.fbAuth && window.fbAuth.currentUser && user && user.uid && !user.isGuest) {
+                try {
+                    const doc = await window.fbDb.collection('users').doc(user.uid).get();
+                    if (doc.exists) {
+                        data = doc.data().sessionData || null;
+                    }
+                } catch(e) {
+                    console.warn("Timer Cloud read fallback to local storage:", e.message);
+                }
+            }
+
+            if (!data) {
+                const local = localStorage.getItem('palestra_session_timer');
+                if (local) {
+                    try { data = JSON.parse(local); } catch(e) {}
+                }
+            }
             
             if (!data || data.date !== today) {
                 data = {
@@ -29,16 +46,19 @@ const SessionTimer = {
                     timeLeft: this.SESSION_DURATION,
                     breakEndTime: null
                 };
-                await this.saveSessionData(user.uid, data);
+                await this.saveSessionData(user ? user.uid : 'guest', data);
             }
             this.data = data;
-        } catch(e) { console.error("Error loading timer", e); }
+        } catch(e) { console.warn("Notice loading timer:", e); }
     },
 
     saveSessionData: async function(uid, data) {
         this.data = data;
         try {
-            await window.fbDb.collection('users').doc(uid).update({ sessionData: data });
+            localStorage.setItem('palestra_session_timer', JSON.stringify(data));
+            if (window.fbDb && window.fbAuth && window.fbAuth.currentUser && uid && uid !== 'guest') {
+                await window.fbDb.collection('users').doc(uid).set({ sessionData: data }, { merge: true });
+            }
         } catch(e) {}
     },
 
