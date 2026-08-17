@@ -325,8 +325,8 @@ window.viewClassStudents = async function(code, name, classId = null) {
                     <td style="padding: 12px; text-align: center;">
                         <input type="checkbox" class="student-checkbox" data-uid="${s.id}" data-name="${s.name}">
                     </td>
-                    <td style="padding: 12px; display: flex; align-items: center; gap: 0.5rem;">
-                        <span style="font-size: 1.2rem;">${s.avatar || '👤'}</span>
+                    <td style="padding: 12px; display: flex; align-items: center; gap: 0.8rem;">
+                        <img src="${(window.mapOldAvatarToOfficial ? window.mapOldAvatarToOfficial(s.avatar) : (s.avatar?.includes('/') ? s.avatar : 'assets/avatars/6.png'))}" style="width: 36px; height: 36px; border-radius: 50%; object-fit: cover; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
                         <div>
                             <span style="font-weight: 700; display: block;">${s.name}</span>
                             ${s.email ? `<span style="font-size: 0.75rem; color: #888;">${s.email}</span>` : ''}
@@ -494,8 +494,8 @@ window.viewClassTeachers = async function(classId, className, classCode) {
                 <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 1rem;">
                     ${teachers.map(t => `
                         <div style="display: flex; align-items: center; gap: 1rem; padding: 1rem; background: #f8f9fa; border-radius: 20px; border: 1px solid #eee; transition: all 0.2s;">
-                            <div style="font-size: 2rem; background: white; width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; border-radius: 50%; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
-                                ${t.avatar?.includes('/') ? `<img src="${t.avatar}" style="width:100%; height:100%; border-radius:50%; object-fit:cover;">` : (t.avatar || '👤')}
+                            <div style="width: 50px; height: 50px; border-radius: 50%; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.05); flex-shrink: 0;">
+                                <img src="${(window.mapOldAvatarToOfficial ? window.mapOldAvatarToOfficial(t.avatar) : (t.avatar?.includes('/') ? t.avatar : 'assets/avatars/6.png'))}" style="width:100%; height:100%; object-fit:cover;">
                             </div>
                             <div>
                                 <div style="font-weight: 800; color: #2c3e50;">${t.name}</div>
@@ -748,8 +748,8 @@ window.renderHubStudentsList = function(students, classCode, className, classId)
         const isCurrentClass = (s.classCode === classCode || s.classId === classId || s.className === className);
         return `
             <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px 12px; background: white; border-radius: 8px; margin-bottom: 6px; border: 1px solid #e2e8f0;">
-                <div style="display: flex; align-items: center; gap: 8px; overflow: hidden;">
-                    <span style="font-size: 1.2rem;">${s.avatar || '👤'}</span>
+                <div style="display: flex; align-items: center; gap: 10px; overflow: hidden;">
+                    <img src="${(window.mapOldAvatarToOfficial ? window.mapOldAvatarToOfficial(s.avatar) : (s.avatar?.includes('/') ? s.avatar : 'assets/avatars/6.png'))}" style="width: 32px; height: 32px; border-radius: 50%; object-fit: cover; flex-shrink: 0;">
                     <div style="overflow: hidden;">
                         <span style="font-weight: 700; font-size: 0.9rem; display: block; color: #1e293b; white-space: nowrap; text-overflow: ellipsis;">${s.name}</span>
                         <span style="font-size: 0.75rem; color: #64748b;">${s.email ? s.email + ' • ' : ''}${s.currentClass ? 'Classe: ' + s.currentClass : 'Senza classe'}</span>

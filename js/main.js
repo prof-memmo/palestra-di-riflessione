@@ -632,7 +632,34 @@ async function renderProfiloPage() {
     }
     if (points > 1000) rank = "Maestro";
     else if (points > 500) rank = "Veterano";
-    else if (points > 100) rank = "Esploratore";
+    // Mappatura e sanitizzazione vecchi avatar / emoji con i nuovi avatar ufficiali
+    window.mapOldAvatarToOfficial = function(av) {
+        if (!av) return 'assets/avatars/6.png';
+        if (av.includes('assets/avatars/')) return av;
+        const emojiMap = {
+            '👤': 'assets/avatars/6.png',
+            '🚀': 'assets/avatars/7.png',
+            '🦖': 'assets/avatars/8.png',
+            '🦊': 'assets/avatars/9.png',
+            '🧙': 'assets/avatars/10.png',
+            '🦾': 'assets/avatars/11.png',
+            'assets/avatar.png': 'assets/avatars/6.png'
+        };
+        return emojiMap[av] || 'assets/avatars/6.png';
+    };
+
+    const userAvatar = window.mapOldAvatarToOfficial(user.avatar);
+    const avatarHtml = `<img src="${userAvatar}" alt="Avatar" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">`;
+
+    // Se l'avatar locale era un vecchio emoji, aggiorniamolo in background sia in Auth che su Firestore
+    if (user.avatar !== userAvatar && !user.isGuest) {
+        user.avatar = userAvatar;
+        localStorage.setItem('palestra_user', JSON.stringify(user));
+        if (window.fbDb && user.uid) {
+            window.fbDb.collection('users').doc(user.uid).set({ avatar: userAvatar }, { merge: true }).catch(() => {});
+            window.fbDb.collection('palestra_users').doc(user.uid).set({ avatar: userAvatar }, { merge: true }).catch(() => {});
+        }
+    }
 
     const isSuperAdmin = (user.role === 'admin' || (user.email && user.email.toLowerCase() === 'prof.memmo@gmail.com'));
 
@@ -2968,14 +2995,13 @@ window.renderOnboardingPage = function() {
                             <input type="text" id="onboarding-name" value="${user.name || ''}" placeholder="Come vuoi essere chiamato?" style="width: 100%; padding: 1.3rem; border-radius: 20px; border: 2px solid #f0f0f0; font-size: 1.1rem; outline: none; transition: border-color 0.3s;">
                         </div>
                         <div>
-                            <h4 style="margin-bottom: 1.5rem; font-size: 1.1rem; color: #555;">Scegli il tuo Avatar</h4>
-                            <div class="avatar-options" id="onboarding-avatar-options" style="display: flex; gap: 1rem; flex-wrap: wrap;">
-                                <span class="avatar-opt active" data-avatar="assets/avatar.png">👤</span>
-                                <span class="avatar-opt" data-avatar="🚀">🚀</span>
-                                <span class="avatar-opt" data-avatar="🦖">🦖</span>
-                                <span class="avatar-opt" data-avatar="🦊">🦊</span>
-                                <span class="avatar-opt" data-avatar="🧙">🧙</span>
-                                <span class="avatar-opt" data-avatar="🦾">🦾</span>
+                            <h4 style="margin-bottom: 1rem; font-size: 1.1rem; color: #555;">Scegli il tuo Avatar</h4>
+                            <div class="avatar-options" id="onboarding-avatar-options" style="display: flex; gap: 10px; flex-wrap: wrap; max-height: 150px; overflow-y: auto; padding: 10px; background: #f8fafc; border-radius: 14px; border: 1px solid #e2e8f0;">
+                                ${[6,7,8,9,10,11,12,13,14,15,16].map((num, i) => `
+                                    <div class="avatar-opt ${i === 0 ? 'active' : ''}" data-avatar="assets/avatars/${num}.png" style="width:48px; height:48px; border-radius:50%; border:3px solid ${i === 0 ? 'var(--primary-color)' : 'transparent'}; cursor:pointer; overflow:hidden; transition:transform 0.2s; box-shadow:0 2px 6px rgba(0,0,0,0.1);">
+                                        <img src="assets/avatars/${num}.png" alt="Avatar ${num}" style="width:100%; height:100%; object-fit:cover;">
+                                    </div>
+                                `).join('')}
                             </div>
                         </div>
                     </div>
@@ -3002,8 +3028,14 @@ window.renderOnboardingPage = function() {
     // Avatar selection logic
     appContainer.querySelectorAll('.avatar-opt').forEach(opt => {
         opt.addEventListener('click', () => {
-            appContainer.querySelectorAll('.avatar-opt').forEach(o => o.classList.remove('active'));
+            appContainer.querySelectorAll('.avatar-opt').forEach(o => {
+                o.classList.remove('active');
+                o.style.borderColor = 'transparent';
+                o.style.transform = 'scale(1)';
+            });
             opt.classList.add('active');
+            opt.style.borderColor = 'var(--primary-color)';
+            opt.style.transform = 'scale(1.1)';
         });
     });
 };

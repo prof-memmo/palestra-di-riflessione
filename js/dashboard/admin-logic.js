@@ -263,7 +263,8 @@ function renderAdminUserRow(userData) {
     const allClasses = window.adminData.classes || [];
     const userProgress = userData._progress || {};
     const isImage = userData.avatar && (userData.avatar.includes('/') || userData.avatar.includes('.'));
-    const avatarHtml = isImage ? `<img src="${userData.avatar}" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;">` : `<span style="font-size: 1.5rem;">${userData.avatar || '👤'}</span>`;
+    const safeAvatar = window.mapOldAvatarToOfficial ? window.mapOldAvatarToOfficial(userData.avatar) : (isImage ? userData.avatar : 'assets/avatars/6.png');
+    const avatarHtml = `<img src="${safeAvatar}" style="width: 44px; height: 44px; border-radius: 50%; object-fit: cover;">`;
     const role = (userData.role || 'studente').toLowerCase();
     const isAmico = role === 'amico' || role === 'guest' || userData.roleLabel === 'Amico della Palestra';
     const roleColors = { docente: '#2980b9', amico: '#8e44ad', guest: '#8e44ad', studente: '#27ae60', admin: '#e74c3c' };
