@@ -2874,8 +2874,8 @@ window.showEditProfileModal = () => {
                 <div class="avatar-selector">
                     <p style="font-weight: 700; color: #475569; margin-bottom: 8px;">Scegli il tuo avatar ufficiale:</p>
                     <div class="avatar-options" id="edit-avatar-options" style="display:flex; gap:10px; flex-wrap:wrap; justify-content:center; max-height:180px; overflow-y:auto; padding:8px; background: #f8fafc; border-radius: 12px; border: 1px solid #e2e8f0;">
-                        ${[6,7,8,9,10,11,12,13,14,15,16].map(num => `
-                            <div class="avatar-opt ${user.avatar === `assets/avatars/${num}.png` ? 'active' : ''}" data-avatar="assets/avatars/${num}.png" style="width:48px; height:48px; border-radius:50%; border:3px solid ${user.avatar === `assets/avatars/${num}.png` ? 'var(--primary-color)' : 'transparent'}; cursor:pointer; overflow:hidden; transition:transform 0.2s; box-shadow:0 2px 6px rgba(0,0,0,0.1);">
+                        ${[6,7,8,9,10,11,12,13,14,15].map(num => `
+                            <div class="avatar-opt ${user.avatar === `assets/avatars/${num}.png` ? 'active' : ''}" data-avatar="assets/avatars/${num}.png" style="width:50px; height:50px; border-radius:50%; border:3px solid ${user.avatar === `assets/avatars/${num}.png` ? 'var(--primary-color)' : 'transparent'}; cursor:pointer; overflow:hidden; transition:transform 0.2s; box-shadow:0 2px 6px rgba(0,0,0,0.15); background:#ffffff; display:flex; align-items:center; justify-content:center;">
                                 <img src="assets/avatars/${num}.png" alt="Avatar ${num}" style="width:100%; height:100%; object-fit:cover;">
                             </div>
                         `).join('')}
@@ -2997,8 +2997,8 @@ window.renderOnboardingPage = function() {
                         <div>
                             <h4 style="margin-bottom: 1rem; font-size: 1.1rem; color: #555;">Scegli il tuo Avatar</h4>
                             <div class="avatar-options" id="onboarding-avatar-options" style="display: flex; gap: 10px; flex-wrap: wrap; max-height: 150px; overflow-y: auto; padding: 10px; background: #f8fafc; border-radius: 14px; border: 1px solid #e2e8f0;">
-                                ${[6,7,8,9,10,11,12,13,14,15,16].map((num, i) => `
-                                    <div class="avatar-opt ${i === 0 ? 'active' : ''}" data-avatar="assets/avatars/${num}.png" style="width:48px; height:48px; border-radius:50%; border:3px solid ${i === 0 ? 'var(--primary-color)' : 'transparent'}; cursor:pointer; overflow:hidden; transition:transform 0.2s; box-shadow:0 2px 6px rgba(0,0,0,0.1);">
+                                ${[6,7,8,9,10,11,12,13,14,15].map((num, i) => `
+                                    <div class="avatar-opt ${i === 0 ? 'active' : ''}" data-avatar="assets/avatars/${num}.png" style="width:50px; height:50px; border-radius:50%; border:3px solid ${i === 0 ? 'var(--primary-color)' : 'transparent'}; cursor:pointer; overflow:hidden; transition:transform 0.2s; box-shadow:0 2px 6px rgba(0,0,0,0.15); background:#ffffff; display:flex; align-items:center; justify-content:center;">
                                         <img src="assets/avatars/${num}.png" alt="Avatar ${num}" style="width:100%; height:100%; object-fit:cover;">
                                     </div>
                                 `).join('')}
