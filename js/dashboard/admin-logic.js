@@ -12,14 +12,9 @@ async function renderAdminPage() {
             </div>
             <h2 class="exercise-title" style="margin-bottom: 25px;">🛡️ DASHBOARD AMMINISTRATORE</h2>
             <div style="background: white; padding: 2rem; border-radius: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.05);">
-                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; margin-bottom: 2rem; border-bottom: 2px dashed #eee; padding-bottom: 1.5rem;">
-                    <div>
-                        <p style="margin: 0; font-weight: 800; font-size: 1.2rem; color: #2c3e50;">Pannello di Controllo &amp; Impostazioni</p>
-                        <p style="margin: 5px 0 0 0; color: #666; font-size: 0.9rem;">Gestisci le impostazioni, gli override didattici, le classi e gli archivi storici della Palestra.</p>
-                    </div>
-                    <a href="https://prof-memmo.github.io/prof-memmo-gestione-siti/" target="_blank" class="btn" style="background: linear-gradient(135deg, #6366f1, #4f46e5); color: white; padding: 0.8rem 1.5rem; border-radius: 12px; font-weight: 800; text-decoration: none; display: inline-flex; align-items: center; gap: 8px;">
-                        ⚙️ Vai all'Hub Centrale
-                    </a>
+                <div style="margin-bottom: 2rem; border-bottom: 2px dashed #eee; padding-bottom: 1.5rem;">
+                    <p style="margin: 0; font-weight: 800; font-size: 1.2rem; color: #2c3e50;">Pannello di Controllo &amp; Impostazioni</p>
+                    <p style="margin: 5px 0 0 0; color: #666; font-size: 0.9rem;">Gestisci le impostazioni, gli override didattici, le classi e gli archivi storici della Palestra.</p>
                 </div>
 
                 <div style="margin-bottom: 20px;">
