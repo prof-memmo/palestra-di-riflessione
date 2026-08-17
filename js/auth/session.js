@@ -112,7 +112,7 @@ Object.assign(window.Auth = window.Auth || {}, {
                 window.Auth._user = {
                     uid: fbUser.uid,
                     name: hubName || fbUser.displayName || 'Nuovo Utente',
-                    avatar: fbUser.photoURL || 'assets/avatar.png',
+                    avatar: fbUser.photoURL || 'assets/avatars/6.png',
                     role: isSuperAdmin ? 'admin' : (hubRole || 'studente'),
                     piano: userPiano,
                     points: 0,

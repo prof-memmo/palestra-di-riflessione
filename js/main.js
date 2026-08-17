@@ -417,7 +417,7 @@ function renderIntroPage() {
                 </p>
 
                 <div style="text-align: center; margin-top: 4rem; padding-top: 2rem; border-top: 1px solid #eee;">
-                    <img src="assets/avatar.png" alt="Logo Progetto" style="width: 120px; opacity: 0.9; background: transparent;">
+                    <img src="https://prof-memmo.github.io/prof-memmo-gestione-siti/shared/assets/branding/prof-memmo/avatar.png" alt="Logo Progetto" style="width: 120px; opacity: 0.9; background: transparent;">
                 </div>
             </div>
         </div>
@@ -3098,7 +3098,7 @@ window.saveOnboardingData = async function() {
     const role = window.currentOnboardingRole;
     const name = document.getElementById('onboarding-name').value.trim();
     const activeAvatar = document.querySelector('.avatar-opt.active');
-    const avatar = activeAvatar ? activeAvatar.dataset.avatar : 'assets/avatar.png';
+    const avatar = activeAvatar ? activeAvatar.dataset.avatar : 'assets/avatars/6.png';
     const btn = document.getElementById('save-onboarding-btn');
 
     if (!name) { alert("Per favore, inserisci il tuo nome."); return; }
