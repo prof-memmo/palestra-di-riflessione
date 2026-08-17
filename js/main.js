@@ -817,11 +817,6 @@ async function renderProfiloPage() {
                         </div>
                     </div>
                 </div>
-            ` : ''} oppure clicca sul tasto <b>👥 STUDENTI</b> di una classe per visualizzare qui il registro dei punteggi e delle attività completate.
-                            </p>
-                        </div>
-                    </div>
-                </div>
             ` : ''}
 
             ${user.role === 'studente' ? `
