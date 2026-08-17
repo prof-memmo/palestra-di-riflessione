@@ -932,6 +932,31 @@ window.filterAdminEntities = function() {
             </div>
         `;
         html = headerHtml + filtered.map(u => renderAdminUserRow(u)).join('');
+    } else if (filter === 'scuole') {
+        const schools = window.adminData.schools || [];
+        const filteredSchools = schools.filter(s => !search || s.name.toLowerCase().includes(search) || (s.city || '').toLowerCase().includes(search));
+        
+        let headerHtml = `
+            <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 1rem; padding: 1.2rem; background: transparent; border-bottom: 2px solid #ec4899; font-weight: 800; color: #ec4899; text-transform: uppercase; font-size: 0.85rem;">
+                <div style="flex: 2; min-width: 200px;">🏫 Nome Istituto / Scuola</div>
+                <div style="flex: 1; min-width: 120px;">📍 Sede / Città</div>
+                <div style="flex: 1; text-align: center;">📁 Classi Attive</div>
+                <div style="flex: 1; text-align: center;">🎒 Studenti Iscritti</div>
+            </div>
+        `;
+        
+        if (filteredSchools.length === 0) {
+            html = '<p style="text-align: center; color: #999; padding: 3rem;">Nessun istituto scolastico trovato.</p>';
+        } else {
+            html = headerHtml + filteredSchools.map(s => `
+                <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 1rem; padding: 1.2rem; background: white; border-radius: 20px; border: 1px solid #eee;">
+                    <div style="flex: 2; min-width: 200px; font-weight: 800; color: #1e293b;">🏫 ${s.name}</div>
+                    <div style="flex: 1; min-width: 120px; color: #64748b;">📍 ${s.city || 'Sede'}</div>
+                    <div style="flex: 1; text-align: center;"><span style="background: #e0e7ff; color: #4338ca; padding: 4px 10px; border-radius: 20px; font-weight: 800; font-size: 0.8rem;">${s.classCount || 1} classi</span></div>
+                    <div style="flex: 1; text-align: center;"><span style="background: #dcfce7; color: #15803d; padding: 4px 10px; border-radius: 20px; font-weight: 800; font-size: 0.8rem;">${s.studentCount || 0} studenti</span></div>
+                </div>
+            `).join('');
+        }
     }
 
     container.innerHTML = html || '<p style="text-align: center; color: #999; padding: 3rem;">Nessun risultato trovato per questa selezione.</p>';

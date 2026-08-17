@@ -223,7 +223,11 @@ async function loadAdminUsersInProfile() {
                 </div>
                 <div class="admin-stat-card" onclick="window.setActiveAdminFilter('amico')" data-filter="amico" style="background: white; padding: 1.2rem; border-radius: 20px; text-align: center; border: 2px solid transparent; cursor: pointer; transition: all 0.2s; box-shadow: 0 4px 10px rgba(0,0,0,0.02);">
                     <div style="font-size: 1.6rem; font-weight: 900; color: #8e44ad;">${counts.amico}</div>
-                    <div style="font-size: 0.75rem; color: #888; font-weight: 800; text-transform: uppercase;">Amici della palestra</div>
+                    <div style="font-size: 0.75rem; color: #888; font-weight: 800; text-transform: uppercase;">Amici</div>
+                </div>
+                <div class="admin-stat-card" onclick="window.setActiveAdminFilter('scuole')" data-filter="scuole" style="background: white; padding: 1.2rem; border-radius: 20px; text-align: center; border: 2px solid transparent; cursor: pointer; transition: all 0.2s; box-shadow: 0 4px 10px rgba(0,0,0,0.02);">
+                    <div style="font-size: 1.6rem; font-weight: 900; color: #ec4899;">${Object.keys(schoolsMap).length}</div>
+                    <div style="font-size: 0.75rem; color: #888; font-weight: 800; text-transform: uppercase;">Scuole Attive</div>
                 </div>
             </div>
 
