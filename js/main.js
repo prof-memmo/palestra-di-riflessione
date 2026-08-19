@@ -2475,13 +2475,6 @@ function updateSidebarMenu() {
         { id: 'contatti', title: 'Contatti', icon: '📧' }
     ];
 
-    if (user.role === 'docente' || user.role === 'admin' || (user.email && user.email.toLowerCase() === 'prof.memmo@gmail.com')) {
-        mainSections.push({ id: 'profilo', title: 'Pannello Docente', icon: '👨‍🏫' });
-    }
-    if (user.role === 'admin' || (user.email && user.email.toLowerCase() === 'prof.memmo@gmail.com')) {
-        mainSections.push({ id: 'admin', title: 'Dashboard Admin', icon: '🛡️' });
-    }
-
     let activeMainSection = window.currentSection;
     let activeSubSection = null;
     let activeLeafSection = null;
