@@ -635,7 +635,7 @@ async function renderProfiloPage() {
     // Mappatura e sanitizzazione vecchi avatar / emoji con i nuovi avatar ufficiali
     window.mapOldAvatarToOfficial = function(av) {
         if (!av) return 'assets/avatars/6.png';
-        if (av.includes('assets/avatars/')) return av;
+        if (typeof av === 'string' && (av.startsWith('http') || av.includes('/') || av.includes('.png') || av.includes('.jpg'))) return av;
         const emojiMap = {
             '👤': 'assets/avatars/6.png',
             '🚀': 'assets/avatars/7.png',

@@ -71,6 +71,10 @@ Object.assign(window.Auth = window.Auth || {}, {
                     if (hubData.anagrafica && hubData.anagrafica.nome) {
                         hubName = hubData.anagrafica.nome;
                     }
+                    let hubAvatar = hubData.avatar || (hubData.anagrafica && hubData.anagrafica.avatar);
+                    if (hubAvatar) {
+                        this._tempHubAvatar = hubAvatar;
+                    }
                     userPiano = hubData.subscription || hubData.abbonamento || (isSuperAdmin ? 'docente_ecosistema' : 'base');
                     if (!isSuperAdmin && hubData.statusAccount && (hubData.statusAccount === 'rejected' || hubData.statusAccount === 'suspended')) {
                         alert("Accesso negato: L'account è stato sospeso nell'Hub.");
@@ -93,6 +97,11 @@ Object.assign(window.Auth = window.Auth || {}, {
             if (doc.exists) {
                 window.Auth._user = doc.data();
                 window.Auth._user.piano = userPiano;
+                if (this._tempHubAvatar) {
+                    window.Auth._user.avatar = this._tempHubAvatar;
+                } else if (!window.Auth._user.avatar && fbUser.photoURL) {
+                    window.Auth._user.avatar = fbUser.photoURL;
+                }
                 if (isSuperAdmin) {
                     window.Auth._user.role = 'admin';
                     window.Auth._user.setupComplete = true;
