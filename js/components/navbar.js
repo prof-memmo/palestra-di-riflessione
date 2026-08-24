@@ -58,7 +58,40 @@ function initNavigation() {
 }
 
 
-function navigateTo(section, subType = null, level = null, updateHash = true, extra = null) {
+async function navigateTo(section, subType = null, level = null, updateHash = true, extra = null) {
+    const publicSections = ['home', 'intro', 'contatti', ''];
+    const isPublic = publicSections.includes(section);
+
+    if (window.HubSubscriptionGuard) {
+        if (isPublic) {
+            window.HubSubscriptionGuard.hideBlockOverlay();
+        } else {
+            const isLogged = typeof Auth !== 'undefined' && Auth.isLoggedIn ? Auth.isLoggedIn() : false;
+            const user = isLogged ? Auth.getUser() : null;
+
+            if (!isLogged || !user || user.isGuest) {
+                if (typeof showLoginOverlay === 'function') {
+                    showLoginOverlay(section);
+                }
+                return;
+            }
+
+            let checkUser = user;
+            if (user.role === 'studente' && user.teacherId) {
+                checkUser = { ...user, uid: user.teacherId };
+            }
+
+            const isAllowed = await window.HubSubscriptionGuard.verifyAccess({
+                user: checkUser,
+                role: user.role,
+                isPublicView: false
+            });
+            if (!isAllowed) {
+                return; // Stop: blocco attivo, nessuna sezione protetta attivata
+            }
+        }
+    }
+
     if (!window.collapsedSections) window.collapsedSections = [];
 
     if (updateHash) {
