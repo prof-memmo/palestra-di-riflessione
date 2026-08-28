@@ -24,7 +24,8 @@ try {
     console.error("Errore inizializzazione Firebase Palestra:", e);
 }
 
-// Inizializza Database Palestra Legacy (palestra-riflessione) per accedere agli utenti e classi storici
+// Inizializzazione Database Palestra Legacy (DISMESSA - Dati storici già migrati nell'Hub)
+/*
 const legacyPalestraConfig = {
   apiKey: "AIzaSyC9WhGYaWyaJtqDHhKhii5yhnP363SczJo",
   authDomain: "palestra-riflessione.firebaseapp.com",
@@ -43,6 +44,7 @@ try {
 } catch(e) {
     console.warn("Legacy Palestra init warning:", e);
 }
+*/
 
 // =========================================================
 // WRAPPER "ZERO REFACTORING" PER LE COLLEZIONI HUB
