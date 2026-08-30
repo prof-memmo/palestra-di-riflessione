@@ -139,7 +139,7 @@ const SessionTimer = {
                     </filter>
                 </svg>
                 <div style="margin-bottom: 1rem;">
-                    <video src="assets/Gatto che dorme.mp4" autoplay loop muted playsinline style="filter: url(#remove-white); max-width: 100%; max-height: 250px;"></video>
+                    <video src="https://prof-memmo.github.io/prof-memmo-gestione-siti/shared/assets/video/gatto-che-dorme.mp4" autoplay loop muted playsinline style="filter: url(#remove-white); max-width: 100%; max-height: 250px;"></video>
                 </div>
                 <h2 style="font-weight: 900; color: #2c3e50; font-size: 2rem; margin-bottom: 1rem;">MIAO! PAUSA OBBLIGATORIA</h2>
                 
