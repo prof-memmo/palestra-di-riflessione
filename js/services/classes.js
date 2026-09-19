@@ -17,14 +17,17 @@ window.addTeacherClass = async function() {
         const classData = {
             name: name,
             code: code,
-            teacherId: user.uid, // Mantieni per compatibilità con Security Rules
-            teacherIds: [user.uid], // Nuovo formato array per multi-docente
+            teacherId: user.uid,
+            teacherIds: [user.uid],
+            teacherEmail: (user.email || '').toLowerCase(),
+            collaboratori: [],
+            students: [],
             school: school || null,
             city: city || null,
             createdAt: new Date().toISOString()
         };
 
-        const docRef = await window.fbDb.collection('classes').add(classData);
+        const docRef = await window.fbDb.collection('hub_classes').add(classData);
         
         // Aggiorna locale
         let classes = JSON.parse(localStorage.getItem('palestra_classes') || '[]');
@@ -54,8 +57,8 @@ window.recoverTeacherClass = async function() {
 
     try {
         console.log("🔍 Ricerca classe con codice:", code);
-        // Leggiamo la classe (la lettura è sempre permessa)
-        const q = await window.fbDb.collection('classes').where('code', '==', code).get();
+        // Leggiamo la classe da hub_classes
+        const q = await window.fbDb.collection('hub_classes').where('code', '==', code).get();
         
         if (q.empty) {
             alert("❌ Nessuna classe trovata con questo codice: " + code);
@@ -68,21 +71,13 @@ window.recoverTeacherClass = async function() {
 
         // Se l'utente è un docente, lo aggiungiamo formalmente alla classe su Firestore
         if (user.role === 'docente' && !user.isGuest) {
-            const updateData = {};
-            
-            // Gestione array dei docenti
-            if (classData.teacherIds) {
-                updateData.teacherIds = firebase.firestore.FieldValue.arrayUnion(user.uid);
-            } else if (classData.teacherId) {
-                // Migrazione da vecchio formato stringa a nuovo formato array
-                const currentTeachers = [classData.teacherId];
-                if (!currentTeachers.includes(user.uid)) currentTeachers.push(user.uid);
-                updateData.teacherIds = currentTeachers;
-            } else {
-                updateData.teacherIds = [user.uid];
+            const updateData = {
+                teacherIds: firebase.firestore.FieldValue.arrayUnion(user.uid)
+            };
+            if (user.email) {
+                updateData.collaboratori = firebase.firestore.FieldValue.arrayUnion(user.email.toLowerCase());
             }
-            
-            await window.fbDb.collection('classes').doc(classDoc.id).update(updateData);
+            await window.fbDb.collection('hub_classes').doc(classDoc.id).update(updateData);
             console.log("✅ Docente aggiunto alla classe su Firestore");
         }
 
@@ -115,26 +110,21 @@ window.removeTeacherClass = async function(index) {
         try {
             // 1. Rimuovi da Firestore (se l'ID è presente)
             if (classObj.id && window.fbDb) {
-                await window.fbDb.collection('classes').doc(classObj.id).delete();
+                await window.fbDb.collection('hub_classes').doc(classObj.id).delete();
             } else if (window.fbDb) {
                 // Se non abbiamo l'ID, cerchiamo per codice
-                const q = await window.fbDb.collection('classes').where('code', '==', classCode).get();
+                const q = await window.fbDb.collection('hub_classes').where('code', '==', classCode).get();
                 q.forEach(doc => doc.ref.delete());
             }
 
             // 2. Rimuovi locale
             classes.splice(index, 1);
             localStorage.setItem('palestra_classes', JSON.stringify(classes));
-            
-            // 3. Rimuovi compiti associati
-            let assignments = JSON.parse(localStorage.getItem('palestra_assignments') || '[]');
-            assignments = assignments.filter(a => a.classCode !== classCode);
-            localStorage.setItem('palestra_assignments', JSON.stringify(assignments));
-            
             renderProfiloPage();
+            alert("🗑️ Classe eliminata con successo.");
         } catch (e) {
             console.error("Errore eliminazione classe:", e);
-            alert("Errore durante l'eliminazione della classe: " + e.message);
+            alert("Errore durante l'eliminazione: " + e.message);
         }
     }
 };
@@ -156,6 +146,9 @@ function normalizeClassName(str) {
 }
 
 window.viewClassStudents = async function(code, name, classId = null) {
+    if (window.switchPalestraTeacherTab) {
+        window.switchPalestraTeacherTab('registro');
+    }
     const content = document.getElementById('class-register-content');
     if (!content) return;
 
@@ -168,38 +161,16 @@ window.viewClassStudents = async function(code, name, classId = null) {
 
     try {
         let classDoc = null;
-        // 1. Cerchiamo la classe prioritariamente per ID, poi per Codice sia in 'hub_classes', 'classes' che 'palestra_classes'
+        // 1. Cerchiamo la classe prioritariamente per ID, poi per Codice in hub_classes
         if (classId) {
             classDoc = await window.fbDb.collection('hub_classes').doc(classId).get().catch(() => ({ exists: false }));
-            if (!classDoc || !classDoc.exists) {
-                classDoc = await window.fbDb.collection('classes').doc(classId).get().catch(() => ({ exists: false }));
-            }
-            if (!classDoc || !classDoc.exists) {
-                classDoc = await window.fbDb.collection('palestra_classes').doc(classId).get().catch(() => ({ exists: false }));
-            }
             if (!classDoc || !classDoc.exists) {
                 const hubClassQ = await window.fbDb.collection('hub_classes').where('code', '==', code).get().catch(() => ({ empty: true }));
                 if (hubClassQ && !hubClassQ.empty) classDoc = hubClassQ.docs[0];
             }
-            if (!classDoc || !classDoc.exists) {
-                const classQ = await window.fbDb.collection('classes').where('code', '==', code).get().catch(() => ({ empty: true }));
-                if (classQ && !classQ.empty) classDoc = classQ.docs[0];
-            }
-            if (!classDoc || !classDoc.exists) {
-                const pClassQ = await window.fbDb.collection('palestra_classes').where('code', '==', code).get().catch(() => ({ empty: true }));
-                if (pClassQ && !pClassQ.empty) classDoc = pClassQ.docs[0];
-            }
         } else {
             const hubClassQ = await window.fbDb.collection('hub_classes').where('code', '==', code).get().catch(() => ({ empty: true }));
             if (hubClassQ && !hubClassQ.empty) classDoc = hubClassQ.docs[0];
-            else {
-                const classQ = await window.fbDb.collection('classes').where('code', '==', code).get().catch(() => ({ empty: true }));
-                if (classQ && !classQ.empty) classDoc = classQ.docs[0];
-                else {
-                    const pClassQ = await window.fbDb.collection('palestra_classes').where('code', '==', code).get().catch(() => ({ empty: true }));
-                    if (pClassQ && !pClassQ.empty) classDoc = pClassQ.docs[0];
-                }
-            }
         }
 
         const realClassId = (classDoc && classDoc.id) ? classDoc.id : (classId || code);
@@ -428,6 +399,9 @@ window.viewClassStudents = async function(code, name, classId = null) {
 };
 
 window.viewClassTeachers = async function(classId, className, classCode) {
+    if (window.switchPalestraTeacherTab) {
+        window.switchPalestraTeacherTab('registro');
+    }
     const content = document.getElementById('class-register-content');
     if (!content) return;
 
@@ -443,12 +417,12 @@ window.viewClassTeachers = async function(classId, className, classCode) {
 
     try {
         let classData;
-        const doc = await window.fbDb.collection('classes').doc(classId).get();
+        const doc = await window.fbDb.collection('hub_classes').doc(classId).get();
         if (doc.exists) {
             classData = doc.data();
         } else {
             // Fallback per codice
-            const q = await window.fbDb.collection('classes').where('code', '==', classCode).get();
+            const q = await window.fbDb.collection('hub_classes').where('code', '==', classCode).get();
             if (!q.empty) classData = q.docs[0].data();
         }
 
@@ -456,20 +430,19 @@ window.viewClassTeachers = async function(classId, className, classCode) {
 
         const teacherIdsSet = new Set(classData.teacherIds || (classData.teacherId ? [classData.teacherId] : []));
         
-        // 1. Cerchiamo anche altri docenti associati via profilo utente (retroattivo)
+        // 1. Cerchiamo anche altri docenti associati via profilo utente
         const missingFromDoc = [];
         try {
-            // Cerchiamo sia per classId che per classCode (più robusto per vecchie versioni)
             const queries = [
-                window.fbDb.collection('users').where('classId', '==', classId).get(),
-                window.fbDb.collection('users').where('classId', '==', classCode).get()
+                window.fbDb.collection('hub_users').where('classId', '==', classId).get(),
+                window.fbDb.collection('hub_users').where('classCode', '==', classCode).get()
             ];
             const snapshots = await Promise.all(queries);
             
             snapshots.forEach(qs => {
                 qs.forEach(doc => {
                     const u = doc.data();
-                    if (u.role === 'docente' || u.role === 'amico') {
+                    if (u.role === 'docente' || u.role === 'teacher' || u.role === 'amico') {
                         if (!teacherIdsSet.has(doc.id)) {
                             teacherIdsSet.add(doc.id);
                             missingFromDoc.push(doc.id);
@@ -481,19 +454,18 @@ window.viewClassTeachers = async function(classId, className, classCode) {
             console.warn("Errore ricerca docenti extra:", err);
         }
 
-        // 2. Guarigione Dati (opzionale/silenziosa): aggiunge i docenti mancanti al documento classe
+        // 2. Aggiunge i docenti mancanti al documento classe
         if ((missingFromDoc.length > 0 || !classData.teacherId) && !Auth.getUser().isGuest) {
             try {
                 const updateData = {};
                 if (missingFromDoc.length > 0) {
                     updateData.teacherIds = window.firebase.firestore.FieldValue.arrayUnion(...missingFromDoc);
                 }
-                // Se manca teacherId (necessario per Security Rules), impostiamo il primo disponibile
                 if (!classData.teacherId) {
                     updateData.teacherId = Array.from(teacherIdsSet)[0];
                 }
                 
-                await window.fbDb.collection('classes').doc(classId).update(updateData);
+                await window.fbDb.collection('hub_classes').doc(classId).update(updateData);
                 console.log("🩹 Data Healing: aggiornato documento classe");
             } catch (err) { console.warn("Impossibile auto-aggiornare classe:", err); }
         }
