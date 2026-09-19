@@ -209,6 +209,25 @@ window.viewClassStudents = async function(code, name, classId = null) {
         // 2. Trova gli utenti di questa specifica classe (supportando ID, Codice, Nome Classe da tutte le collezioni Hub)
         const studentsMap = new Map();
 
+        if (Array.isArray(classData.students) && classData.students.length > 0) {
+            classData.students.forEach(s => {
+                if (typeof s === 'object' && s.name) {
+                    const sid = s.studentAuthUid || s.id || s.studentId || (realClassId + '_' + s.name);
+                    studentsMap.set(sid, {
+                        id: sid,
+                        studentId: s.studentId,
+                        name: s.name,
+                        nickname: s.nickname || '',
+                        avatar: s.avatar || 'assets/avatars/6.png',
+                        classId: realClassId,
+                        className: realClassName,
+                        claimed: !!s.claimed,
+                        role: 'studente'
+                    });
+                }
+            });
+        }
+
         const checkAndAddStudent = (id, u) => {
             if (!u) return;
             if (u.role === 'docente' || u.role === 'admin') return;
