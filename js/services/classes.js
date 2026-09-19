@@ -168,11 +168,18 @@ window.viewClassStudents = async function(code, name, classId = null) {
 
     try {
         let classDoc = null;
-        // 1. Cerchiamo la classe prioritariamente per ID, poi per Codice sia in 'classes' che 'palestra_classes'
+        // 1. Cerchiamo la classe prioritariamente per ID, poi per Codice sia in 'hub_classes', 'classes' che 'palestra_classes'
         if (classId) {
-            classDoc = await window.fbDb.collection('classes').doc(classId).get().catch(() => ({ exists: false }));
+            classDoc = await window.fbDb.collection('hub_classes').doc(classId).get().catch(() => ({ exists: false }));
+            if (!classDoc || !classDoc.exists) {
+                classDoc = await window.fbDb.collection('classes').doc(classId).get().catch(() => ({ exists: false }));
+            }
             if (!classDoc || !classDoc.exists) {
                 classDoc = await window.fbDb.collection('palestra_classes').doc(classId).get().catch(() => ({ exists: false }));
+            }
+            if (!classDoc || !classDoc.exists) {
+                const hubClassQ = await window.fbDb.collection('hub_classes').where('code', '==', code).get().catch(() => ({ empty: true }));
+                if (hubClassQ && !hubClassQ.empty) classDoc = hubClassQ.docs[0];
             }
             if (!classDoc || !classDoc.exists) {
                 const classQ = await window.fbDb.collection('classes').where('code', '==', code).get().catch(() => ({ empty: true }));
@@ -183,11 +190,15 @@ window.viewClassStudents = async function(code, name, classId = null) {
                 if (pClassQ && !pClassQ.empty) classDoc = pClassQ.docs[0];
             }
         } else {
-            const classQ = await window.fbDb.collection('classes').where('code', '==', code).get().catch(() => ({ empty: true }));
-            if (classQ && !classQ.empty) classDoc = classQ.docs[0];
+            const hubClassQ = await window.fbDb.collection('hub_classes').where('code', '==', code).get().catch(() => ({ empty: true }));
+            if (hubClassQ && !hubClassQ.empty) classDoc = hubClassQ.docs[0];
             else {
-                const pClassQ = await window.fbDb.collection('palestra_classes').where('code', '==', code).get().catch(() => ({ empty: true }));
-                if (pClassQ && !pClassQ.empty) classDoc = pClassQ.docs[0];
+                const classQ = await window.fbDb.collection('classes').where('code', '==', code).get().catch(() => ({ empty: true }));
+                if (classQ && !classQ.empty) classDoc = classQ.docs[0];
+                else {
+                    const pClassQ = await window.fbDb.collection('palestra_classes').where('code', '==', code).get().catch(() => ({ empty: true }));
+                    if (pClassQ && !pClassQ.empty) classDoc = pClassQ.docs[0];
+                }
             }
         }
 
