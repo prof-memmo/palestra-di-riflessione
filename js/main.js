@@ -483,39 +483,22 @@ async function renderProfiloPage() {
             const firestoreClasses = [];
 
             if (isSuperAdmin) {
-                // L'Amministratore carica TUTTE le classi presenti su Firestore (Hub + Legacy)
-                if (window.PalestraCrossDB) {
-                    const crossClasses = await window.PalestraCrossDB.fetchAllPalestraClasses();
-                    crossClasses.forEach(c => {
-                        if (!firestoreClasses.find(existing => existing.id === c.id || (c.code && existing.code === c.code))) {
-                            firestoreClasses.push(c);
-                        }
-                    });
-                }
-                const [cSnap, pcSnap] = await Promise.all([
-                    window.fbDb.collection('classes').get().catch(e => { console.warn("classes query error", e); return { forEach: () => {} }; }),
-                    window.fbDb.collection('palestra_classes').get().catch(e => { console.warn("palestra_classes query error", e); return { forEach: () => {} }; })
-                ]);
-                cSnap.forEach(doc => {
-                    if (!firestoreClasses.find(c => c.id === doc.id || (doc.data().code && c.code === doc.data().code))) {
-                        firestoreClasses.push({ id: doc.id, ...doc.data() });
-                    }
-                });
-                pcSnap.forEach(doc => {
+                // L'Amministratore carica tutte le classi da hub_classes
+                const hubSnap = await window.fbDb.collection('hub_classes').get().catch(e => { console.warn("hub_classes query error", e); return { forEach: () => {} }; });
+                hubSnap.forEach(doc => {
                     if (!firestoreClasses.find(c => c.id === doc.id || (doc.data().code && c.code === doc.data().code))) {
                         firestoreClasses.push({ id: doc.id, ...doc.data() });
                     }
                 });
             } else {
-                // Docente: cerca sia per UID che per email su entrambe le collezioni
+                // Docente: cerca su hub_classes per UID, email o collaboratori
                 const queries = [
-                    window.fbDb.collection('classes').where('teacherIds', 'array-contains', user.uid).get().catch(() => ({ forEach: () => {} })),
-                    window.fbDb.collection('classes').where('teacherId', '==', user.uid).get().catch(() => ({ forEach: () => {} })),
-                    window.fbDb.collection('palestra_classes').where('teacherId', '==', user.uid).get().catch(() => ({ forEach: () => {} }))
+                    window.fbDb.collection('hub_classes').where('teacherIds', 'array-contains', user.uid).get().catch(() => ({ forEach: () => {} })),
+                    window.fbDb.collection('hub_classes').where('teacherId', '==', user.uid).get().catch(() => ({ forEach: () => {} }))
                 ];
                 if (user.email) {
-                    queries.push(window.fbDb.collection('classes').where('teacherEmail', '==', user.email.toLowerCase()).get().catch(() => ({ forEach: () => {} })));
-                    queries.push(window.fbDb.collection('classes').where('collaboratori', 'array-contains', user.email.toLowerCase()).get().catch(() => ({ forEach: () => {} })));
+                    queries.push(window.fbDb.collection('hub_classes').where('teacherEmail', '==', user.email.toLowerCase()).get().catch(() => ({ forEach: () => {} })));
+                    queries.push(window.fbDb.collection('hub_classes').where('collaboratori', 'array-contains', user.email.toLowerCase()).get().catch(() => ({ forEach: () => {} })));
                 }
                 const snaps = await Promise.all(queries);
                 snaps.forEach(snap => {
@@ -527,12 +510,15 @@ async function renderProfiloPage() {
                 });
             }
 
-            // RETROATTIVITÀ: Se il docente ha un classId (unito via codice), recuperiamo anche quella classe
+            // Se il docente ha un classId, recuperiamo anche quella classe da hub_classes
             if (user.classId && !firestoreClasses.find(c => c.id === user.classId)) {
                 try {
-                    const joinedClassDoc = await window.fbDb.collection('classes').doc(user.classId).get();
+                    const joinedClassDoc = await window.fbDb.collection('hub_classes').doc(user.classId).get();
                     if (joinedClassDoc.exists) {
                         firestoreClasses.push({ id: joinedClassDoc.id, ...joinedClassDoc.data() });
+                    }
+                } catch(e) {}
+            }
                     }
                 } catch (err) { console.warn("Errore recupero classe unita via codice:", err); }
             }
