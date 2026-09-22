@@ -517,10 +517,9 @@ async function renderProfiloPage() {
                     if (joinedClassDoc.exists) {
                         firestoreClasses.push({ id: joinedClassDoc.id, ...joinedClassDoc.data() });
                     }
-                } catch(e) {}
-            }
-                    }
-                } catch (err) { console.warn("Errore recupero classe unita via codice:", err); }
+                } catch (err) {
+                    console.warn("Errore recupero classe unita via codice:", err);
+                }
             }
             console.log("DEBUG CLASSI - Classi trovate su Firestore:", firestoreClasses.map(c => ({nome: c.name, code: c.code, docenti: c.teacherIds || [c.teacherId]})));
             
