@@ -32,6 +32,9 @@ async function renderAdminPage() {
                     <button type="button" class="admin-tab-btn" data-tab="rules-editor" onclick="window.switchAdminTab('rules-editor')" style="padding: 10px 18px; border-radius: 12px; font-size: 0.88rem; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; border: 1.5px solid transparent; transition: all 0.2s;">
                         <i class="fa-solid fa-scroll"></i> Regolamento &amp; Progetto
                     </button>
+                    <button type="button" class="admin-tab-btn" data-tab="miniguida-editor" onclick="window.switchAdminTab('miniguida-editor')" style="padding: 10px 18px; border-radius: 12px; font-size: 0.88rem; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; border: 1.5px solid transparent; transition: all 0.2s;">
+                        <i class="fa-solid fa-circle-question"></i> Miniguida / Tutorial
+                    </button>
                     <button type="button" class="admin-tab-btn" data-tab="users-classes" onclick="window.switchAdminTab('users-classes')" style="padding: 10px 18px; border-radius: 12px; font-size: 0.88rem; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; border: 1.5px solid transparent; transition: all 0.2s;">
                         <i class="fa-solid fa-users"></i> Gestione Utenti &amp; Classi
                     </button>
@@ -51,6 +54,11 @@ async function renderAdminPage() {
                 <!-- 2. Tab Regolamento Ufficiale Cloud -->
                 <div id="tab-rules-editor" class="admin-tab-content" style="display: none;">
                     <div id="admin-rules-editor-container"></div>
+                </div>
+
+                <!-- Tab Miniguida / Tutorial -->
+                <div id="tab-miniguida-editor" class="admin-tab-content" style="display: none;">
+                    <div id="admin-miniguida-editor-container"></div>
                 </div>
 
                 <!-- 3. Tab Gestione Utenti e Classi -->
@@ -109,6 +117,9 @@ async function renderAdminPage() {
     }
     if (window.PalestraRulesService && typeof window.PalestraRulesService.renderAdminEditor === 'function') {
         window.PalestraRulesService.renderAdminEditor('admin-rules-editor-container');
+    }
+    if (window.PalestraMiniguidaService && typeof window.PalestraMiniguidaService.renderAdminEditor === 'function') {
+        window.PalestraMiniguidaService.renderAdminEditor('admin-miniguida-editor-container');
     }
     await loadAdminUsersInProfile();
     if(window.loadHistoricalArchives) window.loadHistoricalArchives();
