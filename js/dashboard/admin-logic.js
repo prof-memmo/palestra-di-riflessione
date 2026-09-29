@@ -1,7 +1,9 @@
 async function renderAdminPage() {
     const appContainer = document.getElementById('app');
+    const defaultTab = window.activeAdminTab || 'live-editor';
+
     appContainer.innerHTML = `
-        <div class="exercise-container" style="max-width: 1000px; margin: 0 auto; padding: 20px;">
+        <div class="exercise-container" style="max-width: 1050px; margin: 0 auto; padding: 20px;">
             <div style="display: flex; gap: 10px; margin-bottom: 25px; justify-content: center; flex-wrap: wrap;">
                 <button onclick="navigateTo('profilo')" class="btn" style="background: #f1f5f9; color: #334155; border: 1.5px solid #cbd5e1; border-radius: 50px; padding: 10px 22px; font-weight: 800; font-size: 0.9rem; cursor: pointer; display: inline-flex; align-items: center; gap: 8px;">
                     <i class="fa-solid fa-chalkboard-user"></i> 👨‍🏫 Pannello Docente
@@ -12,60 +14,87 @@ async function renderAdminPage() {
             </div>
             <h2 class="exercise-title" style="margin-bottom: 25px;">🛡️ DASHBOARD AMMINISTRATORE</h2>
             <div style="background: white; padding: 2rem; border-radius: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.05);">
-                <div style="margin-bottom: 2rem; border-bottom: 2px dashed #eee; padding-bottom: 1.5rem;">
-                    <p style="margin: 0; font-weight: 800; font-size: 1.2rem; color: #2c3e50;">Pannello di Controllo &amp; Impostazioni</p>
-                    <p style="margin: 5px 0 0 0; color: #666; font-size: 0.9rem;">Gestisci le impostazioni, gli override didattici, le classi e gli archivi storici della Palestra.</p>
-                </div>
-
-                <div style="margin-bottom: 20px;">
-                    <label style="font-size: 0.85rem; color: #64748b; font-weight: 700; display: block; margin-bottom: 6px;">Account Amministratore</label>
-                    <input type="text" value="prof.memmo@gmail.com" readonly style="width: 100%; padding: 10px 14px; border-radius: 10px; border: 1.5px solid #e2e8f0; background: #f8fafc; color: #475569; font-weight: 600;">
-                </div>
-
-                <!-- 1. Live Editor Didattico (Correzioni al Volo) -->
-                <div id="admin-live-editor-container"></div>
-
-                <!-- 1.5 Regolamento Ufficiale Live Editor Cloud -->
-                <div id="admin-rules-editor-container"></div>
-
-                <!-- 2. Diagnostica e Notifiche -->
-                <div style="margin-bottom: 25px; padding: 18px; border: 1px solid #e2e8f0; border-radius: 16px; background: #f8fafc;">
-                    <h3 style="color: #0284c7; margin-top:0; font-size: 1.05rem; display: flex; align-items: center; gap: 8px;"><i class="fa-solid fa-wrench"></i> Diagnostica &amp; Sistema</h3>
-                    <p style="font-size: 0.85rem; color: #64748b; margin-bottom: 15px;">Strumenti di verifica connessione e gestione avvisi dell'amministratore.</p>
-                    <div style="display:flex; gap:10px; flex-wrap:wrap;">
-                        <button type="button" class="btn" style="background: #0284c7; color: white; border: none; padding: 8px 18px; border-radius: 8px; font-size: 0.85rem; font-weight: 700; cursor: pointer;" onclick="window.testConnessioneAdmin()"><i class="fa-solid fa-satellite-dish"></i> Test Connessione Database</button>
-                        <button type="button" class="btn" style="background: #f1f5f9; color: #334155; border: 1px solid #cbd5e1; padding: 8px 18px; border-radius: 8px; font-size: 0.85rem; font-weight: 700; cursor: pointer;" onclick="window.resetNotificheLette()"><i class="fa-solid fa-bell-slash"></i> Reset Notifiche Non Lette</button>
+                <div style="margin-bottom: 1.5rem; border-bottom: 2px dashed #eee; padding-bottom: 1.2rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;">
+                    <div>
+                        <p style="margin: 0; font-weight: 800; font-size: 1.2rem; color: #2c3e50;">Pannello di Controllo &amp; Impostazioni</p>
+                        <p style="margin: 5px 0 0 0; color: #666; font-size: 0.9rem;">Gestisci le impostazioni, gli override didattici, il regolamento, le classi e gli archivi della Palestra.</p>
+                    </div>
+                    <div style="background: #f8fafc; padding: 6px 14px; border-radius: 12px; border: 1px solid #e2e8f0; font-size: 0.82rem; color: #475569; font-weight: 600; display: inline-flex; align-items: center; gap: 6px;">
+                        <i class="fa-solid fa-user-shield" style="color: var(--primary-color);"></i> prof.memmo@gmail.com
                     </div>
                 </div>
 
-                <!-- 3. Danger Zone: Gestione Punteggi Stagionali -->
-                <div style="margin-bottom: 25px; padding: 18px; border: 1px solid rgba(239, 68, 68, 0.3); border-radius: 16px; background: rgba(239, 68, 68, 0.04);">
-                    <h3 style="color: #dc2626; margin-top:0; font-size: 1.05rem; display: flex; align-items: center; gap: 8px;"><i class="fa-solid fa-rotate-left"></i> Reset Validazioni Stagione</h3>
-                    <p style="font-size: 0.85rem; color: #64748b; margin-bottom: 15px;">Azzera contemporaneamente tutti i progressi e le lezioni completate per la nuova stagione mantenendo inalterati studenti, docenti e classi.</p>
-                    <button type="button" class="btn" style="background: #dc2626; color: white; border: none; padding: 8px 18px; border-radius: 8px; font-size: 0.85rem; font-weight: 700; cursor: pointer;" onclick="window.azzeraValidazioniStagione()"><i class="fa-solid fa-rotate-left"></i> Azzera Tutti i Progressi Esercizi</button>
+                <!-- Navigation Tabs Bar -->
+                <div class="admin-tabs-nav" style="display: flex; gap: 8px; margin-bottom: 24px; border-bottom: 2px solid #f1f5f9; padding-bottom: 12px; overflow-x: auto;">
+                    <button type="button" class="admin-tab-btn" data-tab="live-editor" onclick="window.switchAdminTab('live-editor')" style="padding: 10px 18px; border-radius: 12px; font-size: 0.88rem; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; border: 1.5px solid transparent; transition: all 0.2s;">
+                        <i class="fa-solid fa-pen-to-square"></i> Live Editor Didattico
+                    </button>
+                    <button type="button" class="admin-tab-btn" data-tab="rules-editor" onclick="window.switchAdminTab('rules-editor')" style="padding: 10px 18px; border-radius: 12px; font-size: 0.88rem; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; border: 1.5px solid transparent; transition: all 0.2s;">
+                        <i class="fa-solid fa-scroll"></i> Regolamento &amp; Progetto
+                    </button>
+                    <button type="button" class="admin-tab-btn" data-tab="users-classes" onclick="window.switchAdminTab('users-classes')" style="padding: 10px 18px; border-radius: 12px; font-size: 0.88rem; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; border: 1.5px solid transparent; transition: all 0.2s;">
+                        <i class="fa-solid fa-users"></i> Gestione Utenti &amp; Classi
+                    </button>
+                    <button type="button" class="admin-tab-btn" data-tab="historical-archives" onclick="window.switchAdminTab('historical-archives')" style="padding: 10px 18px; border-radius: 12px; font-size: 0.88rem; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; border: 1.5px solid transparent; transition: all 0.2s;">
+                        <i class="fa-solid fa-clock-rotate-left"></i> Archivio Storico
+                    </button>
+                    <button type="button" class="admin-tab-btn" data-tab="system-maintenance" onclick="window.switchAdminTab('system-maintenance')" style="padding: 10px 18px; border-radius: 12px; font-size: 0.88rem; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; border: 1.5px solid transparent; transition: all 0.2s;">
+                        <i class="fa-solid fa-gears"></i> Diagnostica &amp; Sistema
+                    </button>
                 </div>
 
-                <!-- 4. Danger Zone: Archiviazione Annuale -->
-                <div style="margin-bottom: 25px; padding: 18px; border: 1px solid #dc2626; border-radius: 16px; background: rgba(239, 68, 68, 0.08);">
-                    <h3 style="color: #dc2626; margin-top:0; font-size: 1.05rem; display: flex; align-items: center; gap: 8px;"><i class="fa-solid fa-box-archive"></i> Archiviazione Annuale Palestra di Riflessione</h3>
-                    <p style="font-size: 0.85rem; margin-bottom: 15px; color: #475569;">Salva una "fotografia" della classifica finale e archivia gli studenti dell'anno scolastico in corso. Potrà essere ripristinata dall'Archivio Storico in caso di necessità.</p>
-                    <button type="button" class="btn" style="background: transparent; color: #dc2626; border: 1.5px solid #dc2626; padding: 8px 18px; border-radius: 8px; font-weight: 700; font-size: 0.85rem; cursor: pointer;" onclick="window.archiviaAnnoCorrente()"><i class="fa-solid fa-box-archive"></i> Esegui Archiviazione Anno</button>
+                <!-- 1. Tab Live Editor Didattico -->
+                <div id="tab-live-editor" class="admin-tab-content">
+                    <div id="admin-live-editor-container"></div>
                 </div>
 
-                <!-- 5. Archivio Storico -->
-                <div id="admin-historical-archives-area" style="margin-bottom: 30px; padding: 18px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 16px;">
-                    <h3 style="color: #d97706; margin-top:0; font-size: 1.05rem; display: flex; align-items: center; gap: 8px;"><i class="fa-solid fa-clock-rotate-left"></i> Archivio Storico</h3>
-                    <p style="font-size: 0.85rem; margin-bottom: 15px; color: #64748b;">Consulta lo storico degli studenti degli anni passati o ripristina un anno archiviato.</p>
-                    <div id="admin-historical-archives-list">
-                        <p style="font-size: 0.85rem; color: #94a3b8;">Caricamento archivio in corso...</p>
-                    </div>
+                <!-- 2. Tab Regolamento Ufficiale Cloud -->
+                <div id="tab-rules-editor" class="admin-tab-content" style="display: none;">
+                    <div id="admin-rules-editor-container"></div>
                 </div>
 
-                <!-- 6. Elenco Iscritti e Statistiche -->
-                <div style="border-top: 2px dashed #eee; padding-top: 20px;">
-                    <h3 style="color: #1e293b; margin-top: 0; font-size: 1.15rem; display: flex; align-items: center; gap: 8px;"><i class="fa-solid fa-users"></i> Gestione Utenti e Classi</h3>
+                <!-- 3. Tab Gestione Utenti e Classi -->
+                <div id="tab-users-classes" class="admin-tab-content" style="display: none;">
                     <div id="admin-users-list">
                         <p style="color: #666; font-size: 0.9rem; text-align: center; padding: 2rem;">Caricamento utenti e statistiche in corso...</p>
+                    </div>
+                </div>
+
+                <!-- 4. Tab Archivio Storico -->
+                <div id="tab-historical-archives" class="admin-tab-content" style="display: none;">
+                    <div id="admin-historical-archives-area" style="padding: 20px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 16px;">
+                        <h3 style="color: #d97706; margin-top:0; font-size: 1.15rem; display: flex; align-items: center; gap: 8px;"><i class="fa-solid fa-clock-rotate-left"></i> Archivio Storico</h3>
+                        <p style="font-size: 0.85rem; margin-bottom: 15px; color: #64748b;">Consulta lo storico degli studenti degli anni passati o ripristina un anno archiviato.</p>
+                        <div id="admin-historical-archives-list">
+                            <p style="font-size: 0.85rem; color: #94a3b8;">Caricamento archivio in corso...</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 5. Tab Diagnostica e Sistema & Manutenzione -->
+                <div id="tab-system-maintenance" class="admin-tab-content" style="display: none;">
+                    <!-- Diagnostica e Notifiche -->
+                    <div style="margin-bottom: 25px; padding: 18px; border: 1px solid #e2e8f0; border-radius: 16px; background: #f8fafc;">
+                        <h3 style="color: #0284c7; margin-top:0; font-size: 1.05rem; display: flex; align-items: center; gap: 8px;"><i class="fa-solid fa-wrench"></i> Diagnostica &amp; Sistema</h3>
+                        <p style="font-size: 0.85rem; color: #64748b; margin-bottom: 15px;">Strumenti di verifica connessione e gestione avvisi dell'amministratore.</p>
+                        <div style="display:flex; gap:10px; flex-wrap:wrap;">
+                            <button type="button" class="btn" style="background: #0284c7; color: white; border: none; padding: 8px 18px; border-radius: 8px; font-size: 0.85rem; font-weight: 700; cursor: pointer;" onclick="window.testConnessioneAdmin()"><i class="fa-solid fa-satellite-dish"></i> Test Connessione Database</button>
+                            <button type="button" class="btn" style="background: #f1f5f9; color: #334155; border: 1px solid #cbd5e1; padding: 8px 18px; border-radius: 8px; font-size: 0.85rem; font-weight: 700; cursor: pointer;" onclick="window.resetNotificheLette()"><i class="fa-solid fa-bell-slash"></i> Reset Notifiche Non Lette</button>
+                        </div>
+                    </div>
+
+                    <!-- Reset Punteggi Stagionali -->
+                    <div style="margin-bottom: 25px; padding: 18px; border: 1px solid rgba(239, 68, 68, 0.3); border-radius: 16px; background: rgba(239, 68, 68, 0.04);">
+                        <h3 style="color: #dc2626; margin-top:0; font-size: 1.05rem; display: flex; align-items: center; gap: 8px;"><i class="fa-solid fa-rotate-left"></i> Reset Validazioni Stagione</h3>
+                        <p style="font-size: 0.85rem; color: #64748b; margin-bottom: 15px;">Azzera contemporaneamente tutti i progressi e le lezioni completate per la nuova stagione mantenendo inalterati studenti, docenti e classi.</p>
+                        <button type="button" class="btn" style="background: #dc2626; color: white; border: none; padding: 8px 18px; border-radius: 8px; font-size: 0.85rem; font-weight: 700; cursor: pointer;" onclick="window.azzeraValidazioniStagione()"><i class="fa-solid fa-rotate-left"></i> Azzera Tutti i Progressi Esercizi</button>
+                    </div>
+
+                    <!-- Archiviazione Annuale -->
+                    <div style="margin-bottom: 25px; padding: 18px; border: 1px solid #dc2626; border-radius: 16px; background: rgba(239, 68, 68, 0.08);">
+                        <h3 style="color: #dc2626; margin-top:0; font-size: 1.05rem; display: flex; align-items: center; gap: 8px;"><i class="fa-solid fa-box-archive"></i> Archiviazione Annuale Palestra di Riflessione</h3>
+                        <p style="font-size: 0.85rem; margin-bottom: 15px; color: #475569;">Salva una "fotografia" della classifica finale e archivia gli studenti dell'anno scolastico in corso. Potrà essere ripristinata dall'Archivio Storico in caso di necessità.</p>
+                        <button type="button" class="btn" style="background: transparent; color: #dc2626; border: 1.5px solid #dc2626; padding: 8px 18px; border-radius: 8px; font-weight: 700; font-size: 0.85rem; cursor: pointer;" onclick="window.archiviaAnnoCorrente()"><i class="fa-solid fa-box-archive"></i> Esegui Archiviazione Anno</button>
                     </div>
                 </div>
             </div>
@@ -73,6 +102,8 @@ async function renderAdminPage() {
     `;
 
     window.currentSection = 'admin';
+    window.switchAdminTab(defaultTab);
+
     if (window.LiveEditor && typeof window.LiveEditor.renderAdminPanel === 'function') {
         window.LiveEditor.renderAdminPanel('admin-live-editor-container');
     }
@@ -82,6 +113,35 @@ async function renderAdminPage() {
     await loadAdminUsersInProfile();
     if(window.loadHistoricalArchives) window.loadHistoricalArchives();
 }
+
+window.switchAdminTab = function(tabName) {
+    window.activeAdminTab = tabName;
+    document.querySelectorAll('.admin-tab-btn').forEach(btn => {
+        if (btn.dataset.tab === tabName) {
+            btn.classList.add('active');
+            btn.style.background = 'var(--primary-color, #5c67f2)';
+            btn.style.color = '#ffffff';
+            btn.style.fontWeight = '800';
+            btn.style.borderColor = 'transparent';
+            btn.style.boxShadow = '0 4px 12px rgba(92, 103, 242, 0.25)';
+        } else {
+            btn.classList.remove('active');
+            btn.style.background = '#f8fafc';
+            btn.style.color = '#475569';
+            btn.style.fontWeight = '600';
+            btn.style.borderColor = '#e2e8f0';
+            btn.style.boxShadow = 'none';
+        }
+    });
+
+    document.querySelectorAll('.admin-tab-content').forEach(content => {
+        if (content.id === `tab-${tabName}`) {
+            content.style.display = 'block';
+        } else {
+            content.style.display = 'none';
+        }
+    });
+};
 
 window.testConnessioneAdmin = async function() {
     try {
@@ -170,7 +230,7 @@ async function loadAdminUsersInProfile() {
             seenUserIds.add(u.id);
             if (emailKey) seenEmails.add(emailKey);
 
-            if (u.status === 'archived') return;
+            if (u.status === 'archived' || u.status === 'deleted' || u.deleted === true || u.isDeleted === true) return;
 
             const userData = { id: u.id, uid: u.id, ...u, _progress: progressMap[u.id] || {} };
             allUsers.push(userData);

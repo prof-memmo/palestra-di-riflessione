@@ -254,6 +254,25 @@ window.PalestraCrossDB = {
 
     fetchAllPalestraUsers: async function() {
         const usersMap = new Map();
+        const deletedUids = new Set();
+        const deletedEmails = new Set();
+
+        // 0. Recupera tombstone utenti eliminati da Firestore e da localStorage
+        try {
+            const localDeleted = JSON.parse(localStorage.getItem('palestra_deleted_uids') || '[]');
+            localDeleted.forEach(id => deletedUids.add(id));
+        } catch(e) {}
+
+        if (window.fbDb) {
+            try {
+                const delSnap = await window.fbDb.collection('palestra_deleted_users').get();
+                delSnap.forEach(d => {
+                    deletedUids.add(d.id);
+                    const dd = d.data();
+                    if (dd.email) deletedEmails.add(dd.email.toLowerCase().trim());
+                });
+            } catch(e) {}
+        }
 
         // 1. Dalla collezione Hub (palestra_users o raw users)
         if (window.fbDb) {
@@ -359,7 +378,16 @@ window.PalestraCrossDB = {
             } catch(e) {}
         }
 
-        return Array.from(usersMap.values());
+        // 5. Filtro rigoroso: esclude utenti cancellati, archiviati o con tombstone
+        const filteredUsers = Array.from(usersMap.values()).filter(u => {
+            if (!u || !u.id) return false;
+            const emailKey = (u.email || '').toLowerCase().trim();
+            if (deletedUids.has(u.id) || (emailKey && deletedEmails.has(emailKey))) return false;
+            if (u.status === 'archived' || u.status === 'deleted' || u.deleted === true || u.isDeleted === true) return false;
+            return true;
+        });
+
+        return filteredUsers;
     },
 
     fetchAllPalestraClasses: async function() {
