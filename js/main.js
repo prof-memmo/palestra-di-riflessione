@@ -314,114 +314,19 @@ function renderHomePage() {
 }
 
 function renderIntroPage() {
-    const appContainer = document.getElementById('app');
-    appContainer.innerHTML = `
+    if (window.PalestraRulesService && typeof window.PalestraRulesService.renderPublicView === 'function') {
+        window.PalestraRulesService.renderPublicView('app');
+    } else {
+        const appContainer = document.getElementById('app');
+        appContainer.innerHTML = `
         <div class="exercise-container">
             <h2 class="exercise-title">👋 BENVENUTI NELLA PALESTRA</h2>
             <div style="background: white; padding: 2rem; border-radius: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); line-height: 1.8;">
-                
-                <div style="background: #f8f9fa; padding: 2rem; border-radius: 20px; border-left: 8px solid #27ae60; margin-bottom: 2rem;">
-                    <h4 style="color: #27ae60; margin-bottom: 1rem; font-size: 1.4rem;">💡 Innovazione e Tradizione</h4>
-                    <p>
-                        Questa piattaforma integra l'esperienza didattica con i nuovi strumenti digitali. 
-                        Tutto il materiale è stato elaborato con l'aiuto dell'<b>Intelligenza Artificiale</b>, 
-                        ma è interamente <b>gestito, revisionato e guidato dall'uomo</b>. 
-                        L'IA è uno strumento prezioso, ma la professionalità docente resta il cuore che dà senso e direzione a ogni proposta.
-                    </p>
-                </div>
-
-                <div style="background: #eef7ff; padding: 2rem; border-radius: 20px; border-left: 8px solid #2980b9; margin-bottom: 2rem;">
-                    <h4 style="color: #2980b9; margin-bottom: 1rem; font-size: 1.4rem;">🌱 Autonomia e Competenze Digitali</h4>
-                    <p>
-                        L'obiettivo della Palestra è rendere ogni studente <b>protagonista autonomo</b> del proprio percorso. Attraverso l'uso attivo della piattaforma, raggiungerai traguardi fondamentali:
-                        <br>• <b>Consapevolezza</b>: imparerai a gestire i tuoi tempi di studio e a monitorare i tuoi sforzi.
-                        <br>• <b>Padronanza Digitale</b>: utilizzerai interfacce moderne e l'IA in modo critico.
-                        <br>• <b>Imparare a imparare</b>: svilupperai la capacità di reperire e rielaborare informazioni in autonomia.
-                    </p>
-                </div>
-
-                <div style="background: #fff9db; padding: 2rem; border-radius: 20px; border-left: 8px solid #f1c40f; margin-bottom: 2rem;">
-                    <h4 style="color: #d4ac0d; margin-bottom: 1rem; font-size: 1.4rem;">📚 Il piacere della Lettura</h4>
-                    <p>
-                        Nella sezione <b>Lettura</b> troverai testi originali e coinvolgenti divisi per:
-                        <br>• <b>Generi</b>: dall'Avventura al Giallo, dal Fantasy all'Attualità.
-                        <br>• <b>Livelli (A1-B2)</b>: percorsi calibrati sulle tue reali capacità di comprensione.
-                        <br>Ogni testo è una sfida per migliorare la tua comprensione e scoprire nuovi mondi.
-                    </p>
-                </div>
-
-                <div style="background: #f5eef8; padding: 2rem; border-radius: 20px; border-left: 8px solid #8e44ad; margin-bottom: 2rem;">
-                    <h4 style="color: #8e44ad; margin-bottom: 1rem; font-size: 1.4rem;">🌟 Il Tuo Profilo Digitale</h4>
-                    <p>
-                        Le funzioni avanzate sono ora attive per aumentare la tua autonomia:
-                        <br>• <b>Account Personale</b>: crea il tuo profilo per scegliere il tuo avatar e tenere traccia di ogni esercizio completato.
-                        <br>• <b>Click & Learn</b>: nelle letture puoi <b>cliccare su qualsiasi parola difficile</b> per scoprirne il significato e aggiungerla istantaneamente al tuo <b>Vocabolario Personale</b>.
-                        <br>• <b>Dashboard Avanzata</b>: consulta il tuo dizionario personalizzato nella sezione Profilo e guarda come crescono le tue competenze nel tempo.
-                    </p>
-                </div>
-
-                <div style="background: #fdf2f2; padding: 2rem; border-radius: 20px; border-left: 8px solid #e74c3c; margin-bottom: 2rem;">
-                    <h4 style="color: #e74c3c; margin-bottom: 1rem; font-size: 1.4rem;">🎯 Come funziona la Palestra?</h4>
-                    <p>
-                        La Palestra è divisa in aree tematiche (Grammatica, Lettura, Lessico, Produzione). 
-                        Per ogni argomento troverai le fasi di <b>SCOPRI</b> (teoria) e <b>ALLENATI</b> (pratica).
-                        <br>• <b>Navigazione Flessibile</b>: Se un esercizio è troppo difficile, usa il tasto <b>"RIPROVA PIÙ TARDI"</b> per saltarlo e procedere oltre: potrai affrontarlo di nuovo quando vorrai!
-                    </p>
-                </div>
-
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 2rem;">
-                    <div style="background: #e8f5e9; padding: 1.5rem; border-radius: 20px; border-top: 5px solid #2e7d32;">
-                        <h4 style="color: #2e7d32; margin-bottom: 0.8rem; font-size: 1.2rem;">🎓 Per gli Studenti</h4>
-                        <p style="font-size: 0.95rem; line-height: 1.6;">
-                            • <b>Accesso Semplice</b>: Entra con il codice fornito dal tuo docente (es. ALFA24). Nessuna email richiesta.<br>
-                            • <b>Vocabolario Personale</b>: Clicca sulle parole difficili e aggiungile al tuo dizionario.<br>
-                            • <b>Gamification</b>: Scegli il tuo avatar e guarda crescere i tuoi punti XP allenamento dopo allenamento.
-                        </p>
-                    </div>
-                    <div style="background: #e3f2fd; padding: 1.5rem; border-radius: 20px; border-top: 5px solid #1565c0;">
-                        <h4 style="color: #1565c0; margin-bottom: 0.8rem; font-size: 1.2rem;">👨‍🏫 Per i Docenti</h4>
-                        <p style="font-size: 0.95rem; line-height: 1.6;">
-                            • <b>Classi Digitali</b>: Accedi con Google, crea la tua classe e genera un <b>Codice Univoco</b>.<br>
-                            • <b>Distribuzione Rapida</b>: Condividi il codice con gli studenti per collegarli istantaneamente al tuo profilo.<br>
-                            • <b>Monitoraggio</b>: Visualizza i progressi della classe e scopri quali argomenti richiedono più ripasso.<br>
-                            • <b>Gestione Flessibile</b>: Sposta gli studenti tra le tue classi, modificale o rimuovile in ogni momento.<br>
-                            • <b>Assegnazione Diretta</b>: Assegna qualsiasi esercizio alle tue classi o condividilo su <b>Google Classroom</b> con un click.
-                        </p>
-                    </div>
-                </div>
-
-                <div style="background: #fff5f5; padding: 2rem; border-radius: 20px; border: 1px solid #ffcdd2; margin-bottom: 2rem;">
-                    <h4 style="color: #c62828; margin-bottom: 1rem; font-size: 1.3rem;">🚀 Guida Rapida al Setup</h4>
-                    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; text-align: center;">
-                        <div>
-                            <div style="font-size: 2rem; margin-bottom: 0.5rem;">1️⃣</div>
-                            <h5 style="margin-bottom: 0.5rem;">CONFIGURA</h5>
-                            <p style="font-size: 0.85rem; opacity: 0.8;">Accedi come Docente e crea la tua prima classe.</p>
-                        </div>
-                        <div>
-                            <div style="font-size: 2rem; margin-bottom: 0.5rem;">2️⃣</div>
-                            <h5 style="margin-bottom: 0.5rem;">CONDIVIDI</h5>
-                            <p style="font-size: 0.85rem; opacity: 0.8;">Dai il Codice Classe ai tuoi studenti.</p>
-                        </div>
-                        <div>
-                            <div style="font-size: 2rem; margin-bottom: 0.5rem;">3️⃣</div>
-                            <h5 style="margin-bottom: 0.5rem;">ALLENA</h5>
-                            <p style="font-size: 0.85rem; opacity: 0.8;">Guarda i risultati apparire nella tua dashboard.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <p style="text-align: center; font-style: italic; color: #777; margin-top: 2rem;">
-                    "La scuola deve restare fedele ai suoi valori, ma aperta al cambiamento. 
-                    Il cuore e la passione educativa sono assolutamente umani!" 😊
-                </p>
-
-                <div style="text-align: center; margin-top: 4rem; padding-top: 2rem; border-top: 1px solid #eee;">
-                    <img src="https://prof-memmo.github.io/prof-memmo-gestione-siti/shared/assets/branding/prof-memmo/avatar.png" alt="Logo Progetto" style="width: 120px; opacity: 0.9; background: transparent;">
-                </div>
+                <p style="text-align: center; color: #64748b;">Caricamento contenuti in corso...</p>
             </div>
         </div>
-    `;
+        `;
+    }
     window.currentSection = 'intro';
     if (typeof updateSidebarMenu === 'function') updateSidebarMenu();
 }
@@ -517,10 +422,9 @@ async function renderProfiloPage() {
                     if (joinedClassDoc.exists) {
                         firestoreClasses.push({ id: joinedClassDoc.id, ...joinedClassDoc.data() });
                     }
-                } catch(e) {}
-            }
-                    }
-                } catch (err) { console.warn("Errore recupero classe unita via codice:", err); }
+                } catch (err) {
+                    console.warn("Errore recupero classe unita via codice:", err);
+                }
             }
             console.log("DEBUG CLASSI - Classi trovate su Firestore:", firestoreClasses.map(c => ({nome: c.name, code: c.code, docenti: c.teacherIds || [c.teacherId]})));
             

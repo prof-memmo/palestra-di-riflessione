@@ -2,15 +2,37 @@ window.adminDeleteUser = async function(uid, name) {
     if (!confirm(`Sei sicuro di voler eliminare definitivamente l'utente "${name}"? \n\nVerranno cancellati tutti i suoi dati e i suoi progressi dall'ecosistema.`)) return;
     
     try {
-        // Elimina da palestra_users e palestra_progress
-        await window.fbDb.collection('users').doc(uid).delete().catch(() => {});
-        await window.fbDb.collection('progress').doc(uid).delete().catch(() => {});
-        
-        // Elimina dalla root legacy 'users' e da 'hub_users'
-        if (window.fbDb.rawCollection) {
-            await window.fbDb.rawCollection('users').doc(uid).delete().catch(() => {});
+        // 1. Elimina da palestra_users e palestra_progress
+        if (window.fbDb) {
+            await window.fbDb.collection('users').doc(uid).delete().catch(() => {});
+            await window.fbDb.collection('progress').doc(uid).delete().catch(() => {});
+            if (window.fbDb.rawCollection) {
+                await window.fbDb.rawCollection('users').doc(uid).delete().catch(() => {});
+            }
+            await window.fbDb.collection('hub_users').doc(uid).delete().catch(() => {});
+            
+            // Registra tombstone permanente per impedire resurrezione da database legacy/REST
+            await window.fbDb.collection('palestra_deleted_users').doc(uid).set({
+                deletedAt: new Date().toISOString(),
+                uid: uid,
+                name: name || ''
+            }).catch(() => {});
         }
-        await window.fbDb.collection('hub_users').doc(uid).delete().catch(() => {});
+        
+        // 2. Elimina da legacyFbDb se connesso
+        if (window.legacyFbDb) {
+            await window.legacyFbDb.collection('users').doc(uid).delete().catch(() => {});
+            await window.legacyFbDb.collection('progress').doc(uid).delete().catch(() => {});
+        }
+
+        // 3. Salva anche in localStorage come cache locale immediata
+        try {
+            const localDeleted = JSON.parse(localStorage.getItem('palestra_deleted_uids') || '[]');
+            if (!localDeleted.includes(uid)) {
+                localDeleted.push(uid);
+                localStorage.setItem('palestra_deleted_uids', JSON.stringify(localDeleted));
+            }
+        } catch(e) {}
         
         alert(`Utente "${name}" eliminato con successo dall'ecosistema.`);
         if (typeof renderAdminPage === 'function') renderAdminPage();
