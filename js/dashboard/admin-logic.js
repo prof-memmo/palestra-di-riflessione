@@ -25,6 +25,9 @@ async function renderAdminPage() {
                 <!-- 1. Live Editor Didattico (Correzioni al Volo) -->
                 <div id="admin-live-editor-container"></div>
 
+                <!-- 1.5 Regolamento Ufficiale Live Editor Cloud -->
+                <div id="admin-rules-editor-container"></div>
+
                 <!-- 2. Diagnostica e Notifiche -->
                 <div style="margin-bottom: 25px; padding: 18px; border: 1px solid #e2e8f0; border-radius: 16px; background: #f8fafc;">
                     <h3 style="color: #0284c7; margin-top:0; font-size: 1.05rem; display: flex; align-items: center; gap: 8px;"><i class="fa-solid fa-wrench"></i> Diagnostica &amp; Sistema</h3>
@@ -72,6 +75,9 @@ async function renderAdminPage() {
     window.currentSection = 'admin';
     if (window.LiveEditor && typeof window.LiveEditor.renderAdminPanel === 'function') {
         window.LiveEditor.renderAdminPanel('admin-live-editor-container');
+    }
+    if (window.PalestraRulesService && typeof window.PalestraRulesService.renderAdminEditor === 'function') {
+        window.PalestraRulesService.renderAdminEditor('admin-rules-editor-container');
     }
     await loadAdminUsersInProfile();
     if(window.loadHistoricalArchives) window.loadHistoricalArchives();
