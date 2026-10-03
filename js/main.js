@@ -290,7 +290,7 @@ function renderHomePage() {
                 </div>
                 
                 <div class="home-center">
-                    <img src="assets/hero.png" alt="Studente che impara" class="hero-image-new">
+                    <img src="assets/logo.png" alt="Palestra di Riflessione Logo" class="hero-image-new">
                     <div class="materia-card-home" onclick="navigateTo('culturagenerale')" style="margin-top: 1.5rem; width: 80%; max-width: 300px; padding: 1rem;">
                         <span class="materia-icon">🌍</span>
                         <div class="materia-label">Cultura Generale</div>
