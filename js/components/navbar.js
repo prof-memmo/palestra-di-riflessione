@@ -179,7 +179,7 @@ async function navigateTo(section, subType = null, level = null, updateHash = tr
         }
 
         if (section === 'contatti') {
-            window.open('https://profmemmo.it/contatti.html', '_blank');
+            window.open('https://prof-memmo.github.io/games/contatti.html', '_blank');
             return;
         }
         if (section === 'profilo') {

@@ -126,11 +126,15 @@ window.handleEmailLogin = async function() {
 };
 
 window.handleGoogleLogin = function() {
-    const isPreview = window.location.pathname.includes('/preview');
-    const portalUrl = isPreview
-        ? 'https://gestionesiti.profmemmo.it/preview/portal.html?redirect=palestra_riflessione'
-        : 'https://gestionesiti.profmemmo.it/portal.html?redirect=palestra_riflessione';
-    window.location.href = portalUrl;
+    const checkAge = document.getElementById('login-check-age')?.checked;
+    const checkPrivacy = document.getElementById('login-check-privacy')?.checked;
+    
+    if (!checkAge || !checkPrivacy) {
+        alert("Devi confermare l'età e accettare Privacy Policy e Termini per continuare.");
+        return;
+    }
+
+    Auth.loginWithGoogle();
 };
 
 window.handleGuestAccess = function() {
@@ -328,7 +332,7 @@ function renderIntroPage() {
 }
 
 function renderContattiPage() {
-    window.open('https://profmemmo.it/contatti.html', '_blank');
+    window.open('https://prof-memmo.github.io/games/contatti.html', '_blank');
 }
 
 
@@ -2836,7 +2840,7 @@ window.showEditProfileModal = () => {
                         <i class="fa-solid fa-globe"></i> Profilo Globale Ecosistema
                     </div>
                     <p style="font-size: 0.75rem; color: #64748b; margin: 0 0 10px 0;">Il tuo account è sincronizzato con l'Ecosistema Prof. Memmo. Gestisci abbonamenti e impostazioni generali dall'Hub.</p>
-                    <a href="https://profmemmo.it/profilo.html" target="_blank" class="btn" style="width: 100%; border-radius: 20px; font-weight: 700; font-size: 0.8rem; display: inline-flex; align-items: center; justify-content: center; gap: 8px; text-decoration: none; padding: 8px 12px; background: var(--primary-color); color: white;">
+                    <a href="https://prof-memmo.github.io/games/profilo.html" target="_blank" class="btn" style="width: 100%; border-radius: 20px; font-weight: 700; font-size: 0.8rem; display: inline-flex; align-items: center; justify-content: center; gap: 8px; text-decoration: none; padding: 8px 12px; background: var(--primary-color); color: white;">
                         Gestisci Profilo Globale <i class="fa-solid fa-arrow-up-right-from-square"></i>
                     </a>
                 </div>

@@ -22,7 +22,7 @@
   <!-- Icone per Safari e Dispositivi Mobili -->
   <link rel="manifest" href="manifest.json">
   <script>window.HUB_GAME_ID = "palestra-di-riflessione";</script>
-  <script src="https://gestionesiti.profmemmo.it/shared/hub-subscription-guard.js?v=20260824_palestra_guard"></script>
+  <script src="https://prof-memmo.github.io/prof-memmo-gestione-siti/shared/hub-subscription-guard.js?v=20260824_palestra_guard"></script>
 </head>
 <body>
     <button id="sidebar-open-btn" class="floating-toggle">☰</button>
@@ -39,7 +39,7 @@
             <div class="login-form">
                 <!-- Autenticazione Centrale e Diretta -->
                 <div id="login-primary-actions" style="display: flex; flex-direction: column; gap: 12px; margin-top: 1.5rem; margin-bottom: 1rem; align-items: center;">
-                    <button type="button" class="btn btn-primary" style="background: var(--primary-color); color: white; font-size: 1.15rem; font-weight: 800; padding: 14px 28px; border-radius: 50px; box-shadow: 0 4px 15px rgba(0,0,0,0.15); border: none; cursor: pointer; width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px;" onclick="window.handleGoogleLogin()">
+                    <button type="button" class="btn btn-primary" style="background: var(--primary-color); color: white; font-size: 1.15rem; font-weight: 800; padding: 14px 28px; border-radius: 50px; box-shadow: 0 4px 15px rgba(0,0,0,0.15); border: none; cursor: pointer; width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px;" onclick="window.location.href='https://prof-memmo.github.io/prof-memmo-gestione-siti/portal.html?redirect=palestra_riflessione'">
                         <i class="fa-solid fa-right-to-bracket"></i> Accedi tramite Hub
                     </button>
                     <p style="font-size: 0.85rem; color: #6b7280; margin-top: 5px;">Verrai reindirizzato al Portale Unico del Prof. Memmo per l'accesso sicuro.</p>
@@ -82,7 +82,7 @@
                     <i class="fa-solid fa-globe"></i> Profilo Globale Ecosistema
                 </div>
                 <p style="font-size: 0.75rem; color: #64748b; margin: 0 0 10px 0;">Il tuo account è sincronizzato con l'Ecosistema Prof. Memmo. Gestisci abbonamenti e impostazioni generali dall'Hub.</p>
-                <a href="https://profmemmo.it/profilo.html" target="_blank" class="btn" style="width: 100%; border-radius: 20px; font-weight: 700; font-size: 0.8rem; display: inline-flex; align-items: center; justify-content: center; gap: 8px; text-decoration: none; padding: 8px 12px; background: var(--primary-color); color: white;">
+                <a href="https://prof-memmo.github.io/games/profilo.html" target="_blank" class="btn" style="width: 100%; border-radius: 20px; font-weight: 700; font-size: 0.8rem; display: inline-flex; align-items: center; justify-content: center; gap: 8px; text-decoration: none; padding: 8px 12px; background: var(--primary-color); color: white;">
                     Gestisci Profilo Globale <i class="fa-solid fa-arrow-up-right-from-square"></i>
                 </a>
             </div>
@@ -107,7 +107,7 @@
                 <li><a href="#lessico" class="nav-item" data-section="lessico"><span class="icon">📖</span> <span>Lessico</span></a></li>
                 <li><a href="#produzione" class="nav-item" data-section="produzione"><span class="icon">✍️</span> <span>Produzione</span></a></li>
                 <li><a href="#culturagenerale" class="nav-item" data-section="culturagenerale"><span class="icon">🌍</span> <span>Cultura Generale</span></a></li>
-                <li><a href="https://profmemmo.it/contatti.html" target="_blank" class="nav-item" data-section="contatti"><span class="icon">📧</span> <span>Contatti</span></a></li>
+                <li><a href="https://prof-memmo.github.io/games/contatti.html" target="_blank" class="nav-item" data-section="contatti"><span class="icon">📧</span> <span>Contatti</span></a></li>
                 <li class="nav-logout-separator" style="margin-top: 1rem; border-top: 1px solid #f0f0f0; padding-top: 1rem;"></li>
                 <li><a href="javascript:void(0)" class="nav-item" onclick="if(window.openEditProfileModal) window.openEditProfileModal()"><span class="icon">📝</span> <span>Modifica Profilo</span></a></li>
                 <li><a href="javascript:void(0)" class="nav-item" onclick="if(window.openSharedModal) window.openSharedModal('invita')"><span class="icon">✈️</span> <span>Invita un Collega</span></a></li>
@@ -175,15 +175,11 @@
     </script>
 
     <footer class="footer">
-        <div class="footer-legal-links" style="margin-bottom: 8px; display: flex; justify-content: center; gap: 15px; font-size: 0.85rem;">
-            <a href="#" onclick="event.preventDefault(); openSharedModal('privacy');" style="color: #22c55e; text-decoration: underline;">Privacy Policy</a>
-            <a href="#" onclick="event.preventDefault(); openSharedModal('termini');" style="color: #22c55e; text-decoration: underline;">Termini e Condizioni</a>
-        </div>
         <div class="footer-nav">
-            <img src="https://gestionesiti.profmemmo.it/shared/assets/branding/prof-memmo/avatar.png" alt="Logo" class="footer-logo">
+            <img src="https://prof-memmo.github.io/prof-memmo-gestione-siti/shared/assets/branding/prof-memmo/avatar.png" alt="Logo" class="footer-logo">
         </div>
         <div style="display: flex; align-items: center; justify-content: center; gap: 15px; margin-top: 15px;">
-            <img src="https://gestionesiti.profmemmo.it/shared/assets/legal/patamu-badge.png" alt="Patamu" style="height: 80px; object-fit: contain;">
+            <img src="https://prof-memmo.github.io/prof-memmo-gestione-siti/shared/assets/legal/patamu-badge.png" alt="Patamu" style="height: 80px; object-fit: contain;">
             <p style="text-align: left; font-size: 0.8rem; line-height: 1.4; margin: 0; max-width: 800px; color: inherit;">
                 © 2026 Guglielmo Piersanti. Tutti i contenuti presenti su questo sito sono di proprietà dell'autore e sono protetti tramite deposito e marcatura temporale presso Patamu. I contenuti sono inoltre distribuiti con licenza Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0).
             </p>
@@ -234,7 +230,7 @@
     <div id="modal-miniguida" class="modal-overlay" style="display: none; align-items: center; justify-content: center; z-index: 9999; background: rgba(15,23,42,0.8); backdrop-filter: blur(4px); position: fixed; inset: 0; padding: 20px;">
         <div class="modal-content" style="background: white; border-radius: 24px; width: 100%; max-width: 900px; display: flex; overflow: hidden; position: relative; max-height: 90vh; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);">
             <div style="width: 33%; background: #f8fafc; display: flex; align-items: flex-end; justify-content: center; border-right: 2px solid #f1f5f9; padding-top: 20px;" class="hide-mobile">
-                <img src="assets/prof_memmo_full.jpg" onerror="this.src='https://gestionesiti.profmemmo.it/shared/assets/branding/prof-memmo/prof-memmo-full.jpg';" alt="Prof Memmo" style="width: 120%; object-fit: contain; mix-blend-mode: multiply; filter: drop-shadow(0 10px 15px rgba(0,0,0,0.2));">
+                <img src="assets/prof_memmo_full.jpg" onerror="this.src='https://prof-memmo.github.io/prof-memmo-gestione-siti/shared/assets/branding/prof-memmo/prof-memmo-full.jpg';" alt="Prof Memmo" style="width: 120%; object-fit: contain; mix-blend-mode: multiply; filter: drop-shadow(0 10px 15px rgba(0,0,0,0.2));">
             </div>
             <div style="flex: 1; padding: 30px 40px; display: flex; flex-direction: column; position: relative; min-height: 450px;">
                 <button onclick="closeMiniguida()" style="position: absolute; top: 15px; right: 15px; width: 36px; height: 36px; border-radius: 50%; border: none; background: #f1f5f9; color: #475569; font-size: 1.2rem; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background 0.2s;"><i class="fa-solid fa-xmark"></i></button>
@@ -321,6 +317,6 @@
         }
     </script>
     <!-- Modali condivisi ecosistema Prof. Memmo -->
-    <script src="https://gestionesiti.profmemmo.it/shared/legal-modal.js?v=20260819a"></script>
+    <script src="https://prof-memmo.github.io/prof-memmo-gestione-siti/shared/legal-modal.js?v=20260819a"></script>
 </body>
 </html>
