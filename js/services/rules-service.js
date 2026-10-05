@@ -430,7 +430,7 @@ La Palestra è divisa in aree tematiche (Grammatica, Lettura, Lessico, Produzion
                         </p>
 
                         <div style="text-align: center; margin-top: 4rem; padding-top: 2rem; border-top: 1px solid #eee;">
-                            <img src="https://prof-memmo.github.io/prof-memmo-gestione-siti/shared/assets/branding/prof-memmo/avatar.png" alt="Logo Progetto" style="width: 120px; opacity: 0.9; background: transparent;">
+                            <img src="https://gestionesiti.profmemmo.it/shared/assets/branding/prof-memmo/avatar.png" alt="Logo Progetto" style="width: 120px; opacity: 0.9; background: transparent;">
                         </div>
                     </div>
                 </div>

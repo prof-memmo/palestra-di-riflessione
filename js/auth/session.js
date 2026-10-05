@@ -78,7 +78,7 @@ Object.assign(window.Auth = window.Auth || {}, {
                     userPiano = hubData.subscription || hubData.abbonamento || (isSuperAdmin ? 'docente_ecosistema' : 'base');
                     if (!isSuperAdmin && hubData.statusAccount && (hubData.statusAccount === 'rejected' || hubData.statusAccount === 'suspended')) {
                         alert("Accesso negato: L'account è stato sospeso nell'Hub.");
-                        window.location.href = 'https://prof-memmo.github.io/prof-memmo-gestione-siti/portal.html';
+                        window.location.href = 'https://gestionesiti.profmemmo.it/portal.html';
                         return;
                     }
                 } else {
