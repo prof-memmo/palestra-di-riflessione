@@ -126,15 +126,11 @@ window.handleEmailLogin = async function() {
 };
 
 window.handleGoogleLogin = function() {
-    const ageEl = document.getElementById('login-check-age');
-    const privEl = document.getElementById('login-check-privacy');
-    
-    if (ageEl && privEl && (!ageEl.checked || !privEl.checked)) {
-        alert("Devi confermare l'età e accettare Privacy Policy e Termini per continuare.");
-        return;
-    }
-
-    Auth.loginWithGoogle();
+    const isPreview = window.location.pathname.includes('/preview');
+    const portalUrl = isPreview
+        ? 'https://gestionesiti.profmemmo.it/preview/portal.html?redirect=palestra_riflessione'
+        : 'https://gestionesiti.profmemmo.it/portal.html?redirect=palestra_riflessione';
+    window.location.href = portalUrl;
 };
 
 window.handleGuestAccess = function() {
