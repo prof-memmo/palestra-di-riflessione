@@ -14,6 +14,33 @@ Object.assign(window.Auth = window.Auth || {}, {
             };
         });
 
+        // 0. Check URL hash for SSO payload from Hub
+        try {
+            if (window.location.hash && window.location.hash.includes('pm_sso=')) {
+                const match = window.location.hash.match(/pm_sso=([^&]+)/);
+                if (match && match[1]) {
+                    const sso = JSON.parse(decodeURIComponent(match[1]));
+                    if (sso && sso.uid) {
+                        const isSuperAdmin = (sso.role === 'admin' || (sso.email && sso.email.toLowerCase() === 'prof.memmo@gmail.com'));
+                        let hubRole = isSuperAdmin ? 'admin' : (sso.role === 'docente' ? 'docente' : (sso.role === 'viandante' ? 'amico' : 'studente'));
+                        window.Auth._user = {
+                            uid: sso.uid,
+                            name: sso.name || (isSuperAdmin ? 'Prof. Memmo' : 'Atleta'),
+                            avatar: sso.avatar || 'assets/avatars/6.png',
+                            role: hubRole,
+                            piano: sso.subscription || (isSuperAdmin ? 'docente_ecosistema' : 'base'),
+                            email: sso.email || '',
+                            setupComplete: true
+                        };
+                        localStorage.setItem('palestra_user', JSON.stringify(window.Auth._user));
+                        history.replaceState(null, '', window.location.pathname + window.location.search);
+                    }
+                }
+            }
+        } catch(e) {
+            console.warn("Errore parsing SSO Palestra:", e);
+        }
+
         const savedUser = localStorage.getItem('palestra_user');
         if (savedUser) {
             try {
@@ -29,6 +56,10 @@ Object.assign(window.Auth = window.Auth || {}, {
                 if (user) {
                     window.Auth._fbUser = user;
                     await window.Auth._handleFirebaseUser(user);
+                } else if (window.Auth._user && window.Auth._user.uid) {
+                    // Mantieni la sessione attiva se autenticato via SSO
+                    window.Auth._fbUser = null;
+                    window.Auth._resolveReady();
                 } else {
                     window.Auth._fbUser = null;
                     window.Auth._user = null;
