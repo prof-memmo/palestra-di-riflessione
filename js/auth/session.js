@@ -30,6 +30,18 @@ Object.assign(window.Auth = window.Auth || {}, {
                     window.Auth._fbUser = user;
                     await window.Auth._handleFirebaseUser(user);
                 } else {
+                    // Se abbiamo una sessione SSO valida (da ponte Hub o cookie), preserviamola!
+                    const ssoUser = localStorage.getItem('palestra_user') || localStorage.getItem('hub_user_session');
+                    if (ssoUser) {
+                        try {
+                            const parsed = JSON.parse(ssoUser);
+                            if (parsed && (parsed.email || parsed.name)) {
+                                window.Auth._user = parsed;
+                                window.Auth._resolveReady();
+                                return;
+                            }
+                        } catch(e) {}
+                    }
                     window.Auth._fbUser = null;
                     window.Auth._user = null;
                     localStorage.removeItem('palestra_user');
