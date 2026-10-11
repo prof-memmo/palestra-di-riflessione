@@ -30,18 +30,6 @@ Object.assign(window.Auth = window.Auth || {}, {
                     window.Auth._fbUser = user;
                     await window.Auth._handleFirebaseUser(user);
                 } else {
-                    // Se abbiamo una sessione SSO valida (da ponte Hub o cookie), preserviamola!
-                    const ssoUser = localStorage.getItem('palestra_user') || localStorage.getItem('hub_user_session');
-                    if (ssoUser) {
-                        try {
-                            const parsed = JSON.parse(ssoUser);
-                            if (parsed && (parsed.email || parsed.name)) {
-                                window.Auth._user = parsed;
-                                window.Auth._resolveReady();
-                                return;
-                            }
-                        } catch(e) {}
-                    }
                     window.Auth._fbUser = null;
                     window.Auth._user = null;
                     localStorage.removeItem('palestra_user');
@@ -90,7 +78,7 @@ Object.assign(window.Auth = window.Auth || {}, {
                     userPiano = hubData.subscription || hubData.abbonamento || (isSuperAdmin ? 'docente_ecosistema' : 'base');
                     if (!isSuperAdmin && hubData.statusAccount && (hubData.statusAccount === 'rejected' || hubData.statusAccount === 'suspended')) {
                         alert("Accesso negato: L'account è stato sospeso nell'Hub.");
-                        window.location.href = 'https://profmemmo.it/portal.html';
+                        window.location.href = 'https://prof-memmo.github.io/prof-memmo-gestione-siti/portal.html';
                         return;
                     }
                 } else {
