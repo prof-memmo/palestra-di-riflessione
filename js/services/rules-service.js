@@ -414,15 +414,9 @@ L'innovazione tecnologica e l'Intelligenza Artificiale sono al servizio della cr
             container.innerHTML = `
                 <div class="exercise-container" style="max-width: 950px; margin: 0 auto; padding: 20px;">
                     <div style="text-align: center; margin-bottom: 25px;">
-                        <span style="background: rgba(39, 174, 96, 0.1); color: #27ae60; border: 1px solid #27ae60; padding: 4px 16px; border-radius: 50px; font-weight: 700; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.5px;">
-                            Scopri il Progetto &amp; Regolamento
-                        </span>
-                        <h2 class="exercise-title" style="margin-top: 12px; font-size: 1.8rem; color: #2c3e50;">
-                            🏋️ Palestra di Riflessione sulla Lingua
+                        <h2 class="exercise-title" style="margin: 0; font-size: 2rem; color: #2c3e50;">
+                            Regolamento
                         </h2>
-                        <p style="color: #64748b; font-size: 0.95rem; margin: 6px 0 0 0;">
-                            Regolamento Ufficiale e Linee Guida Didattiche dell'Ecosistema Prof. Memmo
-                        </p>
                     </div>
 
                     <div style="background: white; padding: 2rem; border-radius: 26px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); line-height: 1.8;">
@@ -495,7 +489,7 @@ L'innovazione tecnologica e l'Intelligenza Artificiale sono al servizio della cr
 
             container.innerHTML = `
                 <div class="exercise-container">
-                    <h2 class="exercise-title">👋 BENVENUTI NELLA PALESTRA</h2>
+                    <h2 class="exercise-title" style="text-align: center; margin-bottom: 25px;">Regolamento</h2>
                     <div style="background: white; padding: 2rem; border-radius: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); line-height: 1.8;">
                         
                         <!-- 1. Card Verde (Innovazione) -->
