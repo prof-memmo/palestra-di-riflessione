@@ -11,58 +11,28 @@
 
     const SUPER_ADMIN_EMAIL = "prof.memmo@gmail.com";
 
-    const DEFAULT_PALESTRA_RULES_TEXT = `[INNOVAZIONE]
-1. Innovazione e Tradizione
-Questa piattaforma integra l'esperienza didattica con i nuovi strumenti digitali. Tutto il materiale è stato elaborato con l'aiuto dell'Intelligenza Artificiale, ma è interamente gestito, revisionato e guidato dall'uomo. L'IA è uno strumento prezioso, ma la professionalità docente resta il cuore che dà senso e direzione a ogni proposta.
+    const DEFAULT_PALESTRA_RULES_TEXT = `1. Cos'è la Palestra di Riflessione e Profilo Centrale
+Come tutti i giochi dell'ecosistema Prof. Memmo, la Palestra di Riflessione nasce da una libera interpretazione e ha scopo puramente formativo e culturale. È un ambiente digitale dedicato al potenziamento della grammatica, del lessico, della comprensione del testo e della scrittura autonoma. Integra strumenti di Intelligenza Artificiale controllata, sempre supervisionata e guidata dalla sensibilità didattica del docente. L'accesso, la gestione del proprio account, dei piani e delle classi avvengono tramite il Profilo Docente sul portale principale: https://prof-memmo.github.io/games/.
 
-[AUTONOMIA]
-1. Autonomia e Competenze Digitali
-L'obiettivo della Palestra è rendere ogni studente protagonista autonomo del proprio percorso. Attraverso l'uso attivo della piattaforma, raggiungerai traguardi fondamentali:
-• Consapevolezza: imparerai a gestire i tuoi tempi di studio e a monitorare i tuoi sforzi.
-• Padronanza Digitale: utilizzerai interfacce moderne e l'IA in modo critico.
-• Imparare a imparare: svilupperai la capacità di reperire e rielaborare informazioni in autonomia.
+2. Classi Digitali, Codice Univoco e Accesso Studenti
+Il docente configura le classi e i nominativi dal portale principale, generando il Codice Classe Univoco (es. ALFA24) valido per tutti i giochi che ne fanno uso. Gli studenti accedono istantaneamente senza registrazioni o credenziali personali con email: inseriscono il codice, scelgono il proprio nome dall'elenco di classe e trovano subito i compiti assegnati, le letture e il proprio Vocabolario Personale Digitale.
 
-[LETTURA]
-1. Il piacere della Lettura
-Nella sezione Lettura troverai testi originali e coinvolgenti divisi per:
-• Generi: dall'Avventura al Giallo, dal Fantasy all'Attualità.
-• Livelli (A1-B2): percorsi calibrati sulle tue reali capacità di comprensione.
-Ogni testo è una sfida per migliorare la tua comprensione e scoprire nuovi mondi.
+3. Le 4 Aree di Allenamento: Teoria e Pratica
+La piattaforma si struttura in 4 aree cardine: Grammatica, Lessico, Lettura e Produzione Scritta. Per ciascun argomento gli studenti affrontano due fasi distinte:
+• SCOPRI: schede teoriche visive, chiare ed essenziali.
+• ALLENATI: esercizi interattivi a correzione immediata. Grazie alla funzione "Riprova più tardi", se un esercizio risulta momentaneamente troppo complesso lo studente può accantonarlo e riprenderlo successivamente senza frustrazione.
 
-[PROFILO]
-1. Il Tuo Profilo Digitale
-Le funzioni avanzate sono ora attive per aumentare la tua autonomia:
-• Account Personale: crea il tuo profilo per scegliere il tuo avatar e tenere traccia di ogni esercizio completato.
-• Click & Learn: nelle letture puoi cliccare su qualsiasi parola difficile per scoprirne il significato e aggiungerla istantaneamente al tuo Vocabolario Personale.
-• Dashboard Avanzata: consulta il tuo dizionario personalizzato nella sezione Profilo e guarda come crescono le tue competenze nel tempo.
+4. Letture per Generi, Livelli QCER e Click & Learn
+I percorsi di lettura offrono brani originali suddivisi per Generi (Avventura, Giallo, Fantasy, Attualità) e calibrati sui livelli del Quadro Comune Europeo (A1-B2). Grazie alla tecnologia interattiva "Click & Learn", durante la lettura basta cliccare su qualsiasi vocabolo complesso per aprirne la definizione e aggiungerlo istantaneamente al proprio Vocabolario Personale Digitale consultabile nel profilo.
 
-[FUNZIONAMENTO]
-1. Come funziona la Palestra?
-La Palestra è divisa in aree tematiche (Grammatica, Lettura, Lessico, Produzione). Per ogni argomento troverai le fasi di SCOPRI (teoria) e ALLENATI (pratica).
-• Navigazione Flessibile: Se un esercizio è troppo difficile, usa il tasto "RIPROVA PIÙ TARDI" per saltarlo e procedere oltre: potrai affrontarlo di nuovo quando vorrai!
+5. Gamification, Livelli XP e Autonomia
+Completando gli esercizi e arricchendo il proprio vocabolario, ogni studente accumula Punti Esperienza (XP), fa evolvere il proprio avatar ed espande la propria dashboard personale. Il sistema premia l'autonomia, l'imparare a imparare e la curiosità lessicale.
 
-[STUDENTI]
-1. Per gli Studenti
-• Accesso Semplice: Entra con il codice fornito dal tuo docente (es. ALFA24). Nessuna email richiesta.
-• Vocabolario Personale: Clicca sulle parole difficili e aggiungile al tuo dizionario.
-• Gamification: Scegli il tuo avatar e guarda crescere i tuoi punti XP allenamento dopo allenamento.
+6. Benessere degli Studenti e Riposo Digitale
+A tutela del benessere visivo e della concentrazione, dopo 45 minuti di esercitazione continua sulla piattaforma ogni sessione verrà temporaneamente bloccata per una Pausa obbligatoria di 15 minuti (Diritto al riposo digitale). Agli studenti non è consentito superare le 2 sessioni giornaliere (max 90 minuti al giorno complessivi). Questa limitazione oraria non si applica ai profili dei docenti né a chi si allena privatamente.
 
-[DOCENTI]
-1. Per i Docenti
-• Classi Digitali: Accedi con Google, crea la tua classe e genera un Codice Univoco.
-• Distribuzione Rapida: Condividi il codice con gli studenti per collegarli istantaneamente al tuo profilo.
-• Monitoraggio: Visualizza i progressi della classe e scopri quali argomenti richiedono più ripasso.
-• Gestione Flessibile: Sposta gli studenti tra le tue classi, modificale o rimuovile in ogni momento.
-• Assegnazione Diretta: Assegna qualsiasi esercizio alle tue classi o condividilo su Google Classroom con un click.
-
-[SETUP]
-1. Guida Rapida al Setup
-• 1️⃣ CONFIGURA: Accedi come Docente e crea la tua prima classe.
-• 2️⃣ CONDIVIDI: Dai il Codice Classe ai tuoi studenti.
-• 3️⃣ ALLENA: Guarda i risultati apparire nella tua dashboard.
-
-[CITAZIONE]
-"La scuola deve restare fedele ai suoi valori, ma aperta al cambiamento. Il cuore e la passione educativa sono assolutamente umani!" 😊`;
+7. Codice Etico e Alleanza Educativa
+L'innovazione tecnologica e l'Intelligenza Artificiale sono al servizio della crescita umana: il cuore dell'apprendimento risiede nella relazione educativa tra studente e docente. Ogni esercizio va affrontato con onestà intellettuale e impegno personale. Il regolamento potrà subire variazioni e integrazioni ufficiali da parte del Team Prof. Memmo.`;
 
     const RulesService = {
         _gameKey: 'palestra',
@@ -80,11 +50,48 @@ La Palestra è divisa in aree tematiche (Grammatica, Lettura, Lessico, Produzion
             return DEFAULT_PALESTRA_RULES_TEXT.trim();
         },
 
-        isSuperAdmin(email) {
+        _resolveUserEmail(providedEmail) {
+            if (providedEmail && typeof providedEmail === 'string' && providedEmail.trim()) {
+                return providedEmail.trim().toLowerCase();
+            }
             const fbUser = (window.fbAuth && window.fbAuth.currentUser) ||
                            (window.firebase && window.firebase.auth && window.firebase.auth().currentUser);
+            if (fbUser && fbUser.email) {
+                return fbUser.email.trim().toLowerCase();
+            }
             const user = (window.Auth && typeof window.Auth.getUser === 'function') ? window.Auth.getUser() : null;
-            const userEmail = (email || (fbUser && fbUser.email) || (user && user.email) || '').toLowerCase();
+            if (user && user.email) {
+                return user.email.trim().toLowerCase();
+            }
+            if (window.currentUser && window.currentUser.email) {
+                return window.currentUser.email.trim().toLowerCase();
+            }
+            if (window.currentUserEmail && typeof window.currentUserEmail === 'string') {
+                return window.currentUserEmail.trim().toLowerCase();
+            }
+            try {
+                const stored = JSON.parse(localStorage.getItem('currentUser') || '{}');
+                if (stored && stored.email) return stored.email.trim().toLowerCase();
+            } catch (e) {}
+            try {
+                const storedHub = JSON.parse(localStorage.getItem('hub_user') || '{}');
+                if (storedHub && storedHub.email) return storedHub.email.trim().toLowerCase();
+            } catch (e) {}
+            return '';
+        },
+
+        _getFirestoreDb() {
+            if (window.fbDb && typeof window.fbDb.collection === 'function') return window.fbDb;
+            if (window.db && typeof window.db.collection === 'function') return window.db;
+            if (window.hubDb && typeof window.hubDb.collection === 'function') return window.hubDb;
+            if (typeof firebase !== 'undefined' && firebase.firestore && typeof firebase.firestore === 'function') {
+                return firebase.firestore();
+            }
+            return null;
+        },
+
+        isSuperAdmin(email) {
+            const userEmail = this._resolveUserEmail(email);
             return userEmail === SUPER_ADMIN_EMAIL.toLowerCase();
         },
 
@@ -102,21 +109,29 @@ La Palestra è divisa in aree tematiche (Grammatica, Lettura, Lessico, Produzion
         },
 
         _notify() {
-            const text = this.getRawText();
-            if (window.currentSection === 'intro' && typeof this.renderPublicView === 'function') {
-                this.renderPublicView('app');
-            }
-            const textarea = document.getElementById('palestra-rules-textarea');
-            if (textarea && document.activeElement !== textarea) {
-                textarea.value = text;
-            }
-            this._listeners.forEach(cb => {
-                try {
-                    cb(text);
-                } catch (e) {
-                    console.error("Errore listener RulesService (Palestra):", e);
+            try {
+                const text = this.getRawText();
+                // Non sovrascrivere mai #app se ci troviamo in sezioni diverse da 'intro' (es. admin)
+                if (window.currentSection === 'intro' && typeof this.renderPublicView === 'function') {
+                    const appEl = document.getElementById('app');
+                    if (appEl) {
+                        this.renderPublicView(appEl);
+                    }
                 }
-            });
+                const textarea = document.getElementById('palestra-rules-textarea');
+                if (textarea && document.activeElement !== textarea) {
+                    textarea.value = text;
+                }
+                this._listeners.forEach(cb => {
+                    try {
+                        cb(text);
+                    } catch (e) {
+                        console.error("Errore listener RulesService (Palestra):", e);
+                    }
+                });
+            } catch (err) {
+                console.warn("Errore safe in _notify (Palestra):", err);
+            }
         },
 
         async init() {
@@ -191,16 +206,13 @@ La Palestra è divisa in aree tematiche (Grammatica, Lettura, Lessico, Produzion
             const trimmed = (newText || '').trim();
             if (!trimmed) throw new Error("Il testo del regolamento non può essere vuoto.");
 
-            const fbUser = (window.fbAuth && window.fbAuth.currentUser) ||
-                           (window.firebase && window.firebase.auth && window.firebase.auth().currentUser);
-            const user = (window.Auth && typeof window.Auth.getUser === 'function') ? window.Auth.getUser() : null;
-            const userEmail = (fbUser && fbUser.email ? fbUser.email : (user && user.email ? user.email : '')).toLowerCase();
-
-            if (userEmail !== SUPER_ADMIN_EMAIL.toLowerCase()) {
+            const userEmail = this._resolveUserEmail();
+            if (!this.isSuperAdmin(userEmail)) {
                 throw new Error(`Permesso negato: solo il Super-Admin (${SUPER_ADMIN_EMAIL}) può salvare le modifiche su Firestore.`);
             }
 
-            if (!window.fbDb) {
+            const db = this._getFirestoreDb();
+            if (!db) {
                 throw new Error("Connessione Firestore non attiva. Riprova più tardi.");
             }
 
@@ -211,7 +223,7 @@ La Palestra è divisa in aree tematiche (Grammatica, Lettura, Lessico, Produzion
                 gameKey: this._gameKey
             };
 
-            await window.fbDb.collection(this._collectionName).doc(this._docId).set(payload, { merge: true });
+            await db.collection(this._collectionName).doc(this._docId).set(payload, { merge: true });
 
             this._rawText = trimmed;
             this._lastUpdated = payload.lastUpdated;
@@ -311,13 +323,139 @@ La Palestra è divisa in aree tematiche (Grammatica, Lettura, Lessico, Produzion
             };
         },
 
+        // Parsing dinamico a punti numerati (Standard FantaLetteratura / Ecosistema)
+        parseTextToItems(text) {
+            const src = (text || this.getRawText()).trim();
+            if (!src) return [];
+
+            const blocks = src.split(/\n\s*\n/).map(b => b.trim()).filter(Boolean);
+            const items = [];
+
+            blocks.forEach((block, index) => {
+                const lines = block.split('\n').map(l => l.trim()).filter(Boolean);
+                if (lines.length === 0) return;
+
+                let firstLine = lines[0].replace(/^[\u2022\*\-]\s*/, '').trim();
+                let title = '';
+                let content = '';
+
+                const matchNumbered = firstLine.match(/^(\d+[\.\)]\s*)(.*)$/);
+                if (matchNumbered) {
+                    firstLine = matchNumbered[2].trim();
+                }
+
+                if (lines.length > 1) {
+                    title = firstLine;
+                    content = lines.slice(1).join('\n').trim();
+                } else {
+                    const colonMatch = firstLine.match(/^([^:]{3,60}):\s*(.+)$/);
+                    if (colonMatch) {
+                        title = colonMatch[1].trim();
+                        content = colonMatch[2].trim();
+                    } else {
+                        content = firstLine;
+                    }
+                }
+
+                if (title) {
+                    title = title.replace(/:\s*$/, '').trim();
+                }
+
+                items.push({
+                    index: index + 1,
+                    title: title || `Punto ${index + 1}`,
+                    text: content || title,
+                    fullText: block
+                });
+            });
+
+            return items;
+        },
+
+        _formatItemHtml(text) {
+            if (!text) return '';
+            const lines = text.split('\n').map(l => l.trim()).filter(Boolean);
+            return lines.map(line => {
+                if (line.startsWith('•') || line.startsWith('-')) {
+                    const clean = line.replace(/^[•\-]\s*/, '');
+                    const colonIdx = clean.indexOf(':');
+                    if (colonIdx !== -1) {
+                        return `<div style="margin: 6px 0; padding-left: 12px; border-left: 3px solid #cbd5e1;"><strong>${clean.substring(0, colonIdx).trim()}:</strong> ${clean.substring(colonIdx + 1).trim()}</div>`;
+                    }
+                    return `<div style="margin: 6px 0; padding-left: 12px; border-left: 3px solid #cbd5e1;">• ${clean}</div>`;
+                }
+                return `<p style="margin: 0 0 10px 0; font-size: 0.95rem; line-height: 1.7; color: #334155;">${line}</p>`;
+            }).join('');
+        },
+
         // ===================================================================
-        // VISTA PUBBLICA NATIVA (SCOPRI IL PROGETTO)
+        // VISTA PUBBLICA (SCOPRI IL PROGETTO / REGOLAMENTO)
+        // Supporto ibrido: Layout dinamico a punti (standard) o card storiche (legacy)
         // ===================================================================
         renderPublicView(containerId = 'app') {
             const container = typeof containerId === 'string' ? document.getElementById(containerId) : containerId;
             if (!container) return;
 
+            const raw = this.getRawText();
+            const hasLegacyTags = /\[(INNOVAZIONE|AUTONOMIA|LETTURA|PROFILO|FUNZIONAMENTO|STUDENTI|DOCENTI|SETUP|CITAZIONE)\]/i.test(raw);
+
+            if (hasLegacyTags) {
+                this._renderLegacyPublicView(container);
+            } else {
+                this._renderDynamicItemsView(container);
+            }
+        },
+
+        _renderDynamicItemsView(container) {
+            const items = this.parseTextToItems();
+            const borderColors = ['#27ae60', '#2980b9', '#d4ac0d', '#8e44ad', '#e74c3c', '#0d9488', '#4f46e5', '#e11d48'];
+            const bgTints = ['#f8f9fa', '#eef7ff', '#fff9db', '#f5eef8', '#fdf2f2', '#f0fdfa', '#eef2ff', '#fff1f2'];
+
+            container.innerHTML = `
+                <div class="exercise-container" style="max-width: 950px; margin: 0 auto; padding: 20px;">
+                    <div style="text-align: center; margin-bottom: 25px;">
+                        <span style="background: rgba(39, 174, 96, 0.1); color: #27ae60; border: 1px solid #27ae60; padding: 4px 16px; border-radius: 50px; font-weight: 700; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.5px;">
+                            Scopri il Progetto &amp; Regolamento
+                        </span>
+                        <h2 class="exercise-title" style="margin-top: 12px; font-size: 1.8rem; color: #2c3e50;">
+                            🏋️ Palestra di Riflessione sulla Lingua
+                        </h2>
+                        <p style="color: #64748b; font-size: 0.95rem; margin: 6px 0 0 0;">
+                            Regolamento Ufficiale e Linee Guida Didattiche dell'Ecosistema Prof. Memmo
+                        </p>
+                    </div>
+
+                    <div style="background: white; padding: 2rem; border-radius: 26px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); line-height: 1.8;">
+                        ${items.map((item, idx) => {
+                            const color = borderColors[idx % borderColors.length];
+                            const bg = bgTints[idx % bgTints.length];
+                            return `
+                                <div style="background: ${bg}; padding: 1.6rem 2rem; border-radius: 18px; border-left: 8px solid ${color}; margin-bottom: 1.8rem; box-shadow: 0 2px 8px rgba(0,0,0,0.02);">
+                                    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 0.8rem;">
+                                        <span style="background: ${color}; color: #fff; width: 30px; height: 30px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-weight: 800; font-size: 0.9rem; flex-shrink: 0;">
+                                            ${item.index}
+                                        </span>
+                                        <h4 style="margin: 0; color: ${color}; font-size: 1.25rem; font-weight: 800;">
+                                            ${item.title}
+                                        </h4>
+                                    </div>
+                                    <div style="padding-left: 40px;">
+                                        ${this._formatItemHtml(item.text)}
+                                    </div>
+                                </div>
+                            `;
+                        }).join('')}
+
+                        <div style="text-align: center; margin-top: 3rem; padding-top: 1.8rem; border-top: 1px solid #eee;">
+                            <img src="https://prof-memmo.github.io/prof-memmo-gestione-siti/shared/assets/branding/prof-memmo/avatar.png" alt="Logo Progetto" style="width: 110px; opacity: 0.95; background: transparent;">
+                            <p style="font-size: 0.82rem; color: #94a3b8; margin-top: 8px;">&copy; Prof. Memmo • Palestra di Riflessione sulla Lingua</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+        },
+
+        _renderLegacyPublicView(container) {
             const sections = this.parseSections(this.getRawText());
 
             const pInnovazione = this._formatParagraph(sections.innovazione, '💡 Innovazione e Tradizione');
@@ -328,7 +466,6 @@ La Palestra è divisa in aree tematiche (Grammatica, Lettura, Lessico, Produzion
             const pStudenti = this._formatParagraph(sections.studenti, '🎓 Per gli Studenti');
             const pDocenti = this._formatParagraph(sections.docenti, '👨‍🏫 Per i Docenti');
 
-            // Format setup cards
             let setupItems = [
                 { num: '1️⃣', title: 'CONFIGURA', desc: 'Accedi come Docente e crea la tua prima classe.' },
                 { num: '2️⃣', title: 'CONDIVIDI', desc: 'Dai il Codice Classe ai tuoi studenti.' },
@@ -445,9 +582,8 @@ La Palestra è divisa in aree tematiche (Grammatica, Lettura, Lessico, Produzion
             if (!container) return;
 
             const text = this.getRawText();
-            const isAuthAdmin = this.isSuperAdmin();
-            const fbUser = (window.fbAuth && window.fbAuth.currentUser);
-            const userEmail = fbUser ? (fbUser.email || '') : '';
+            const userEmail = this._resolveUserEmail();
+            const isAuthAdmin = this.isSuperAdmin(userEmail);
 
             container.innerHTML = `
                 <div style="background: #ffffff; padding: 24px; border-radius: 16px; border: 1.5px solid #e2e8f0; box-shadow: 0 4px 15px rgba(0,0,0,0.03); margin-bottom: 25px;">
