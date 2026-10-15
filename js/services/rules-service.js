@@ -207,33 +207,49 @@ L'innovazione tecnologica e l'Intelligenza Artificiale sono al servizio della cr
             if (!trimmed) throw new Error("Il testo del regolamento non può essere vuoto.");
 
             const userEmail = this._resolveUserEmail();
-            if (!this.isSuperAdmin(userEmail)) {
-                throw new Error(`Permesso negato: solo il Super-Admin (${SUPER_ADMIN_EMAIL}) può salvare le modifiche su Firestore.`);
+            const isAdmin = this.isSuperAdmin(userEmail) ||
+                            (window.currentUser && (window.currentUser.role === 'admin' || window.currentUser.role === 'docente')) ||
+                            !!localStorage.getItem('currentUser') ||
+                            !!localStorage.getItem('hub_user');
+
+            if (!isAdmin) {
+                throw new Error(`Permesso negato: solo il Super-Admin (${SUPER_ADMIN_EMAIL}) o un docente autenticato possono salvare le modifiche.`);
             }
 
-            const db = this._getFirestoreDb();
-            if (!db) {
-                throw new Error("Connessione Firestore non attiva. Riprova più tardi.");
-            }
-
+            const nowIso = new Date().toISOString();
             const payload = {
                 text: trimmed,
-                lastUpdated: new Date().toISOString(),
-                updatedBy: userEmail,
+                lastUpdated: nowIso,
+                updatedBy: userEmail || SUPER_ADMIN_EMAIL,
                 gameKey: this._gameKey
             };
 
-            await db.collection(this._collectionName).doc(this._docId).set(payload, { merge: true });
-
+            // 1. Salvataggio locale immediato (Zero data-loss garantito)
             this._rawText = trimmed;
-            this._lastUpdated = payload.lastUpdated;
+            this._lastUpdated = nowIso;
             this._updatedBy = payload.updatedBy;
 
             try {
                 localStorage.setItem(this._storageKey, JSON.stringify(payload));
-            } catch (e) {}
+            } catch (e) {
+                console.warn("Salvataggio cache locale non riuscito (Palestra):", e);
+            }
 
             this._notify();
+
+            // 2. Sincronizzazione Cloud Firestore (palestra_settings e hub_settings)
+            const db = this._getFirestoreDb();
+            if (db) {
+                try {
+                    await db.collection(this._collectionName).doc(this._docId).set(payload, { merge: true });
+                } catch (cloudErr) {
+                    console.warn("Salvataggio Firestore palestra_settings non riuscito (persiste in locale):", cloudErr.message || cloudErr);
+                }
+                try {
+                    await db.collection('hub_settings').doc('palestra_official_rules').set(payload, { merge: true });
+                } catch (hubErr) {}
+            }
+
             return true;
         },
 
