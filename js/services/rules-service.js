@@ -308,6 +308,28 @@ L'innovazione tecnologica e l'Intelligenza Artificiale sono al servizio della cr
             return sections;
         },
 
+        _formatLinks(str, linkColor = '#2563eb') {
+            if (!str || typeof str !== 'string') return '';
+            // 1. Markdown link: [Label](https://url)
+            let res = str.replace(/\[([^\]]+)\]\((https?:\/\/[^\s\)]+)\)/g, (m, label, url) => {
+                const cleanHref = url.replace(/&amp;/g, '&');
+                return `<a href="${cleanHref}" target="_blank" rel="noopener noreferrer" style="color: ${linkColor}; text-decoration: underline; font-weight: 700; word-break: break-all;">${label} <span style="font-size: 0.8em; margin-left: 2px;">↗</span></a>`;
+            });
+            // 2. Plain URL: https://...
+            res = res.replace(/(^|[\s(>])(https?:\/\/[^\s<]+)/g, (m, prefix, url) => {
+                let cleanUrl = url;
+                let trailing = '';
+                const trailMatch = url.match(/([.,;:!?)]+)$/);
+                if (trailMatch) {
+                    trailing = trailMatch[1];
+                    cleanUrl = url.substring(0, url.length - trailing.length);
+                }
+                const cleanHref = cleanUrl.replace(/&amp;/g, '&');
+                return `${prefix}<a href="${cleanHref}" target="_blank" rel="noopener noreferrer" style="color: ${linkColor}; text-decoration: underline; font-weight: 700; word-break: break-all;">${cleanUrl} <span style="font-size: 0.8em; margin-left: 2px;">↗</span></a>${trailing}`;
+            });
+            return res;
+        },
+
         _formatParagraph(rawContent, defaultTitle = '', titleColor = '') {
             if (!rawContent) return '';
             const lines = rawContent.split('\n').map(l => l.trim()).filter(Boolean);
@@ -326,15 +348,15 @@ L'innovazione tecnologica e l'Intelligenza Artificiale sono al servizio della cr
                     const clean = line.replace(/^•\s*/, '');
                     const parts = clean.split(':');
                     if (parts.length > 1) {
-                        return `<br>• <b>${parts[0].trim()}</b>: ${parts.slice(1).join(':').trim()}`;
+                        return `<br>• <b>${this._formatLinks(parts[0].trim(), '#2563eb')}</b>: ${this._formatLinks(parts.slice(1).join(':').trim(), '#2563eb')}`;
                     }
-                    return `<br>• ${clean}`;
+                    return `<br>• ${this._formatLinks(clean, '#2563eb')}`;
                 }
-                return line;
+                return this._formatLinks(line, '#2563eb');
             }).join(' ');
 
             return {
-                title,
+                title: this._formatLinks(title, titleColor || '#2563eb'),
                 html: formattedBody.startsWith('<br>') ? formattedBody.substring(4) : formattedBody
             };
         },
@@ -355,8 +377,10 @@ L'innovazione tecnologica e l'Intelligenza Artificiale sono al servizio della cr
                 let title = '';
                 let content = '';
 
-                const matchNumbered = firstLine.match(/^(\d+[\.\)]\s*)(.*)$/);
+                let detectedNumber = null;
+                const matchNumbered = firstLine.match(/^(\d+)[\.\)]\s*(.*)$/);
                 if (matchNumbered) {
+                    detectedNumber = parseInt(matchNumbered[1], 10);
                     firstLine = matchNumbered[2].trim();
                 }
 
@@ -378,8 +402,8 @@ L'innovazione tecnologica e l'Intelligenza Artificiale sono al servizio della cr
                 }
 
                 items.push({
-                    index: index + 1,
-                    title: title || `Punto ${index + 1}`,
+                    index: detectedNumber !== null ? detectedNumber : index + 1,
+                    title: title || `Punto ${detectedNumber !== null ? detectedNumber : index + 1}`,
                     text: content || title,
                     fullText: block
                 });
@@ -388,7 +412,7 @@ L'innovazione tecnologica e l'Intelligenza Artificiale sono al servizio della cr
             return items;
         },
 
-        _formatItemHtml(text) {
+        _formatItemHtml(text, linkColor = '#2563eb') {
             if (!text) return '';
             const lines = text.split('\n').map(l => l.trim()).filter(Boolean);
             return lines.map(line => {
@@ -396,11 +420,13 @@ L'innovazione tecnologica e l'Intelligenza Artificiale sono al servizio della cr
                     const clean = line.replace(/^[•\-]\s*/, '');
                     const colonIdx = clean.indexOf(':');
                     if (colonIdx !== -1) {
-                        return `<div style="margin: 6px 0; padding-left: 12px; border-left: 3px solid #cbd5e1;"><strong>${clean.substring(0, colonIdx).trim()}:</strong> ${clean.substring(colonIdx + 1).trim()}</div>`;
+                        const lbl = clean.substring(0, colonIdx).trim();
+                        const val = clean.substring(colonIdx + 1).trim();
+                        return `<div style="margin: 6px 0; padding-left: 12px; border-left: 3px solid #cbd5e1;"><strong>${lbl}:</strong> ${this._formatLinks(val, linkColor)}</div>`;
                     }
-                    return `<div style="margin: 6px 0; padding-left: 12px; border-left: 3px solid #cbd5e1;">• ${clean}</div>`;
+                    return `<div style="margin: 6px 0; padding-left: 12px; border-left: 3px solid #cbd5e1;">• ${this._formatLinks(clean, linkColor)}</div>`;
                 }
-                return `<p style="margin: 0 0 10px 0; font-size: 0.95rem; line-height: 1.7; color: #334155;">${line}</p>`;
+                return `<p style="margin: 0 0 10px 0; font-size: 0.95rem; line-height: 1.7; color: #334155;">${this._formatLinks(line, linkColor)}</p>`;
             }).join('');
         },
 
@@ -446,11 +472,11 @@ L'innovazione tecnologica e l'Intelligenza Artificiale sono al servizio della cr
                                             ${item.index}
                                         </span>
                                         <h4 style="margin: 0; color: ${color}; font-size: 1.25rem; font-weight: 800;">
-                                            ${item.title}
+                                            ${this._formatLinks(item.title, color)}
                                         </h4>
                                     </div>
                                     <div style="padding-left: 40px;">
-                                        ${this._formatItemHtml(item.text)}
+                                        ${this._formatItemHtml(item.text, color)}
                                     </div>
                                 </div>
                             `;
