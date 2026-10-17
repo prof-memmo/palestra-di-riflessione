@@ -85,7 +85,7 @@ h1, h2, h3, h4, h5, h6, p, span, div, button {
 }
 
 .logo { font-weight: 800; font-size: 1.2rem; color: var(--primary-color); letter-spacing: -0.5px; }
-.subtitle { font-size: 0.7rem; opacity: 0.6; margin-top: 5px; }
+.subtitle { font-size: 0.7rem; color: #4b5563; opacity: 1; margin-top: 5px; }
 
 .close-sidebar-btn {
     background: none; border: none; font-size: 2rem; cursor: pointer; color: var(--text-color);
@@ -99,8 +99,8 @@ h1, h2, h3, h4, h5, h6, p, span, div, button {
     text-align: left;
 }
 .nav-item.active, .nav-item:hover { background: var(--primary-color); color: white; transform: scale(1.02); }
-.nav-item.logout { color: #e74c3c; }
-.nav-item.logout:hover { background: #fff0f0; color: #e74c3c; }
+.nav-item.logout { color: #c53030; }
+.nav-item.logout:hover { background: #fff0f0; color: #991b1b; }
 .nav-item .icon { margin-right: 1.2rem; font-size: 1.4rem; }
 
 /* Floating Toggle - Persistent */
