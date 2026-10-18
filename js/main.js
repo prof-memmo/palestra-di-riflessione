@@ -387,64 +387,44 @@ async function renderProfiloPage() {
             const isSuperAdmin = (user.role === 'admin' || (user.email && user.email.toLowerCase() === 'prof.memmo@gmail.com'));
             const firestoreClasses = [];
 
-            if (isSuperAdmin) {
-                // L'Amministratore carica tutte le classi da hub_classes
-                const hubSnap = await window.fbDb.collection('hub_classes').get().catch(e => { console.warn("hub_classes query error", e); return { forEach: () => {} }; });
-                hubSnap.forEach(doc => {
-                    if (!firestoreClasses.find(c => c.id === doc.id || (doc.data().code && c.code === doc.data().code))) {
-                        firestoreClasses.push({ id: doc.id, ...doc.data() });
+            // Docente: cerca su hub_classes le classi di pertinenza (teacherId, teacherIds, teacherEmail)
+            const queries = [
+                window.fbDb.collection('hub_classes').where('teacherId', '==', user.uid).get().catch(() => ({ forEach: () => {} })),
+                window.fbDb.collection('hub_classes').where('teacherIds', 'array-contains', user.uid).get().catch(() => ({ forEach: () => {} }))
+            ];
+            if (user.email) {
+                queries.push(window.fbDb.collection('hub_classes').where('teacherEmail', '==', user.email.toLowerCase()).get().catch(() => ({ forEach: () => {} })));
+                queries.push(window.fbDb.collection('hub_classes').where('collaboratori', 'array-contains', user.email.toLowerCase()).get().catch(() => ({ forEach: () => {} })));
+            }
+            const snaps = await Promise.all(queries);
+            snaps.forEach(snap => {
+                snap.forEach(doc => {
+                    const cData = doc.data() || {};
+                    // Filtra classi archiviate o eliminate
+                    if (cData.archived === true || cData.isArchived === true || cData.status === 'archived' || cData.deleted === true || cData._deleted === true) return;
+                    if (!firestoreClasses.find(c => c.id === doc.id || (cData.code && c.code === cData.code))) {
+                        firestoreClasses.push({ id: doc.id, ...cData });
                     }
                 });
-            } else {
-                // Docente: cerca su hub_classes per UID, email o collaboratori
-                const queries = [
-                    window.fbDb.collection('hub_classes').where('teacherIds', 'array-contains', user.uid).get().catch(() => ({ forEach: () => {} })),
-                    window.fbDb.collection('hub_classes').where('teacherId', '==', user.uid).get().catch(() => ({ forEach: () => {} }))
-                ];
-                if (user.email) {
-                    queries.push(window.fbDb.collection('hub_classes').where('teacherEmail', '==', user.email.toLowerCase()).get().catch(() => ({ forEach: () => {} })));
-                    queries.push(window.fbDb.collection('hub_classes').where('collaboratori', 'array-contains', user.email.toLowerCase()).get().catch(() => ({ forEach: () => {} })));
-                }
-                const snaps = await Promise.all(queries);
-                snaps.forEach(snap => {
-                    snap.forEach(doc => {
-                        if (!firestoreClasses.find(c => c.id === doc.id || (doc.data().code && c.code === doc.data().code))) {
-                            firestoreClasses.push({ id: doc.id, ...doc.data() });
-                        }
-                    });
-                });
-            }
+            });
 
             // Se il docente ha un classId, recuperiamo anche quella classe da hub_classes
             if (user.classId && !firestoreClasses.find(c => c.id === user.classId)) {
                 try {
                     const joinedClassDoc = await window.fbDb.collection('hub_classes').doc(user.classId).get();
                     if (joinedClassDoc.exists) {
-                        firestoreClasses.push({ id: joinedClassDoc.id, ...joinedClassDoc.data() });
+                        const jData = joinedClassDoc.data() || {};
+                        if (!jData.archived && !jData.isArchived && jData.status !== 'archived' && !jData.deleted && !jData._deleted) {
+                            firestoreClasses.push({ id: joinedClassDoc.id, ...jData });
+                        }
                     }
                 } catch (err) {
                     console.warn("Errore recupero classe unita via codice:", err);
                 }
             }
-            console.log("DEBUG CLASSI - Classi trovate su Firestore:", firestoreClasses.map(c => ({nome: c.name, code: c.code, docenti: c.teacherIds || [c.teacherId]})));
             
-            // Merge e Aggiornamento: aggiorna le classi locali con i dati freschi di Firestore
-            firestoreClasses.forEach(fc => {
-                const localIdx = classes.findIndex(lc => lc.id === fc.id || (fc.code && lc.code === fc.code));
-                if (localIdx !== -1) {
-                    // Aggiorna la classe esistente
-                    classes[localIdx] = { ...classes[localIdx], ...fc };
-                } else {
-                    // Aggiunge la nuova classe
-                    classes.push(fc);
-                }
-            });
-            
-            // De-duplica e pulisci
-            classes = classes.filter((c, index, self) =>
-                index === self.findIndex(t => (t.code && c.code) ? t.code === c.code : t.id === c.id)
-            );
-            
+            // Sovrascrivi pulito: la fonte di verità è l'Hub centrale, nessun residuo obsoleto da localStorage
+            classes = firestoreClasses;
             localStorage.setItem('palestra_classes', JSON.stringify(classes));
 
             // Recupero nomi dei docenti per la visualizzazione
