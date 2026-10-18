@@ -194,6 +194,7 @@ window.viewClassStudents = async function(code, name, classId = null) {
         if (Array.isArray(classData.students) && classData.students.length > 0) {
             classData.students.forEach(s => {
                 if (typeof s === 'object' && s.name) {
+                    if (s.archived === true || s.isArchived === true || s.status === 'archived' || s.deleted === true || s._deleted === true) return;
                     const sid = s.studentAuthUid || s.id || s.studentId || (realClassId + '_' + s.name);
                     studentsMap.set(sid, {
                         id: sid,
@@ -214,22 +215,26 @@ window.viewClassStudents = async function(code, name, classId = null) {
             if (!u) return;
             if (u.role === 'docente' || u.role === 'admin') return;
 
+            // Filtro studenti archiviati / cancellati
+            if (u.archived === true || u.isArchived === true || u.status === 'archived' || u.deleted === true || u._deleted === true) {
+                studentsMap.delete(id);
+                return;
+            }
+
             const uClassId = normalizeClassName(u.classId || u.class_id || (u.profile && u.profile.classId));
             const uClassCode = normalizeClassName(u.classCode || u.class_code || u.code || u.codiceClasse || u.codice_classe || (u.anagrafica && (u.anagrafica.codiceClasse || u.anagrafica.code || u.anagrafica.classCode)));
-            const uClassName = normalizeClassName(u.className || u.class_name || u.classe || u.classeSezione || u.classe_sezione || u.schoolClass || u.school_class || u.classRoom || u.sezione || (u.anno && u.sezione ? (u.anno + u.sezione) : '') || (u.anagrafica && (u.anagrafica.scuolaClasse || u.anagrafica.classe || u.anagrafica.sezione || (u.anagrafica.anno && u.anagrafica.sezione ? u.anagrafica.anno + u.anagrafica.sezione : ''))) || (u.datiScolastici && (u.datiScolastici.classe || u.datiScolastici.sezione || u.datiScolastici.codiceClasse)));
             const uEmail = (u.anagrafica && u.anagrafica.email) || u.email || '';
             const uName = (u.anagrafica && u.anagrafica.nome) ? `${u.anagrafica.nome} ${u.anagrafica.cognome || ''}`.trim() : (u.name || u.displayName || 'Studente');
 
-            // Verifica array multipli di classi
+            // Verifica array multipli di classi (solo per codice o ID univoco)
             const uClassesArr = (Array.isArray(u.classes) ? u.classes : []).concat(Array.isArray(u.classIds) ? u.classIds : []).concat(Array.isArray(u.classCodes) ? u.classCodes : []).map(normalizeClassName);
 
-            const isExplicit = explicitStudentIds.has(id) || (uEmail && explicitStudentIds.has(uEmail)) || explicitStudentIds.has(uName);
-            const matchId = uClassId && (uClassId === nTargetId || (nTargetCode && uClassId === nTargetCode) || (nTargetName && uClassId === nTargetName));
-            const matchCode = uClassCode && ((nTargetCode && uClassCode === nTargetCode) || (nTargetId && uClassCode === nTargetId) || (nTargetName && uClassCode === nTargetName));
-            const matchName = nTargetName && uClassName && (uClassName === nTargetName || uClassName.includes(nTargetName) || nTargetName.includes(uClassName));
-            const matchArr = uClassesArr.some(c => c === nTargetId || c === nTargetCode || c === nTargetName);
+            const isExplicit = explicitStudentIds.has(id) || (uEmail && explicitStudentIds.has(uEmail));
+            const matchId = uClassId && ((nTargetId && uClassId === nTargetId) || (nTargetCode && uClassId === nTargetCode));
+            const matchCode = uClassCode && ((nTargetCode && uClassCode === nTargetCode) || (nTargetId && uClassCode === nTargetId));
+            const matchArr = uClassesArr.some(c => (nTargetId && c === nTargetId) || (nTargetCode && c === nTargetCode));
 
-            if (isExplicit || matchId || matchCode || matchName || matchArr) {
+            if (isExplicit || matchId || matchCode || matchArr) {
                 if (!studentsMap.has(id)) {
                     studentsMap.set(id, {
                         id: id,
@@ -284,8 +289,8 @@ window.viewClassStudents = async function(code, name, classId = null) {
             content.innerHTML = `
                 <div style="text-align: center; padding: 2.5rem; background: #f8f9fa; border-radius: 20px; border: 1px dashed #ddd;">
                     <div style="font-size: 2rem; margin-bottom: 0.5rem;">👨‍🎓</div>
-                    <p style="color: #2c3e50; font-weight: 700; font-size: 1.05rem; margin-bottom: 0.3rem;">Nessuno studente iscritto alla classe <b>${name}</b>.</p>
-                    <p style="font-size: 0.85rem; color: #666; margin-bottom: 0;">Gli studenti devono registrarsi dall'Hub centrale associandosi al codice classe: <b style="background: #eef2f7; padding: 4px 10px; border-radius: 6px; color: var(--primary-color); font-family: monospace; font-size: 1rem;">${code}</b></p>
+                    <p style="color: #2c3e50; font-weight: 700; font-size: 1.05rem; margin-bottom: 0.3rem;">Nessuno studente iscritto a questa classe.</p>
+                    <p style="font-size: 0.85rem; color: #666; margin-bottom: 0;">Gli studenti registrati con questo codice classe appariranno qui automaticamente.</p>
                 </div>
             `;
             return;
@@ -325,12 +330,8 @@ window.viewClassStudents = async function(code, name, classId = null) {
 
         content.innerHTML = `
             <div style="font-family: inherit; animation: fadeIn 0.5s ease-out;">
-                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem; background: #f0f7ff; padding: 1rem 1.2rem; border-radius: 15px; flex-wrap: wrap; gap: 10px;">
-                    <div>
-                        <h3 style="color: var(--primary-color); margin: 0; font-size: 1.1rem; font-weight: 800;">Registro Studenti: Classe ${name}</h3>
-                        <span style="color: #3498db; font-size: 0.8rem; font-weight: 800;">CODICE: ${code}</span>
-                    </div>
-                    <span style="background: #eef2ff; color: var(--primary-color); padding: 4px 12px; border-radius: 20px; font-weight: 700; font-size: 0.82rem;">${classStudents.length} ${classStudents.length === 1 ? 'Studente' : 'Studenti'}</span>
+                <div style="display: flex; align-items: center; justify-content: flex-end; margin-bottom: 1rem;">
+                    <span style="background: #eef2ff; color: var(--primary-color); padding: 4px 12px; border-radius: 20px; font-weight: 700; font-size: 0.82rem; border: 1px solid #c7d2fe;">${classStudents.length} ${classStudents.length === 1 ? 'Studente iscritto' : 'Studenti iscritti'}</span>
                 </div>
 
                 <div style="overflow-x: auto;">

@@ -633,7 +633,7 @@ async function renderProfiloPage() {
 
                             <!-- Registro Studenti della Classe Selezionata -->
                             <div class="profile-card" id="ptab-content-registro" style="display: block;">
-                                <h4 class="profile-card-title" style="margin-bottom: 1rem;">📊 REGISTRO STUDENTI &amp; ATTIVITÀ</h4>
+                                <h4 class="profile-card-title" style="margin-bottom: 1rem;"><i class="fa-solid fa-users" style="color: var(--primary-color); margin-right: 6px;"></i> Studenti Iscritti</h4>
                                 <div id="class-register-content">
                                     <p style="color: #888; font-size: 0.9rem; text-align: center; padding: 2rem;">
                                         Caricamento studenti della classe in corso...
