@@ -583,7 +583,7 @@ async function renderProfiloPage() {
                     ${user.isGuest ? `<p class="guest-notice">📍 PROFILO LOCALE</p>` : ''}
                 </div>
                 <div class="profile-actions" style="display: flex; gap: 8px; flex-wrap: wrap;">
-                    <button class="btn btn-edit" onclick="openEditProfileModal()"><i class="fa-solid fa-user-gear"></i> Modifica Profilo</button>
+                    <button class="btn btn-edit" onclick="window.open('https://prof-memmo.github.io/games/profilo.html', '_blank')"><i class="fa-solid fa-user-gear"></i> Modifica Profilo</button>
                     <button class="btn btn-secondary" onclick="window.openSharedModal ? window.openSharedModal('invita') : null" style="border-radius:10px; padding:6px 12px; font-size:0.85rem; background:#f1f5f9; border:1px solid #cbd5e1; color:#334155; font-weight:700; cursor:pointer; display:inline-flex; align-items:center; gap:6px;"><i class="fa-solid fa-paper-plane" style="color:#6366f1;"></i> Invita un Collega</button>
                     <button class="btn btn-logout" onclick="Auth.logout()">Esci</button>
                 </div>
@@ -594,13 +594,7 @@ async function renderProfiloPage() {
                     <!-- Barra Navigazione Tab Docente Uniformata -->
                     <div class="teacher-tabs-container" style="display: flex; gap: 10px; justify-content: center; margin-bottom: 25px; flex-wrap: wrap;">
                         <button id="ptab-btn-classi" class="tab-btn active" onclick="window.switchPalestraTeacherTab('classi')" style="background: var(--primary-color); color: white; border-radius: 50px; padding: 10px 22px; font-weight: 800; font-size: 0.9rem; border: none; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 4px 10px rgba(93, 95, 239, 0.2);">
-                            <i class="fa-solid fa-chalkboard-user"></i> 📁 Le Mie Classi
-                        </button>
-                        <button id="ptab-btn-registro" class="tab-btn" onclick="window.switchPalestraTeacherTab('registro')" style="background: #f1f5f9; color: #334155; border: 1.5px solid #cbd5e1; border-radius: 50px; padding: 10px 22px; font-weight: 800; font-size: 0.9rem; cursor: pointer; display: inline-flex; align-items: center; gap: 8px;">
-                            <i class="fa-solid fa-chart-line"></i> 📊 Registro Progressi
-                        </button>
-                        <button id="ptab-btn-guida" class="tab-btn" onclick="window.switchPalestraTeacherTab('guida')" style="background: #f1f5f9; color: #334155; border: 1.5px solid #cbd5e1; border-radius: 50px; padding: 10px 22px; font-weight: 800; font-size: 0.9rem; cursor: pointer; display: inline-flex; align-items: center; gap: 8px;">
-                            <i class="fa-solid fa-book-open"></i> 📖 Guida &amp; Strumenti
+                            <i class="fa-solid fa-chalkboard-user"></i> Panoramica
                         </button>
                         ${isSuperAdmin ? `
                             <button onclick="navigateTo('admin')" class="btn" style="background: #fff3e0; color: #e65100; border: 1.5px solid #ffb74d; border-radius: 50px; padding: 10px 22px; font-weight: 800; font-size: 0.9rem; cursor: pointer; display: inline-flex; align-items: center; gap: 8px;">
@@ -609,12 +603,12 @@ async function renderProfiloPage() {
                         ` : ''}
                     </div>
 
-                    <!-- TAB 1: CLASSI -->
+                    <!-- TAB PANORAMICA -->
                     <div id="ptab-content-classi" class="palestra-tab-content" style="display: block;">
-                        <div style="display: grid; grid-template-columns: 1fr; gap: 2rem; max-width: 680px; margin: 0 auto;">
-                            <!-- Gestione Classi -->
+                        <div style="display: grid; grid-template-columns: 1fr; gap: 2rem; max-width: 750px; margin: 0 auto;">
+                            <!-- Elenco Classi -->
                             <div class="profile-card">
-                                <h4 class="profile-card-title">📁 GESTIONE CLASSI &amp; CODICI</h4>
+                                <h4 class="profile-card-title">📁 LE MIE CLASSI</h4>
                                 
                                 <div style="margin-bottom: 1rem; position: relative;">
                                     <input type="text" id="teacher-class-filter" placeholder="Filtra per docente o classe..." 
@@ -653,58 +647,25 @@ async function renderProfiloPage() {
                                                 <div style="margin-top: 0.5rem; display: flex; gap: 0.5rem; flex-wrap: wrap;">
                                                     <button onclick="window.viewClassStudents('${c.code}', '${c.name.replace(/'/g, "\\'")}', '${c.id}')" style="background: #eef2f7; border: none; color: #57606f; padding: 0.3rem 0.6rem; border-radius: 8px; font-size: 0.7rem; font-weight: 700; cursor: pointer;">👥 STUDENTI</button>
                                                     <button onclick="window.viewClassTeachers('${c.id}', '${c.name.replace(/'/g, "\\'")}', '${c.code}')" style="background: #eef2f7; border: none; color: #3498db; padding: 0.3rem 0.6rem; border-radius: 8px; font-size: 0.7rem; font-weight: 700; cursor: pointer;">👨‍🏫 DOCENTI</button>
-                                                    <button onclick="window.editTeacherClass('${c.id}', '${c.name.replace(/'/g, "\\'")}', '${(c.school || '').replace(/'/g, "\\'")}', '${(c.city || '').replace(/'/g, "\\'")}')" style="background: #eef2f7; border: none; color: #2980b9; padding: 0.3rem 0.6rem; border-radius: 8px; font-size: 0.7rem; font-weight: 700; cursor: pointer;">✏️ MODIFICA</button>
-                                                    <button onclick="window.removeTeacherClass(${idx})" style="background: #fceaea; border: none; color: #e74c3c; padding: 0.3rem 0.6rem; border-radius: 8px; font-size: 0.7rem; font-weight: 700; cursor: pointer;">🗑️ ELIMINA</button>
                                                 </div>
                                             </div>
                                         </div>
-                                    `;}).join('') : '<p style="color: #888; font-size: 0.9rem;">Non hai ancora creato nessuna classe.</p>'}
-                                </div>
-                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; margin-bottom: 0.5rem;">
-                                    <input type="text" id="new-class-school" placeholder="Istituto (es: I.C. Manzoni)" style="padding: 0.7rem; border-radius: 10px; border: 1px solid #ddd; font-size: 0.85rem;">
-                                    <input type="text" id="new-class-city" placeholder="Città (es: Roma)" style="padding: 0.7rem; border-radius: 10px; border: 1px solid #ddd; font-size: 0.85rem;">
-                                </div>
-                                <div style="display: flex; gap: 0.5rem;">
-                                    <input type="text" id="new-class-name" placeholder="Nuova Classe (es: 3D)" style="flex: 1; padding: 0.8rem; border-radius: 10px; border: 1px solid #ddd;">
-                                    <button class="btn btn-primary" onclick="window.addTeacherClass()" style="padding: 0.8rem 1.2rem;">CREA</button>
-                                </div>
-                                <div style="display: flex; gap: 0.5rem; margin-top: 1rem; padding-top: 1rem; border-top: 1px solid #eee;">
-                                    <input type="text" id="recover-class-code" placeholder="Recupera con Codice (es: PG-MCC5)" style="flex: 1; padding: 0.8rem; border-radius: 10px; border: 1px solid #ddd; font-family: monospace; font-size: 0.8rem;">
-                                    <button class="btn" onclick="window.recoverTeacherClass()" style="padding: 0.8rem 1.2rem; background: #f1f2f6; color: #57606f; border: none; border-radius: 10px; font-weight: 700; cursor: pointer; font-size: 0.8rem;">RECUPERA</button>
+                                    `;}).join('') : '<p style="color: #888; font-size: 0.9rem; text-align: center; padding: 1.5rem;">Nessuna classe trovata. Le classi create nel Profilo dell\'Hub appariranno automaticamente qui.</p>'}
                                 </div>
                             </div>
-                        </div>
-                    </div>
 
-                    <!-- TAB 2: REGISTRO PROGRESSI -->
-                    <div id="ptab-content-registro" class="palestra-tab-content" style="display: none;">
-                        <div class="profile-card" style="max-width: 850px; margin: 0 auto;">
-                            <h4 class="profile-card-title">📊 REGISTRO PROGRESSI &amp; ATTIVITÀ</h4>
-                            <div id="class-register-content">
-                                <p style="color: #888; font-size: 0.9rem; text-align: center; padding: 2rem;">
-                                    Clicca sul tasto <b>👥 STUDENTI</b> di una tua classe per caricare qui i progressi dettagliati, gli errori frequenti e le attività completate.
-                                </p>
+                            <!-- Registro Studenti (si popola al click su STUDENTI) -->
+                            <div class="profile-card" id="ptab-content-registro" style="display: none;">
+                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                                    <h4 class="profile-card-title" style="margin: 0;">📊 REGISTRO PROGRESSI &amp; ATTIVITÀ</h4>
+                                    <button onclick="document.getElementById('ptab-content-registro').style.display='none'" style="background: none; border: none; font-size: 1.4rem; cursor: pointer; color: #7f8c8d; line-height: 1;" title="Chiudi registro">&times;</button>
+                                </div>
+                                <div id="class-register-content">
+                                    <p style="color: #888; font-size: 0.9rem; text-align: center; padding: 2rem;">
+                                        Clicca sul tasto <b>👥 STUDENTI</b> di una tua classe per caricare qui i progressi dettagliati, gli errori frequenti e le attività completate.
+                                    </p>
+                                </div>
                             </div>
-                        </div>
-                    </div>
-
-                    <!-- TAB 3: GUIDA & STRUMENTI -->
-                    <div id="ptab-content-guida" class="palestra-tab-content" style="display: none;">
-                        <div class="profile-card" style="max-width: 750px; margin: 0 auto; text-align: left;">
-                            <h4 class="profile-card-title">📖 GUIDA METODOLOGICA PER DOCENTI</h4>
-                            <p style="color: #444; font-size: 0.95rem; line-height: 1.6; margin-bottom: 1rem;">
-                                Palestra di Riflessione è strutturata su percorsi di grammatica valenziale, logica, lessico e comprensione del testo. 
-                                Puoi proiettare gli esercizi sulla <b>LIM</b> in classe oppure assegnare singoli moduli agli studenti indicando il percorso tematico.
-                            </p>
-                            <div style="background: #f8fafc; border-radius: 12px; padding: 1.2rem; border-left: 4px solid var(--primary-color); margin-bottom: 1.5rem;">
-                                <h5 style="margin: 0 0 0.5rem 0; color: var(--primary-color);">💡 Suggerimento Didattico</h5>
-                                <p style="margin: 0; font-size: 0.85rem; color: #64748b;">
-                                    Gli studenti possono accedere comodamente inserendo il <b>Codice Classe</b> senza bisogno di registrare email personali, garantendo la totale conformità GDPR per i minori.
-                                </p>
-                            </div>
-                            <button class="btn btn-primary" onclick="window.showTeacherGuide()" style="display: inline-flex; align-items: center; gap: 8px;">
-                                <i class="fa-solid fa-circle-info"></i> Apri Guida Completa Didattica
-                            </button>
                         </div>
                     </div>
                 </div>
@@ -940,27 +901,15 @@ window.filterAdminEntities = function() {
 
 // --- TEACHER FUNCTIONS ---
 window.switchPalestraTeacherTab = function(tabId) {
-    const tabs = ['classi', 'registro', 'guida'];
-    tabs.forEach(t => {
-        const btn = document.getElementById(`ptab-btn-${t}`);
-        const content = document.getElementById(`ptab-content-${t}`);
-        if (btn) {
-            if (t === tabId) {
-                btn.style.background = 'var(--primary-color)';
-                btn.style.color = 'white';
-                btn.style.border = 'none';
-                btn.style.boxShadow = '0 4px 10px rgba(93, 95, 239, 0.2)';
-            } else {
-                btn.style.background = '#f1f5f9';
-                btn.style.color = '#334155';
-                btn.style.border = '1.5px solid #cbd5e1';
-                btn.style.boxShadow = 'none';
-            }
+    const reg = document.getElementById('ptab-content-registro');
+    if (tabId === 'registro') {
+        if (reg) {
+            reg.style.display = 'block';
+            reg.scrollIntoView({ behavior: 'smooth' });
         }
-        if (content) {
-            content.style.display = (t === tabId) ? 'block' : 'none';
-        }
-    });
+    } else {
+        if (reg) reg.style.display = 'none';
+    }
 };
 
 window.filterTeacherClasses = function(val) {
