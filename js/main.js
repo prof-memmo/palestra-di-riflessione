@@ -605,64 +605,39 @@ async function renderProfiloPage() {
 
                     <!-- TAB PANORAMICA -->
                     <div id="ptab-content-classi" class="palestra-tab-content" style="display: block;">
-                        <div style="display: grid; grid-template-columns: 1fr; gap: 2rem; max-width: 750px; margin: 0 auto;">
-                            <!-- Elenco Classi -->
-                            <div class="profile-card">
-                                <h4 class="profile-card-title">📁 LE MIE CLASSI</h4>
-                                
-                                <div style="margin-bottom: 1rem; position: relative;">
-                                    <input type="text" id="teacher-class-filter" placeholder="Filtra per docente o classe..." 
-                                        oninput="window.filterTeacherClasses(this.value)"
-                                        style="width: 100%; padding: 0.8rem 1rem 0.8rem 2.5rem; border-radius: 12px; border: 1px solid #ddd; font-size: 0.85rem; border-color: #3498db44;">
-                                    <i style="position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: #3498db; font-style: normal; font-size: 0.9rem;">🔍</i>
-                                </div>
-
-                                <div id="classes-list" style="margin-bottom: 1rem;">
-                                    ${classes.length > 0 ? classes.map((c, idx) => {
-                                        const teacherNames = [];
-                                        const rawTeacherNames = [];
-                                        if (c.teacherIds) {
-                                            c.teacherIds.forEach(tid => {
-                                                const name = window._teacherNames && window._teacherNames[tid] ? window._teacherNames[tid] : 'Docente';
-                                                rawTeacherNames.push(name);
-                                                teacherNames.push(name);
-                                            });
-                                        } else if (c.teacherId) {
-                                            const name = window._teacherNames && window._teacherNames[c.teacherId] ? window._teacherNames[c.teacherId] : 'Docente';
-                                            rawTeacherNames.push(name);
-                                            teacherNames.push(name);
-                                        }
-                                        
-                                        const teachersHtml = teacherNames.length > 0 ? `<div style="font-size: 0.7rem; color: #7f8c8d; margin-top: 0.3rem; display: flex; align-items: center; gap: 0.3rem;"><span>👨‍🏫</span> ${teacherNames.join(', ')}</div>` : '';
-
-                                        return `
-                                        <div class="teacher-class-item" data-teachers="${rawTeacherNames.join(' ').toLowerCase()}" data-classname="${c.name.toLowerCase()}" style="display: flex; justify-content: space-between; align-items: center; padding: 0.8rem; background: white; border-radius: 12px; margin-bottom: 0.5rem; border: 1px solid #e0e0e0;">
-                                            <div>
-                                                <span style="font-weight: 800;">Classe ${c.name}</span>
-                                                ${c.school ? `<span style="color: #7f8c8d; font-size: 0.75rem; margin-left: 0.5rem;">${c.school}${c.city ? ', ' + c.city : ''}</span>` : ''}
-                                                ${teachersHtml}
-                                                <div style="font-size: 0.7rem; color: var(--primary-color); font-weight: 800; cursor: pointer; margin-top: 0.2rem;" onclick="navigator.clipboard.writeText('${c.code}'); alert('Codice copiato!')">
-                                                    CODICE: ${c.code} 📋 <span style="color: #7f8c8d; font-weight: 400; margin-left: 0.5rem; font-style: italic;">(condividi il codice con la classe)</span>
-                                                </div>
-                                                <div style="margin-top: 0.5rem; display: flex; gap: 0.5rem; flex-wrap: wrap;">
-                                                    <button onclick="window.viewClassStudents('${c.code}', '${c.name.replace(/'/g, "\\'")}', '${c.id}')" style="background: #eef2f7; border: none; color: #57606f; padding: 0.3rem 0.6rem; border-radius: 8px; font-size: 0.7rem; font-weight: 700; cursor: pointer;">👥 STUDENTI</button>
-                                                    <button onclick="window.viewClassTeachers('${c.id}', '${c.name.replace(/'/g, "\\'")}', '${c.code}')" style="background: #eef2f7; border: none; color: #3498db; padding: 0.3rem 0.6rem; border-radius: 8px; font-size: 0.7rem; font-weight: 700; cursor: pointer;">👨‍🏫 DOCENTI</button>
-                                                </div>
-                                            </div>
+                        <div style="display: grid; grid-template-columns: 1fr; gap: 1.5rem; max-width: 800px; margin: 0 auto;">
+                            <!-- Selezione Classe tramite Menù a Tendina -->
+                            <div class="profile-card" style="padding: 1.2rem 1.5rem;">
+                                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;">
+                                    <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+                                        <label for="select-teacher-class" style="font-weight: 800; color: #2c3e50; font-size: 0.95rem; margin: 0; display: flex; align-items: center; gap: 8px;">
+                                            <i class="fa-solid fa-chalkboard-user" style="color: var(--primary-color);"></i> Classe:
+                                        </label>
+                                        <select id="select-teacher-class" class="form-control" style="padding: 8px 14px; font-size: 0.9rem; border-radius: 10px; border: 1.5px solid #cbd5e1; min-width: 240px; font-weight: 700; color: #1e293b;" onchange="window.onPalestraClassChange(this)">
+                                            ${classes.length > 0 ? classes.map((c, i) => `
+                                                <option value="${c.code || ''}" data-id="${c.id || ''}" data-name="${(c.name || '').replace(/"/g, '&quot;')}" ${i === 0 ? 'selected' : ''}>
+                                                    ${c.name}${c.code ? ' (Codice: ' + c.code + ')' : ''}
+                                                </option>
+                                            `).join('') : '<option value="">Nessuna classe creata nell\'Hub</option>'}
+                                        </select>
+                                    </div>
+                                    ${classes.length > 0 ? `
+                                        <div id="selected-class-code-pill" style="display: flex; align-items: center; gap: 8px;">
+                                            <span style="font-size: 0.8rem; color: #64748b; font-weight: 600;">Codice Classe:</span>
+                                            <span style="font-family: monospace; font-size: 0.85rem; padding: 4px 10px; background: #eef2ff; color: var(--primary-color); border: 1px solid #c7d2fe; border-radius: 6px; font-weight: 800; cursor: pointer; display: inline-flex; align-items: center; gap: 6px;" onclick="navigator.clipboard.writeText(document.getElementById('select-teacher-class').value); alert('Codice copiato: ' + document.getElementById('select-teacher-class').value)" title="Clicca per copiare">
+                                                <span id="display-selected-code">${classes[0].code || '-'}</span> 📋
+                                            </span>
                                         </div>
-                                    `;}).join('') : '<p style="color: #888; font-size: 0.9rem; text-align: center; padding: 1.5rem;">Nessuna classe trovata. Le classi create nel Profilo dell\'Hub appariranno automaticamente qui.</p>'}
+                                    ` : ''}
                                 </div>
                             </div>
 
-                            <!-- Registro Studenti (si popola al click su STUDENTI) -->
-                            <div class="profile-card" id="ptab-content-registro" style="display: none;">
-                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-                                    <h4 class="profile-card-title" style="margin: 0;">📊 REGISTRO PROGRESSI &amp; ATTIVITÀ</h4>
-                                    <button onclick="document.getElementById('ptab-content-registro').style.display='none'" style="background: none; border: none; font-size: 1.4rem; cursor: pointer; color: #7f8c8d; line-height: 1;" title="Chiudi registro">&times;</button>
-                                </div>
+                            <!-- Registro Studenti della Classe Selezionata -->
+                            <div class="profile-card" id="ptab-content-registro" style="display: block;">
+                                <h4 class="profile-card-title" style="margin-bottom: 1rem;">📊 REGISTRO STUDENTI &amp; ATTIVITÀ</h4>
                                 <div id="class-register-content">
                                     <p style="color: #888; font-size: 0.9rem; text-align: center; padding: 2rem;">
-                                        Clicca sul tasto <b>👥 STUDENTI</b> di una tua classe per caricare qui i progressi dettagliati, gli errori frequenti e le attività completate.
+                                        Caricamento studenti della classe in corso...
                                     </p>
                                 </div>
                             </div>
@@ -773,6 +748,12 @@ async function renderProfiloPage() {
         if(window.loadHistoricalArchives) window.loadHistoricalArchives();
     }
     if (typeof updateSidebarMenu === 'function') updateSidebarMenu();
+    setTimeout(() => {
+        const select = document.getElementById('select-teacher-class');
+        if (select && select.value && window.onPalestraClassChange) {
+            window.onPalestraClassChange(select);
+        }
+    }, 80);
 }
 
 
@@ -900,30 +881,29 @@ window.filterAdminEntities = function() {
 
 
 // --- TEACHER FUNCTIONS ---
-window.switchPalestraTeacherTab = function(tabId) {
-    const reg = document.getElementById('ptab-content-registro');
-    if (tabId === 'registro') {
-        if (reg) {
-            reg.style.display = 'block';
-            reg.scrollIntoView({ behavior: 'smooth' });
-        }
-    } else {
-        if (reg) reg.style.display = 'none';
+window.onPalestraClassChange = function(selectEl) {
+    if (!selectEl) return;
+    const selectedOpt = selectEl.options[selectEl.selectedIndex];
+    if (!selectedOpt || !selectedOpt.value) return;
+    
+    const code = selectedOpt.value;
+    const classId = selectedOpt.dataset.id || '';
+    const name = selectedOpt.dataset.name || '';
+    
+    const displayCode = document.getElementById('display-selected-code');
+    if (displayCode) displayCode.textContent = code;
+    
+    if (window.viewClassStudents) {
+        window.viewClassStudents(code, name, classId);
     }
 };
 
-window.filterTeacherClasses = function(val) {
-    const q = val.toLowerCase();
-    document.querySelectorAll('.teacher-class-item').forEach(item => {
-        const teachers = item.dataset.teachers || '';
-        const name = item.dataset.classname || '';
-        if (teachers.includes(q) || name.includes(q)) {
-            item.style.display = 'flex';
-        } else {
-            item.style.display = 'none';
-        }
-    });
+window.switchPalestraTeacherTab = function(tabId) {
+    const reg = document.getElementById('ptab-content-registro');
+    if (reg) reg.style.display = 'block';
 };
+
+window.filterTeacherClasses = function(val) {};
 
 
 
