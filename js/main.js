@@ -584,7 +584,6 @@ async function renderProfiloPage() {
                 </div>
                 <div class="profile-actions" style="display: flex; gap: 8px; flex-wrap: wrap;">
                     <button class="btn btn-edit" onclick="window.open('https://prof-memmo.github.io/games/profilo.html', '_blank')"><i class="fa-solid fa-user-gear"></i> Modifica Profilo</button>
-                    <button class="btn btn-secondary" onclick="window.openSharedModal ? window.openSharedModal('invita') : null" style="border-radius:10px; padding:6px 12px; font-size:0.85rem; background:#f1f5f9; border:1px solid #cbd5e1; color:#334155; font-weight:700; cursor:pointer; display:inline-flex; align-items:center; gap:6px;"><i class="fa-solid fa-paper-plane" style="color:#6366f1;"></i> Invita un Collega</button>
                     <button class="btn btn-logout" onclick="Auth.logout()">Esci</button>
                 </div>
             </div>

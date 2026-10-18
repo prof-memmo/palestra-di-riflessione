@@ -284,18 +284,8 @@ window.viewClassStudents = async function(code, name, classId = null) {
             content.innerHTML = `
                 <div style="text-align: center; padding: 2.5rem; background: #f8f9fa; border-radius: 20px; border: 1px dashed #ddd;">
                     <div style="font-size: 2rem; margin-bottom: 0.5rem;">👨‍🎓</div>
-                    <p style="color: #2c3e50; font-weight: 700; font-size: 1.05rem; margin-bottom: 0.3rem;">Nessun utente associato alla classe <b>${name}</b>.</p>
-                    <p style="font-size: 0.85rem; color: #666; margin-bottom: 1.2rem;">Fai inserire agli studenti il codice classe: <b style="background: #eef2f7; padding: 4px 10px; border-radius: 6px; color: var(--primary-color); font-family: monospace; font-size: 1rem;">${code}</b></p>
-                    <div style="display: flex; justify-content: center; gap: 10px; flex-wrap: wrap;">
-                        <button onclick="window.openAddStudentToClassModal('${realClassCode}', '${realClassName.replace(/'/g, "\\'")}', '${realClassId}')" class="btn btn-primary" style="font-size: 0.85rem; padding: 8px 18px; border-radius: 12px;">
-                            ➕ Cerca / Associa Studente dall'Hub
-                        </button>
-                        ${window.Auth && window.Auth.getUser && (window.Auth.getUser().role === 'admin' || window.Auth.getUser().role === 'docente') ? `
-                            <button onclick="if(window.renderAdminPage) { window.renderAdminPage(); } else { alert('Accedi al pannello admin per gestire e spostare gli studenti.'); }" class="btn btn-secondary" style="font-size: 0.85rem; padding: 8px 18px; border-radius: 12px;">
-                                🛡️ Dashboard Admin
-                            </button>
-                        ` : ''}
-                    </div>
+                    <p style="color: #2c3e50; font-weight: 700; font-size: 1.05rem; margin-bottom: 0.3rem;">Nessuno studente iscritto alla classe <b>${name}</b>.</p>
+                    <p style="font-size: 0.85rem; color: #666; margin-bottom: 0;">Gli studenti devono registrarsi dall'Hub centrale associandosi al codice classe: <b style="background: #eef2f7; padding: 4px 10px; border-radius: 6px; color: var(--primary-color); font-family: monospace; font-size: 1rem;">${code}</b></p>
                 </div>
             `;
             return;
@@ -318,74 +308,41 @@ window.viewClassStudents = async function(code, name, classId = null) {
 
         let tableRows = classStudents.map(s => {
             const p = progressMap[s.id] || { points: 0, completed: [] };
-            const lastActivity = p.lastUpdated ? new Date(p.lastUpdated).toLocaleDateString() : 'N/D';
-            const completedCount = p.completed ? p.completed.length : 0;
+            const avatarSrc = (window.mapOldAvatarToOfficial ? window.mapOldAvatarToOfficial(s.avatar) : (s.avatar?.includes('/') ? s.avatar : 'assets/avatars/6.png'));
             
             return `
-                <tr style="border-bottom: 1px solid #eee;">
-                    <td style="padding: 12px; text-align: center;">
-                        <input type="checkbox" class="student-checkbox" data-uid="${s.id}" data-name="${s.name}">
-                    </td>
+                <tr style="border-bottom: 1px solid #eee; transition: background 0.2s;">
                     <td style="padding: 12px; display: flex; align-items: center; gap: 0.8rem;">
-                        <img src="${(window.mapOldAvatarToOfficial ? window.mapOldAvatarToOfficial(s.avatar) : (s.avatar?.includes('/') ? s.avatar : 'assets/avatars/6.png'))}" style="width: 36px; height: 36px; border-radius: 50%; object-fit: cover; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+                        <img src="${avatarSrc}" style="width: 36px; height: 36px; border-radius: 50%; object-fit: cover; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
                         <div>
-                            <span style="font-weight: 700; display: block;">${s.name}</span>
-                            ${s.email ? `<span style="font-size: 0.75rem; color: #888;">${s.email}</span>` : ''}
+                            <span style="font-weight: 700; display: block; color: #2c3e50;">${s.name}</span>
                         </div>
                     </td>
-                    <td style="padding: 12px; font-weight: 800; color: var(--primary-color);">${p.points || 0} XP</td>
-                    <td style="padding: 12px;">${completedCount} attività</td>
-                    <td style="padding: 12px; color: #95a5a6;">${lastActivity}</td>
+                    <td style="padding: 12px; font-weight: 800; color: var(--primary-color); text-align: right; font-size: 1rem;">${p.points || 0} XP</td>
                 </tr>
             `;
         }).join('');
 
-        const teacherClasses = JSON.parse(localStorage.getItem('palestra_classes') || '[]');
-        const otherClasses = teacherClasses.filter(c => c.code !== code);
-
         content.innerHTML = `
             <div style="font-family: inherit; animation: fadeIn 0.5s ease-out;">
-                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem; background: #f0f7ff; padding: 1rem; border-radius: 15px; flex-wrap: wrap; gap: 10px;">
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem; background: #f0f7ff; padding: 1rem 1.2rem; border-radius: 15px; flex-wrap: wrap; gap: 10px;">
                     <div>
-                        <h3 style="color: var(--primary-color); margin: 0; font-size: 1.1rem;">Registro Progressi: Classe ${name}</h3>
+                        <h3 style="color: var(--primary-color); margin: 0; font-size: 1.1rem; font-weight: 800;">Registro Studenti: Classe ${name}</h3>
                         <span style="color: #3498db; font-size: 0.8rem; font-weight: 800;">CODICE: ${code}</span>
                     </div>
-                    <button onclick="window.openAddStudentToClassModal('${realClassCode}', '${realClassName.replace(/'/g, "\\'")}', '${realClassId}')" style="background: var(--primary-color); color: white; border: none; padding: 8px 16px; border-radius: 10px; font-weight: 700; font-size: 0.85rem; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 4px 10px rgba(79, 70, 229, 0.2);">
-                        ➕ Associa / Cerca Studente
-                    </button>
-                </div>
-
-                <!-- Gestione Multipla -->
-                <div id="student-management-bar" style="background: #fff9f0; padding: 1rem; border-radius: 15px; margin-bottom: 1rem; border: 1px solid #ffeaa7; display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap;">
-                    <div style="display: flex; align-items: center; gap: 0.5rem;">
-                        <span style="font-weight: 700; font-size: 0.85rem; color: #d35400;">GESTIONE SELEZIONATI:</span>
-                        <select id="move-destination-class" style="padding: 0.5rem; border-radius: 10px; border: 1px solid #ddd; font-size: 0.8rem;">
-                            <option value="">Sposta in classe...</option>
-                            ${otherClasses.map(c => `<option value="${c.id}">${c.name} (${c.code})</option>`).join('')}
-                        </select>
-                        <button onclick="window.moveSelectedStudents('${realClassCode}', '${realClassName.replace(/'/g, "\\'")}', '${realClassId}')" style="background: #e67e22; color: white; border: none; padding: 0.5rem 1rem; border-radius: 10px; font-weight: 700; cursor: pointer; font-size: 0.8rem;">SPOSTA</button>
-                        <button onclick="window.deleteSelectedStudents('${realClassCode}', '${realClassName.replace(/'/g, "\\'")}', '${realClassId}')" style="background: #e74c3c; color: white; border: none; padding: 0.5rem 1rem; border-radius: 10px; font-weight: 700; cursor: pointer; font-size: 0.8rem;">ELIMINA</button>
-                    </div>
-                    <div style="font-size: 0.75rem; color: #888;">
-                        Seleziona gli studenti per spostarli in un'altra classe o rimuoverli da questa.
-                    </div>
+                    <span style="background: #eef2ff; color: var(--primary-color); padding: 4px 12px; border-radius: 20px; font-weight: 700; font-size: 0.82rem;">${classStudents.length} ${classStudents.length === 1 ? 'Studente' : 'Studenti'}</span>
                 </div>
 
                 <div style="overflow-x: auto;">
-                    <table style="width: 100%; border-collapse: collapse; font-size: 0.85rem;">
+                    <table style="width: 100%; border-collapse: collapse; font-size: 0.9rem;">
                         <thead>
-                            <tr style="text-align: left; color: #95a5a6; border-bottom: 2px solid #eee;">
-                                <th style="padding: 12px; text-align: center; width: 40px;">
-                                    <input type="checkbox" id="select-all-students" onclick="window.toggleSelectAllStudents(this)">
-                                </th>
+                            <tr style="text-align: left; color: #95a5a6; border-bottom: 2px solid #eee; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 0.5px;">
                                 <th style="padding: 12px;">STUDENTE</th>
-                                <th style="padding: 12px;">PUNTI</th>
-                                <th style="padding: 12px;">ATTIVITÀ</th>
-                                <th style="padding: 12px;">ULTIMO ACCESSO</th>
+                                <th style="padding: 12px; text-align: right;">PUNTI</th>
                             </tr>
                         </thead>
                         <tbody>
-                            ${tableRows || '<tr><td colspan="5" style="text-align:center; padding:2rem; color:#888;">Nessuno studente iscritto.</td></tr>'}
+                            ${tableRows}
                         </tbody>
                     </table>
                 </div>
@@ -395,123 +352,6 @@ window.viewClassStudents = async function(code, name, classId = null) {
     } catch (e) {
         console.error("Errore recupero studenti:", e);
         content.innerHTML = `<p style="color: #e74c3c; padding: 1rem;">Errore nel caricamento dei dati: ${e.message}</p>`;
-    }
-};
-
-window.viewClassTeachers = async function(classId, className, classCode) {
-    if (window.switchPalestraTeacherTab) {
-        window.switchPalestraTeacherTab('registro');
-    }
-    const content = document.getElementById('class-register-content');
-    if (!content) return;
-
-    content.innerHTML = `
-        <div style="text-align: center; padding: 2rem;">
-            <div class="spinner"></div>
-            <p>Recupero elenco docenti...</p>
-        </div>
-    `;
-    
-    // Scroll immediato per feedback
-    content.scrollIntoView({ behavior: 'smooth', block: 'start' });
-
-    try {
-        let classData;
-        const doc = await window.fbDb.collection('hub_classes').doc(classId).get();
-        if (doc.exists) {
-            classData = doc.data();
-        } else {
-            // Fallback per codice
-            const q = await window.fbDb.collection('hub_classes').where('code', '==', classCode).get();
-            if (!q.empty) classData = q.docs[0].data();
-        }
-
-        if (!classData) throw new Error("Dati classe non trovati.");
-
-        const teacherIdsSet = new Set(classData.teacherIds || (classData.teacherId ? [classData.teacherId] : []));
-        
-        // 1. Cerchiamo anche altri docenti associati via profilo utente
-        const missingFromDoc = [];
-        try {
-            const queries = [
-                window.fbDb.collection('hub_users').where('classId', '==', classId).get(),
-                window.fbDb.collection('hub_users').where('classCode', '==', classCode).get()
-            ];
-            const snapshots = await Promise.all(queries);
-            
-            snapshots.forEach(qs => {
-                qs.forEach(doc => {
-                    const u = doc.data();
-                    if (u.role === 'docente' || u.role === 'teacher' || u.role === 'amico') {
-                        if (!teacherIdsSet.has(doc.id)) {
-                            teacherIdsSet.add(doc.id);
-                            missingFromDoc.push(doc.id);
-                        }
-                    }
-                });
-            });
-        } catch (err) {
-            console.warn("Errore ricerca docenti extra:", err);
-        }
-
-        // 2. Aggiunge i docenti mancanti al documento classe
-        if ((missingFromDoc.length > 0 || !classData.teacherId) && !Auth.getUser().isGuest) {
-            try {
-                const updateData = {};
-                if (missingFromDoc.length > 0) {
-                    updateData.teacherIds = window.firebase.firestore.FieldValue.arrayUnion(...missingFromDoc);
-                }
-                if (!classData.teacherId) {
-                    updateData.teacherId = Array.from(teacherIdsSet)[0];
-                }
-                
-                await window.fbDb.collection('hub_classes').doc(classId).update(updateData);
-                console.log("🩹 Data Healing: aggiornato documento classe");
-            } catch (err) { console.warn("Impossibile auto-aggiornare classe:", err); }
-        }
-
-        const teachers = [];
-        for (const tid of teacherIdsSet) {
-            try {
-                const tDoc = await window.fbDb.collection('users').doc(tid).get();
-                if (tDoc.exists) {
-                    teachers.push({ id: tDoc.id, ...tDoc.data() });
-                } else {
-                    // Fallback se il profilo non è caricabile (magari regole di sicurezza o documento mancante)
-                    teachers.push({ id: tid, name: "Docente Collaboratore", avatar: "👤", email: "Profilo privato" });
-                }
-            } catch (err) {
-                console.warn(`Errore fetch docente ${tid}:`, err);
-                teachers.push({ id: tid, name: "Docente Collaboratore", avatar: "👤", email: "Accesso limitato" });
-            }
-        }
-
-        content.innerHTML = `
-            <div style="background: white; padding: 2rem; border-radius: 30px; border: 1px solid #e0e0e0; box-shadow: 0 10px 30px rgba(0,0,0,0.05);">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
-                    <h4 style="color: #2980b9; margin: 0; font-size: 1.4rem; font-weight: 800;">👨‍🏫 Docenti della Classe ${className}</h4>
-                    <span style="background: #3498db; color: white; padding: 0.3rem 1rem; border-radius: 20px; font-size: 0.8rem; font-weight: 700;">${teachers.length} Docenti</span>
-                </div>
-                
-                <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 1rem;">
-                    ${teachers.map(t => `
-                        <div style="display: flex; align-items: center; gap: 1rem; padding: 1rem; background: #f8f9fa; border-radius: 20px; border: 1px solid #eee; transition: all 0.2s;">
-                            <div style="width: 50px; height: 50px; border-radius: 50%; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.05); flex-shrink: 0;">
-                                <img src="${(window.mapOldAvatarToOfficial ? window.mapOldAvatarToOfficial(t.avatar) : (t.avatar?.includes('/') ? t.avatar : 'assets/avatars/6.png'))}" style="width:100%; height:100%; object-fit:cover;">
-                            </div>
-                            <div>
-                                <div style="font-weight: 800; color: #2c3e50;">${t.name}</div>
-                                <div style="font-size: 0.75rem; color: #7f8c8d; word-break: break-all;">${t.email || 'Email non pubblica'}</div>
-                            </div>
-                        </div>
-                    `).join('')}
-                </div>
-                <button onclick="window.renderProfiloPage()" style="margin-top: 2rem; width: 100%; padding: 1rem; background: #f1f2f6; border: none; border-radius: 15px; color: #57606f; font-weight: 700; cursor: pointer;">Chiudi Elenco</button>
-            </div>
-        `;
-    } catch (e) {
-        console.error("Errore viewClassTeachers:", e);
-        content.innerHTML = `<p style="color: red; text-align: center; padding: 2rem;">Errore durante il caricamento docenti: ${e.message}</p>`;
     }
 };
 
