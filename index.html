@@ -2,8 +2,8 @@
 <html lang="it">
 <head>
     <!-- Favicon & Touch Icons -->
-    <link rel="icon" type="image/png" sizes="32x32" href="favicon.png?v=3">
-    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png?v=3">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon.png?v=4">
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png?v=4">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Palestra di Riflessione | Esercizi Interattivi</title>
@@ -43,6 +43,11 @@
                         <i class="fa-solid fa-right-to-bracket"></i> Accedi tramite Hub
                     </button>
                     <p style="font-size: 0.85rem; color: #6b7280; margin-top: 5px;">Verrai reindirizzato al Portale Unico del Prof. Memmo per l'accesso sicuro.</p>
+                    <div style="display: flex; justify-content: center; gap: 16px; margin-top: 10px; font-size: 0.8rem; text-transform: uppercase;">
+                        <a href="javascript:void(0)" onclick="openSharedModal('privacy')" style="color: #6b7280; text-decoration: none;">Privacy Policy</a>
+                        <span style="color: #cbd5e1;">•</span>
+                        <a href="javascript:void(0)" onclick="openSharedModal('termini')" style="color: #6b7280; text-decoration: none;">Termini e Condizioni</a>
+                    </div>
                 </div>
             </div>
 
@@ -109,7 +114,7 @@
                 <li><a href="#culturagenerale" class="nav-item" data-section="culturagenerale"><span class="icon">🌍</span> <span>Cultura Generale</span></a></li>
                 <li><a href="https://prof-memmo.github.io/games/contatti.html" target="_blank" class="nav-item" data-section="contatti"><span class="icon">📧</span> <span>Contatti</span></a></li>
                 <li class="nav-logout-separator" style="margin-top: 1rem; border-top: 1px solid #f0f0f0; padding-top: 1rem;"></li>
-                <li><a href="javascript:void(0)" class="nav-item" onclick="if(window.openEditProfileModal) window.openEditProfileModal()"><span class="icon">📝</span> <span>Modifica Profilo</span></a></li>
+                <li><a href="javascript:void(0)" class="nav-item" onclick="window.open('https://prof-memmo.github.io/games/profilo.html', '_blank')"><span class="icon">📝</span> <span>Modifica Profilo</span></a></li>
                 <li><a href="javascript:void(0)" class="nav-item" onclick="if(window.openSharedModal) window.openSharedModal('invita')"><span class="icon">✈️</span> <span>Invita un Collega</span></a></li>
                 <li><a href="javascript:void(0)" class="nav-item logout" onclick="Auth.logout()"><span class="icon">🚪</span> <span>Esci</span></a></li>
 
@@ -123,7 +128,7 @@
                 <h1 class="main-title">PALESTRA DI <span class="accent">RIFLESSIONE</span> SULLA LINGUA</h1>
                 <p class="home-description">Lo spazio interattivo per allenare l'analisi grammaticale, logica e del periodo con testi lunghi e coinvolgenti.</p>
                 <div style="margin-top: 1rem;">
-                    <button class="btn" onclick="window.location.hash = 'intro'" style="background: rgba(39, 174, 96, 0.1); color: #27ae60; border: 1px solid #27ae60; padding: 0.6rem 1.2rem; font-size: 0.9rem; border-radius: 50px; font-weight: 700; cursor: pointer;">SCOPRI IL PROGETTO 👋</button>
+                    <button class="btn" onclick="window.location.hash = 'intro'" style="background: rgba(30, 126, 67, 0.12); color: #1e7e43; border: 1.5px solid #1e7e43; padding: 0.6rem 1.2rem; font-size: 0.9rem; border-radius: 50px; font-weight: 800; cursor: pointer;">SCOPRI IL PROGETTO 👋</button>
                 </div>
             </div>
             <div class="home-main-layout">
@@ -174,16 +179,16 @@
         };
     </script>
 
-    <footer class="footer" style="padding: 2rem 1rem; text-align: center; border-top: 1px solid rgba(0,0,0,0.08);">
-        <div style="display: flex; align-items: center; justify-content: center; gap: 15px; margin: 0 auto 15px auto; max-width: 850px; flex-wrap: wrap;">
-            <img src="https://prof-memmo.github.io/prof-memmo-gestione-siti/shared/assets/legal/patamu-badge.png" alt="Patamu" style="height: 52px; object-fit: contain; flex-shrink: 0;" onerror="this.src='assets/patamu.png'">
-            <p style="text-align: left; font-size: 0.8rem; line-height: 1.4; margin: 0; max-width: 700px; color: inherit;">
-                © 2026 Guglielmo Piersanti. Tutti i contenuti presenti su questo sito sono di proprietà dell'autore e sono protetti tramite deposito e marcatura temporale presso Patamu. I contenuti sono inoltre distribuiti con licenza Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0).
-            </p>
+    <footer class="footer" style="padding: 1.5rem 1.5rem 80px 1.5rem; text-align: center; border-top: 1px solid rgba(0,0,0,0.08); width: auto; box-sizing: border-box;">
+        <div class="footer-legal-links" style="display: flex; justify-content: center; gap: 20px; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 12px;">
+            <a href="javascript:void(0)" onclick="openSharedModal('privacy')" style="color: inherit; text-decoration: none; opacity: 0.85;">Privacy Policy</a>
+            <a href="javascript:void(0)" onclick="openSharedModal('termini')" style="color: inherit; text-decoration: none; opacity: 0.85;">Termini e Condizioni</a>
         </div>
-        <div class="footer-legal-links" style="display: flex; justify-content: center; gap: 20px; font-size: 0.85rem;">
-            <a href="javascript:void(0)" onclick="openSharedModal('privacy')" style="color: inherit; text-decoration: underline; opacity: 0.85;">Privacy Policy</a>
-            <a href="javascript:void(0)" onclick="openSharedModal('termini')" style="color: inherit; text-decoration: underline; opacity: 0.85;">Termini e Condizioni</a>
+        <div style="display: flex; align-items: center; justify-content: flex-start; gap: 15px; margin: 0 auto; max-width: 900px; width: 100%; box-sizing: border-box;">
+            <img src="https://prof-memmo.github.io/prof-memmo-gestione-siti/shared/assets/legal/patamu-badge.png" alt="Patamu" style="height: 52px; object-fit: contain; flex-shrink: 0;" onerror="this.src='assets/patamu.png'">
+            <p style="text-align: left; font-size: 0.78rem; line-height: 1.4; margin: 0; flex: 1; width: 100%; color: inherit; opacity: 0.9;">
+                &copy; 2026 Guglielmo Piersanti. Tutti i contenuti presenti su questo sito sono di proprietà dell'autore e sono protetti tramite deposito e marcatura temporale presso Patamu. I contenuti sono inoltre distribuiti con licenza Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0).
+            </p>
         </div>
     </footer>
 
@@ -231,7 +236,7 @@
     <div id="modal-miniguida" class="modal-overlay" style="display: none; align-items: center; justify-content: center; z-index: 9999; background: rgba(15,23,42,0.8); backdrop-filter: blur(4px); position: fixed; inset: 0; padding: 20px;">
         <div class="modal-content" style="background: white; border-radius: 24px; width: 100%; max-width: 900px; display: flex; overflow: hidden; position: relative; max-height: 90vh; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);">
             <div style="width: 33%; background: #f8fafc; display: flex; align-items: flex-end; justify-content: center; border-right: 2px solid #f1f5f9; padding-top: 20px;" class="hide-mobile">
-                <img src="assets/prof_memmo_full.jpg" onerror="this.src='https://prof-memmo.github.io/prof-memmo-gestione-siti/shared/assets/branding/prof-memmo/prof-memmo-full.jpg';" alt="Prof Memmo" style="width: 120%; object-fit: contain; mix-blend-mode: multiply; filter: drop-shadow(0 10px 15px rgba(0,0,0,0.2));">
+                <img src="assets/prof_memmo_full.png" onerror="this.src='https://prof-memmo.github.io/prof-memmo-gestione-siti/shared/assets/branding/prof-memmo/prof-memmo-full.png';" alt="Prof Memmo" style="width: 120%; object-fit: contain; filter: drop-shadow(0 10px 15px rgba(0,0,0,0.2));">
             </div>
             <div style="flex: 1; padding: 30px 40px; display: flex; flex-direction: column; position: relative; min-height: 450px;">
                 <button onclick="closeMiniguida()" style="position: absolute; top: 15px; right: 15px; width: 36px; height: 36px; border-radius: 50%; border: none; background: #f1f5f9; color: #475569; font-size: 1.2rem; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background 0.2s;"><i class="fa-solid fa-xmark"></i></button>
@@ -244,16 +249,21 @@
                 </div>
                 
                 <div id="miniguida-step-1" class="miniguida-step" style="flex: 1; display: none; flex-direction: column; align-items: center; justify-content: center; text-align: center; animation: fadeIn 0.3s ease-out;">
+                    <i class="fa-solid fa-chalkboard-user" style="font-size: 5rem; color: #22c55e; margin-bottom: 20px;"></i>
+                    <p style="font-size: 1.15rem; color: #475569; line-height: 1.6; font-weight: 500;">🏫 <strong>Accesso e Classi:</strong><br><strong>Per il Docente:</strong> crea le tue classi dal Profilo su <em>prof-memmo.github.io/games</em> per ottenere il <strong>Codice Classe</strong> da condividere con gli alunni.<br><br><strong>Per gli Studenti:</strong> nessun bisogno di email! Basta inserire il <strong>Codice Classe</strong> e selezionare il proprio nome per iniziare subito l'allenamento.</p>
+                </div>
+
+                <div id="miniguida-step-2" class="miniguida-step" style="flex: 1; display: none; flex-direction: column; align-items: center; justify-content: center; text-align: center; animation: fadeIn 0.3s ease-out;">
                     <i class="fa-solid fa-lightbulb" style="font-size: 5rem; color: #f59e0b; margin-bottom: 20px;"></i>
                     <p style="font-size: 1.25rem; color: #475569; line-height: 1.6; font-weight: 500;">💡 <strong>Scopri &amp; Allenati:</strong><br>Ripassa la regola nella sezione <strong>SCOPRI</strong> e mettiti alla prova con gli esercizi interattivi in <strong>ALLENATI</strong>.</p>
                 </div>
                 
-                <div id="miniguida-step-2" class="miniguida-step" style="flex: 1; display: none; flex-direction: column; align-items: center; justify-content: center; text-align: center; animation: fadeIn 0.3s ease-out;">
+                <div id="miniguida-step-3" class="miniguida-step" style="flex: 1; display: none; flex-direction: column; align-items: center; justify-content: center; text-align: center; animation: fadeIn 0.3s ease-out;">
                     <i class="fa-solid fa-book-open-reader" style="font-size: 5rem; color: #ec4899; margin-bottom: 20px;"></i>
                     <p style="font-size: 1.25rem; color: #475569; line-height: 1.6; font-weight: 500;">📖 <strong>Letture &amp; Vocabolario:</strong><br>Leggi i brani graduati (A1-B2) e clicca su qualsiasi parola difficile per aggiungerla al tuo <strong>Vocabolario Personale</strong>.</p>
                 </div>
 
-                <div id="miniguida-step-3" class="miniguida-step" style="flex: 1; display: none; flex-direction: column; align-items: center; justify-content: center; text-align: center; animation: fadeIn 0.3s ease-out;">
+                <div id="miniguida-step-4" class="miniguida-step" style="flex: 1; display: none; flex-direction: column; align-items: center; justify-content: center; text-align: center; animation: fadeIn 0.3s ease-out;">
                     <i class="fa-solid fa-medal" style="font-size: 5rem; color: #10b981; margin-bottom: 20px;"></i>
                     <p style="font-size: 1.25rem; color: #475569; line-height: 1.6; font-weight: 500;">🥇 <strong>Guadagna XP e Medaglie:</strong><br>Monitora i tuoi progressi nel Profilo, supera le sfide assegnate dal docente e allena la tua mente ogni giorno!</p>
                 </div>
@@ -261,6 +271,7 @@
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 20px;">
                     <div style="display: flex; gap: 8px;" id="miniguida-dots">
                         <div class="dot active" style="width: 12px; height: 12px; border-radius: 50%; background: #22c55e; transition: 0.3s;"></div>
+                        <div class="dot" style="width: 12px; height: 12px; border-radius: 50%; background: #e2e8f0; transition: 0.3s;"></div>
                         <div class="dot" style="width: 12px; height: 12px; border-radius: 50%; background: #e2e8f0; transition: 0.3s;"></div>
                         <div class="dot" style="width: 12px; height: 12px; border-radius: 50%; background: #e2e8f0; transition: 0.3s;"></div>
                         <div class="dot" style="width: 12px; height: 12px; border-radius: 50%; background: #e2e8f0; transition: 0.3s;"></div>
@@ -285,7 +296,7 @@
     
     <script>
         let currentMiniguidaStep = 0;
-        const totalMiniguidaSteps = 4;
+        const totalMiniguidaSteps = 5;
         
         function openMiniguida() {
             document.getElementById('modal-miniguida').style.display = 'flex';

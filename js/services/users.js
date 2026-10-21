@@ -258,33 +258,7 @@ window.saveProfileData = async function() {
 };
 
 
-window.openEditProfileModal = async function() {
-    if (!window.Auth || !window.Auth.isLoggedIn()) return;
-    const user = window.Auth.getUser();
-    
-    const modal = document.getElementById('edit-profile-modal');
-    const nameInput = document.getElementById('edit-profile-name');
-    const schoolGroup = document.getElementById('edit-profile-school-group');
-    const schoolInput = document.getElementById('edit-profile-school');
-    
-    try {
-        const doc = await window.fbDb.collection('users').doc(user.uid).get();
-        if (!doc.exists) return;
-        
-        const userData = doc.data();
-        const isTeacher = (userData.role === 'docente' || userData.role === 'teacher' || userData.role === 'admin' || user.email === 'prof.memmo@gmail.com');
-        
-        if (isTeacher) {
-            schoolGroup.classList.remove('hidden');
-            schoolInput.value = userData.school || '';
-        } else {
-            schoolGroup.classList.add('hidden');
-        }
-        
-        nameInput.value = userData.name || user.name || '';
-        modal.classList.remove('hidden');
-    } catch (err) {
-        console.error(err);
-    }
+window.openEditProfileModal = function() {
+    window.open('https://prof-memmo.github.io/games/profilo.html', '_blank');
 };
 
