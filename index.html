@@ -22,7 +22,13 @@
   <!-- Icone per Safari e Dispositivi Mobili -->
   <link rel="manifest" href="manifest.json">
   <script>window.HUB_GAME_ID = "palestra-di-riflessione";</script>
-  <script src="https://prof-memmo.github.io/prof-memmo-gestione-siti/shared/hub-subscription-guard.js?v=20260824_palestra_guard"></script>
+  <script>
+    (function() {
+      var isPrev = window.location.pathname.indexOf('/preview') !== -1;
+      var cdnBase = isPrev ? 'https://prof-memmo.github.io/prof-memmo-gestione-siti/preview/shared/' : 'https://prof-memmo.github.io/prof-memmo-gestione-siti/shared/';
+      document.write('<script src="' + cdnBase + 'hub-subscription-guard.js?v=20261027_palestra_guard"><\/script>');
+    })();
+  </script>
 </head>
 <body>
     <button id="sidebar-open-btn" class="floating-toggle">☰</button>
