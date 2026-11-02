@@ -210,7 +210,8 @@ function handleRoute() {
         }
 
         // LOGIN LOGIC
-        if (!Auth.isLoggedIn()) {
+        const publicSections = ['home', 'intro', 'contatti', ''];
+        if (!publicSections.includes(section) && !Auth.isLoggedIn()) {
             showLoginOverlay(hash);
             return;
         }
