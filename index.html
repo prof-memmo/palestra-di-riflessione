@@ -37,7 +37,37 @@
   </script>
 </head>
 <body>
-    <button id="sidebar-open-btn" class="floating-toggle">☰</button>
+    <!-- Top Header Standard Ecosistema Prof. Memmo -->
+    <header class="app-header" id="app-header">
+        <div class="header-left">
+            <button id="sidebar-open-btn" class="header-sidebar-toggle" title="Menu" aria-label="Menu">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+            <div class="header-logo-container" onclick="window.location.hash='home'">
+                <img src="https://prof-memmo.github.io/prof-memmo-gestione-siti/shared/assets/branding/games/palestra-riflessione-header.png" alt="Palestra di Riflessione Logo" class="header-app-logo" onerror="this.onerror=null; this.src='assets/logo.png';">
+            </div>
+        </div>
+
+        <!-- Logo Avatar Centrato Prof. Memmo -->
+        <div class="header-center-logo">
+            <a href="https://prof-memmo.github.io/prof-memmo-gestione-siti/portal.html" class="header-prof-logo-wrapper" title="Torna all'Hub Centrale" target="_blank" rel="noopener noreferrer">
+                <img src="https://prof-memmo.github.io/prof-memmo-gestione-siti/shared/assets/branding/prof-memmo/prof-memmo-avatar.png" class="header-prof-logo" alt="Prof. Memmo Logo">
+            </a>
+        </div>
+
+        <!-- Top Profile Card Widget with Dropdown -->
+        <div class="header-right">
+            <div class="header-profile-container">
+                <div class="header-profile-widget" id="header-profile-widget">
+                    <!-- Popolato dinamicamente -->
+                </div>
+                <div class="profile-dropdown-card" id="profile-dropdown-card" style="display: none;">
+                    <!-- Popolato dinamicamente (XP, Timer, Musica, Azioni Ecosistema, Logout) -->
+                </div>
+            </div>
+        </div>
+    </header>
+
     <div id="sidebar-backdrop" class="sidebar-backdrop"></div>
 
     <!-- Login Overlay -->
@@ -116,20 +146,13 @@
                 <button id="sidebar-close-btn" class="close-sidebar-btn">&times;</button>
             </div>
             <ul class="nav-links">
-
                 <li><a href="#home" class="nav-item active" data-section="home"><span class="icon">🏠</span> <span>Home</span></a></li>
-                <li><a href="javascript:void(0)" class="nav-item" onclick="openMiniguida()"><span class="icon">❓</span> <span>Miniguida</span></a></li>
+                <li><a href="#intro" class="nav-item" data-section="intro"><span class="icon">👋</span> <span>Scopri il Progetto</span></a></li>
                 <li><a href="#riflessione" class="nav-item" data-section="riflessione"><span class="icon">🏋️</span> <span>Grammatica</span></a></li>
                 <li><a href="#lettura" class="nav-item" data-section="lettura"><span class="icon">📚</span> <span>Lettura</span></a></li>
                 <li><a href="#lessico" class="nav-item" data-section="lessico"><span class="icon">📖</span> <span>Lessico</span></a></li>
                 <li><a href="#produzione" class="nav-item" data-section="produzione"><span class="icon">✍️</span> <span>Produzione</span></a></li>
                 <li><a href="#culturagenerale" class="nav-item" data-section="culturagenerale"><span class="icon">🌍</span> <span>Cultura Generale</span></a></li>
-                <li><a href="https://prof-memmo.github.io/games/contatti.html" target="_blank" class="nav-item" data-section="contatti"><span class="icon">📧</span> <span>Contatti</span></a></li>
-                <li class="nav-logout-separator" style="margin-top: 1rem; border-top: 1px solid #f0f0f0; padding-top: 1rem;"></li>
-                <li><a href="javascript:void(0)" class="nav-item" onclick="window.open('https://prof-memmo.github.io/games/profilo.html', '_blank')"><span class="icon">📝</span> <span>Modifica Profilo</span></a></li>
-                <li><a href="javascript:void(0)" class="nav-item" onclick="if(window.openSharedModal) window.openSharedModal('invita')"><span class="icon">✈️</span> <span>Invita un Collega</span></a></li>
-                <li><a href="javascript:void(0)" class="nav-item logout" onclick="Auth.logout()"><span class="icon">🚪</span> <span>Esci</span></a></li>
-
             </ul>
         </div>
     </nav>

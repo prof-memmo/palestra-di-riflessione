@@ -6,24 +6,20 @@ function initNavigation() {
     window.toggleSidebar = function(show) {
         if (show) {
             sidebar.classList.remove('hidden');
-            if (openBtn) {
-                openBtn.classList.add('hidden');
-                openBtn.classList.remove('visible');
-            }
-            document.querySelector('main').classList.remove('full-width');
-            document.querySelector('.footer').classList.remove('full-width');
+            document.querySelector('main')?.classList.remove('full-width');
+            document.querySelector('.footer')?.classList.remove('full-width');
         } else {
             sidebar.classList.add('hidden');
-            if (openBtn) {
-                openBtn.classList.remove('hidden');
-                openBtn.classList.add('visible');
-            }
-            document.querySelector('main').classList.add('full-width');
-            document.querySelector('.footer').classList.add('full-width');
+            document.querySelector('main')?.classList.add('full-width');
+            document.querySelector('.footer')?.classList.add('full-width');
         }
     }
 
-    openBtn?.addEventListener('click', () => toggleSidebar(true));
+    openBtn?.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const isHidden = sidebar.classList.contains('hidden');
+        toggleSidebar(isHidden);
+    });
     closeBtn?.addEventListener('click', () => toggleSidebar(false));
 
     // Use event delegation for all navigation items (even dynamic ones)
