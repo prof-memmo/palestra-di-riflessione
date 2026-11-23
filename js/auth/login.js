@@ -110,12 +110,14 @@ Object.assign(window.Auth = window.Auth || {}, {
     continueAsGuest: () => {
         window.Auth._user = {
             name: 'Atleta Anonimo',
-            avatar: '👤',
+            avatar: 'assets/avatars/6.png',
             role: 'studente',
+            roleLabel: 'Studente',
             isGuest: true,
-            setupComplete: false,
+            setupComplete: true,
             joinedAt: new Date().toISOString()
         };
+        localStorage.setItem('palestra_user', JSON.stringify(window.Auth._user));
         window.dispatchEvent(new CustomEvent('authChange'));
         if (typeof hideLoginOverlay === 'function') hideLoginOverlay();
     }

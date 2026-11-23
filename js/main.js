@@ -230,13 +230,25 @@ function handleRoute() {
         }
 
         const user = Auth.getUser();
-        // Se loggato ma onboarding non completo, forza redirect (tranne che per admin che saltano)
+        // Se loggato ma onboarding non completo: se l'utente proviene dall'Hub o ha già un ruolo/email, completiamo il setup automaticamente
         if (Auth.isLoggedIn() && user.setupComplete === false && section !== 'onboarding') {
-            window.location.hash = 'onboarding';
-            return;
+            if (user.role || !user.isGuest) {
+                user.setupComplete = true;
+                localStorage.setItem('palestra_user', JSON.stringify(user));
+                if (window.fbDb && user.uid) {
+                    window.fbDb.collection('users').doc(user.uid).set({ setupComplete: true }, { merge: true }).catch(() => {});
+                }
+            } else {
+                window.location.hash = 'onboarding';
+                return;
+            }
         }
 
         if (section === 'onboarding') {
+            if (Auth.isLoggedIn() && (user.setupComplete !== false || user.role || !user.isGuest)) {
+                window.location.hash = 'home';
+                return;
+            }
             renderOnboardingPage();
             return;
         }
