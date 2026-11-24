@@ -400,14 +400,17 @@ async function renderProfiloPage() {
             const isSuperAdmin = (user.role === 'admin' || (user.email && user.email.toLowerCase() === 'prof.memmo@gmail.com'));
             const firestoreClasses = [];
 
-            // Docente: cerca su hub_classes le classi di pertinenza (teacherId, teacherIds, teacherEmail)
-            const queries = [
-                window.fbDb.collection('hub_classes').where('teacherId', '==', user.uid).get().catch(() => ({ forEach: () => {} })),
-                window.fbDb.collection('hub_classes').where('teacherIds', 'array-contains', user.uid).get().catch(() => ({ forEach: () => {} }))
-            ];
-            if (user.email) {
-                queries.push(window.fbDb.collection('hub_classes').where('teacherEmail', '==', user.email.toLowerCase()).get().catch(() => ({ forEach: () => {} })));
-                queries.push(window.fbDb.collection('hub_classes').where('collaboratori', 'array-contains', user.email.toLowerCase()).get().catch(() => ({ forEach: () => {} })));
+            // Docente: cerca su hub_classes le classi di pertinenza (teacherId, teacherIds, teacherEmail) o tutte se admin
+            const queries = [];
+            if (isSuperAdmin) {
+                queries.push(window.fbDb.collection('hub_classes').get().catch(() => ({ forEach: () => {} })));
+            } else {
+                queries.push(window.fbDb.collection('hub_classes').where('teacherId', '==', user.uid).get().catch(() => ({ forEach: () => {} })));
+                queries.push(window.fbDb.collection('hub_classes').where('teacherIds', 'array-contains', user.uid).get().catch(() => ({ forEach: () => {} })));
+                if (user.email) {
+                    queries.push(window.fbDb.collection('hub_classes').where('teacherEmail', '==', user.email.toLowerCase()).get().catch(() => ({ forEach: () => {} })));
+                    queries.push(window.fbDb.collection('hub_classes').where('collaboratori', 'array-contains', user.email.toLowerCase()).get().catch(() => ({ forEach: () => {} })));
+                }
             }
             const snaps = await Promise.all(queries);
             snaps.forEach(snap => {
@@ -607,7 +610,7 @@ async function renderProfiloPage() {
                                         </label>
                                         <select id="select-teacher-class" class="form-control" style="padding: 8px 14px; font-size: 0.9rem; border-radius: 10px; border: 1.5px solid #cbd5e1; min-width: 240px; font-weight: 700; color: #1e293b;" onchange="window.onPalestraClassChange(this)">
                                             ${classes.length > 0 ? classes.map((c, i) => `
-                                                <option value="${c.code || ''}" data-id="${c.id || ''}" data-name="${(c.name || '').replace(/"/g, '&quot;')}" ${i === 0 ? 'selected' : ''}>
+                                                <option value="${c.code || c.id || ''}" data-id="${c.id || ''}" data-name="${(c.name || '').replace(/"/g, '&quot;')}" ${i === 0 ? 'selected' : ''}>
                                                     ${c.name}${c.code ? ' (Codice: ' + c.code + ')' : ''}
                                                 </option>
                                             `).join('') : '<option value="">Nessuna classe creata nell\'Hub</option>'}
