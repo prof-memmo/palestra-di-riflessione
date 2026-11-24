@@ -230,13 +230,25 @@ function handleRoute() {
         }
 
         const user = Auth.getUser();
-        // Se loggato ma onboarding non completo, forza redirect (tranne che per admin che saltano)
+        // Se loggato ma onboarding non completo: se l'utente proviene dall'Hub o ha già un ruolo/email, completiamo il setup automaticamente
         if (Auth.isLoggedIn() && user.setupComplete === false && section !== 'onboarding') {
-            window.location.hash = 'onboarding';
-            return;
+            if (user.role || !user.isGuest) {
+                user.setupComplete = true;
+                localStorage.setItem('palestra_user', JSON.stringify(user));
+                if (window.fbDb && user.uid) {
+                    window.fbDb.collection('users').doc(user.uid).set({ setupComplete: true }, { merge: true }).catch(() => {});
+                }
+            } else {
+                window.location.hash = 'onboarding';
+                return;
+            }
         }
 
         if (section === 'onboarding') {
+            if (Auth.isLoggedIn() && (user.setupComplete !== false || user.role || !user.isGuest)) {
+                window.location.hash = 'home';
+                return;
+            }
             renderOnboardingPage();
             return;
         }
@@ -388,14 +400,17 @@ async function renderProfiloPage() {
             const isSuperAdmin = (user.role === 'admin' || (user.email && user.email.toLowerCase() === 'prof.memmo@gmail.com'));
             const firestoreClasses = [];
 
-            // Docente: cerca su hub_classes le classi di pertinenza (teacherId, teacherIds, teacherEmail)
-            const queries = [
-                window.fbDb.collection('hub_classes').where('teacherId', '==', user.uid).get().catch(() => ({ forEach: () => {} })),
-                window.fbDb.collection('hub_classes').where('teacherIds', 'array-contains', user.uid).get().catch(() => ({ forEach: () => {} }))
-            ];
-            if (user.email) {
-                queries.push(window.fbDb.collection('hub_classes').where('teacherEmail', '==', user.email.toLowerCase()).get().catch(() => ({ forEach: () => {} })));
-                queries.push(window.fbDb.collection('hub_classes').where('collaboratori', 'array-contains', user.email.toLowerCase()).get().catch(() => ({ forEach: () => {} })));
+            // Docente: cerca su hub_classes le classi di pertinenza (teacherId, teacherIds, teacherEmail) o tutte se admin
+            const queries = [];
+            if (isSuperAdmin) {
+                queries.push(window.fbDb.collection('hub_classes').get().catch(() => ({ forEach: () => {} })));
+            } else {
+                queries.push(window.fbDb.collection('hub_classes').where('teacherId', '==', user.uid).get().catch(() => ({ forEach: () => {} })));
+                queries.push(window.fbDb.collection('hub_classes').where('teacherIds', 'array-contains', user.uid).get().catch(() => ({ forEach: () => {} })));
+                if (user.email) {
+                    queries.push(window.fbDb.collection('hub_classes').where('teacherEmail', '==', user.email.toLowerCase()).get().catch(() => ({ forEach: () => {} })));
+                    queries.push(window.fbDb.collection('hub_classes').where('collaboratori', 'array-contains', user.email.toLowerCase()).get().catch(() => ({ forEach: () => {} })));
+                }
             }
             const snaps = await Promise.all(queries);
             snaps.forEach(snap => {
@@ -595,7 +610,7 @@ async function renderProfiloPage() {
                                         </label>
                                         <select id="select-teacher-class" class="form-control" style="padding: 8px 14px; font-size: 0.9rem; border-radius: 10px; border: 1.5px solid #cbd5e1; min-width: 240px; font-weight: 700; color: #1e293b;" onchange="window.onPalestraClassChange(this)">
                                             ${classes.length > 0 ? classes.map((c, i) => `
-                                                <option value="${c.code || ''}" data-id="${c.id || ''}" data-name="${(c.name || '').replace(/"/g, '&quot;')}" ${i === 0 ? 'selected' : ''}>
+                                                <option value="${c.code || c.id || ''}" data-id="${c.id || ''}" data-name="${(c.name || '').replace(/"/g, '&quot;')}" ${i === 0 ? 'selected' : ''}>
                                                     ${c.name}${c.code ? ' (Codice: ' + c.code + ')' : ''}
                                                 </option>
                                             `).join('') : '<option value="">Nessuna classe creata nell\'Hub</option>'}
@@ -2267,12 +2282,11 @@ function updateSidebarMenu() {
     const mainSections = [
         { id: 'home', title: 'Home', icon: '🏠' },
         { id: 'intro', title: 'Scopri il Progetto', icon: '👋' },
-        { id: 'riflessione', title: 'Grammatica', icon: '🧠' },
+        { id: 'riflessione', title: 'Grammatica', icon: '🏋️' },
         { id: 'lettura', title: 'Lettura', icon: '📚' },
         { id: 'lessico', title: 'Lessico', icon: '📖' },
         { id: 'produzione', title: 'Produzione', icon: '✍️' },
-        { id: 'culturagenerale', title: 'Cultura Generale', icon: '🌍' },
-        { id: 'contatti', title: 'Contatti', icon: '📧' }
+        { id: 'culturagenerale', title: 'Cultura Generale', icon: '🌍' }
     ];
 
     let activeMainSection = window.currentSection;
@@ -2294,54 +2308,12 @@ function updateSidebarMenu() {
     if (path.length > 1) activeSubSection = path[1];
     if (path.length > 2) activeLeafSection = path[2];
 
-    const isImage = user.avatar.includes('/') || user.avatar.includes('.');
-    const avatarHtml = isImage 
-        ? `<img src="${user.avatar}" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">` 
-        : `<span>${user.avatar}</span>`;
+    // Aggiorna anche Header Profile Widget e Dropdown standard
+    if (typeof updateHeaderProfile === 'function') {
+        updateHeaderProfile(user);
+    }
 
-    let html = `
-        <style>
-            .sidebar-user-block:hover {
-                background: #eef2f7 !important;
-                transform: scale(1.02);
-            }
-        </style>
-        <div class="sidebar-user-block" onclick="navigateTo('profilo'); if(window.innerWidth <= 1024 && typeof toggleSidebar === 'function') toggleSidebar(false);" style="padding: 1.5rem; margin-bottom: 1rem; background: #f8f9fa; border-radius: 20px; display: flex; align-items: center; gap: 1rem; cursor: pointer; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); border: 1px solid transparent;">
-            <div style="width: 45px; height: 45px; background: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; border: 2px solid var(--primary-color); overflow: hidden;">
-                ${avatarHtml}
-            </div>
-            <div style="overflow: hidden;">
-                <p style="font-weight: 800; font-size: 0.95rem; margin: 0; white-space: nowrap; text-overflow: ellipsis;">${user.name}</p>
-                <p style="font-size: 0.75rem; color: var(--primary-color); font-weight: 700; margin: 0;">${window.Progress.getPoints()} XP</p>
-            </div>
-        </div>
-    `;
-
-    const isPlaying = (window.MusicPlayer && window.MusicPlayer.isPlaying) ? '⏸️' : '▶️';
-    const currentTrackTitle = (window.MusicPlayer && window.MusicPlayer.tracks && window.MusicPlayer.tracks[window.MusicPlayer.currentTrackIndex]) ? window.MusicPlayer.tracks[window.MusicPlayer.currentTrackIndex].replace(" (freetouse.com).mp3", "") : 'Pronto...';
-
-    html += `
-        <div style="margin-bottom: 1.5rem; display: flex; flex-direction: column; gap: 0.5rem;">
-            <!-- Music Widget -->
-            <div id="music-player-widget" style="background: white; padding: 10px 15px; border-radius: 30px; display: flex; align-items: center; gap: 10px; border: 2px solid #f0f0f0; width: 100%; box-sizing: border-box; box-shadow: 0 2px 10px rgba(0,0,0,0.05);">
-                <button id="music-play-btn" onclick="if(window.MusicPlayer) window.MusicPlayer.togglePlay()" style="background: var(--primary-color); color: white; border: none; width: 35px; height: 35px; border-radius: 50%; font-size: 1rem; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; box-shadow: 0 2px 5px rgba(93, 95, 239, 0.3);">${isPlaying}</button>
-                <div style="display: flex; flex-direction: column; overflow: hidden; flex-grow: 1;">
-                    <span style="font-size: 0.6rem; color: #475569; font-weight: 800; text-transform: uppercase; letter-spacing: 1px;">In Riproduzione</span>
-                    <span id="music-track-title" style="font-size: 0.75rem; font-weight: 700; color: #333; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${currentTrackTitle}</span>
-                </div>
-                <button onclick="if(window.MusicPlayer) window.MusicPlayer.nextTrack()" style="background: #f8f9fa; color: #555; border: 1px solid #ddd; width: 30px; height: 30px; border-radius: 50%; cursor: pointer; font-size: 0.8rem; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">⏭️</button>
-            </div>
-
-            <!-- Timer Widget (Visibile solo per studenti tramite timer.js) -->
-            <div id="dropdown-timer-container" style="display: none; background: #fff8e1; padding: 10px 15px; border-radius: 30px; border: 2px solid #ffb74d; width: 100%; box-sizing: border-box; align-items: center; justify-content: center; gap: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
-                <span style="font-size: 1.5rem;">🐈</span>
-                <div style="display: flex; flex-direction: column; align-items: flex-start; overflow: hidden;">
-                    <span style="font-size: 0.6rem; font-weight: 800; color: #ff9800; text-transform: uppercase;">Tempo Studio</span>
-                    <span id="dropdown-session-timer" style="font-size: 1.1rem; font-weight: 900; color: #e65100; font-variant-numeric: tabular-nums;">--:--</span>
-                </div>
-            </div>
-        </div>
-    `;
+    let html = '';
 
     for (const sec of mainSections) {
         const isActive = activeMainSection === sec.id;
@@ -2499,11 +2471,159 @@ function updateSidebarMenu() {
         html += `</li>`;
     }
 
-    html += `<li class="nav-logout-separator" style="margin-top: 1rem; border-top: 1px solid #f0f0f0; padding-top: 1rem;"></li>`;
-    html += `<li><a href="javascript:void(0)" class="nav-item logout" onclick="Auth.logout()"><span class="icon">🚪</span> <span>Esci</span></a></li>`;
-
     navLinks.innerHTML = html;
 }
+
+function updateHeaderProfile(user) {
+    const profileWidget = document.getElementById('header-profile-widget');
+    const profileDropdown = document.getElementById('profile-dropdown-card');
+    const appHeader = document.getElementById('app-header');
+    if (!profileWidget || !profileDropdown) return;
+
+    if (!user) {
+        if (appHeader) appHeader.style.display = 'none';
+        return;
+    }
+    if (appHeader) appHeader.style.display = 'flex';
+
+    const isImage = user.avatar && (user.avatar.includes('/') || user.avatar.includes('.'));
+    const avatarImg = isImage ? user.avatar : 'assets/avatar.png';
+    const roleText = user.role === 'admin' 
+        ? 'Amministratore' 
+        : (user.role === 'docente' 
+            ? 'Docente' 
+            : (user.classId ? `Classe ${user.classId}` : (user.role === 'amico' || user.role === 'ospite' ? 'Amico Palestra' : 'Studente')));
+
+    // 1. Header Profile Widget (barra superiore a destra)
+    profileWidget.innerHTML = `
+        <div class="header-avatar-wrapper">
+            <img class="header-avatar-img" src="${avatarImg}" alt="${user.name}" onerror="this.onerror=null; this.src='assets/avatar.png';">
+        </div>
+        <div class="header-user-info" id="header-user-info-click" style="cursor: pointer;" title="Profilo">
+            <span class="header-user-name">${(user.name || 'Utente').split(' ')[0]}</span>
+            <span class="header-user-level">${roleText}</span>
+        </div>
+        <i class="fa-solid fa-chevron-down dropdown-arrow"></i>
+    `;
+
+    // 2. Profile Dropdown Card (menù a tendina standard ecosistema)
+    const points = (window.Progress && typeof window.Progress.getPoints === 'function') ? window.Progress.getPoints() : (user.points || 0);
+    const isPlaying = (window.MusicPlayer && window.MusicPlayer.isPlaying);
+    const currentTrackTitle = (window.MusicPlayer && window.MusicPlayer.tracks && window.MusicPlayer.tracks[window.MusicPlayer.currentTrackIndex])
+        ? window.MusicPlayer.tracks[window.MusicPlayer.currentTrackIndex].replace(" (freetouse.com).mp3", "")
+        : 'Sottofondo';
+
+    let dropdownHtml = `
+        <div class="dropdown-class-info" style="border-bottom: 1px solid rgba(0,0,0,0.06); padding-bottom: 10px; margin-bottom: 10px; text-align: center;">
+            <div style="font-size: 1rem; font-weight: 800; color: var(--primary-color);">${user.name}</div>
+            <span style="font-size: 0.72rem; color: #64748b; font-weight: 700; text-transform: uppercase;">${roleText}</span>
+        </div>
+
+        <div class="dropdown-xp-container" style="background: rgba(93, 95, 239, 0.05); border: 1px solid rgba(93, 95, 239, 0.15); padding: 8px 12px; border-radius: 12px; margin-bottom: 10px;">
+            <div style="display: flex; justify-content: space-between; font-size: 0.75rem; font-weight: 700; color: #475569; margin-bottom: 4px;">
+                <span>Progresso XP</span>
+                <span style="color: var(--primary-color); font-weight: 800;">${points} XP</span>
+            </div>
+        </div>
+
+        <!-- Timer Studio (Studente) -->
+        <div id="dropdown-timer-container" style="display: none; background: #fff8e1; padding: 8px 12px; border-radius: 12px; border: 1.5px solid #ffb74d; margin-bottom: 10px; text-align: center;">
+            <div style="font-size: 0.65rem; color: #b45309; text-transform: uppercase; font-weight: 800; margin-bottom: 2px;"><i class="fa-regular fa-clock"></i> TEMPO SESSIONE</div>
+            <div id="dropdown-session-timer" style="font-family: monospace; font-size: 1.25rem; font-weight: 900; color: #d97706; letter-spacing: 2px;">45:00</div>
+        </div>
+
+        <!-- Player Musica di Sottofondo -->
+        <div style="padding: 10px 0; border-top: 1px solid rgba(0,0,0,0.06); border-bottom: 1px solid rgba(0,0,0,0.06); margin-bottom: 10px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                <span style="font-size: 0.65rem; color: #64748b; font-weight: 800; text-transform: uppercase;"><i class="fa-solid fa-music"></i> SOTTOFONDO</span>
+                <a href="https://freetouse.com/music" target="_blank" rel="noopener noreferrer" style="font-size: 0.55rem; color: var(--primary-color); text-decoration: none; font-weight: 700;">freetouse.com/music</a>
+            </div>
+            <div style="display: flex; align-items: center; justify-content: space-between; background: #f8fafc; padding: 6px 10px; border-radius: 12px; border: 1px solid #e2e8f0;">
+                <div id="music-track-title" style="font-size: 0.7rem; font-weight: 700; color: #1e293b; white-space: nowrap; max-width: 120px; overflow: hidden; text-overflow: ellipsis;">${currentTrackTitle}</div>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <button type="button" onclick="if(window.MusicPlayer) window.MusicPlayer.prevTrack()" style="background: transparent; border: none; color: #475569; cursor: pointer; font-size: 0.8rem;" title="Traccia precedente"><i class="fa-solid fa-backward-step"></i></button>
+                    <button type="button" id="music-play-btn" onclick="if(window.MusicPlayer) window.MusicPlayer.togglePlay()" style="background: var(--primary-color); border: none; color: white; cursor: pointer; font-size: 0.75rem; width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 6px rgba(93,95,239,0.3);" title="Play/Pausa">
+                        ${isPlaying ? '<i class="fa-solid fa-pause"></i>' : '<i class="fa-solid fa-play"></i>'}
+                    </button>
+                    <button type="button" onclick="if(window.MusicPlayer) window.MusicPlayer.nextTrack()" style="background: transparent; border: none; color: #475569; cursor: pointer; font-size: 0.8rem;" title="Traccia successiva"><i class="fa-solid fa-forward-step"></i></button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Menu Azioni Rapide Ecosistema -->
+        <div class="dropdown-actions-menu" style="display: flex; flex-direction: column; gap: 6px; margin-bottom: 10px;">
+            <button type="button" class="btn btn-secondary dropdown-sm-btn" onclick="window.open('https://prof-memmo.github.io/games/profilo.html', '_blank')" style="width: 100%; display: flex; align-items: center; justify-content: flex-start; gap: 8px; font-weight: 700; border-radius: 8px; padding: 6px 10px; font-size: 0.78rem; background: #f8fafc; border: 1px solid #e2e8f0; color: #334155; cursor: pointer;">
+                <i class="fa-solid fa-user-gear"></i> Modifica Profilo
+            </button>
+            <button type="button" class="btn btn-secondary dropdown-sm-btn" onclick="if(window.openSharedModal) window.openSharedModal('invita')" style="width: 100%; display: flex; align-items: center; justify-content: flex-start; gap: 8px; font-weight: 700; border-radius: 8px; padding: 6px 10px; font-size: 0.78rem; background: #f8fafc; border: 1px solid #e2e8f0; color: #334155; cursor: pointer;">
+                <i class="fa-solid fa-paper-plane"></i> Invita un Collega
+            </button>
+            <button type="button" id="btn-notifiche-dropdown" class="btn btn-secondary dropdown-sm-btn" onclick="if(window.openSharedModal) window.openSharedModal('notifiche')" style="width: 100%; display: flex; align-items: center; justify-content: space-between; font-weight: 700; border-radius: 8px; padding: 6px 10px; font-size: 0.78rem; background: #f8fafc; border: 1px solid #e2e8f0; color: #334155; cursor: pointer;">
+                <span style="display: flex; align-items: center; gap: 8px;"><i class="fa-solid fa-bell"></i> Notifiche</span>
+                <span id="dropdown-notif-badge" class="badge-notif-pill" style="display:none; background: #ef4444; color: white; border-radius: 10px; padding: 1px 6px; font-size: 0.65rem;">0</span>
+            </button>
+            <button type="button" class="btn btn-secondary dropdown-sm-btn" onclick="if(typeof openMiniguida === 'function') openMiniguida()" style="width: 100%; display: flex; align-items: center; justify-content: flex-start; gap: 8px; font-weight: 700; border-radius: 8px; padding: 6px 10px; font-size: 0.78rem; background: #f8fafc; border: 1px solid #e2e8f0; color: #334155; cursor: pointer;">
+                <i class="fa-solid fa-circle-question"></i> Miniguida
+            </button>
+        </div>
+
+        <div class="dropdown-actions" style="display: flex; gap: 8px; border-top: 1px solid rgba(0,0,0,0.06); padding-top: 10px;">
+            <button type="button" class="btn btn-secondary btn-toggle-audio-action dropdown-sm-btn" onclick="toggleAudioEffects()" style="flex: 1; border-radius: 8px; font-size: 0.75rem; font-weight: 700; background: #f8fafc; border: 1px solid #e2e8f0; color: #334155; padding: 6px 10px; cursor: pointer;" title="Effetti Sonori">
+                <i class="fa-solid fa-volume-high"></i> Effetti
+            </button>
+            <button type="button" class="btn btn-danger btn-logout-action dropdown-sm-btn" onclick="Auth.logout()" style="flex: 1; background: #ef4444; color: white; border: none; border-radius: 8px; font-size: 0.75rem; font-weight: 700; cursor: pointer; padding: 6px 10px;" title="Esci">
+                <i class="fa-solid fa-power-off"></i> Esci
+            </button>
+        </div>
+    `;
+
+    profileDropdown.innerHTML = dropdownHtml;
+    initHeaderProfileEvents();
+    if (window.MusicPlayer && typeof window.MusicPlayer.updateUI === 'function') {
+        window.MusicPlayer.updateUI();
+    }
+}
+
+function initHeaderProfileEvents() {
+    if (window._headerProfileEventsInitialized) return;
+    const profileWidget = document.getElementById('header-profile-widget');
+    const profileDropdown = document.getElementById('profile-dropdown-card');
+    if (!profileWidget || !profileDropdown) return;
+
+    window._headerProfileEventsInitialized = true;
+    profileWidget.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const isHidden = profileDropdown.style.display === 'none' || !profileDropdown.style.display;
+        profileDropdown.style.display = isHidden ? 'block' : 'none';
+        if (window.MusicPlayer && typeof window.MusicPlayer.updateUI === 'function') {
+            window.MusicPlayer.updateUI();
+        }
+    });
+
+    document.addEventListener('click', (e) => {
+        if (profileDropdown && !profileDropdown.contains(e.target)) {
+            profileDropdown.style.display = 'none';
+        }
+    });
+
+    profileDropdown.addEventListener('click', (e) => {
+        e.stopPropagation();
+    });
+}
+
+window.toggleAudioEffects = function() {
+    const isMuted = localStorage.getItem('palestra_audio_muted') === 'true';
+    localStorage.setItem('palestra_audio_muted', isMuted ? 'false' : 'true');
+    const audioBtn = document.querySelector('.btn-toggle-audio-action');
+    if (audioBtn) {
+        audioBtn.innerHTML = isMuted
+            ? '<i class="fa-solid fa-volume-high"></i> Effetti'
+            : '<i class="fa-solid fa-volume-xmark"></i> Muto';
+    }
+};
+
+window.updateHeaderProfile = updateHeaderProfile;
+window.initHeaderProfileEvents = initHeaderProfileEvents;
 
 window.navigateTo = navigateTo;
 window.checkAnswer = checkAnswer;

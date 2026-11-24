@@ -483,7 +483,7 @@ L'innovazione tecnologica e l'Intelligenza Artificiale sono al servizio della cr
                         }).join('')}
 
                         <div style="text-align: center; margin-top: 3rem; padding-top: 1.8rem; border-top: 1px solid #eee;">
-                            <img src="https://prof-memmo.github.io/prof-memmo-gestione-siti/shared/assets/branding/prof-memmo/avatar.png" alt="Logo Progetto" style="width: 110px; opacity: 0.95; background: transparent;">
+                            <img src="assets/prof_memmo_dark.png" onerror="this.src='https://prof-memmo.github.io/prof-memmo-gestione-siti/assets/prof_memmo_dark.png';" alt="Logo Progetto" style="width: 110px; opacity: 0.95; background: transparent;">
                             <p style="font-size: 0.82rem; color: #94a3b8; margin-top: 8px;">&copy; Prof. Memmo • Palestra di Riflessione sulla Lingua</p>
                         </div>
                     </div>
@@ -603,7 +603,7 @@ L'innovazione tecnologica e l'Intelligenza Artificiale sono al servizio della cr
                         </p>
 
                         <div style="text-align: center; margin-top: 4rem; padding-top: 2rem; border-top: 1px solid #eee;">
-                            <img src="https://prof-memmo.github.io/prof-memmo-gestione-siti/shared/assets/branding/prof-memmo/avatar.png" alt="Logo Progetto" style="width: 120px; opacity: 0.9; background: transparent;">
+                            <img src="assets/prof_memmo_dark.png" onerror="this.src='https://prof-memmo.github.io/prof-memmo-gestione-siti/assets/prof_memmo_dark.png';" alt="Logo Progetto" style="width: 120px; opacity: 0.9; background: transparent;">
                         </div>
                     </div>
                 </div>

@@ -54,11 +54,11 @@ h1, h2, h3, h4, h5, h6, p, span, div, button {
 .navbar {
     background: white;
     width: var(--sidebar-width);
-    height: 100vh;
+    height: calc(100vh - 70px);
     position: fixed;
-    top: 0;
+    top: 70px;
     left: 0;
-    z-index: 1000;
+    z-index: 999;
     box-shadow: 4px 0 20px rgba(0,0,0,0.05);
     display: flex;
     flex-direction: column;
@@ -70,18 +70,26 @@ h1, h2, h3, h4, h5, h6, p, span, div, button {
 }
 
 .nav-container {
-    height: 100vh;
+    height: 100%;
     display: flex;
     flex-direction: column;
     overflow: hidden;
 }
 
 .logo-area {
-    padding: 2.5rem 1.5rem;
+    padding: 0.75rem 1.25rem;
     border-bottom: 1px solid #f0f0f0;
     display: flex;
     justify-content: space-between;
-    align-items: flex-start;
+    align-items: center;
+}
+
+.sidebar-title {
+    font-size: 0.8rem;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+    color: #94a3b8;
+    text-transform: uppercase;
 }
 
 .logo { font-weight: 800; font-size: 1.2rem; color: var(--primary-color); letter-spacing: -0.5px; }
@@ -120,19 +128,31 @@ h1, h2, h3, h4, h5, h6, p, span, div, button {
 main {
     flex-grow: 1;
     margin-left: var(--sidebar-width);
+    margin-top: 70px;
     padding: 2rem;
-    min-height: 100vh;
+    min-height: calc(100vh - 70px);
     transition: margin-left var(--transition-speed) cubic-bezier(0.4, 0, 0.2, 1), padding var(--transition-speed);
     position: relative;
     z-index: 1;
 }
 
-main.full-width { margin-left: 0 !important; padding: 1rem !important; transition: all 0.5s ease; }
+main.full-width { margin-left: 0 !important; margin-top: 70px; padding: 1.5rem !important; transition: all 0.5s ease; }
 
 @media (max-width: 1024px) {
-    main { margin-left: 0; padding: 6rem 1.5rem 3rem 1.5rem; }
-    main.full-width { padding-left: 1.5rem; }
-    .navbar { z-index: 2000; }
+    .navbar { 
+        top: 60px;
+        height: calc(100vh - 60px);
+        z-index: 2000; 
+    }
+    main { 
+        margin-left: 0; 
+        margin-top: 60px;
+        padding: 1.5rem 1rem 3rem 1rem; 
+    }
+    main.full-width { 
+        margin-top: 60px;
+        padding-left: 1rem; 
+    }
     .floating-toggle:not(.hidden) { opacity: 1; pointer-events: auto; }
     .exercise-title { font-size: 1.8rem !important; }
 }
@@ -2038,4 +2058,212 @@ td .completion-input {
     #cg-printable-area, #cg-printable-area * { visibility: visible; }
     #cg-printable-area { position: absolute; left: 0; top: 0; width: 100%; }
     .no-print { display: none !important; }
+}
+
+/* ==========================================
+   TOP HEADER STANDARD ECOSISTEMA PROF. MEMMO
+   ========================================== */
+.app-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 70px;
+    background: #ffffff;
+    border-bottom: 1.5px solid #eef2f6;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 24px;
+    z-index: 1000;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+#login-overlay:not(.hidden) ~ .app-header {
+    display: none !important;
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.header-sidebar-toggle {
+    background: transparent;
+    border: none;
+    font-size: 1.35rem;
+    color: var(--primary-color);
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s, transform 0.2s;
+}
+
+.header-sidebar-toggle:hover {
+    background: rgba(93, 95, 239, 0.08);
+    transform: scale(1.05);
+}
+
+.header-logo-container {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    transition: filter 0.2s;
+}
+
+.header-logo-container:hover {
+    filter: brightness(1.08);
+}
+
+.header-app-logo {
+    height: 48px;
+    max-width: 210px;
+    object-fit: contain;
+}
+
+.header-center-logo {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+}
+
+.header-prof-logo-wrapper {
+    pointer-events: auto;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s ease;
+}
+
+.header-prof-logo-wrapper:hover {
+    transform: scale(1.08);
+}
+
+.header-prof-logo {
+    height: 46px;
+    width: auto;
+    object-fit: contain;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.header-profile-container {
+    position: relative;
+}
+
+.header-profile-widget {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 5px 12px;
+    background: #f8fafc;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.header-profile-widget:hover {
+    background: #f1f5f9;
+    border-color: var(--primary-color);
+    box-shadow: 0 2px 8px rgba(93, 95, 239, 0.15);
+}
+
+.header-avatar-wrapper {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    border: 2px solid var(--primary-color);
+    background: #ffffff;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.header-avatar-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.header-user-info {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.2;
+}
+
+.header-user-name {
+    font-size: 0.85rem;
+    font-weight: 800;
+    color: var(--text-color);
+    white-space: nowrap;
+}
+
+.header-user-level {
+    font-size: 0.68rem;
+    color: var(--primary-color);
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.dropdown-arrow {
+    font-size: 0.72rem;
+    color: #94a3b8;
+    margin-left: 2px;
+    transition: transform 0.2s;
+}
+
+.profile-dropdown-card {
+    position: fixed;
+    top: 72px;
+    right: 15px;
+    width: 290px;
+    max-width: calc(100vw - 30px);
+    background: #ffffff;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 16px;
+    padding: 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+    z-index: 1001;
+    max-height: calc(100dvh - 85px);
+    overflow-y: auto;
+    animation: fadeIn 0.25s ease;
+}
+
+@media (max-width: 768px) {
+    .app-header {
+        height: 60px;
+        padding: 0 10px;
+    }
+    .header-app-logo {
+        height: 38px;
+        max-width: 130px;
+    }
+    .header-prof-logo {
+        height: 38px;
+    }
+    .header-user-name, .header-user-level {
+        display: none;
+    }
+    .profile-dropdown-card {
+        top: 62px;
+        right: 8px;
+    }
 }

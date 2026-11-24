@@ -77,12 +77,8 @@ const MusicPlayer = {
 
     nextTrack: function() {
         if (!this.audioElement) this.init();
-        // Riproduzione casuale
-        let nextIndex;
-        do {
-            nextIndex = Math.floor(Math.random() * this.tracks.length);
-        } while (nextIndex === this.currentTrackIndex && this.tracks.length > 1);
-        
+        let nextIndex = this.currentTrackIndex + 1;
+        if (nextIndex >= this.tracks.length) nextIndex = 0;
         this.loadTrack(nextIndex);
         if (this.isPlaying) {
             this.audioElement.play().catch(() => {
@@ -93,8 +89,16 @@ const MusicPlayer = {
     },
 
     prevTrack: function() {
-        // Shuffle mode -> same logic as nextTrack
-        this.nextTrack();
+        if (!this.audioElement) this.init();
+        let prevIndex = this.currentTrackIndex - 1;
+        if (prevIndex < 0) prevIndex = this.tracks.length - 1;
+        this.loadTrack(prevIndex);
+        if (this.isPlaying) {
+            this.audioElement.play().catch(() => {
+                this.isPlaying = false;
+                this.updateUI();
+            });
+        }
     },
 
     updateUI: function() {
@@ -106,8 +110,8 @@ const MusicPlayer = {
         }
         if (playBtnEl) {
             playBtnEl.innerHTML = this.isPlaying
-                ? '⏸️'
-                : '▶️';
+                ? '<i class="fa-solid fa-pause"></i>'
+                : '<i class="fa-solid fa-play"></i>';
         }
     }
 };

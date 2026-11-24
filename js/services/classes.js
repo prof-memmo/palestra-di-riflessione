@@ -184,29 +184,60 @@ window.viewClassStudents = async function(code, name, classId = null) {
 
         const explicitStudentIds = new Set(
             (Array.isArray(classData.studentIds) ? classData.studentIds : [])
-            .concat(Array.isArray(classData.students) ? classData.students.map(s => typeof s === 'string' ? s : (s.id || s.uid || s.email)) : [])
+            .concat(Array.isArray(classData.students) ? classData.students.map(s => typeof s === 'string' ? s : (s.id || s.uid || s.email || s.studentAuthUid)) : [])
             .concat(Array.isArray(classData.alunni) ? classData.alunni.map(s => typeof s === 'string' ? s : (s.id || s.uid || s.email)) : [])
+            .concat(classData.roster && typeof classData.roster === 'object' ? Object.values(classData.roster).map(s => s && (s.studentAuthUid || s.id || s.uid || s.email)) : [])
+            .filter(Boolean)
         );
 
-        // 2. Trova gli utenti di questa specifica classe (supportando ID, Codice, Nome Classe da tutte le collezioni Hub)
+        // 2. Trova gli utenti di questa specifica classe (supportando sia classData.roster che classData.students)
         const studentsMap = new Map();
 
-        if (Array.isArray(classData.students) && classData.students.length > 0) {
-            classData.students.forEach(s => {
-                if (typeof s === 'object' && s.name) {
+        // 2a. Popolamento prioritario da classData.roster (standard Hub centrale)
+        if (classData.roster && typeof classData.roster === 'object') {
+            const rosterEntries = Array.isArray(classData.roster) ? classData.roster : Object.values(classData.roster);
+            rosterEntries.forEach((s, idx) => {
+                if (s && typeof s === 'object') {
                     if (s.archived === true || s.isArchived === true || s.status === 'archived' || s.deleted === true || s._deleted === true) return;
-                    const sid = s.studentAuthUid || s.id || s.studentId || (realClassId + '_' + s.name);
+                    const sName = s.name || s.nickname || s.studentName || `Studente ${idx + 1}`;
+                    const sid = s.studentAuthUid || s.id || s.uid || s.studentId || (realClassId + '_' + (s.slotKey || (idx + 1)));
                     studentsMap.set(sid, {
                         id: sid,
-                        studentId: s.studentId,
-                        name: s.name,
+                        studentId: s.studentId || sid,
+                        name: sName,
                         nickname: s.nickname || '',
                         avatar: s.avatar || 'assets/avatars/6.png',
                         classId: realClassId,
                         className: realClassName,
                         claimed: !!s.claimed,
-                        role: 'studente'
+                        role: 'studente',
+                        email: s.email || ''
                     });
+                }
+            });
+        }
+
+        // 2b. Popolamento da classData.students (formato array)
+        if (Array.isArray(classData.students) && classData.students.length > 0) {
+            classData.students.forEach((s, idx) => {
+                if (typeof s === 'object' && (s.name || s.nickname)) {
+                    if (s.archived === true || s.isArchived === true || s.status === 'archived' || s.deleted === true || s._deleted === true) return;
+                    const sName = s.name || s.nickname || `Studente ${idx + 1}`;
+                    const sid = s.studentAuthUid || s.id || s.uid || s.studentId || (realClassId + '_' + (s.slotKey || (idx + 1)));
+                    if (!studentsMap.has(sid)) {
+                        studentsMap.set(sid, {
+                            id: sid,
+                            studentId: s.studentId || sid,
+                            name: sName,
+                            nickname: s.nickname || '',
+                            avatar: s.avatar || 'assets/avatars/6.png',
+                            classId: realClassId,
+                            className: realClassName,
+                            claimed: !!s.claimed,
+                            role: 'studente',
+                            email: s.email || ''
+                        });
+                    }
                 }
             });
         }
